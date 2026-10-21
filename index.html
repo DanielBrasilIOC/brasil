@@ -69,7 +69,7 @@ async function loadData(){
   const payload=await response.json();
   if(!Array.isArray(payload.accounts)||!payload.accounts.length) throw new Error('A base publicada não contém contas válidas.');
   data=payload.accounts.map(x=>({conta:String(x.conta),saldo:Number(x.saldo)})).filter(x=>x.conta&&Number.isFinite(x.saldo));
-  document.querySelector('#sourceDate').textContent=payload.updated_label||payload.updated_at||'data não informada';
+  const sourceDate=document.querySelector('#sourceDate'); if(sourceDate) sourceDate.textContent=payload.updated_label||payload.updated_at||'data não informada';
   const status=document.querySelector('.status');
   if(status) status.innerHTML='<span class="dot"></span>Dados integrados · '+(payload.updated_label||payload.updated_at||'base atual');
   const period=document.querySelector('#period'); if(period) period.textContent='BASE SINCRONIZADA';
