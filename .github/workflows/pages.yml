@@ -20,6 +20,48 @@ jobs:
     steps:
       - name: Baixar o repositório
         uses: actions/checkout@v4
+      - name: Preparar base de repasses a partir do Google Drive
+        run: |
+          curl -fLsS "https://drive.google.com/uc?export=download&id=1ghcBkPmT-IkfWozLZVDdMvMe7eoD2J6k" -o /tmp/repasses.csv
+          python - <<'PY'
+          import csv, json
+          from decimal import Decimal
+          from pathlib import Path
+          mapping = {
+              "PROCESSO":"processo", "LICITAÇÃO":"licitacao", "FORNECEDOR":"fornecedor",
+              "SUB GRUPO":"sub_grupo", "ELEMENTO DE DESPESA":"elemento_despesa",
+              "ELEMENTO":"elemento", "SUB GRUPO DE DESPESA":"sub_grupo_despesa",
+              "VIGENCIA":"vigencia", "SITUAÇÃO DE PRIORIDADE":"situacao_prioridade",
+              "SOLICITAÇÃO DA NE":"solicitacao_ne", "Nº DA NE":"numero_ne",
+              "STATUS DO EMPENHO":"status_empenho", "FORNECEDORES":"fornecedores", "VALOR":"saldo"
+          }
+          rows = []
+          blank = 0
+          with open('/tmp/repasses.csv', encoding='utf-8-sig', newline='') as f:
+              reader = csv.DictReader(f, delimiter=';')
+              for raw in reader:
+                  if not any(str(v or '').strip() for v in raw.values()):
+                      blank += 1
+                      continue
+                  row = {}
+                  for original, key in mapping.items():
+                      val = next((str(v or '').strip() for h,v in raw.items() if (h or '').strip().upper() == original), '')
+                      row[key] = val
+                  raw_value = row['saldo'].replace('R$', '').replace(' ', '').replace('.', '').replace(',', '.')
+                  try:
+                      row['saldo'] = float(Decimal(raw_value)) if raw_value else None
+                  except Exception:
+                      row['saldo'] = None
+                  rows.append(row)
+          total = round(sum(r['saldo'] or 0 for r in rows), 2)
+          missing = sum(r['saldo'] is None for r in rows)
+          data = {
+              'rows': rows, 'total': total, 'missing_values': missing,
+              'note': f'Base gerada durante a publicação a partir do CSV do Google Drive. {blank} linhas totalmente vazias foram excluídas; {len(rows)} registros permanecem disponíveis. Soma dos valores preenchidos: R$ {total:,.2f}. {missing} registros estão sem valor e não compõem a soma. Os dados são exibidos conforme a base de origem.'
+          }
+          Path('repasses.json').write_text(json.dumps(data, ensure_ascii=False, separators=(',', ':')), encoding='utf-8')
+          print(f"Registros publicados: {len(rows)}; sem valor: {missing}; soma: {total:.2f}")
+          PY
       - name: Configurar GitHub Pages
         uses: actions/configure-pages@v5
       - name: Preparar arquivos estáticos do painel
