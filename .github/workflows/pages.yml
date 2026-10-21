@@ -60,6 +60,20 @@ jobs:
               'note': f'Base gerada durante a publicação a partir do CSV do Google Drive. {blank} linhas totalmente vazias foram excluídas; {len(rows)} registros permanecem disponíveis. Soma dos valores preenchidos: R$ {total:,.2f}. {missing} registros estão sem valor e não compõem a soma. Os dados são exibidos conforme a base de origem.'
           }
           Path('repasses.json').write_text(json.dumps(data, ensure_ascii=False, separators=(',', ':')), encoding='utf-8')
+          # Incorporar a base também ao JSON principal, evitando dependência de um segundo fetch no navegador.
+          main_path = Path('data.json')
+          main = json.loads(main_path.read_text(encoding='utf-8'))
+          for dataset in main.get('datasets', []):
+              if dataset.get('id') == 'repasses':
+                  dataset['rows'] = rows
+                  dataset['total'] = total
+                  dataset['missing_values'] = missing
+                  dataset['detail_count'] = len(rows)
+                  dataset['note'] = data['note']
+                  break
+          else:
+              raise SystemExit('Dataset repasses não encontrado em data.json')
+          main_path.write_text(json.dumps(main, ensure_ascii=False, separators=(',', ':')), encoding='utf-8')
           print(f"Registros publicados: {len(rows)}; sem valor: {missing}; soma: {total:.2f}")
           PY
       - name: Configurar GitHub Pages
