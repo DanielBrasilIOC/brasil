@@ -1,0 +1,33 @@
+{
+  "source": "Saldo Financeiro.xlsx",
+  "source_url": "https://drive.google.com/file/d/1fWNRU1tHpeftbQcU1bsZoAQp_lQMkKE7/view",
+  "updated_at": "2026-10-21",
+  "updated_label": "21/10/2026",
+  "generated_at": "2026-10-21T13:40:00-03:00",
+  "accounts": [
+    {
+      "conta": "1001000000400",
+      "saldo": 446318.66
+    },
+    {
+      "conta": "1002A00427400",
+      "saldo": 10000.0
+    },
+    {
+      "conta": "3129A0046Y400",
+      "saldo": 6402.0
+    },
+    {
+      "conta": "1002A004AD400",
+      "saldo": 5000.0
+    },
+    {
+      "conta": "1001000000414",
+      "saldo": 1218.18
+    },
+    {
+      "conta": "1000A004SI400",
+      "saldo": 169.84
+    }
+  ]
+}
