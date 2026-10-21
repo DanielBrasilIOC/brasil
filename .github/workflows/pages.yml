@@ -43,6 +43,9 @@ jobs:
                   if not any(str(v or '').strip() for v in raw.values()):
                       blank += 1
                       continue
+                  status = next((str(v or '').strip() for h,v in raw.items() if (h or '').strip().upper() == 'STATUS DO EMPENHO'), '')
+                  if status.upper() != 'AGUARDANDO ORÇAMENTO':
+                      continue
                   row = {}
                   for original, key in mapping.items():
                       val = next((str(v or '').strip() for h,v in raw.items() if (h or '').strip().upper() == original), '')
@@ -55,16 +58,16 @@ jobs:
                   rows.append(row)
           total = round(sum(r['saldo'] or 0 for r in rows), 2)
           missing = sum(r['saldo'] is None for r in rows)
-          # Nunca publicar silenciosamente uma base vazia ou uma página HTML de erro do Drive.
-          if len(rows) < 500:
-              raise SystemExit(f'CSV de repasses inválido/incompleto: apenas {len(rows)} registros lidos; publicação interrompida.')
-          if total < 6000000:
-              raise SystemExit(f'Soma de repasses inesperada ({total:.2f}); publicação interrompida para evitar dados incorretos.')
-          if missing > 20:
-              raise SystemExit(f'Quantidade inesperada de valores ausentes ({missing}); publicação interrompida.')
+          # Validar a seleção antes de publicar: somente registros com Status do Empenho = AGUARDANDO ORÇAMENTO.
+          if not 50 <= len(rows) <= 150:
+              raise SystemExit(f'Quantidade inesperada de registros AGUARDANDO ORÇAMENTO ({len(rows)}); publicação interrompida.')
+          if total < 1500000:
+              raise SystemExit(f'Soma dos registros AGUARDANDO ORÇAMENTO inesperada ({total:.2f}); publicação interrompida.')
+          if missing > 5:
+              raise SystemExit(f'Quantidade inesperada de valores ausentes na seleção ({missing}); publicação interrompida.')
           data = {
               'rows': rows, 'total': total, 'missing_values': missing,
-              'note': f'Base gerada durante a publicação a partir do CSV do Google Drive. {blank} linhas totalmente vazias foram excluídas; {len(rows)} registros permanecem disponíveis. Soma dos valores preenchidos: R$ {total:,.2f}. {missing} registros estão sem valor e não compõem a soma. Os dados são exibidos conforme a base de origem.'
+              'note': f'Fonte: planilha Aguardando Repasse Orçamentário, no Google Drive. Publicados exclusivamente os registros cujo Status do Empenho é AGUARDANDO ORÇAMENTO; {blank} linhas totalmente vazias da fonte foram ignoradas. {len(rows)} registros atendem ao filtro; soma dos valores preenchidos: R$ {total:,.2f}. {missing} registros sem valor não compõem a soma.'
           }
           Path('repasses.json').write_text(json.dumps(data, ensure_ascii=False, separators=(',', ':')), encoding='utf-8')
           # Incorporar a base também ao JSON principal, evitando dependência de um segundo fetch no navegador.
@@ -81,7 +84,7 @@ jobs:
           else:
               raise SystemExit('Dataset repasses não encontrado em data.json')
           main_path.write_text(json.dumps(main, ensure_ascii=False, separators=(',', ':')), encoding='utf-8')
-          print(f"Registros publicados: {len(rows)}; sem valor: {missing}; soma: {total:.2f}")
+          print(f"Registros AGUARDANDO ORÇAMENTO publicados: {len(rows)}; sem valor: {missing}; soma: {total:.2f}")
           PY
       - name: Configurar GitHub Pages
         uses: actions/configure-pages@v5
