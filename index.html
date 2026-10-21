@@ -2,10 +2,10 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<meta name="description" content="Painel Gestão IOC — indicadores, gráficos e acompanhamento financeiro.">
+<meta name="description" content="Gestão IOC — indicadores, gráficos e acompanhamento financeiro.">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#f8faf9">
-<title>Painel Gestão IOC</title>
+<title>Gestão IOC</title>
 <style>
 :root{--navy:#627b83;--navy2:#8fa8ad;--teal:#a6c8bd;--mint:#edf5f1;--bg:#fbfcfb;--paper:#ffffff;--ink:#586a70;--muted:#98a6a9;--line:#edf1ef;--gold:#e5d9bd;--red:#d7aaa4;--shadow:0 8px 26px rgba(95,125,122,.055)}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);font:14px/1.5 Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;color:var(--ink)}button,input{font:inherit}button{cursor:pointer}
@@ -32,14 +32,14 @@
 <body>
 <div class="shell">
 <aside class="sidebar">
-<div class="brand"><div class="brandtitle">Painel Financeiro<br>e Orçamentário<small>IOC · Gestão e controle</small></div></div>
+<div class="brand"><div class="brandtitle">Gestão IOC<small>IOC · Gestão e controle</small></div></div>
 <div class="navwrap"><div class="navlabel">VISÃO GERAL</div><nav class="nav"><a href="#overview" class="active"><span class="navicon">▦</span>Resumo executivo</a><a href="#contas"><span class="navicon">▤</span>Contas e saldos</a><a href="#analise"><span class="navicon">◫</span>Análise dos dados</a></nav></div>
 <div class="sidebarbottom">INSTITUTO OSWALDO CRUZ<br>Ambiente de acompanhamento<br>financeiro e orçamentário</div>
 </aside>
 <div class="main">
-<div class="topbar"><div class="crumb">Painel de controle&nbsp; / &nbsp;<strong>Resumo executivo</strong></div><div class="topright"><span class="status"><span class="dot"></span>Dados integrados · 21/10/2026</span></div></div>
+<div class="topbar"><div class="crumb">Gestão IOC&nbsp; / &nbsp;<strong>Resumo executivo</strong></div><div class="topright"><span class="status"><span class="dot"></span>Dados integrados · 21/10/2026</span></div></div>
 <main class="content" id="overview">
-<div class="heading"><div><p class="eyebrow">GESTÃO · INDICADORES · TRANSPARÊNCIA</p><h1>Painel Financeiro e<br>Orçamentário IOC</h1><p class="subtitle">Uma visão clara para acompanhar saldos e apoiar decisões de gestão.</p></div></div>
+<div class="heading"><div><p class="eyebrow">GESTÃO · INDICADORES · TRANSPARÊNCIA</p><h1>Gestão IOC</h1><p class="subtitle">Uma visão clara para acompanhar saldos e apoiar decisões de gestão.</p></div></div>
 <div class="sectionhead"><div><h2>Indicadores principais</h2><p>Indicadores recalculados a partir da base financeira publicada</p></div><span class="pill" id="period">BASE SINCRONIZADA</span></div>
 <section class="kpis">
 <div class="card kpi"><div class="kpitop"><span class="kpilabel">Saldo consolidado</span><span class="kpiicon">◈</span></div><div class="kpivalue" id="total">R$ 469.108,68</div><div class="kpinote">Soma dos saldos identificados</div></div>
@@ -53,7 +53,7 @@
 <section class="card panel" id="contas"><div class="paneltitle"><div><h3>Detalhamento das contas</h3><p>Valores e participação no total</p></div><span class="pill" id="tableCount">6 REGISTROS</span></div><div class="tablewrap"><table><thead><tr><th>Conta</th><th class="num">Saldo</th><th class="num">Participação</th></tr></thead><tbody id="rows"><tr><td><div class="account"><span class="accountmark">1</span>1001000000400</div></td><td class="num">R$ 446.318,66</td><td class="num"><div class="share"><div class="sharebar"><span style="width:95.14184644803417%"></span></div>95,1%</div></td></tr><tr><td><div class="account"><span class="accountmark">1</span>1002A00427400</div></td><td class="num">R$ 10.000,00</td><td class="num"><div class="share"><div class="sharebar"><span style="width:2.1317021889256025%"></span></div>2,1%</div></td></tr><tr><td><div class="account"><span class="accountmark">3</span>3129A0046Y400</div></td><td class="num">R$ 6.402,00</td><td class="num"><div class="share"><div class="sharebar"><span style="width:1.3647157413501707%"></span></div>1,4%</div></td></tr><tr><td><div class="account"><span class="accountmark">1</span>1002A004AD400</div></td><td class="num">R$ 5.000,00</td><td class="num"><div class="share"><div class="sharebar"><span style="width:1.0658510944628012%"></span></div>1,1%</div></td></tr><tr><td><div class="account"><span class="accountmark">1</span>1001000000414</div></td><td class="num">R$ 1.218,18</td><td class="num"><div class="share"><div class="sharebar"><span style="width:0.2596796972505391%"></span></div>0,3%</div></td></tr><tr><td><div class="account"><span class="accountmark">1</span>1000A004SI400</div></td><td class="num">R$ 169,84</td><td class="num"><div class="share"><div class="sharebar"><span style="width:0.036204829976712434%"></span></div>0%</div></td></tr></tbody></table></div></section>
 </div>
 <div class="bottomgrid" id="orientacoes"><section class="card panel"><div class="paneltitle"><div><h3>Fonte de dados</h3><p>Rastreabilidade e atualização</p></div></div><div class="noteitem"><div class="noteicon">▤</div><div><strong>Google Drive institucional</strong><p>Planilha de origem: Saldo Financeiro.xlsx · última atualização publicada: 21/10/2026. A página recarrega a base de dados ao ser aberta.</p></div></div><div class="noteitem"><div class="noteicon">✓</div><div><strong>Integridade dos números</strong><p>O painel não preenche saldos estimados nem apresenta dados antigos como se fossem atuais.</p></div></div></section><section class="card panel"><div class="paneltitle"><div><h3>Escopo dos indicadores</h3><p>Transparência sobre os cálculos</p></div></div><div class="noteitem"><div class="noteicon">◈</div><div><strong>Resumo financeiro</strong><p>Saldo consolidado, quantidade de contas, maior saldo e participação relativa serão calculados a partir da base validada.</p></div></div><div class="noteitem"><div class="noteicon">＋</div><div><strong>Visão orçamentária</strong><p>Execução, empenhado, liquidado, pago e saldo orçamentário exigem campos correspondentes na fonte institucional.</p></div></div></section></div>
-<footer class="foot"><span>Painel Gestão IOC</span><span>Interface executiva · Layout responsivo · Última base publicada: 21/10/2026 · dados financeiros autorizados para publicação</span></footer>
+<footer class="foot"><span>Gestão IOC</span><span>Interface executiva · Layout responsivo · Última base publicada: 21/10/2026 · dados financeiros autorizados para publicação</span></footer>
 </main>
 </div>
 </div>
@@ -83,7 +83,6 @@ async function loadData(){
  }
 }
 loadData();
-// Atualiza automaticamente enquanto o painel estiver aberto; ao voltar à aba, busca a base mais recente.
 setInterval(()=>{if(document.visibilityState==='visible')loadData()},300000);
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')loadData()});
 
