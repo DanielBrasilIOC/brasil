@@ -1,36 +1,146 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#f8faf9"><title>Painel Financeiro e Orçamentário IOC</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#163b5c">
+<title>Painel Financeiro e Orçamentário IOC</title>
 <style>
-:root{--navy:#526d78;--teal:#8db9aa;--mint:#edf5f1;--bg:#f8fbf9;--ink:#3d555d;--muted:#819398;--line:#e6eeea;--white:#fff;--red:#b86d65;--shadow:0 8px 26px #365c4d0c}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);font:14px/1.5 Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;color:var(--ink)}
-.shell{min-height:100vh;display:grid;grid-template-columns:235px minmax(0,1fr)}aside{background:linear-gradient(180deg,#f0f7f3,#eaf3ef);border-right:1px solid var(--line);padding:26px 18px;display:flex;flex-direction:column;gap:30px}.brand{font-weight:800;color:var(--navy);font-size:16px}.brand small{display:block;font-size:10px;letter-spacing:.12em;color:var(--muted);margin-top:4px}.nav{display:grid;gap:7px}.nav button{border:0;background:transparent;text-align:left;padding:11px 12px;border-radius:10px;color:#71888b;font-weight:650;cursor:pointer}.nav button.active,.nav button:hover{background:white;color:var(--navy);box-shadow:0 3px 12px #405f5710}.sidefoot{margin-top:auto;border-top:1px solid #dce8e2;padding-top:16px;color:var(--muted);font-size:11px}
-main{min-width:0}.top{height:68px;border-bottom:1px solid var(--line);background:#ffffffb8;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(18px,4vw,44px);gap:12px}.status{border:1px solid var(--line);border-radius:30px;padding:7px 11px;font-size:11px;color:#617d75;background:#fff}.content{max-width:1500px;margin:auto;padding:30px clamp(18px,4vw,44px)}.eyebrow{font-size:10px;letter-spacing:.16em;color:#7da99b;font-weight:800}.heading{display:flex;justify-content:space-between;gap:18px;align-items:flex-start;margin-bottom:24px}.heading h1{margin:4px 0 7px;font-size:clamp(25px,3vw,34px);letter-spacing:-.035em;color:var(--navy)}.sub{margin:0;color:var(--muted)}.cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px}.card{background:var(--white);border:1px solid var(--line);border-radius:15px;box-shadow:var(--shadow);padding:19px;min-width:0}.label{font-size:11px;color:var(--muted);font-weight:700}.value{font-size:clamp(19px,2vw,27px);font-weight:800;letter-spacing:-.035em;color:var(--navy);margin:13px 0 7px;overflow-wrap:anywhere}.note{font-size:10px;color:var(--muted)}.section{margin:26px 0 13px;display:flex;align-items:center;justify-content:space-between;gap:10px}.section h2{font-size:15px;margin:0;color:#304a53}.pill{font-size:10px;background:var(--mint);padding:5px 8px;border-radius:6px;color:#66857c}.layout{display:grid;grid-template-columns:1.1fr .9fr;gap:14px}.barrow{display:grid;grid-template-columns:minmax(110px,180px) 1fr auto;gap:10px;align-items:center;margin:16px 0;font-size:11px}.track{height:8px;border-radius:8px;background:#edf2ef;overflow:hidden}.track span{display:block;height:100%;background:#8db9aa;border-radius:8px}.source{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid var(--line)}.source:last-child{border-bottom:0}.source a{color:#547f74;font-weight:700;text-decoration:none}.source a:hover{text-decoration:underline}.notice{background:#f4f8f6;border:1px solid #dbe9e2;border-radius:12px;padding:13px 15px;color:#59756e;font-size:12px;margin-top:16px}.warning{background:#fff8f1;border:1px solid #f0e3d2;color:#806b52}.footer{border-top:1px solid var(--line);padding-top:18px;margin-top:26px;color:var(--muted);font-size:10px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
-@media(max-width:1050px){.cards{grid-template-columns:repeat(2,minmax(0,1fr))}.layout{grid-template-columns:1fr}}
-@media(max-width:680px){.shell{display:block}aside{padding:13px 16px;gap:12px}.brand{font-size:14px}.nav{display:flex;overflow:auto}.nav button{white-space:nowrap;font-size:11px;padding:8px}.sidefoot{display:none}.top{height:52px;padding:0 16px}.content{padding:22px 15px}.heading{display:block}.status{font-size:10px}.card{padding:15px}.value{font-size:20px}.barrow{grid-template-columns:100px 1fr;}.barrow b{grid-column:2}.cards{gap:9px}}
-@media(max-width:390px){.cards{grid-template-columns:1fr}}
-</style></head>
-<body><div class="shell">
-<aside><div class="brand">Painel Financeiro e Orçamentário IOC<small>INSTITUTO OSWALDO CRUZ</small></div>
-<nav class="nav" id="nav"><button class="active" data-tab="resumo">Resumo executivo</button><button data-tab="financeiro">Saldo Financeiro</button><button data-tab="restos">Restos a Pagar</button><button data-tab="empenhos">Empenhos 2026</button><button data-tab="orcamentario">Saldo Orçamentário</button></nav>
-<div class="sidefoot">Acompanhamento financeiro e orçamentário<br>Fontes institucionais no Google Drive</div></aside>
-<main><div class="top"><span>IOC / <b id="crumb">Resumo executivo</b></span><span class="status">● Bases conferidas · 21/10/2026</span></div>
-<div class="content"><div class="heading"><div><div class="eyebrow">GESTÃO · INDICADORES · TRANSPARÊNCIA</div><h1 id="title">Painel Financeiro e Orçamentário IOC</h1><p class="sub" id="subtitle">Quatro visões independentes para acompanhamento dos recursos.</p></div></div>
-<div class="cards" id="cards"></div>
-<div class="section"><h2 id="chartTitle">Comparativo dos totais por relatório</h2><span class="pill">VALORES DE REFERÊNCIA</span></div>
-<div class="layout"><section class="card"><div id="bars"></div><div class="notice">Cada relatório representa uma medida própria. Os totais não são somados entre si.</div></section>
-<section class="card"><h2 style="font-size:14px;margin:0 0 8px">Fontes e rastreabilidade</h2><div id="sources"></div><div class="notice warning">Esta versão apresenta totais conferidos e links para as fontes. Os registros detalhados ainda precisam ser incorporados ao arquivo de dados antes de considerar a integração completa.</div></section></div>
-<div class="footer"><span>IOC · Painel Financeiro e Orçamentário</span><span>Interface responsiva · Referência dos dados: 21/10/2026</span></div>
-</div></main></div>
+:root{--navy:#163b5c;--blue:#2d6587;--teal:#438b89;--ink:#243746;--muted:#6d7e8b;--bg:#f3f6f9;--line:#e1e8ee;--card:#fff;--soft:#eaf1f5;--gold:#c49a55;--shadow:0 10px 28px rgba(27,57,79,.07)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Arial,sans-serif}
+button,select{font:inherit}button{cursor:pointer}.shell{display:grid;grid-template-columns:248px minmax(0,1fr);min-height:100vh}
+aside{background:linear-gradient(180deg,#153754,#1c4b69);color:white;padding:26px 16px;display:flex;flex-direction:column;gap:28px}
+.brand{display:flex;align-items:center;gap:12px;padding:0 8px}.brandmark{width:42px;height:42px;border:1px solid #83a7bb;border-radius:13px;display:grid;place-items:center;background:#ffffff12;font-weight:800;letter-spacing:-1px}.brand h1{font-size:14px;line-height:1.25;margin:0}.brand p{font-size:11px;color:#b7cedb;margin:5px 0 0}
+.nav-label{font-size:10px;letter-spacing:1.5px;color:#a7c2d2;padding:0 12px;text-transform:uppercase}.nav{display:grid;gap:6px}.nav button{border:0;background:transparent;color:#d8e5ed;text-align:left;padding:12px;border-radius:10px;display:flex;align-items:center;gap:11px}.nav button.active,.nav button:hover{background:#ffffff19;color:#fff}.nav .ico{width:22px;text-align:center;font-size:17px}.side-note{margin-top:auto;border-top:1px solid #ffffff24;padding:18px 10px 0;color:#b7cedb;font-size:12px}
+main{min-width:0;padding:30px clamp(18px,3vw,42px) 40px}.topbar{display:flex;justify-content:space-between;align-items:center;gap:20px;margin-bottom:28px}.eyebrow{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--teal);font-weight:750}.topbar h2{font-size:clamp(24px,3vw,32px);letter-spacing:-.7px;margin:5px 0 4px;color:var(--navy)}.subtitle{margin:0;color:var(--muted);font-size:13px}.actions{display:flex;gap:8px;flex-wrap:wrap}.btn{border:1px solid var(--line);background:white;color:var(--navy);padding:9px 13px;border-radius:9px;font-size:12px;font-weight:700}.btn.primary{background:var(--navy);color:#fff;border-color:var(--navy)}.status{display:inline-flex;align-items:center;gap:7px;font-size:11px;color:#527365;background:#e5f2ec;padding:7px 10px;border-radius:99px;margin-bottom:18px}.dot{width:7px;height:7px;border-radius:50%;background:#4e9b77}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:18px}.kpi,.panel{background:var(--card);border:1px solid var(--line);border-radius:15px;box-shadow:var(--shadow)}.kpi{padding:18px;min-width:0;position:relative;overflow:hidden}.kpi:after{content:"";position:absolute;width:70px;height:70px;border-radius:50%;right:-27px;top:-30px;background:var(--soft)}.kpi-label{font-size:12px;color:var(--muted);font-weight:650}.kpi-value{font-size:clamp(18px,2vw,25px);font-weight:800;letter-spacing:-.7px;color:var(--navy);margin:13px 0 8px;overflow-wrap:anywhere}.kpi-foot{font-size:11px;color:var(--muted);display:flex;justify-content:space-between;gap:5px}.kpi-foot strong{color:var(--teal)}
+.grid{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(280px,1fr);gap:16px;margin-bottom:16px}.panel{padding:21px;min-width:0}.panel-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:14px}.panel h3{font-size:15px;color:var(--navy);margin:0}.panel .desc{font-size:12px;color:var(--muted);margin:5px 0 0}.select{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:8px;padding:7px 9px;font-size:12px;max-width:150px}.chart-wrap{width:100%;min-height:245px}.chart-wrap svg{display:block;width:100%;height:auto;overflow:visible}.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:var(--muted);margin-top:10px}.legend span{display:inline-flex;align-items:center;gap:6px}.swatch{width:8px;height:8px;border-radius:3px;display:inline-block}
+.breakdown{display:grid;gap:17px;padding-top:8px}.break-row{display:grid;gap:7px}.break-title{display:flex;justify-content:space-between;gap:12px;font-size:12px}.break-title strong{color:var(--navy);font-weight:750}.track{height:7px;background:#edf1f4;border-radius:99px;overflow:hidden}.fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--teal),#82b6ae)}.break-meta{font-size:10px;color:var(--muted)}
+.table-panel{padding:0;overflow:hidden}.table-head{padding:20px 21px 12px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}.table-tools{display:flex;gap:8px;flex-wrap:wrap}.search{border:1px solid var(--line);border-radius:8px;padding:8px 10px;min-width:210px;font-size:12px}.table-scroll{overflow:auto}table{border-collapse:collapse;width:100%;font-size:12px;white-space:nowrap}th{text-align:left;background:#f7f9fb;color:#6b7d89;font-weight:700;padding:12px 21px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}td{padding:14px 21px;border-bottom:1px solid #edf1f4}tbody tr:hover{background:#f8fbfc}td.money{text-align:right;font-variant-numeric:tabular-nums;font-weight:750;color:var(--navy)}.source-link{color:var(--blue);font-weight:700;text-decoration:none}.source-link:hover{text-decoration:underline}.pill{display:inline-flex;background:#edf5f4;color:#3d7775;border-radius:99px;padding:4px 8px;font-size:10px;font-weight:700}.foot{display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap;color:#8795a0;font-size:11px;padding:18px 2px}.empty{padding:26px;text-align:center;color:var(--muted);font-size:12px}.section-hidden{display:none}.toast{position:fixed;right:20px;bottom:20px;background:#173b59;color:white;border-radius:10px;padding:12px 16px;box-shadow:var(--shadow);font-size:12px;display:none}
+@media(max-width:1050px){.shell{grid-template-columns:205px minmax(0,1fr)}.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.grid{grid-template-columns:1fr}}
+@media(max-width:700px){.shell{display:block}aside{padding:13px 12px;gap:12px}.brand{padding:0 5px}.nav-label,.side-note{display:none}.nav{display:flex;overflow:auto}.nav button{white-space:nowrap;padding:9px 11px;font-size:12px}.nav .ico{font-size:14px;width:auto}.topbar{align-items:flex-start;flex-direction:column;margin-bottom:20px}.kpis{gap:9px}.kpi{padding:13px}.kpi-value{font-size:18px}.panel{padding:15px}.table-head{padding:16px}.search{min-width:0;width:100%}.table-tools{width:100%}.chart-wrap{min-height:190px}}
+@media print{aside,.actions,.select,.table-tools{display:none!important}.shell{display:block}main{padding:0}.panel,.kpi{box-shadow:none;break-inside:avoid}.section-hidden{display:block!important}body{background:white}}
+</style>
+</head>
+<body>
+<div class="shell">
+<aside>
+  <div class="brand"><div class="brandmark">IOC</div><div><h1>Painel Financeiro<br>e Orçamentário</h1><p>Instituto Oswaldo Cruz</p></div></div>
+  <div class="nav-label">Visão geral</div>
+  <nav class="nav" aria-label="Navegação principal">
+    <button class="active" data-view="visao"><span class="ico">◫</span> Visão geral</button>
+    <button data-view="financeiro"><span class="ico">◉</span> Saldo financeiro</button>
+    <button data-view="restos"><span class="ico">▤</span> Restos a pagar</button>
+    <button data-view="empenhos"><span class="ico">▥</span> Empenhos 2026</button>
+    <button data-view="orcamentario"><span class="ico">◌</span> Saldo orçamentário</button>
+  </nav>
+  <div class="side-note">Transparência e acompanhamento<br>dos dados financeiros do IOC.</div>
+</aside>
+<main>
+  <header class="topbar">
+    <div><div class="eyebrow">Gestão • Finanças</div><h2 id="pageTitle">Painel Financeiro e Orçamentário IOC</h2><p class="subtitle" id="pageSubtitle">Visão consolidada dos demonstrativos financeiros e orçamentários.</p></div>
+    <div class="actions"><button class="btn" id="refreshBtn">↻ Atualizar dados</button><button class="btn primary" id="printBtn">⇩ Exportar / Imprimir</button></div>
+  </header>
+  <div class="status"><span class="dot"></span><span id="statusText">Dados carregados do arquivo publicado</span></div>
+  <section id="overview">
+    <div class="kpis" id="kpis"></div>
+    <div class="grid">
+      <article class="panel">
+        <div class="panel-head"><div><h3>Comparativo por demonstrativo</h3><p class="desc">Compare os saldos informados em cada base.</p></div><select class="select" id="chartMode" aria-label="Tipo de gráfico"><option value="bar">Barras horizontais</option><option value="column">Colunas</option></select></div>
+        <div class="chart-wrap" id="mainChart"></div>
+        <div class="legend"><span><i class="swatch" style="background:#438b89"></i>Valor reportado</span></div>
+      </article>
+      <article class="panel">
+        <div class="panel-head"><div><h3>Distribuição dos registros</h3><p class="desc">Quantidade de linhas detalhadas por base.</p></div></div>
+        <div class="chart-wrap" id="countChart"></div>
+        <div class="legend"><span><i class="swatch" style="background:#2d6587"></i>Registros detalhados</span></div>
+      </article>
+    </div>
+    <article class="panel table-panel">
+      <div class="table-head"><div><h3>Resumo dos demonstrativos</h3><p class="desc">Totais reportados e acesso às bases de origem.</p></div><div class="table-tools"><input class="search" id="search" placeholder="Filtrar demonstrativos..." aria-label="Filtrar demonstrativos"></div></div>
+      <div class="table-scroll"><table><thead><tr><th>Demonstrativo</th><th>Registros</th><th style="text-align:right">Total informado</th><th>Fonte</th></tr></thead><tbody id="datasetRows"></tbody></table></div>
+    </article>
+  </section>
+  <section id="detailView" class="section-hidden">
+    <div class="kpis" id="detailKpi"></div>
+    <div class="grid">
+      <article class="panel"><div class="panel-head"><div><h3>Indicador selecionado</h3><p class="desc">Valor consolidado registrado no arquivo de dados.</p></div></div><div class="chart-wrap" id="detailChart"></div></article>
+      <article class="panel"><div class="panel-head"><div><h3>Informações da fonte</h3><p class="desc">Rastreabilidade do demonstrativo.</p></div></div><div id="sourceInfo"></div></article>
+    </div>
+    <article class="panel"><h3>Nota de transparência</h3><p class="desc" style="line-height:1.8">Esta versão apresenta os totais e a quantidade de registros informados no arquivo de dados. Os registros linha a linha ainda precisam ser incorporados para habilitar filtros por favorecido, natureza de despesa, conta ou outras dimensões do relatório.</p></article>
+  </section>
+  <footer class="foot"><span>Instituto Oswaldo Cruz • Painel Financeiro e Orçamentário</span><span id="updatedLabel">Atualização informada: —</span></footer>
+</main>
+</div><div class="toast" id="toast"></div>
 <script>
-const money=n=>new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'}).format(n);
-let payload;
-async function init(){const r=await fetch('./data.json',{cache:'no-store'});if(!r.ok)throw Error('data.json não carregou');payload=await r.json();render('resumo')}
-function render(id){const ds=payload.datasets,selected=ds.find(x=>x.id===id);document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('active',b.dataset.tab===id));document.querySelector('#crumb').textContent=selected?selected.title:'Resumo executivo';document.querySelector('#title').textContent=selected?selected.title:'Painel Financeiro e Orçamentário IOC';document.querySelector('#subtitle').textContent=selected?'Total oficial conferido e acesso à fonte original.':'Quatro visões independentes para acompanhamento dos recursos.';
-const list=selected?[selected]:ds;document.querySelector('#cards').innerHTML=list.map(d=>`<article class="card"><div class="label">${d.title}</div><div class="value" style="${d.total<0?'color:var(--red)':''}">${money(d.total)}</div><div class="note">${d.detail_count} registros de detalhe informados · <a href="${d.source_url}" target="_blank" rel="noopener" style="color:#668f82">abrir fonte ↗</a></div></article>`).join('');
-document.querySelector('#chartTitle').textContent=selected?'Total do relatório selecionado':'Comparativo dos totais por relatório';const max=Math.max(...ds.map(d=>Math.abs(d.total)),1);document.querySelector('#bars').innerHTML=(selected?[selected]:ds).map(d=>`<div class="barrow"><span>${d.title}</span><div class="track"><span style="width:${Math.max(1,Math.abs(d.total)/max*100)}%;background:${d.total<0?'#c98b82':'#8db9aa'}"></span></div><b style="${d.total<0?'color:var(--red)':''}">${money(d.total)}</b></div>`).join('');
-document.querySelector('#sources').innerHTML=ds.map(d=>`<div class="source"><div><b>${d.title}</b><div class="note">${d.source_name}</div></div><a href="${d.source_url}" target="_blank" rel="noopener">Abrir fonte ↗</a></div>`).join('')}
-document.querySelector('#nav').addEventListener('click',e=>{const b=e.target.closest('button[data-tab]');if(b)render(b.dataset.tab)});init().catch(e=>{document.querySelector('#cards').innerHTML='<div class="card">Falha ao carregar data.json. Verifique se os dois arquivos estão na mesma pasta.</div>';console.error(e)});
-</script></body></html>
+const money = n => new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'}).format(n);
+const integer = n => new Intl.NumberFormat('pt-BR').format(n);
+let payload = null, activeView='visao';
+const colors=['#438b89','#2d6587','#6c91ad','#c49a55'];
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.style.display='block';setTimeout(()=>t.style.display='none',3000)}
+async function loadData(){
+ const b=document.getElementById('refreshBtn');b.disabled=true;b.textContent='↻ Carregando…';
+ try{
+  const r=await fetch('./data.json?ts='+Date.now(),{cache:'no-store'});
+  if(!r.ok)throw new Error('HTTP '+r.status);
+  const p=await r.json();if(!Array.isArray(p.datasets)||!p.datasets.length)throw new Error('Formato de dados inválido');
+  payload=p;render();document.getElementById('statusText').textContent='Dados carregados • '+(p.generated_at?new Date(p.generated_at).toLocaleString('pt-BR'):'data de geração não informada');toast('Dados recarregados com sucesso.');
+ }catch(e){document.getElementById('statusText').textContent='Não foi possível atualizar: '+e.message;toast('Falha ao carregar data.json. Confira a publicação.');}
+ finally{b.disabled=false;b.textContent='↻ Atualizar dados'}
+}
+function render(){
+ const ds=payload.datasets;
+ document.getElementById('updatedLabel').textContent='Data da base: '+(payload.source_updated_at||'não informada');
+ document.getElementById('kpis').innerHTML=ds.map((d,i)=>`<article class="kpi"><div class="kpi-label">${esc(d.title)}</div><div class="kpi-value">${money(d.total)}</div><div class="kpi-foot"><span>${integer(d.detail_count)} registros</span><strong>Ver detalhes ↗</strong></div></article>`).join('');
+ drawMainChart();drawCountChart();renderRows();
+ if(activeView!=='visao')showDetail(activeView);
+}
+function drawMainChart(){
+ const ds=payload.datasets, mode=document.getElementById('chartMode').value, W=760,H=270, pad={l:mode==='bar'?155:40,r:20,t:18,b:mode==='bar'?18:62};
+ const max=Math.max(...ds.map(d=>Math.abs(d.total)),1), ticks=4;let svg=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Gráfico comparativo dos totais">`;
+ if(mode==='bar'){
+  const plotW=W-pad.l-pad.r, rowH=(H-pad.t-pad.b)/ds.length;
+  for(let i=0;i<=ticks;i++){let x=pad.l+plotW*i/ticks;svg+=`<line x1="${x}" y1="${pad.t}" x2="${x}" y2="${H-pad.b}" stroke="#e8edf1"/><text x="${x}" y="${H-pad.b+15}" text-anchor="middle" fill="#8b99a3" font-size="10">${shortMoney(max*i/ticks)}</text>`}
+  ds.forEach((d,i)=>{let y=pad.t+i*rowH+rowH*.23,w=Math.abs(d.total)/max*plotW;svg+=`<text x="${pad.l-12}" y="${y+rowH*.34+3}" text-anchor="end" fill="#516575" font-size="11">${esc(d.short||d.title)}</text><rect x="${pad.l}" y="${y}" width="${Math.max(1,w)}" height="${rowH*.48}" rx="5" fill="${colors[i%colors.length]}"/><text x="${Math.min(W-pad.r-3,pad.l+w+6)}" y="${y+rowH*.34+3}" fill="#314c5e" font-size="10">${shortMoney(d.total)}</text>`});
+ }else{
+  const plotW=W-pad.l-pad.r,plotH=H-pad.t-pad.b, slot=plotW/ds.length;
+  for(let i=0;i<=ticks;i++){let y=pad.t+plotH*i/ticks;svg+=`<line x1="${pad.l}" y1="${y}" x2="${W-pad.r}" y2="${y}" stroke="#e8edf1"/><text x="${pad.l-7}" y="${y+4}" text-anchor="end" fill="#8b99a3" font-size="10">${shortMoney(max*(1-i/ticks))}</text>`}
+  ds.forEach((d,i)=>{let h=Math.abs(d.total)/max*plotH,x=pad.l+i*slot+slot*.23,y=pad.t+plotH-h;svg+=`<rect x="${x}" y="${y}" width="${slot*.54}" height="${h}" rx="5" fill="${colors[i%colors.length]}"/><text x="${x+slot*.27}" y="${H-pad.b+18}" text-anchor="middle" fill="#516575" font-size="10">${esc(d.short||d.title)}</text><text x="${x+slot*.27}" y="${Math.max(12,y-6)}" text-anchor="middle" fill="#314c5e" font-size="10">${shortMoney(d.total)}</text>`});
+ }
+ svg+='</svg>';document.getElementById('mainChart').innerHTML=svg;
+}
+function shortMoney(n){const a=Math.abs(n);if(a>=1e6)return (n/1e6).toLocaleString('pt-BR',{maximumFractionDigits:1})+' mi';if(a>=1e3)return (n/1e3).toLocaleString('pt-BR',{maximumFractionDigits:0})+' mil';return n.toLocaleString('pt-BR',{maximumFractionDigits:0})}
+function drawCountChart(){
+ const ds=payload.datasets,W=520,H=260,pad={l:20,r:20,t:18,b:58},max=Math.max(...ds.map(d=>d.detail_count),1),slot=(W-pad.l-pad.r)/ds.length,ph=H-pad.t-pad.b;let s=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Quantidade de registros por base">`;
+ for(let i=0;i<=4;i++){let y=pad.t+ph*i/4;s+=`<line x1="${pad.l}" y1="${y}" x2="${W-pad.r}" y2="${y}" stroke="#e8edf1"/><text x="${pad.l}" y="${y-4}" fill="#8b99a3" font-size="10">${Math.round(max*(1-i/4))}</text>`}
+ ds.forEach((d,i)=>{let h=d.detail_count/max*ph,x=pad.l+i*slot+slot*.23,y=pad.t+ph-h;s+=`<rect x="${x}" y="${y}" width="${slot*.54}" height="${h}" rx="5" fill="${colors[(i+1)%colors.length]}"/><text x="${x+slot*.27}" y="${y-7}" text-anchor="middle" fill="#314c5e" font-size="12" font-weight="700">${integer(d.detail_count)}</text><text x="${x+slot*.27}" y="${H-pad.b+20}" text-anchor="middle" fill="#516575" font-size="10">${esc(d.short||d.title)}</text>`});
+ s+='</svg>';document.getElementById('countChart').innerHTML=s;
+}
+function renderRows(){
+ const q=document.getElementById('search').value.toLocaleLowerCase('pt-BR');
+ const ds=payload.datasets.filter(d=>d.title.toLocaleLowerCase('pt-BR').includes(q));
+ document.getElementById('datasetRows').innerHTML=ds.map(d=>`<tr><td><strong>${esc(d.title)}</strong></td><td>${integer(d.detail_count)}</td><td class="money">${money(d.total)}</td><td><a class="source-link" href="${esc(d.source_url)}" target="_blank" rel="noopener">Abrir CSV ↗</a></td></tr>`).join('')||'<tr><td colspan="4" class="empty">Nenhum demonstrativo encontrado.</td></tr>';
+}
+function showDetail(id){
+ const d=payload.datasets.find(x=>x.id===id);if(!d)return;
+ document.getElementById('overview').classList.add('section-hidden');document.getElementById('detailView').classList.remove('section-hidden');
+ document.getElementById('pageTitle').textContent=d.title;document.getElementById('pageSubtitle').textContent='Resumo do demonstrativo selecionado.';
+ document.getElementById('detailKpi').innerHTML=`<article class="kpi"><div class="kpi-label">Total informado</div><div class="kpi-value">${money(d.total)}</div><div class="kpi-foot"><span>${integer(d.detail_count)} registros detalhados</span><strong>Base selecionada</strong></div></article><article class="kpi"><div class="kpi-label">Arquivo de origem</div><div class="kpi-value" style="font-size:16px">${esc(d.source_name)}</div><div class="kpi-foot"><span>Google Drive</span><strong>Fonte primária</strong></div></article>`;
+ document.getElementById('detailChart').innerHTML=`<svg viewBox="0 0 560 230" role="img" aria-label="Indicador do total"><line x1="24" y1="180" x2="536" y2="180" stroke="#e1e8ee"/><rect x="45" y="54" width="470" height="92" rx="12" fill="#eaf1f5"/><rect x="45" y="54" width="470" height="92" rx="12" fill="${colors[payload.datasets.indexOf(d)%colors.length]}"/><text x="280" y="96" fill="white" font-size="13" text-anchor="middle">${esc(d.title)}</text><text x="280" y="123" fill="white" font-size="20" font-weight="800" text-anchor="middle">${money(d.total)}</text></svg>`;
+ document.getElementById('sourceInfo').innerHTML=`<div class="breakdown"><div class="break-row"><div class="break-title"><span>Nome do arquivo</span><strong>${esc(d.source_name)}</strong></div></div><div class="break-row"><div class="break-title"><span>Registros detalhados informados</span><strong>${integer(d.detail_count)}</strong></div></div><div class="break-row"><div class="break-title"><span>Data de referência da base</span><strong>${esc(payload.source_updated_at||'Não informada')}</strong></div></div><div><a class="btn primary" href="${esc(d.source_url)}" target="_blank" rel="noopener">Abrir arquivo original ↗</a></div>${d.note?`<p class="desc">${esc(d.note)}</p>`:''}</div>`;
+}
+function setView(view){
+ activeView=view;
+ document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.view===view));
+ if(view==='visao'){document.getElementById('overview').classList.remove('section-hidden');document.getElementById('detailView').classList.add('section-hidden');document.getElementById('pageTitle').textContent='Painel Financeiro e Orçamentário IOC';document.getElementById('pageSubtitle').textContent='Visão consolidada dos demonstrativos financeiros e orçamentários.';}
+ else if(payload)showDetail(view);
+}
+document.querySelectorAll('.nav button').forEach(b=>b.addEventListener('click',()=>setView(b.dataset.view)));
+document.getElementById('chartMode').addEventListener('change',drawMainChart);
+document.getElementById('search').addEventListener('input',renderRows);
+document.getElementById('refreshBtn').addEventListener('click',loadData);
+document.getElementById('printBtn').addEventListener('click',()=>window.print());
+loadData();
+</script>
+</body></html>
