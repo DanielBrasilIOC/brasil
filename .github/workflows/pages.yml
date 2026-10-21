@@ -55,6 +55,13 @@ jobs:
                   rows.append(row)
           total = round(sum(r['saldo'] or 0 for r in rows), 2)
           missing = sum(r['saldo'] is None for r in rows)
+          # Nunca publicar silenciosamente uma base vazia ou uma página HTML de erro do Drive.
+          if len(rows) < 500:
+              raise SystemExit(f'CSV de repasses inválido/incompleto: apenas {len(rows)} registros lidos; publicação interrompida.')
+          if total < 6000000:
+              raise SystemExit(f'Soma de repasses inesperada ({total:.2f}); publicação interrompida para evitar dados incorretos.')
+          if missing > 20:
+              raise SystemExit(f'Quantidade inesperada de valores ausentes ({missing}); publicação interrompida.')
           data = {
               'rows': rows, 'total': total, 'missing_values': missing,
               'note': f'Base gerada durante a publicação a partir do CSV do Google Drive. {blank} linhas totalmente vazias foram excluídas; {len(rows)} registros permanecem disponíveis. Soma dos valores preenchidos: R$ {total:,.2f}. {missing} registros estão sem valor e não compõem a soma. Os dados são exibidos conforme a base de origem.'
