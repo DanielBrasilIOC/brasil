@@ -1,33 +1,40 @@
 {
-  "source": "Saldo Financeiro.xlsx",
-  "source_url": "https://drive.google.com/file/d/1fWNRU1tHpeftbQcU1bsZoAQp_lQMkKE7/view",
-  "updated_at": "2026-10-21",
-  "updated_label": "21/10/2026",
-  "generated_at": "2026-10-21T11:15:00-03:00",
-  "accounts": [
+  "source_updated_at": "2026-10-21",
+  "generated_at": "2026-10-21T16:35:00-03:00",
+  "status": "totals_validated_detail_rows_not_embedded",
+  "datasets": [
     {
-      "conta": "1001000000400",
-      "saldo": 446318.66
+      "id": "financeiro",
+      "title": "Saldo Financeiro",
+      "total": 445604.32,
+      "detail_count": 4,
+      "source_name": "Saldo Financeiro.csv",
+      "source_url": "https://drive.google.com/file/d/1ktsiJGTRiWZf83uu5tKtNmErKyAbqyfo/view",
+      "last_extraction": "20/10/2026"
     },
     {
-      "conta": "1002A00427400",
-      "saldo": 10000.0
+      "id": "restos",
+      "title": "Restos a Pagar",
+      "total": 4526062.32,
+      "detail_count": 152,
+      "source_name": "Restos a Pagar.csv",
+      "source_url": "https://drive.google.com/file/d/1zzxhemDKryzolkykFSw3JXph1YcQ2pUj/view"
     },
     {
-      "conta": "3129A0046Y400",
-      "saldo": 6402.0
+      "id": "empenhos",
+      "title": "Empenhos 2026",
+      "total": 7744458.43,
+      "detail_count": 70,
+      "source_name": "Saldo nos empenhos 2026.csv",
+      "source_url": "https://drive.google.com/file/d/137jwUw2WB_LUvnQef6waE8ASKQEvzhup/view"
     },
     {
-      "conta": "1002A004AD400",
-      "saldo": 5000.0
-    },
-    {
-      "conta": "1001000000414",
-      "saldo": 1218.18
-    },
-    {
-      "conta": "1000A004SI400",
-      "saldo": 169.84
+      "id": "orcamentario",
+      "title": "Saldo Orçamentário",
+      "total": -999145.21,
+      "detail_count": 14,
+      "source_name": "Saldo Orçamentário.csv",
+      "source_url": "https://drive.google.com/file/d/1mk3LbdLTL02YFqKoJKAoP33f7n6mEIZN/view"
     }
   ]
 }
