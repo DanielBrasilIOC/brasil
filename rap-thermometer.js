@@ -10,7 +10,7 @@
     const text=String(r.empenho??r.numero_ne??r.ne??'');
     // O ano está no campo Empenho imediatamente antes das letras "NE".
     // Exemplos aceitos: 2023NE..., 2023 NE..., ...2023NE...
-    const m=text.match(/(?:^|[^0-9])(20\d{2})(?=\s*NE)/i);
+    const m=text.match(/((?:19|20)\d{2})(?=\s*NE)/i);
     if(m)return Number(m[1]);
     for(const k of ['ano','ano_rap','exercicio','exercicio_rap','year']){
       const y=String(r[k]??'').match(/20\d{2}/);
