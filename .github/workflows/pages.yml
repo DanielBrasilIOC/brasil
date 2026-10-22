@@ -25,6 +25,7 @@ jobs:
           curl -fLsS "https://drive.google.com/uc?export=download&id=1ghcBkPmT-IkfWozLZVDdMvMe7eoD2J6k" -o /tmp/repasses.csv
           python - <<'PY'
           import csv, json
+          from datetime import datetime, timezone
           from decimal import Decimal
           from pathlib import Path
           mapping = {
@@ -73,6 +74,7 @@ jobs:
           # Incorporar a base também ao JSON principal, evitando dependência de um segundo fetch no navegador.
           main_path = Path('data.json')
           main = json.loads(main_path.read_text(encoding='utf-8'))
+          main['generated_at'] = datetime.now(timezone.utc).isoformat(timespec='seconds').replace('+00:00', 'Z')
           for dataset in main.get('datasets', []):
               if dataset.get('id') == 'repasses':
                   dataset['rows'] = rows
