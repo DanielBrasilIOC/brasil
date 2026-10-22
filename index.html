@@ -7,16 +7,18 @@
 <style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#f3f6f9}iframe{display:block;width:100%;height:100%;border:0}</style>
 </head>
 <body>
-<iframe id="dashboard" src="dashboard-v2.html?v=rap20261022" title="Painel Financeiro e Orçamentário IOC"></iframe>
+<iframe id="dashboard" src="dashboard-v2.html?v=rap20261022b" title="Painel Financeiro e Orçamentário IOC"></iframe>
 <script>
 const frame=document.getElementById('dashboard');
 frame.addEventListener('load',()=>{
   try{
     const doc=frame.contentDocument;
-    const s=doc.createElement('script');
-    s.src='rap-thermometer.js?v=20261022';
-    doc.body.appendChild(s);
-  }catch(e){console.error('Não foi possível aplicar o Termômetro de RAP',e)}
+    ['rap-thermometer.js?v=20261022','rap-columns.js?v=20261022'].forEach(src=>{
+      const s=doc.createElement('script');
+      s.src=src;
+      doc.body.appendChild(s);
+    });
+  }catch(e){console.error('Não foi possível aplicar os ajustes do painel',e)}
 });
 </script>
 </body>
