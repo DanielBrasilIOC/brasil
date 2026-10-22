@@ -10,34 +10,19 @@
 <iframe id="dashboard" src="dashboard-v2.html?v=nome-corrigido-20261022-2340" title="Painel de Gestão"></iframe>
 <script>
 const frame=document.getElementById('dashboard');
-const oldTitle='Painel Financeiroe Orçamentário IOC';
-const newTitle='Painel Financeiro e Orçamentário IOC';
-function normalizarNome(text){return text ? text.replace(/Financeiro\s*e\s*Orçamentário IOC/g,'Financeiro e Orçamentário IOC') : text;}
-function corrigirTitulo(doc){
-  if(!doc || !doc.body) return;
-  if(doc.title===oldTitle) doc.title=newTitle;
-  const brand=doc.querySelector('.brand h1');
-  if(brand) brand.textContent=normalizarNome(brand.textContent) || newTitle;
-  doc.querySelectorAll('h1,h2,title').forEach(el=>{ if(el.textContent && /Painel Financeiro\s*e\s*Orçamentário IOC/.test(el.textContent)) el.textContent=newTitle; });
-  const walker=doc.createTreeWalker(doc.body,NodeFilter.SHOW_TEXT);
-  const nodes=[];
-  while(walker.nextNode()) nodes.push(walker.currentNode);
-  nodes.forEach(node=>{
-    if(node.nodeValue && node.nodeValue.includes(oldTitle)) node.nodeValue=node.nodeValue.replaceAll(oldTitle,newTitle);
-  });
-}
 frame.addEventListener('load',()=>{
-  try{
+  try {
     const doc=frame.contentDocument;
-    corrigirTitulo(doc);
-    const observer=new MutationObserver(()=>corrigirTitulo(doc));
-    observer.observe(doc.body,{subtree:true,childList:true,characterData:true});
-    ['rap-thermometer.js?v=20261022f','rap-columns.js?v=20261022f'].forEach(src=>{
-      const s=doc.createElement('script');
-      s.src=src;
-      doc.body.appendChild(s);
-    });
-  }catch(e){console.error('Não foi possível aplicar os ajustes do painel',e)}
+    if(!doc || !doc.body) return;
+    const title='Painel Financeiro e Orçamentário IOC';
+    const brand=doc.querySelector('.brand h1');
+    if(brand && brand.textContent !== title) brand.textContent=title;
+    const heading=doc.getElementById('title');
+    if(heading && heading.textContent.replace(/\s+/g,' ').trim() !== title) heading.textContent=title;
+    if(doc.title !== title) doc.title=title;
+  } catch(e) {
+    console.error('Ajuste de título não aplicado',e);
+  }
 });
 </script>
 </body>
