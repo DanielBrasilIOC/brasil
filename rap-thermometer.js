@@ -58,6 +58,9 @@
   const style=document.createElement('style');
   style.textContent=`#rap-aging{margin-bottom:13px}.rap-aging-legend{display:flex;gap:18px;flex-wrap:wrap;margin:14px 0;font-size:12px}.rap-aging-list{display:grid;gap:7px}.rap-age-row{display:grid;grid-template-columns:1fr auto auto;gap:14px;align-items:center;padding:11px 13px;border:1px solid #e1e8ee;border-left:4px solid #438b89;border-radius:9px;background:#fbfcfd}.rap-age-row>div{display:flex;gap:12px;align-items:center}.rap-age-row span{font-size:11px;font-weight:800}.rap-age-row strong{color:#163b5c}.rap-age-row small{color:#6d7e8b}.rap-attn{border-left-color:#a46a16;background:#fffbf3}.rap-high{border-left-color:#b33b3b;background:#fff8f8}.rap-recent{border-left-color:#438b89}@media(max-width:700px){.rap-age-row{grid-template-columns:1fr;gap:5px}}`;
   document.head.appendChild(style);
-  setInterval(renderAging,500);
+  const observedTitle=document.getElementById('detailTitle');
+  const observedDetails=document.getElementById('details');
+  if(observedTitle)new MutationObserver(()=>renderAging()).observe(observedTitle,{childList:true,characterData:true,subtree:true});
+  if(observedDetails)new MutationObserver(()=>renderAging()).observe(observedDetails,{attributes:true,attributeFilter:['class']});
   renderAging();
 })();
