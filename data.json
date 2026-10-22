@@ -1247,7 +1247,7 @@
       "detail_count": 876,
       "source_name": "ORDEM BANCARIAS EMITIDAS.csv",
       "source_url": "https://drive.google.com/file/d/1lRYujrJRv7ZPam-lYVB2CxCg_WEMbraC/view",
-      "note": "Relatório de ordens bancárias emitidas da UGE 254463, exercício 2026, de 12/01/2026 a 20/10/2026. Total calculado pela soma do campo Doc - Valor de todas as linhas de detalhe (R$ 62.763.352,11). O relatório também exibe um total distinto no campo de movimentação líquida acumulada; esse valor não foi tratado como soma dos pagamentos. O arquivo de origem não apresenta campo de status de pagamento separado.",
+      "note": "Relatório de ordens bancárias emitidas da UGE 254463, exercício 2026, de 12/01/2026 a 20/10/2026.",
       "rows": [
         {
           "uge": "254463",
@@ -1260,8 +1260,8 @@
           "fonte": "1002000000",
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "DESPESA COM SERVICO DE APOIO LOGISTICO, ADM E GESTAO FINANCEIRO - PROCESSO: 25030.001210/2021-21 - NFS-E: 84914, CONTRATO Nº: 08/2021 - PROJETO: IOC-019-FIO-21 - PARCELA: 10",
-          "valor": 60000.0,
-          "movimentacao_liquida": 0.0
+          "valor": 60000,
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -1275,7 +1275,7 @@
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "DESPESA COM LOCACAO DE ONIBUS -  RECIBO: 2527 PROCESSO: 25030.001450/2024-79 -",
           "valor": 26541.45,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -1289,7 +1289,7 @@
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 23579, CONTRATO Nº: 00043/2024  - 07.797.967/0001-95 - VISANDO CUMPRIR OS PROCEDIMENTOS PARA INSTRUCAO PROCESSUAL DO 1¤ TERMO ADITIVO DE PRORROGACAO, REFERENTE AO CONTRATO N¤ 43/2024,  - NP TECNOLOGIA E GESTAO DE DADOS LTDA, PROC.(S) NUM.(S): 25030.001248/2024-47, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 11/2025.",
           "valor": 10829.78,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -1303,7 +1303,7 @@
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "DESPESAS COM TRANSPORTE DE VAN PARA PARTICIPANTES EM EVENTOS CIENTIFICOS, NO MUNICIPIO DO RIO DE JANEIRO.?FATURA: 4098 - PROCESSO: 25030.001449/2024-44",
           "valor": 360.5,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -1316,8 +1316,8 @@
           "fonte": "1002000000",
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 761, CONTRATO Nº: 00024/2025  - 40.929.669/0001-87 - DESPESA COM AQUISICAO DE MATERAL QUIMICO  BIOPORTO SOLUCOES INTEGRADAS LTDA, PROC.(S) NUM.(S): 25030.001105/2025-16, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 12/2025.",
-          "valor": 7804.0,
-          "movimentacao_liquida": 0.0
+          "valor": 7804,
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -1331,7 +1331,7 @@
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 547288 A, CONTRATO Nº: 2025NE000141  - 00.331.788/0006-23 - AIR LIQUIDE BRASIL LTDA,  DESPESA COM AQUISICAO DE GASES OXIGENIO MEDICINAL GASOSO PROC.(S) NUM.(S): 25030.000292/2025-11, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 12/2025.",
           "valor": 28.24,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -1344,8 +1344,8 @@
           "fonte": "1002000000",
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "DESPESA COM AQUISICAO DE MATERIAL QUIMICO. NOTA FISCAL: 75 PROCESSO: 25030.001083/2024-11",
-          "valor": 2900.0,
-          "movimentacao_liquida": 0.0
+          "valor": 2900,
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -1358,8 +1358,8 @@
           "fonte": "1002000000",
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "DESPESAS COM INSCRICAO PARA PARTICIPACAO NO 33º CONGRESSO BRASILEIRO DE MICROBIOLOGIA, QUE OCORRERA NO PERIODO DE 25 A 28 DE OUTUBRO DE 2025 EM ARACAJU. RECIBO: 150 - PROCESSO: 25030.001340/2025-98",
-          "valor": 7675.0,
-          "movimentacao_liquida": 0.0
+          "valor": 7675,
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -1373,7 +1373,7 @@
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "CONTRATACAO DO SERVICO DE RENOVACAO DA SOLUCAO INTEGRADA DO ANTIVIRUS F-SECURE, PARA ASESTACOES DE TRABALHO DA REDE DE COMPUTADORES DO IOC, PELO PERIODO DE 12 MESES. NOTA FISCAL : 4146 - PROCESSO: 25030.000573/2023-10",
           "valor": 56279.99,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -1387,7 +1387,7 @@
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "DESPESA COM MATERIAL NITROGENIO LIQUIDO EM TANGUE. NOTAS FISCAIS: 31856, 31904, 31937, 32078, 32130, 32235 E 32307. PROCESSO: 25030.000475/2025-36",
           "valor": 16194.23,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -1401,7 +1401,7 @@
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "DESPESA COM MATERIAL NITROGENIO LIQUIDO EM TANGUE. - NOTAS FISCAIS: 33713, 33480, 33504, 33586, 33621, 33749, 33855, 33924 E 33963 . PROCESSO: 25030.000475/2025-36",
           "valor": 20110.1,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -1415,7 +1415,7 @@
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "DESPESA COM SERVICO DE PUBLICACAO DE ARTIGOS CIENTIFICOS.  INVOICE: APC600706262 PROCESSO:25030.001487/2025-88",
           "valor": 13619.88,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -1429,7 +1429,7 @@
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "DESPESA COM SERVICO PUBLICACAO DE ARTIGOS COM RECOLHIMENTO DE IMPOSTO CONFORME ACORDOS BILATERAIS E TRIBUTACAO - ORIENTACAO DA TABELA SIEX/COGEAD. INVOICE: AF00ED PROC: 25030.001135/2025-22",
           "valor": 3905.84,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -1443,7 +1443,7 @@
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "DESPESA COM SERVICO PUBLICACAO DE ARTIGOS COM RECOLHIMENTO DE IMPOSTO CONFORME ACORDOS BILATERAIS E TRIBUTACAO - ORIENTACAO DA TABELA SIEX/COGEAD INVOICE: PAB397295, PAB397672, PAB397839 PROC: 25030.001225/2025-58",
           "valor": 35483.36,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -1457,7 +1457,7 @@
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "DESPESA COM SERVICO PUBLICACAO DE ARTIGOS COM RECOLHIMENTO DE IMPOSTO CONFORME ACORDOS BILATERAIS E TRIBUTACAO - ORIENTACAO DA TABELA SIEX/COGEAD INVOICE: APC600740647 PROC: 25030.001790/2025-81",
           "valor": 16312.61,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -1470,8 +1470,8 @@
           "fonte": "1001A003KW",
           "descricao_fonte": "TED 101/2024 - 972268",
           "observacao": "DESPESA COM DESPESA DE APOIO LOG, ADM E GESTAO FIN - PROCESSO: 25030.00001/2025-94 - FATURA: 84352 - CONTRATO Nº: 00088/2024 - 02.385.669/0001-74 - FIOTEC - PROJETO: IOC-001-FIO-25 - PARCELA: 2",
-          "valor": 1322500.0,
-          "movimentacao_liquida": 0.0
+          "valor": 1322500,
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -1485,7 +1485,7 @@
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "DESPESA COM SERVICO PUBLICACAO DE ARTIGOS COM RECOLHIMENTO DE IMPOSTO CONFORME ACORDOS BILATERAIS E TRIBUTACAO - ORIENTACAO DA TABELA SIEX/COGEAD INVOICE: 1452934594, 1452935871, 1452727917. PROC: 25030.001180/2025-87",
           "valor": 39352.42,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -1499,7 +1499,7 @@
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "DESPESA COM SERVICO PUBLICACAO DE ARTIGOS COM RECOLHIMENTO DE IMPOSTO CONFORME ACORDOS BILATERAIS E TRIBUTACAO - ORIENTACAO DA TABELA SIEX/COGEAD INVOICE:  PAB393012, PAB391101, PAB392085 PROC: 25030.000656/2025-62",
           "valor": 30047.07,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -1513,7 +1513,7 @@
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "DESPESA COM SERVICO PUBLICACAO DE ARTIGOS COM RECOLHIMENTO DE IMPOSTO CONFORME ACORDOS BILATERAIS E TRIBUTACAO - ORIENTACAO DA TABELA SIEX/COGEAD INVOICE:  PAB398234 PROC: 25030.001735/2025-91",
           "valor": 12228.07,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -1527,7 +1527,7 @@
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "DESPESA COM SERVICO PUBLICACAO DE ARTIGOS COM RECOLHIMENTO DE IMPOSTO CONFORME ACORDOS BILATERAIS E TRIBUTACAO - ORIENTACAO DA TABELA SIEX/COGEAD INVOICE:  954584809, 954561730, 6698550806. PROC: 25030.000656/2025-62",
           "valor": 29145.02,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -1541,7 +1541,7 @@
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "DESPESA COM SERVICO PUBLICACAO DE ARTIGOS COM RECOLHIMENTO DE IMPOSTO CONFORME ACORDOS BILATERAIS E TRIBUTACAO - ORIENTACAO DA TABELA SIEX/COGEAD INVOICE: APC600666611, APC600672917. PROC: 25030.001137/2025-11",
           "valor": 20471.71,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -1555,7 +1555,7 @@
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 551382 B, CONTRATO Nº: 2025NE000141  - 00.331.788/0006-23 - AIR LIQUIDE BRASIL LTDA, PROC.(S) NUM.(S): 25030.000292/2025-11, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 01/2026.",
           "valor": 28.24,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -1569,7 +1569,7 @@
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 549887 Q, 549887, 549893 A, CONTRATO Nº: 2025NE000318  - 67.423.152/0001-78 -  DESPESAS COM DIOXIDO DE CARBONO COMUM- IBG INDUSTRIA BRASILEIRA DE GASES LTDA, PROC.(S) NUM.(S): 25030.000291/2025-76, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 01/2026.",
           "valor": 4745.16,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -1583,7 +1583,7 @@
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 39403, CONTRATO Nº: 00175/2024  - 00.767.378/0001-15 -   ESPESA COM CONTRATACAO DE SERVICOS DE SOLUCAO CORPORATIVA DE IMPRESSAO, REPRODUCAO E DIGITALIZACAO DE DOCUMENTOS LEXMARK INTERNATIONAL DO BRASIL LTDA, PROC.(S) NUM.(S): 25380.002553/2024-86, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 10/2025",
           "valor": 3359.12,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -1596,8 +1596,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "DESPESA DE EXECUCAO DAS ATIVIDADE -PROJETO : FORTALECIMENTO DAS ACOES PARA ELIMINACAO DAS HEPATITES VIRAIS B E C EM CUMPRIMENTO A AGENDA 2030 DA OMS - EMENDA PARLAMENTAR -PAULO GANIME - FATURA: 81572 - PROCESSO PAGAMENTO : 25030.000797/2023-13 (PROC ORIGEM: 25030.000631/2023-05)",
-          "valor": 200000.0,
-          "movimentacao_liquida": 0.0
+          "valor": 200000,
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -1610,8 +1610,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "DESPESA COM PAGAMENTO DE BOLSAS DE ESTUDO NO PAIS BEATRIZ DE BARROS GONCALVES DE JESUS CPF 11492807788 COMPETENCIA: DEZEMBRO PROCESSO: 25030.000097/2025-91",
-          "valor": 2100.0,
-          "movimentacao_liquida": 2100.0
+          "valor": 2100,
+          "movimentacao_liquida": 2100
         },
         {
           "uge": "254463",
@@ -1625,7 +1625,7 @@
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "DESPESA COM SERVICO PUBLICACAO DE ARTIGOS COM RECOLHIMENTO DE IMPOSTO CONFORME ACORDOS BILATERAIS E TRIBUTACAO - ORIENTACAO DA TABELA SIEX/COGEAD INVOICE: 1452832311, 1452824351, 1452841119, 1452838274, 1452889227, 1452874786, 1452880166, 1452887053 E 1452804107. PROC: 25030.000410/2025-91.",
           "valor": 121318.9,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -1639,7 +1639,7 @@
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "DESPESA COM SERVICO PUBLICACAO DE ARTIGOS COM RECOLHIMENTO DE IMPOSTO CONFORME ACORDOS BILATERAIS E TRIBUTACAO - ORIENTACAO DA TABELA SIEX/COGEAD INVOICE: 1452892293, 1452907923, 1452909115, 1452901720 E 1452895415. PROC: 25030.001116/2025-04",
           "valor": 63181.3,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -1653,7 +1653,7 @@
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "DESPESA COM SERVICO PUBLICACAO DE ARTIGOS COM RECOLHIMENTO DE IMPOSTO CONFORME ACORDOS BILATERAIS E TRIBUTACAO - ORIENTACAO DA TABELA SIEX/COGEAD INVOICE: 1452989862-1452996188 PROC: 25030001736/2025-35",
           "valor": 25803.91,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -1667,7 +1667,7 @@
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "DESPESA COM SERVICO PUBLICACAO DE ARTIGOS COM RECOLHIMENTO DE IMPOSTO CONFORME ACORDOS BILATERAIS E TRIBUTACAO - ORIENTACAO DA TABELA SIEX/COGEAD INVOICE: PAB404048, PAB403848 PROC: 25030.001796/2025-58",
           "valor": 22336.37,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -1681,7 +1681,7 @@
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 408786 - T, 34054 - J, 34115 - K, 34157 - L, 408786 - M, 408787 - N, 408788 - O, 408789 - P, 408790 - Q, 408791 - R, 408792 - S, 408793 - T, 408794 - U, 408795 - V, 408796 - W, 408797 - X, 408799 - Z, 408800 - AA, 408801 - BB, 408798 - Y, CONTRATO Nº: 2025NE000321  - 60.619.202/0034-06 -     MESSER GASES LTDA., PROC.(S) NUM.(S): 25030.000475/2025-36, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES) 01/26",
           "valor": 43434.18,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -1695,7 +1695,7 @@
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "DESPESA COM SERVICO PUBLICACAO DE ARTIGOS COM RECOLHIMENTO DE IMPOSTO CONFORME ACORDOS BILATERAIS E TRIBUTACAO - ORIENTACAO DA TABELA SIEX/COGEAD INVOICE: APC600660305 PROC: 25030.000651/2025-30",
           "valor": 17170.14,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -1709,7 +1709,7 @@
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "DESPESA COM SERVICO PUBLICACAO DE ARTIGOS COM RECOLHIMENTO DE IMPOSTO CONFORME ACORDOS BILATERAIS E TRIBUTACAO - ORIENTACAO DA TABELA SIEX/COGEAD INVOICE: 1001154102 PROC: 25030.001737/2025-80",
           "valor": 13406.41,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -1723,7 +1723,7 @@
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "DESPESA COM SERVICO PUBLICACAO DE ARTIGOS COM RECOLHIMENTO DE IMPOSTO CONFORME ACORDOS BILATERAIS E TRIBUTACAO - ORIENTACAO DA TABELA SIEX/COGEAD INVOICE: 6698569982 PROC: 25030.001179/2025-52",
           "valor": 16365.69,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -1737,7 +1737,7 @@
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "DESPESA COM SERVICO PUBLICACAO DE ARTIGOS COM RECOLHIMENTO DE IMPOSTO CONFORME ACORDOS BILATERAIS E TRIBUTACAO - ORIENTACAO DA TABELA SIEX/COGEAD INVOICE: APC600700048 PROC: 25030.001643/2025-19",
           "valor": 17127.93,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -1751,7 +1751,7 @@
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "DESPESA COM SERVICO PUBLICACAO DE ARTIGOS COM RECOLHIMENTO DE IMPOSTO CONFORME ACORDOS BILATERAIS E TRIBUTACAO - ORIENTACAO DA TABELA SIEX/COGEAD INVOICE: SOA25NC001640 PROC: 25030.001423/2025-87",
           "valor": 12554.5,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -1765,7 +1765,7 @@
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "DESPESA COM SERVICO PUBLICACAO DE ARTIGOS COM RECOLHIMENTO DE IMPOSTO CONFORME ACORDOS BILATERAIS E TRIBUTACAO - ORIENTACAO DA TABELA SIEX/COGEAD INVOICE: E8A6F8 / 2025-04-14  PROC: 25030.000649/2025-61  - PENSOFT PUBLISHER LTD",
           "valor": 3709.83,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -1779,7 +1779,7 @@
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "DESPESA COM SERVICO PUBLICACAO DE ARTIGOS COM RECOLHIMENTO DE IMPOSTO CONFORME ACORDOS BILATERAIS E TRIBUTACAO - ORIENTACAO DA TABELA SIEX/COGEAD INVOICE:S0031182025100486   PROC: 25030.001643/2025-19  - COPYRIGHT CLEARANCE CENTER",
           "valor": 14940.2,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -1793,7 +1793,7 @@
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "DESPESA COM SERVICO PUBLICACAO DE ARTIGOS COM RECOLHIMENTO DE IMPOSTO CONFORME ACORDOS BILATERAIS E TRIBUTACAO - ORIENTACAO DA TABELA SIEX/COGEAD INVOICE: SOA25NC004935 PROC: 25030.001223/2025-24",
           "valor": 3007.33,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -1807,7 +1807,7 @@
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "DESPESA COM SERVICO PUBLICACAO DE ARTIGOS COM RECOLHIMENTO DE IMPOSTO CONFORME ACORDOS BILATERAIS E TRIBUTACAO - ORIENTACAO DA TABELA SIEX/COGEAD INVOICE:PAB398234   PROC: 25030.001420/2025-43  - PUBLIC LIBRARY OF SCIENCE",
           "valor": 11760.55,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -1821,7 +1821,7 @@
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "DESPESA COM SERVICO PUBLICACAO DE ARTIGOS COM RECOLHIMENTO DE IMPOSTO CONFORME ACORDOS BILATERAIS E TRIBUTACAO - ORIENTACAO DA TABELA SIEX/COGEAD INVOICE: SOA25NC003677 PROC: 25030.001132/2025-99",
           "valor": 4208.65,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -1835,7 +1835,7 @@
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "DESPESA COM SERVICO PUBLICACAO DE ARTIGOS COM RECOLHIMENTO DE IMPOSTO CONFORME ACORDOS BILATERAIS E TRIBUTACAO - ORIENTACAO DA TABELA SIEX/COGEAD INVOICE: 0A5FFA PROC: 25030.001794/2025-69",
           "valor": 1853.72,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -1849,7 +1849,7 @@
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "DESPESA COM SERVICO PUBLICACAO DE ARTIGOS COM RECOLHIMENTO DE IMPOSTO CONFORME ACORDOS BILATERAIS E TRIBUTACAO - ORIENTACAO DA TABELA SIEX/COGEAD INVOICE: 34115-2025 PROC: 25030.001648/2025-33",
           "valor": 8591.9,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -1863,7 +1863,7 @@
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "DESPESA COM SERVICO PUBLICACAO DE ARTIGOS COM RECOLHIMENTO DE IMPOSTO CONFORME ACORDOS BILATERAIS E TRIBUTACAO - ORIENTACAO DA TABELA SIEX/COGEAD INVOICE:7A6957   PROC: 25030.001647/2025-99  - PENSOFT PUBLISHER LTD",
           "valor": 9844.67,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -1877,7 +1877,7 @@
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "DESPESA COM SERVICO PUBLICACAO DE ARTIGOS COM RECOLHIMENTO DE IMPOSTO CONFORME ACORDOS BILATERAIS E TRIBUTACAO - ORIENTACAO DA TABELA SIEX/COGEAD INVOICE:3957874, 3926380,3943921 E 3836358    PROC: 25030.001793/2025-14   -     MDPI",
           "valor": 33295.14,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -2184,8 +2184,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "DESPESA COM PAGAMENTO DE BOLSAS DE ESTUDO NO PAIS COMPETENCIA: JANEIRO 2026 PROCESSO: 25030.000047/2026-94",
-          "valor": 277700.0,
-          "movimentacao_liquida": 277700.0
+          "valor": 277700,
+          "movimentacao_liquida": 277700
         },
         {
           "uge": "254463",
@@ -2269,7 +2269,7 @@
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 2207, CONTRATO Nº: 00172/2023  - 23.999.118/0001-70 -  PRESTACAO DE SERVICO DE TRANSPORTE MULTIMODAL  HS INVESTIMENTOS E PARTICIPACOES EM LOGISTICA LTDA, PROC.(S) NUM.(S): 25380.001548/2023-75, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 11/2025.",
           "valor": 21587.02,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -2492,8 +2492,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "DESPESA COM PAGAMENTO DE BOLSAS SUPLEMENTAR DE ESTUDO NO PAIS COMPETENCIA: JANEIRO 2026 PROCESSO: 25030.000047/2026-94",
-          "valor": 6200.0,
-          "movimentacao_liquida": 6200.0
+          "valor": 6200,
+          "movimentacao_liquida": 6200
         },
         {
           "uge": "254463",
@@ -2521,7 +2521,7 @@
           "descricao_fonte": "DPB-CAPES",
           "observacao": "DESPESA COM PASSAGENS AEREAS - FATURA: 461356- CONTRATO Nº: 00035/2024 - PROCESSO: 25030.000305/2024-71",
           "valor": 153.37,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -2577,7 +2577,7 @@
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 2350, CONTRATO Nº: 00172/2023  - 23.999.118/0001-70 - HS INVESTIMENTOS E PARTICIPACOES EM LOGISTICA LTDA, PROC.(S) NUM.(S): 25380.001548/2023-75, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 01/2026.",
           "valor": 9316.38,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -2590,7 +2590,7 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 00048403, CONTRATO Nº: 00014/2021  - 00.567.892/0001-07 - VISOMES COMERCIAL METROLOGICA LTDA, PROC.(S) NUM.(S): 25030.001302/2021-10, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 01/2026.",
-          "valor": 7800.0,
+          "valor": 7800,
           "movimentacao_liquida": 5156.14
         },
         {
@@ -2604,8 +2604,8 @@
           "fonte": "1002000000",
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 00048403, CONTRATO Nº: 00014/2021  - 00.567.892/0001-07 - VISOMES COMERCIAL METROLOGICA LTDA, PROC.(S) NUM.(S): 25030.001302/2021-10, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 01/2026.",
-          "valor": 7800.0,
-          "movimentacao_liquida": 0.0
+          "valor": 7800,
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -2619,7 +2619,7 @@
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 117456, 117819, 117939, 118180, 118458, 118573, 118786, 119259, 119372, 119651, 119776, 120031, 120343, 120468, 120577, 120670, CONTRATO Nº: 2025NE000373  - 35.820.448/0007-21 - WHITE MARTINS GASES INDUSTRIAIS LTDA, PROC.(S) NUM.(S): 25030.001196/2025-90, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 02/2026.",
           "valor": 43685.79,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -2633,7 +2633,7 @@
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "DESPESA COM SERVICO PUBLICACAO DE ARTIGOS COM RECOLHIMENTO DE IMPOSTO CONFORME ACORDOS BILATERAIS E TRIBUTACAO - ORIENTACAO DA TABELA SIEX/COGEAD INVOICE: OAD0000598554   PROC: 25030.001182/2025-76   -  ELSEVIER B.V.",
           "valor": 8512.55,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -2647,7 +2647,7 @@
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "DESPESA COM SERVICO PUBLICACAO DE ARTIGOS COM RECOLHIMENTO DE IMPOSTO CONFORME ACORDOS BILATERAIS E TRIBUTACAO - ORIENTACAO DA TABELA SIEX/COGEAD.  INVOICE: OAD0000657240, OAD0000635157 E OAD0000648236  PROC: 25030.001791/2025-25 - ELSEVIER",
           "valor": 44888.88,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -2661,7 +2661,7 @@
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "DESPESA COM SERVICO PUBLICACAO DE ARTIGOS COM RECOLHIMENTO DE IMPOSTO CONFORME ACORDOS BILATERAIS E TRIBUTACAO - ORIENTACAO DA TABELA SIEX/COGEAD INVOICE: 01- 3823438 02- 3824342 03- 3722931 04 - 3714547 05 -3705135 06 -3780745 PROC: 25030.001645/2025-08",
           "valor": 83206.31,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -2675,7 +2675,7 @@
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "DESPESA COM SERVICO PUBLICACAO DE ARTIGOS COM RECOLHIMENTO DE IMPOSTO CONFORME ACORDOS BILATERAIS E TRIBUTACAO - ORIENTACAO DA TABELA SIEX/COGEAD INVOICE: 2025-1514737-2 PROC: 25030.001792/2025-70",
           "valor": 7165.62,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -2716,8 +2716,8 @@
           "fonte": "1002A004AD",
           "descricao_fonte": "TED 11/2023 - 946181",
           "observacao": "DESPESA COM APOIO LOGISTICO, ADMINISTRATIVO E GESTAO FINANCEIRA DO PROJETO IOC-D17-FIO-23 - PROCESSO: 25030.001171/2023-24 - NFS-E: 84992 - CONTRATO: 15/2023 -PARCELA 4",
-          "valor": 1195000.0,
-          "movimentacao_liquida": 0.0
+          "valor": 1195000,
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -2730,8 +2730,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 081525, CONTRATO Nº: 00025/2025  - EX2544514 - JEOL USA INC., PROC.(S) NUM.(S): 25030.001390/2025-75, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 02/2026.",
-          "valor": 3545248.0,
-          "movimentacao_liquida": 0.0
+          "valor": 3545248,
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -2744,8 +2744,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 2262, CONTRATO Nº: 2026NE000069  - 15.653.057/0001-67 -  DESPESA COM AQUISICAO DE MATERIAL LABORATORIAL SANTOS E SANTANA PRODUTOS HOSPITALARES LTDA, PROC.(S) NUM.(S): 25030.001563/2025-55, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 02/2026.",
-          "valor": 870.0,
-          "movimentacao_liquida": 870.0
+          "valor": 870,
+          "movimentacao_liquida": 870
         },
         {
           "uge": "254463",
@@ -2772,8 +2772,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 1691, CONTRATO Nº: 2026NE000060  - 40.392.813/0001-99 -  DESPESA COM AQUISICAO DE MATERIAL LABORATORIAL COMERCIAL SOL RADIANTE LTDA, PROC.(S) NUM.(S): 25030.001549/2025-51, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 02/2026.",
-          "valor": 1380.0,
-          "movimentacao_liquida": 1380.0
+          "valor": 1380,
+          "movimentacao_liquida": 1380
         },
         {
           "uge": "254463",
@@ -2814,8 +2814,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "DESPESA COM PAGAMENTO DE BOLSAS DE ESTUDO NO PAIS COMPETENCIA: FEVEREIRO 2026 PROCESSO: 25030.000047/2026-94",
-          "valor": 262000.0,
-          "movimentacao_liquida": 262000.0
+          "valor": 262000,
+          "movimentacao_liquida": 262000
         },
         {
           "uge": "254463",
@@ -2828,8 +2828,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 273, CONTRATO Nº: 00001/2026  - 02.385.669/0001-74 -  DESPESA COM A FIOTEC - PROJETO - PROJETO: FORTALECIMENTO DA COOPERACAO INTERNACIONAL  ENTRE O INSTITUTO OSWALDO CRUZ (IOC/FIOCRUZ) E ORGANIZACOES INTERNACIONAIS FIOTEC - FUNDACAO PARA O DESENVOLVIMENTO CIENTIFICO E TECNOLOGICO EM SAUDE, PROC.(S) NUM.(S): 25030.000003/2026-64, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 02/2026.",
-          "valor": 65000.0,
-          "movimentacao_liquida": 65000.0
+          "valor": 65000,
+          "movimentacao_liquida": 65000
         },
         {
           "uge": "254463",
@@ -2842,8 +2842,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 00048404, CONTRATO Nº: 00014/2021  - 00.567.892/0001-07 - VISOMES COMERCIAL METROLOGICA LTDA, PROC.(S) NUM.(S): 25030.000153/2022-44, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 01/2026.",
-          "valor": 14440.0,
-          "movimentacao_liquida": 14440.0
+          "valor": 14440,
+          "movimentacao_liquida": 14440
         },
         {
           "uge": "254463",
@@ -2941,7 +2941,7 @@
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": ".PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 66, CONTRATO Nº: 00001/2024  - 40.179.871/0001-39 - S.T.T.R. INDUSTRIA E COMERCIO LTDA,  DESPESA COM MANUTENCAO ESPECIALIZADA EM AUTOCLAVES PROC.(S) NUM.(S): 25030.001338/2023-57, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 01/2026.",
           "valor": 22117.74,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -2955,7 +2955,7 @@
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 3209, CONTRATO Nº: 2025NE000311  - 26.408.191/0001-19 - GRATTANO DISTRIBUIDORA E IMPORTADORA DE PRODUTOS FARMACEUTICOS CORRELATOS E INDU, PROC.(S) NUM.(S): 25030.001202/2024-28, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 02/2026.",
           "valor": 1186.29,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -2983,7 +2983,7 @@
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 34299 - CC, 34321 - DD, 34370 - EE, 34401 - FF, 34464 - GG, 34500 - HH, 34611 - II, 34677 - JJ, 34705 - KK, 34705 - A, 34799 - B, 34858 - C, 34886 - D,  DESPESA COM AQUISICAO DE GASES NITROGENIO LIQUIDO EM TANQUE  CONTRATO Nº: 2025NE000374  - 60.619.202/0034-06 - MESSER GASES LTDA., PROC.(S) NUM.(S): 25030.000475/2025-36, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 02/2026.",
           "valor": 26440.46,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -2997,7 +2997,7 @@
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 1677, CONTRATO Nº: 2025NE000105  - 38.489.025/0001-73 -   DESPESA COM AQUISICAO DE MATERIAL ELETRO ELETRONICO GOLDEM DISTRIBUIDORA E REPRESENTACAO LTDA, PROC.(S) NUM.(S): 25030.000120/2025-47, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 02/2026.",
           "valor": 1506.4,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -3025,7 +3025,7 @@
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 2025/454, CONTRATO N: 00012/2021  - 13.086.399/0001-17 - CERTIFIQUE SOLUCOES LTDA, PROC.(S) NUM.(S): 25030.000147/2022-97, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 09/2025.",
           "valor": 6694.08,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -3038,8 +3038,8 @@
           "fonte": "1002000000",
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 726, CONTRATO Nº: 2025NE000370  - 33.989.468/0001-00 - ASSOCIACAO BRASILEIRA DE ENFERMAGEM, PROC.(S) NUM.(S): 25030.001731/2025-11, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 01/2026.",
-          "valor": 1600.0,
-          "movimentacao_liquida": 0.0
+          "valor": 1600,
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -3052,8 +3052,8 @@
           "fonte": "1002000000",
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": ".PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 78, CONTRATO Nº: 2025NE000310  - 48.763.480/0001-79 - 48.763.480  DESPESAS COM AQUISICAO DE MATERIAL QUIMICO FLAVIO CORREIA DE LIMA, PROC.(S) NUM.(S): 25030.001083/2024-11, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 01/2026.",
-          "valor": 2900.0,
-          "movimentacao_liquida": 0.0
+          "valor": 2900,
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -3066,8 +3066,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 84691, CONTRATO Nº: 00011/2025  - 02.385.669/0001-74 - FIOTEC - FUNDACAO PARA O DESENVOLVIMENTO CIENTIFICO E TECNOLOGICO EM SAUDE, PROC.(S) NUM.(S): 25030.000265/2025-48, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 02/2026.",
-          "valor": 80000.0,
-          "movimentacao_liquida": 14420.0
+          "valor": 80000,
+          "movimentacao_liquida": 14420
         },
         {
           "uge": "254463",
@@ -3080,8 +3080,8 @@
           "fonte": "1002000000",
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 84691, CONTRATO Nº: 00011/2025  - 02.385.669/0001-74 - FIOTEC - FUNDACAO PARA O DESENVOLVIMENTO CIENTIFICO E TECNOLOGICO EM SAUDE, PROC.(S) NUM.(S): 25030.000265/2025-48, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 02/2026.",
-          "valor": 80000.0,
-          "movimentacao_liquida": 0.0
+          "valor": 80000,
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -3094,8 +3094,8 @@
           "fonte": "1002000000",
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "DESPESA COM DAS ATIVIDADES DE APOIO LOGISTICO, ADMINISTRATIVO E GESTAO FINANCEIRA DO PROJETO APOIO AS ACOES ESTRATEGICAS DE DESENVOLVIMENTO INSTITUCIONAL E GESTAO DO IOC -PROJETO: IOC-008-FIO-24- CONTRATO: 09/2024- LOA - PARCELA: 03. NOTA FISCAL - 84684 - PROCESSO: 25030.000448/2024-82-",
-          "valor": 260000.0,
-          "movimentacao_liquida": 0.0
+          "valor": 260000,
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -3108,7 +3108,7 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 85124, CONTRATO Nº: 00021/2023  - 02.385.669/0001-74 - FIOTEC - FUNDACAO PARA O DESENVOLVIMENTO CIENTIFICO E TECNOLOGICO EM SAUDE, PROC.(S) NUM.(S): 25030.001114/2023-45, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 02/2026, ATINENTE A 4ª PARCELA.",
-          "valor": 120000.0,
+          "valor": 120000,
           "movimentacao_liquida": 97000.36
         },
         {
@@ -3122,8 +3122,8 @@
           "fonte": "1002000000",
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 85124, CONTRATO Nº: 00021/2023  - 02.385.669/0001-74 - FIOTEC - FUNDACAO PARA O DESENVOLVIMENTO CIENTIFICO E TECNOLOGICO EM SAUDE, PROC.(S) NUM.(S): 25030.001114/2023-45, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 02/2026, ATINENTE A 4ª PARCELA.",
-          "valor": 120000.0,
-          "movimentacao_liquida": 0.0
+          "valor": 120000,
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -3164,8 +3164,8 @@
           "fonte": "1002000000",
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "DESPESAS COM EXECUCAO DAS ATIVIDADES DE APOIO LOGISTICO, ADMINISTRATIVO E GESTAO FINANCEIRA - PROJ APOIO AS ACOES DO PROG DE INCENTIVO AO DESENVOLVIMENTO INSTITUCIONAL DO PROJ IOC-015-FIO-21- CONTRATO 07/2021- PACERLA 10  NF 849278 - PROCESSO: 25030.000962/2021-75",
-          "valor": 400000.0,
-          "movimentacao_liquida": 0.0
+          "valor": 400000,
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -3221,7 +3221,7 @@
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 15820, CONTRATO Nº: 00013/2021  - 27.498.289/0001-77 -  DESPESAS COM SERVICO DE CALIBRACAO DE BALANCAS  LMC MEDICAO E CONTROLE LTDA, PROC.(S) NUM.(S): 25030.001302/2021-10, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 03/2026.,",
           "valor": 2003.38,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -3444,8 +3444,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 846, CONTRATO Nº: 2026NE000045  - 39.077.151/0001-83 -   DESPESA COM AQUISICAO DE MATERIAL HOSPITALAR C.A. PRODUTOS MEDICOS E HOSPITALAR LTDA, PROC.(S) NUM.(S): 25030.001228/2025-57, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 03/2026.",
-          "valor": 2392.0,
-          "movimentacao_liquida": 2392.0
+          "valor": 2392,
+          "movimentacao_liquida": 2392
         },
         {
           "uge": "254463",
@@ -3472,8 +3472,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 18321, 18322, CONTRATO Nº: 2026NE000049  - 04.919.019/0001-97 -  DESPESA COM AQUISICAO DE MATERIAL LABORATORIAL  ALFAPLAST COMERCIO DE PRODUTOS PARA LABORATORIOS LTDA, PROC.(S) NUM.(S): 25030.001324/2025-03, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 03/2026.",
-          "valor": 2020.0,
-          "movimentacao_liquida": 2020.0
+          "valor": 2020,
+          "movimentacao_liquida": 2020
         },
         {
           "uge": "254463",
@@ -3486,8 +3486,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "DESPESA COM PAGAMENTO DE BOLSAS DE ESTUDO NO PAIS COMPETENCIA: MARCO 2026 PROCESSO: 25030.000047/2026-94",
-          "valor": 278600.0,
-          "movimentacao_liquida": 278600.0
+          "valor": 278600,
+          "movimentacao_liquida": 278600
         },
         {
           "uge": "254463",
@@ -3627,7 +3627,7 @@
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 120941, 121053, 121158, 121713, 121999, 122147, 122390, CONTRATO Nº: 2025NE000373  - 35.820.448/0007-21 -  DESPESA COM AQUISICAO DE MATERIAL GELO SECO WHITE MARTINS GASES INDUSTRIAIS LTDA, PROC.(S) NUM.(S): 25030.001196/2025-90, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 02/2026, 02/2027.",
           "valor": 21583.89,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -3655,7 +3655,7 @@
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "DESPESA COM SERVICO DE OPERACAO DE 2 LABS NB2/NB3 DO HPP E 1 LAB NB3 LEONIDAS DEANE.  NFS-E: 278 REF SERVICOS PRESTADOS EM JANEIRI.  PROCESSO: 25030.001313/2022-72",
           "valor": 7830.73,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -3711,7 +3711,7 @@
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "DESPESA COM SERVICO PUBLICACAO DE ARTIGOS COM RECOLHIMENTO DE IMPOSTO CONFORME ACORDOS BILATERAIS E TRIBUTACAO - ORIENTACAO DA TABELA SIEX/COGEAD INVOICE: 2025-1326791-3, 2024-1310017-3, 2024-1308500-6, 2025-1358106-5, 2025-13150 PROC: 25030.000637/2025-36",
           "valor": 61126.16,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -3725,7 +3725,7 @@
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "DESPESA COM SERVICO PUBLICACAO DE ARTIGOS COM RECOLHIMENTO DE IMPOSTO CONFORME ACORDOS BILATERAIS E TRIBUTACAO - ORIENTACAO DA TABELA SIEX/COGEAD INVOICE: 2025-1326791-3, 2024-1310017-3, 2024-1308500-6, 2025-1358106-5, 2025-13150 PROC: 25030.000637/2025-36",
           "valor": 9899.1,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -3739,7 +3739,7 @@
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "DESPESA COM SERVICO PUBLICACAO DE ARTIGOS COM RECOLHIMENTO DE IMPOSTO CONFORME ACORDOS BILATERAIS E TRIBUTACAO - ORIENTACAO DA TABELA SIEX/COGEAD INVOICE: 3529674, 3577084, 3564815, 3630987, 3647603, 3609813, 3704785, 3657186 E 3687754. PROC: 25030.00115/2025-51",
           "valor": 127524.57,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -3767,7 +3767,7 @@
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "DESPESA COM SERVICO PUBLICACAO DE ARTIGOS COM RECOLHIMENTO DE IMPOSTO CONFORME ACORDOS BILATERAIS E TRIBUTACAO - ORIENTACAO DA TABELA SIEX/COGEAD INVOICE: OAD0000519297, OAD0000521010, OAD0000512980, OAD0000564972, OAD0000551326, OAD0000557359, OAD0000561776, OAD0000513660, OAD0000571682 E OAD0000578050. PROC: 25030.000650/2025-95",
           "valor": 119695.37,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -3865,7 +3865,7 @@
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "DESPESA COM SERVICO PUBLICACAO DE ARTIGOS COM RECOLHIMENTO DE IMPOSTO CONFORME ACORDOS BILATERAIS E TRIBUTACAO - ORIENTACAO DA TABELA SIEX/COGEAD. INVOICES: 3637838, 3694376, 3750989, 3582790, 3590804, 3765761.   PROC: 25030.001181/2025-21",
           "valor": 61986.2,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -3879,7 +3879,7 @@
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "DESPESA COM SERVICO PUBLICACAO DE ARTIGOS COM RECOLHIMENTO DE IMPOSTO CONFORME ACORDOS BILATERAIS E TRIBUTACAO - ORIENTACAO DA TABELA SIEX/COGEAD. INVOICES: 2025-1337273-3 E 2024-1244532-5 - PROCESSO: 25030.001410/2025-16",
           "valor": 16057.78,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -3893,7 +3893,7 @@
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "DESPESA COM SERVICO PUBLICACAO DE ARTIGOS COM RECOLHIMENTO DE IMPOSTO CONFORME ACORDOS BILATERAIS E TRIBUTACAO - ORIENTACAO DA TABELA SIEX/COGEAD. INVOICES: 2025-1337273-3 E 2024-1244532-5 - PROCESSO: 25030.001410/2025-16",
           "valor": 2612.25,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -3907,7 +3907,7 @@
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "DESPESA COM SERVICO PUBLICACAO DE ARTIGOS COM RECOLHIMENTO DE IMPOSTO CONFORME ACORDOS BILATERAIS E TRIBUTACAO - ORIENTACAO DA TABELA SIEX/COGEAD. INVOICE: OAD0000573056   PROC: 25030.001486/2025-33",
           "valor": 2658.19,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -3921,7 +3921,7 @@
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "DESPESA COM SERVICO PUBLICACAO DE ARTIGOS COM RECOLHIMENTO DE IMPOSTO CONFORME ACORDOS BILATERAIS E TRIBUTACAO - ORIENTACAO DA TABELA SIEX/COGEAD. INVOICE: 2025-1346841-7, 2025-1390186-2, 2025-1354913-1   PROC: 25030.001136/2025-77",
           "valor": 46216.87,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -3949,7 +3949,7 @@
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 552533 B, 552516 C, 551226 D, 551227 E, 551229 F, 551718, 552516 A, 552528 B, 553535 C, 552517 D, 552522 E, 552529 F, 553551 G, 553552 H, 553554 I, 553541 J, CONTRATO Nº: 2025NE000429  - 67.423.152/0001-78 -  DESPESA COM AQUISICAO DE DIOXIDO DE CARBONO COMUM IBG INDUSTRIA BRASILEIRA DE GASES LTDA, PROC.(S) NUM.(S): 25030.000291/2025-76, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 01/2026, 02/2026.",
           "valor": 6138.58,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -3977,7 +3977,7 @@
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 559557 C, CONTRATO Nº: 2025NE000141  - 00.331.788/0006-23 -   DESPESA COM AQUISICAO DE GASES OXIGENIO MEDICINAL GASOSO  AIR LIQUIDE BRASIL LTDA, PROC.(S) NUM.(S): 25030.000292/2025-11, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 03/2026.",
           "valor": 28.24,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -4047,7 +4047,7 @@
           "descricao_fonte": "RECEITAS FARMANGUINHOS FIOCRUZ",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 1066, CONTRATO Nº: 2025NE000427  - 39.556.802/0001-18 - JMGOL HOSPITALAR LTDA,  DESPESA COM AQUISICAO DE MATERIAL HOSPITALAR PROC.(S) NUM.(S): 25030.001677/2025-03, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 03/2026.",
           "valor": 666.58,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -4075,7 +4075,7 @@
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "DESPESA COM SERVICO PUBLICACAO DE ARTIGOS COM RECOLHIMENTO DE IMPOSTO CONFORME ACORDOS BILATERAIS E TRIBUTACAO - ORIENTACAO DA TABELA SIEX/COGEAD. INVOICE: 2025-1372506-5, 2025-1424607-2   PROC: 25030.001224/2025-79",
           "valor": 28287.63,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -4089,7 +4089,7 @@
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "DESPESA COM SERVICO PUBLICACAO DE ARTIGOS COM RECOLHIMENTO DE IMPOSTO CONFORME ACORDOS BILATERAIS E TRIBUTACAO - ORIENTACAO DA TABELA SIEX/COGEAD. INVOICE: 3870617, 3872419, 3902176, 3812891, 3849832, 3896017, 3897915 E 3922122   PROC: 25030.001734/2025-46",
           "valor": 92851.92,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -4103,7 +4103,7 @@
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "DESPESA COM SERVICO PUBLICACAO DE ARTIGOS COM RECOLHIMENTO DE IMPOSTO CONFORME ACORDOS BILATERAIS E TRIBUTACAO - ORIENTACAO DA TABELA SIEX/COGEAD. INVOICE: 3394629, 3778753, 3598344, 3813224, 3822635 E 3817948   PROC: 25030.001411/2025-52",
           "valor": 66957.19,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -4158,8 +4158,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 89, CONTRATO Nº: 2026NE000040  - 48.763.480/0001-79 - F.C LIMA COMERCIAL LTDA, PROC.(S) NUM.(S): 25030.001529/2025-81, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 04/2026.",
-          "valor": 102.0,
-          "movimentacao_liquida": 102.0
+          "valor": 102,
+          "movimentacao_liquida": 102
         },
         {
           "uge": "254463",
@@ -4173,7 +4173,7 @@
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "DESPESA COM SERVICO PUBLICACAO DE ARTIGOS COM RECOLHIMENTO DE IMPOSTO CONFORME ACORDOS BILATERAIS E TRIBUTACAO - ORIENTACAO DA TABELA SIEX/COGEAD INVOICE: 2025-1500598-3, 2025-1395099-4 E 2025-1434200-4 PROC: 25030.001733/2025-00- FRONTIERS",
           "valor": 30244.73,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -4187,7 +4187,7 @@
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "DESPESA COM SERVICO PUBLICACAO DE ARTIGOS COM RECOLHIMENTO DE IMPOSTO CONFORME ACORDOS BILATERAIS E TRIBUTACAO - ORIENTACAO DA TABELA SIEX/COGEAD INVOICE: 2025-1318871-4, 2025-1426767-2, 2025-1455114-3, 2024-1275676-3 E 2025-1415500-3  PROC: 25030.001644/2025-55 - FRONTIERS",
           "valor": 42674.93,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -4201,7 +4201,7 @@
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "DESPESA COM SERVICO PUBLICACAO DE ARTIGOS COM RECOLHIMENTO DE IMPOSTO CONFORME ACORDOS BILATERAIS E TRIBUTACAO - ORIENTACAO DA TABELA SIEX/COGEAD INVOICE: 2025-1318871-4, 2025-1426767-2, 2025-1455114-3, 2024-1275676-3 E 2025-1415500-3  PROC: 25030.001644/2025-55 - FRONTIERS",
           "valor": 3512.11,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -4215,7 +4215,7 @@
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "DESPESA COM SERVICO PUBLICACAO DE ARTIGOS COM RECOLHIMENTO DE IMPOSTO CONFORME ACORDOS BILATERAIS E TRIBUTACAO - ORIENTACAO DA TABELA SIEX/COGEAD INVOICE: OAD0000603082, OAD0000603081, OAD0000603068, OAD0000601899, OAD0000601898, OAD0000603067, OAD0000577441, OAD0000581859, OAD0000588794, OAD0000583138, OAD0000580936 E OAD0000595666.  PROC: 25030.001160/2025-14- ELSEVIER",
           "valor": 96052.46,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -4229,7 +4229,7 @@
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "DESPESA COM SERVICO PUBLICACAO DE ARTIGOS COM RECOLHIMENTO DE IMPOSTO CONFORME ACORDOS BILATERAIS E TRIBUTACAO - ORIENTACAO DA TABELA SIEX/COGEAD INVOICE: OAD0000659440  PROC: 25030.001732/2025-57",
           "valor": 7288.62,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -4257,7 +4257,7 @@
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "DESPESA COM SERVICO PUBLICACAO DE ARTIGOS COM RECOLHIMENTO DE IMPOSTO CONFORME ACORDOS BILATERAIS E TRIBUTACAO - ORIENTACAO DA TABELA SIEX/COGEAD INVOICE: 1453016546, 1453009529 E 1453000632  PROC: 25030.001797/2025-01",
           "valor": 33203.04,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -4285,7 +4285,7 @@
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 122685, 122891, 123002, 123093, 123262, 123369, 123700, 123863, 123863A, 124303, 124485, 124628, CONTRATO Nº: 2025NE000373  - 35.820.448/0007-21 - DESPESAS COM AQUISICAO DE DIOXIDO DE CARBONO EM NUGGETS  WHITE MARTINS GASES INDUSTRIAIS LTDA, PROC.(S) NUM.(S): 25030.001196/2025-90, 25030.001196/25-90, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 04/2026.",
           "valor": 29008.74,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -4313,7 +4313,7 @@
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 40580, CONTRATO Nº: 00175/2024  - 00.767.378/0001-15 -  DESPESA COM CONTRATACAO DE SERVICOS DE SOLUCAO CORPORATIVA DE IMPRESSAO, REPRODUCAO E DIGITALIZACAO DE DOCUMENTOS LEXMARK INTERNATIONAL DO BRASIL LTDA, PROC.(S) NUM.(S): 25380.002553/2024-86, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 02/2026.",
           "valor": 2829.99,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -4327,7 +4327,7 @@
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 73992, CONTRATO Nº: 00037/2025  - 33.131.079/0001-49 -DESPESA COM CONTRATACAO DE EMPRESA ESPECIALIZADA EM SERVICO DE MANUTENCAO PREVENTIVA DE MICROSCOPIO CARL ZEISS DO BRASIL LTDA, PROC.(S) NUM.(S): 25030.001598/2025-94, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 03/2026.",
           "valor": 3590.31,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -4425,7 +4425,7 @@
           "descricao_fonte": "DPB-CAPES",
           "observacao": "DESPESA COM PASSAGENS AEREAS - FATURA: 0499049- CONTRATO Nº: 00035/2024 - PROCESSO: 25030.000305/2024-71",
           "valor": 1519.62,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -4438,8 +4438,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 15641, CONTRATO Nº: 2026NE000046  - 07.944.100/0001-15 -  DESPESA CO AQUISICAO DE MATERIAL DE LIMPEZA E PROD. DE HIGIENIZACAO  PROC9 INDUSTRIA QUIMICA LTDA, PROC.(S) NUM.(S): 25030.001528/2025-36, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 03/2026.",
-          "valor": 150.0,
-          "movimentacao_liquida": 150.0
+          "valor": 150,
+          "movimentacao_liquida": 150
         },
         {
           "uge": "254463",
@@ -4522,8 +4522,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 91, CONTRATO Nº: 2026NE000042  - 48.763.480/0001-79 - F.C LIMA COMERCIAL LTDA, PROC.(S) NUM.(S): 25030.001529/2025-81, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 04/2026.",
-          "valor": 4408.0,
-          "movimentacao_liquida": 4408.0
+          "valor": 4408,
+          "movimentacao_liquida": 4408
         },
         {
           "uge": "254463",
@@ -4620,8 +4620,8 @@
           "fonte": "1002A00427",
           "descricao_fonte": "TED 68/2023 - 951941",
           "observacao": "DESPESAS CONFORME PROJETO BASICO PROJETO INTITULADO REESTRUTURACAO DA EQUIPE NACIONAL DE INVESTIGACAO ECOEPIDEMIOLOGICA PARA DOENCAS ZOONOTICAS PARCELA 4 PROCESSO DE PAGAMENTO - 25030.001493/2023-73",
-          "valor": 240000.0,
-          "movimentacao_liquida": 0.0
+          "valor": 240000,
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -4676,8 +4676,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 1007, CONTRATO Nº: 2026NE000062  - 56.340.616/0001-66 -  DESPESA COM AQUISICAO DE MATERIAL LABORATORIAL OGCP COMERCIAL LTDA, PROC.(S) NUM.(S): 25030.001869/2025-10, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 03/2026.",
-          "valor": 15747.0,
-          "movimentacao_liquida": 15747.0
+          "valor": 15747,
+          "movimentacao_liquida": 15747
         },
         {
           "uge": "254463",
@@ -4887,7 +4887,7 @@
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "DESPESA COM SERV.PRESTADOS DE TERCEIRIZACAO NO MES DE FEVEREIRO/2026 - MODALIDADE NAO SUBSTITUIVEL-  AMPARADO PELO DECRETO 9507/2018. COM RECOLHIMENTO DE INSS, ISS, DARF E DEPOSITO EM CONTA VINCULADA.   NOTA FISCAL 12892 - PROCESSO 25030.001486/2023-71 - SEI ITEM 2 DO CONTRATO 6/2023.",
           "valor": 189855.6,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -4998,8 +4998,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 15642, CONTRATO Nº: 2026NE000047  - 07.944.100/0001-15 -   DESPESA CO AQUISICAO DE MATERIAL DE LIMPEZA E PROD. DE HIGIENIZACAO PROC9 INDUSTRIA QUIMICA LTDA, PROC.(S) NUM.(S): 25030.001528/2025-36, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 03/2026.",
-          "valor": 2900.0,
-          "movimentacao_liquida": 2900.0
+          "valor": 2900,
+          "movimentacao_liquida": 2900
         },
         {
           "uge": "254463",
@@ -5139,7 +5139,7 @@
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "DESPESA COM SERV.PRESTADOS DE TERCEIRIZACAO NO MES DE JANEIRO/2026 - MODALIDADE SUBSTITUIVEL- NAO AMPARADO PELO DECRETO 9507/2018.  - SEI ITEM 2 DO CONTRATO 6/2023 COM RECOLHIMENTO DE INSS, DARF, ISS E DEPOSITO EM CONTA VINCULADA.  NOTA FISCAL 12891- PROCESSO 25030.001486/2023-71",
           "valor": 537942.82,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -5236,8 +5236,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "DESPESA COM PAGAMENTO DE BOLSAS DE ESTUDO NO PAIS. COMPETENCIA: ABRIL 2026 PROCESSO: 25030.000047/2026-94",
-          "valor": 280700.0,
-          "movimentacao_liquida": 280700.0
+          "valor": 280700,
+          "movimentacao_liquida": 280700
         },
         {
           "uge": "254463",
@@ -5446,8 +5446,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 2443, CONTRATO Nº: 2026NE000157  - 33.275.120/0001-50 -  DESPESA COM AQUISICAO DE MATERIAL DE PROTECAO E SEGURANCA  SUPER LICITE LICITACOES LTDA, PROC.(S) NUM.(S): 25030.000616/2025-11, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 03/2026.",
-          "valor": 470.0,
-          "movimentacao_liquida": 470.0
+          "valor": 470,
+          "movimentacao_liquida": 470
         },
         {
           "uge": "254463",
@@ -5488,8 +5488,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 1036, CONTRATO Nº: 2026NE000071  - 56.340.616/0001-66 -  DESPESA COM AQUISICAO DE MA TERIAL LABORATORIAL OGCP COMERCIAL LTDA, PROC.(S) NUM.(S): 25030.000603/2025-41, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 03/2026.",
-          "valor": 32000.0,
-          "movimentacao_liquida": 32000.0
+          "valor": 32000,
+          "movimentacao_liquida": 32000
         },
         {
           "uge": "254463",
@@ -5531,7 +5531,7 @@
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "DESPESA COM CONTRATACAO DE SERVICO DE MANUTENCAO PREVENTIVA E CORRETIVA DOS EQUIPAMENTO DE AUTOCLAVES. NOTAS FISCAIS: 55 E 111 PROCESSO Nº 25030.000922/2021-23",
           "valor": 11703.35,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -5544,8 +5544,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 18358, CONTRATO Nº: 2026NE000070  - 04.919.019/0001-97 - DESPESA COM AQUISICAO DE MATERIAL LABORATORIAL  ALFAPLAST COMERCIO DE PRODUTOS PARA LABORATORIOS LTDA, PROC.(S) NUM.(S): 25030.001562/2025-19, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 03/2026.",
-          "valor": 57749.0,
-          "movimentacao_liquida": 57749.0
+          "valor": 57749,
+          "movimentacao_liquida": 57749
         },
         {
           "uge": "254463",
@@ -5614,8 +5614,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "PROC 000656/26 DOC GERADO PELO SCDP. PCDP 000656/26 P/ PGTO. DE  6,5 DIARIA(S) REF. A VIAGEM EM TERRITORIO NACIONAL NO PERIODO DE  10/05/2026 A  16/05/2026.",
-          "valor": 2565.0,
-          "movimentacao_liquida": 2565.0
+          "valor": 2565,
+          "movimentacao_liquida": 2565
         },
         {
           "uge": "254463",
@@ -5642,8 +5642,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 1141, CONTRATO Nº: 2026NE000026  - 57.562.072/0001-40 -    DESPESA COM AQUISICAO DE MATRIAL DE LIMPEZA PROD. DE HIGIENIZACAO PLANETA DA LIMPEZA LTDA, PROC.(S) NUM.(S): 25030.001041/2025-53, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 02/2026.",
-          "valor": 11862.0,
-          "movimentacao_liquida": 11862.0
+          "valor": 11862,
+          "movimentacao_liquida": 11862
         },
         {
           "uge": "254463",
@@ -5656,8 +5656,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 602, CONTRATO Nº: 2026NE000072  - 38.010.273/0001-90 -  DESPESA COM AQUISICAO DE MATERIAL LABORATORIAL GUISOTECH COMERCIO DE EQUIPAMENTOS LTDA, PROC.(S) NUM.(S): 25030.001867/2025-12, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 03/2026.",
-          "valor": 2100.0,
-          "movimentacao_liquida": 2100.0
+          "valor": 2100,
+          "movimentacao_liquida": 2100
         },
         {
           "uge": "254463",
@@ -5699,7 +5699,7 @@
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 1115, CONTRATO Nº: 00013/2021  - 27.498.289/0001-77 -  DESPESAS COM SERVICO DE CALIBRACAO DE BALANCAS LMC MEDICAO E CONTROLE LTDA, PROC.(S) NUM.(S): 25030.001302/2021-10, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 04/2026.",
           "valor": 355.89,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -5741,7 +5741,7 @@
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 34, 66, 99, CONTRATO Nº: 00036/2022  - 05.361.556/0001-27 - VEGA TECNOLOGIA EM SEGURANCA LTDA, PROC.(S) NUM.(S): 25030.000821/2022-33, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 01/2026, 02/2026, 03/2026.",
           "valor": 34393.74,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -5880,8 +5880,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "DESPESA COM PAGAMENTO DE BOLSA SUPLEMENTAR ALUNA: SAIQA SARDAR COMPETENCIA: ABRIL 2026 PROCESSO: 25030.000047/2026-94",
-          "valor": 3100.0,
-          "movimentacao_liquida": 3100.0
+          "valor": 3100,
+          "movimentacao_liquida": 3100
         },
         {
           "uge": "254463",
@@ -5950,8 +5950,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 877, CONTRATO Nº: 2026NE000202  - 39.077.151/0001-83 -  DESPESA COM AQUISICAO DE MATERIAL DE PROTECAO E SEGURANCA  C.A. PRODUTOS MEDICOS E HOSPITALAR LTDA, PROC.(S) NUM.(S): 25030.001350/2025-23, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 05/2026.",
-          "valor": 5400.0,
-          "movimentacao_liquida": 5400.0
+          "valor": 5400,
+          "movimentacao_liquida": 5400
         },
         {
           "uge": "254463",
@@ -5992,8 +5992,8 @@
           "fonte": "1002A002DR",
           "descricao_fonte": "TED 03/2023 - 942810",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 749, CONTRATO Nº: 00008/2023  - 02.385.669/0001-74 - FIOTEC - FUNDACAO PARA O DESENVOLVIMENTO CIENTIFICO E TECNOLOGICO EM SAUDE, PROC.(S) NUM.(S): 25030.000636/2023-23, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 05/2026.",
-          "valor": 5000.0,
-          "movimentacao_liquida": 0.0
+          "valor": 5000,
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -6034,8 +6034,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "DESPESA COM EXECUCAO DAS ATIVIDADES DE APOIO LOGISTICO, ADM E GESTAO FINANCEIRA DO PROJETO BIOLOGIA, VIGILANCIA E CONTROLE DE INSETOS VETORES - PROJETO: IOC-005-FIO-25 CONTRATO:09/2025 - NOTA FISCAL: 354 - PARCELA: 02. PROCESSO ADMINISTRATIVO: 25030.000326/2025-77 -",
-          "valor": 554000.0,
-          "movimentacao_liquida": 554000.0
+          "valor": 554000,
+          "movimentacao_liquida": 554000
         },
         {
           "uge": "254463",
@@ -6048,8 +6048,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "DESPESA COM SERVICO DE APOIO LOGISTICO, ADM E GESTAO FINANCEIRO -   NFS-E: 816, CONTRATO Nº: 08/2021 - PROJETO: IOC-019-FIO-21 - PARCELA: 11 PROCESSO: 25030.001210/2021-21 -",
-          "valor": 100000.0,
-          "movimentacao_liquida": 100000.0
+          "valor": 100000,
+          "movimentacao_liquida": 100000
         },
         {
           "uge": "254463",
@@ -6090,8 +6090,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "DESPESA COM EXECUCAO DE ATIVIDADE DE APOIO LOGISTICO, ADMINISTRATIVO E GESTAO FINANCEIRA DO PROJETO COOPERACAO INTERNACIONAL EM C T I ENTRE IOC/FIOCRUZ E ORGANIZACOES EUROPEIAS. 3ª PARCELA DO CONTRATO N¤ 10/2025.  NFSE- 276 - PROC 25030.000364/2025-20.",
-          "valor": 320000.0,
-          "movimentacao_liquida": 320000.0
+          "valor": 320000,
+          "movimentacao_liquida": 320000
         },
         {
           "uge": "254463",
@@ -6118,8 +6118,8 @@
           "fonte": "1002A004E7",
           "descricao_fonte": "TED 47/2025 - 984004",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 103, CONTRATO Nº: 00038/2025  - 02.385.669/0001-74 - FIOTEC - FUNDACAO PARA O DESENVOLVIMENTO CIENTIFICO E TECNOLOGICO EM SAUDE, PROC.(S) NUM.(S): 25030.001725/2025-55, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 01/2026.",
-          "valor": 90000.0,
-          "movimentacao_liquida": 0.0
+          "valor": 90000,
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -6188,8 +6188,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 124, CONTRATO Nº: 2026NE000068  - 39.823.491/0001-06 - DESPESA COM AQUISICAO DE MATERIAL LABORATORIAL   CIRURGICA TELES LTDA, PROC.(S) NUM.(S): 25030.001185/2025-18, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 03/2026.",
-          "valor": 11000.0,
-          "movimentacao_liquida": 11000.0
+          "valor": 11000,
+          "movimentacao_liquida": 11000
         },
         {
           "uge": "254463",
@@ -6370,8 +6370,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "DESPESA COM PAGAMENTO DE BOLSAS DE ESTUDO NO PAIS. COMPETENCIA: MAIO 2026 PROCESSO: 25030.000047/2026-94",
-          "valor": 269900.0,
-          "movimentacao_liquida": 269900.0
+          "valor": 269900,
+          "movimentacao_liquida": 269900
         },
         {
           "uge": "254463",
@@ -6482,8 +6482,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 15140, CONTRATO Nº: 2026NE000177  - 59.403.410/0001-26 - INTERJET COMERCIAL LTDA, PROC.(S) NUM.(S): 25030.000562/2025-93, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 05/2026.",
-          "valor": 1140.0,
-          "movimentacao_liquida": 1140.0
+          "valor": 1140,
+          "movimentacao_liquida": 1140
         },
         {
           "uge": "254463",
@@ -6496,8 +6496,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 11207, CONTRATO Nº: 2026NE000259  - 21.707.794/0001-06 - DESPESAS COM AQUISICAO DE MATERIAL LABORATORIAL  FASTLABOR COMERCIAL LTDA, PROC.(S) NUM.(S): 25030.000440/2026-88, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 05/2026.",
-          "valor": 4847.0,
-          "movimentacao_liquida": 4847.0
+          "valor": 4847,
+          "movimentacao_liquida": 4847
         },
         {
           "uge": "254463",
@@ -6524,8 +6524,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 57, CONTRATO Nº: 2026NE000179  - 51.461.989/0001-71 -  DESPESAS COM AQUISICAO DE MATERIAL BIOLOGICO HILLMANN E GERMANO COMERCIO E SERVICOS LTDA, PROC.(S) NUM.(S): 25030.000581/2025-10, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 05/2026.",
-          "valor": 3836.0,
-          "movimentacao_liquida": 3836.0
+          "valor": 3836,
+          "movimentacao_liquida": 3836
         },
         {
           "uge": "254463",
@@ -6538,8 +6538,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 41260407259386000, CONTRATO Nº: 2026NE000149  - 07.259.386/0001-08 - FARED COMERCIAL LTDA, PROC.(S) NUM.(S): 25030.000638/2025-81, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 04/2026.",
-          "valor": 4375.0,
-          "movimentacao_liquida": 4375.0
+          "valor": 4375,
+          "movimentacao_liquida": 4375
         },
         {
           "uge": "254463",
@@ -6902,8 +6902,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "PAGTO REF. NF 065 - SERV.PRESTADOS DE TERCEIRIZACAO NO MES DE ABRIL/2026 -NAO AMPARADO PELO DECRETO 9507/2018. PROCESSO 25030.001485/2023-27 - SEI - ITEM 1 DO CONTRATO 61/2023 COM RECOLHIMENTO DE INSS E DEPOSITO EM CONTA VINCULADA",
-          "valor": 1061472.0,
-          "movimentacao_liquida": 1061472.0
+          "valor": 1061472,
+          "movimentacao_liquida": 1061472
         },
         {
           "uge": "254463",
@@ -6916,8 +6916,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "DESPESA COM SERVICO DE APOIO LOGISTICO, ADMINISTRATIVO E GESTAO FINANCEIRA DO PROJETO IOC-DID-FIO-24 -  - NFS-E: 544, CONTRATO Nº: 00010/2024 -  PROCESSO: 25030.000834/2024-74",
-          "valor": 300000.0,
-          "movimentacao_liquida": 0.0
+          "valor": 300000,
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -6944,8 +6944,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "PGTO DOS INSTRS DE COBRANAS NMS 348 CONTRATO N 2026NE000249   30976726000125  SOARES  MARINSPAES LTDA PROCS NMS 25030000794202541 DOS FORNECIMENTOSSERVIOS PRESTADOS AOS MESES 062026",
-          "valor": 22628.0,
-          "movimentacao_liquida": 22628.0
+          "valor": 22628,
+          "movimentacao_liquida": 22628
         },
         {
           "uge": "254463",
@@ -6972,8 +6972,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 15141, CONTRATO Nº: 2026NE000178  - 59.403.410/0001-26 - DESPESAS COM AQUISICAO DE MATERIAL BIOLOGICO  INTERJET COMERCIAL LTDA, PROC.(S) NUM.(S): 25030.000562/2025-93, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 05/2026.",
-          "valor": 380.0,
-          "movimentacao_liquida": 380.0
+          "valor": 380,
+          "movimentacao_liquida": 380
         },
         {
           "uge": "254463",
@@ -6986,8 +6986,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 93, CONTRATO Nº: 2026NE000242  - 41.862.226/0001-89 - ROGERIO FLAVIO PESSA, PROC.(S) NUM.(S): 25030.001738/2025-24, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 05/2026.",
-          "valor": 2500.0,
-          "movimentacao_liquida": 2500.0
+          "valor": 2500,
+          "movimentacao_liquida": 2500
         },
         {
           "uge": "254463",
@@ -7014,8 +7014,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 21559, 21558, 21560, 21562, 21563, 21564, 21565, 21556, 21567, 21568, 21571, 21561, 21569, 21570, CONTRATO Nº: 2026NE000218  - 01.151.850/0001-53 - LUDWIG BIOTECNOLOGIA LTDA, PROC.(S) NUM.(S): 25030.000855/2025-71, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 05/2026.",
-          "valor": 19465.0,
-          "movimentacao_liquida": 19465.0
+          "valor": 19465,
+          "movimentacao_liquida": 19465
         },
         {
           "uge": "254463",
@@ -7126,8 +7126,8 @@
           "fonte": "1002A002E7",
           "descricao_fonte": "TED 06/2023 - 943000",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 463, CONTRATO Nº: 00010/2023  - 02.385.669/0001-74 - FIOTEC - FUNDACAO PARA O DESENVOLVIMENTO CIENTIFICO E TECNOLOGICO EM SAUDE, PROC.(S) NUM.(S): 25030.000694/2023-53, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 03/2026.",
-          "valor": 5000.0,
-          "movimentacao_liquida": 5000.0
+          "valor": 5000,
+          "movimentacao_liquida": 5000
         },
         {
           "uge": "254463",
@@ -7280,8 +7280,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "DESPESA COM PAGAMENTO DE BOLSAS DE ESTUDO NO PAIS. COMPETENCIA: JUNHO 2026 PROCESSO: 25030.000047/2026-94",
-          "valor": 264700.0,
-          "movimentacao_liquida": 264700.0
+          "valor": 264700,
+          "movimentacao_liquida": 264700
         },
         {
           "uge": "254463",
@@ -7379,7 +7379,7 @@
           "descricao_fonte": "TED 101/2024 - 972268",
           "observacao": "DESPESA COM DESPESA DE APOIO LOG, ADM E GESTAO FIN - PROCESSO: 25030.00001/2025-94 - FATURA: 612- CONTRATO Nº: 00088/2024 - 02.385.669/0001-74 - FIOTEC - PROJETO: IOC-001-FIO-25 - PARCELA: 03",
           "valor": 2199999.68,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -7420,8 +7420,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "DESPESAS COM EXECUCAO DAS ATIVIDADES DE APOIO LOGISTICO, ADMINISTRATIVO E GESTAO FINANCEIRA - PROJ APOIO AS ACOES DO PROG DE INCENTIVO AO DESENVOLVIMENTO INSTITUCIONAL DO PROJ IOC-015-FIO-21- CONTRATO 07/2021- PACERLA 11 -NF 582.  PROCESSO: 25030.000962/2021-75",
-          "valor": 10000.0,
-          "movimentacao_liquida": 10000.0
+          "valor": 10000,
+          "movimentacao_liquida": 10000
         },
         {
           "uge": "254463",
@@ -7602,8 +7602,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 15930, 15996, CONTRATO Nº: 2026NE000044  - 07.944.100/0001-15 - PROC9 INDUSTRIA QUIMICA LTDA, PROC.(S) NUM.(S): 25030.001528/2025-36, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 05/2026.",
-          "valor": 1106.0,
-          "movimentacao_liquida": 1106.0
+          "valor": 1106,
+          "movimentacao_liquida": 1106
         },
         {
           "uge": "254463",
@@ -7630,8 +7630,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 97, 99, CONTRATO Nº: 2026NE000042  - 48.763.480/0001-79 - F.C LIMA COMERCIAL LTDA, PROC.(S) NUM.(S): 25030.001529/2025-81, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 06/2026.",
-          "valor": 4292.0,
-          "movimentacao_liquida": 4292.0
+          "valor": 4292,
+          "movimentacao_liquida": 4292
         },
         {
           "uge": "254463",
@@ -7700,8 +7700,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 3334, 3335, 3336, 3337, 3338, 3340, 3341, 3342, CONTRATO Nº: 2026NE000196  - 02.944.432/0001-86 - BIOHNANO CIENTIFICA E HOSPITALAR LTDA, PROC.(S) NUM.(S): 25030.000848/2025-79, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 05/2026.",
-          "valor": 8250.0,
-          "movimentacao_liquida": 8250.0
+          "valor": 8250,
+          "movimentacao_liquida": 8250
         },
         {
           "uge": "254463",
@@ -7714,8 +7714,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "DESPESA COM AQUISICAO DE PASSAGEM AEREA INTERNACIONAL  FATURA: 44167 - PROCESSO: 25030.000641/2023-32",
-          "valor": 17435.0,
-          "movimentacao_liquida": 17435.0
+          "valor": 17435,
+          "movimentacao_liquida": 17435
         },
         {
           "uge": "254463",
@@ -7770,8 +7770,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 28, CONTRATO Nº: 2026NE000041  - 45.748.387/0001-05 - JAMILLE SANTOS OLIVEIRA, PROC.(S) NUM.(S): 25030.000599/2025-11, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 06/2026.",
-          "valor": 7920.0,
-          "movimentacao_liquida": 7920.0
+          "valor": 7920,
+          "movimentacao_liquida": 7920
         },
         {
           "uge": "254463",
@@ -7812,8 +7812,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 5081, CONTRATO Nº: 2026NE000251  - 41.703.093/0001-06 - ULTRAMED DISTRIBUIDORA LTDA, PROC.(S) NUM.(S): 25030.000658/2025-51, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 06/2026.",
-          "valor": 15510.0,
-          "movimentacao_liquida": 15510.0
+          "valor": 15510,
+          "movimentacao_liquida": 15510
         },
         {
           "uge": "254463",
@@ -7896,8 +7896,8 @@
           "fonte": "3129A0046Y",
           "descricao_fonte": "TED 101/2024 - 972268",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 12754, CONTRATO Nº: 00027/2025  - 12.051.059/0001-98 - DESPESA COM AQUISICAO DE MATERIAL PERMANENTE - BIOSIGMA COMERCIO DE PRODUTOS HOSPITALARES E LABORATORIAIS LTDA, PROC.(S) NUM.(S): 25030.001353/2024-86, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 12/2025.",
-          "valor": 3000.0,
-          "movimentacao_liquida": 0.0
+          "valor": 3000,
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -7910,8 +7910,8 @@
           "fonte": "3129A0046Y",
           "descricao_fonte": "TED 101/2024 - 972268",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 2373, CONTRATO Nº: 00031/2025  - 33.275.120/0001-50 -  DESPESAS COM AQUISICAO DE FRIGOBAR COM CAPACIDADE DE APROXIMADAMENTE 47 LITROS SUPER LICITE LICITACOES LTDA, PROC.(S) NUM.(S): 25030.001716/2025-64, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 01/2026.",
-          "valor": 845.0,
-          "movimentacao_liquida": 0.0
+          "valor": 845,
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -7924,8 +7924,8 @@
           "fonte": "3129A0046Y",
           "descricao_fonte": "TED 101/2024 - 972268",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 190, CONTRATO Nº: 00026/2025  - 15.591.604/0001-27 -   DESPESA COM AQUISICAO DE MATERIAL PERMANENTE  HT COMERCIO E SERVICOS LTDA, PROC.(S) NUM.(S): 25030.001359/2024-53, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 02/2026.",
-          "valor": 18282.0,
-          "movimentacao_liquida": 0.0
+          "valor": 18282,
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -7939,7 +7939,7 @@
           "descricao_fonte": "TED 101/2024 - 972268",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 373694, CONTRATO Nº: 00033/2025  - 51.961.258/0001-95 - CARDIO SISTEMAS COMERCIAL E INDUSTRIAL LTDA, PROC.(S) NUM.(S): 25030.001696/2025-21, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 01/2026.",
           "valor": 8583.66,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -7980,8 +7980,8 @@
           "fonte": "3129A0046Y",
           "descricao_fonte": "TED 101/2024 - 972268",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 3248611, CONTRATO Nº: 00028/2025  - 59.717.553/0006-17 - GRUPO MULTI S.A, PROC.(S) NUM.(S): 25030.001123/2025-06, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 01/2026.",
-          "valor": 6003.0,
-          "movimentacao_liquida": 0.0
+          "valor": 6003,
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -8009,7 +8009,7 @@
           "descricao_fonte": "TED 101/2024 - 972268",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 3272082, CONTRATO Nº: 00034/2025  - 59.717.553/0006-17 - GRUPO MULTI S.A, PROC.(S) NUM.(S): 25030.001123/2025-06, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 01/2026.",
           "valor": 22239.63,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -8050,8 +8050,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "DESPESAS COM AQUISICAO DE MATERIAL LABORATORIAL - ARP Nº 286/ 2026 PRAZO DE ENTREGA: 30 DIAS PROCESSO Nº 25030.000448/2026-44 NF 8485.",
-          "valor": 1393.0,
-          "movimentacao_liquida": 1393.0
+          "valor": 1393,
+          "movimentacao_liquida": 1393
         },
         {
           "uge": "254463",
@@ -8079,7 +8079,7 @@
           "descricao_fonte": "TED 101/2024 - 972268",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 48481, CONTRATO Nº: 00036/2025  - 03.619.767/0005-15 - DESPESA COM AQUISICAO DE MATERIAL PERMANENTE - MONITOR - TORINO INFORMATICA LTDA.., PROC.(S) NUM.(S): 25030.001124/2025-42, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 12/2025.",
           "valor": 1680.58,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -8093,7 +8093,7 @@
           "descricao_fonte": "TED 101/2024 - 972268",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 14484, CONTRATO Nº: 00029/2025  - 12.477.490/0002-81 - DESPESA COM AQUISICAO DE MATERIAL PERMANENTE -  LIDER NOTEBOOKS COMERCIO E SERVICOS LTDA, PROC.(S) NUM.(S): 25030.001122/2025-53, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 12/2025.",
           "valor": 18974.99,
-          "movimentacao_liquida": 0.0
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -8106,8 +8106,8 @@
           "fonte": "3129A0046Y",
           "descricao_fonte": "TED 101/2024 - 972268",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 15823, CONTRATO Nº: 00035/2025  - 12.477.490/0002-81 -  DESPESA COM AQUISICAO DE MATERIAL PERMANENTE - MICROCOMPUTADOR LIDER NOTEBOOKS COMERCIO E SERVICOS LTDA, PROC.(S) NUM.(S): 25030.001122/2025-53, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 03/2026.",
-          "valor": 6325.0,
-          "movimentacao_liquida": 0.0
+          "valor": 6325,
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -8134,8 +8134,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "NOTA FISCAL 1195 E 1197  DESPESAS COM AQUISICAO DE MATERIAL QUIMICO - ARP Nº 139/ 2025 PRAZO DE ENTREGA: 30 DIAS APOS A ASSINATURA DO EMPENHO. PROCESSO Nº 25030.000317/2026-67",
-          "valor": 180.0,
-          "movimentacao_liquida": 180.0
+          "valor": 180,
+          "movimentacao_liquida": 180
         },
         {
           "uge": "254463",
@@ -8162,8 +8162,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 710, CONTRATO Nº: 00024/2026  - 37.278.754/0001-18 - KIACHA LABOR COMERCIAL LTDA,  DESPESAS COM AQUISICAO DE MATERIAL BIOLOGICO  PROC.(S) NUM.(S): 25030.000820/2025-31, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 06/2026.",
-          "valor": 1979.0,
-          "movimentacao_liquida": 1979.0
+          "valor": 1979,
+          "movimentacao_liquida": 1979
         },
         {
           "uge": "254463",
@@ -8218,8 +8218,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 1986, CONTRATO Nº: 00018/2026  - 24.487.206/0001-56 - DESPESAS COM AQUISICAO DE CADEIRA EXECUTIVA GIRATORIA COM ENCOSTO DE CABECA  SEAOPEN REFRIGERACAO E MOVEIS LTDA, PROC.(S) NUM.(S): 25030.000230/2026-90, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 06/2026.",
-          "valor": 1475.0,
-          "movimentacao_liquida": 1475.0
+          "valor": 1475,
+          "movimentacao_liquida": 1475
         },
         {
           "uge": "254463",
@@ -8260,8 +8260,8 @@
           "fonte": "3129A0046Y",
           "descricao_fonte": "TED 101/2024 - 972268",
           "observacao": "12 - CANCELAMENTO DA 2026OB000418 - POR DOMICILIO BANCARIO INEXISTENTE",
-          "valor": 3000.0,
-          "movimentacao_liquida": 0.0
+          "valor": 3000,
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -8274,8 +8274,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "NOTA FISCAL 1940,1939,1941 E 1943 DESPESA COM AQUISICAO DE MATERIAL HOSPITALAR - PRAZO DE ENTREGA: CONFORME EDITAL - PROCESSO: 25030.000374/2026-46",
-          "valor": 370.0,
-          "movimentacao_liquida": 370.0
+          "valor": 370,
+          "movimentacao_liquida": 370
         },
         {
           "uge": "254463",
@@ -8358,8 +8358,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "NF 102, DESPESA COM AQUISICAO DE MATERIAL QUIMICO - PRAZO DE ENTREGA: 30 DIAS APOS A ASSINATURA DO EMPENHO, CONFORME CRONOGRAMA DE ENTREGA (PARCELADO EM 5X) (5689458). - PROCESSO 25030.001529/2025-81 - ARP 3/2026",
-          "valor": 2900.0,
-          "movimentacao_liquida": 2900.0
+          "valor": 2900,
+          "movimentacao_liquida": 2900
         },
         {
           "uge": "254463",
@@ -8386,8 +8386,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "NF 15995, 16185 DESPESA COM  AQUISICAO DE MATERIAL QUIMICO - PRAZO DE ENTREGA: 30 DIAS APOS A ASSINATURA DO EMPENHO - PROCESSO: 25030.001528/2025-36 - ARP 316/2025",
-          "valor": 400.0,
-          "movimentacao_liquida": 400.0
+          "valor": 400,
+          "movimentacao_liquida": 400
         },
         {
           "uge": "254463",
@@ -8400,8 +8400,8 @@
           "fonte": "3129A0046Y",
           "descricao_fonte": "TED 101/2024 - 972268",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 12754, CONTRATO Nº: 00027/2025  - 12.051.059/0001-98 - DESPESA COM AQUISICAO DE MATERIAL PERMANENTE - BIOSIGMA COMERCIO DE PRODUTOS HOSPITALARES E LABORATORIAIS LTDA, PROC.(S) NUM.(S): 25030.001353/2024-86, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 12/2025.",
-          "valor": 3000.0,
-          "movimentacao_liquida": 0.0
+          "valor": 3000,
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -8750,8 +8750,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 21897, CONTRATO Nº: 2026NE000372  - 01.151.850/0001-53 - DESPESA COM AQUISICAO DE MATERIAL QUIMICO  LUDWIG BIOTECNOLOGIA LTDA, PROC.(S) NUM.(S): 25030.001541/2025-95, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 07/2026.",
-          "valor": 680.0,
-          "movimentacao_liquida": 680.0
+          "valor": 680,
+          "movimentacao_liquida": 680
         },
         {
           "uge": "254463",
@@ -8806,8 +8806,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 13706, CONTRATO Nº: 2026NE000377  - 09.134.068/0001-38 - DESPESA COM AQUISICAO DE MATERIAL QUIMICO -  OBAH PRODUTOS E SERVICOS ANALITICOS LTDA, PROC.(S) NUM.(S): 25030.000406/2026-11, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 07/2026.",
-          "valor": 398.0,
-          "movimentacao_liquida": 398.0
+          "valor": 398,
+          "movimentacao_liquida": 398
         },
         {
           "uge": "254463",
@@ -8820,8 +8820,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "NF 21899, 21898  DESPESA COM AQUISICAO DE MATERIAL QUIMICO - PRAZO DE ENTREGA: CONFORME EDITAL - PROCESSO: 25030.000414/2026-50 - ARP 310/26",
-          "valor": 410.0,
-          "movimentacao_liquida": 410.0
+          "valor": 410,
+          "movimentacao_liquida": 410
         },
         {
           "uge": "254463",
@@ -8834,8 +8834,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 18454, CONTRATO Nº: 2026NE000344  - 26.770.229/0001-07 -  DESPESA COM AQUISICAO DE MATERIAL COPA E COZINHA  NOTE-EMPRESA DE COMERCIO IMPORTACAO E EXPORTACAO DE COPOS DE PAPEL E PLASTICO PR, PROC.(S) NUM.(S): 25030.001503/2025-32, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 07/2026.",
-          "valor": 700.0,
-          "movimentacao_liquida": 700.0
+          "valor": 700,
+          "movimentacao_liquida": 700
         },
         {
           "uge": "254463",
@@ -9170,8 +9170,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "DESPESA COM PAGAMENTO DE BOLSAS DE ESTUDO NO PAIS. COMPETENCIA: JULHO 2026 PROCESSO: 25030.000047/2026-94",
-          "valor": 260600.0,
-          "movimentacao_liquida": 260600.0
+          "valor": 260600,
+          "movimentacao_liquida": 260600
         },
         {
           "uge": "254463",
@@ -9198,8 +9198,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "DESPESA COM PAGAMENTO DE BOLSAS DE ESTUDO NO PAIS. COMPETENCIA: 01/07/2026 A 31/07/2026 ALUNO: AVDULWASIU IBRAHIM PROCESSO: 25030.000047/2026-94",
-          "valor": 2100.0,
-          "movimentacao_liquida": 2100.0
+          "valor": 2100,
+          "movimentacao_liquida": 2100
         },
         {
           "uge": "254463",
@@ -9226,8 +9226,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "DESPESA COM APOIO LOGISTICO, ADMINISTRATIVO E GESTAO FINANCEIRA DO PROJETO TRINCA DE ASES: NEUROINVASAO, NEUROINFLAMACAO E NEURODEGENERACAO EM COVID-19 E TOXOPLASMOSE ASPECTOS CELULARES E MOLECULARES - PROJETO: IOC-008-FIO-23 - CONTRATO: 07/2023   NFS-E: 1197 - CONTRATO: 007/2023 - PARCELA 04 PROCESSO: 25030.000799/2023-11",
-          "valor": 3824.0,
-          "movimentacao_liquida": 0.0
+          "valor": 3824,
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -9240,8 +9240,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "DESPESA COM SERVICO DE APOIO LOGISTICO, ADMINISTRATIVO E GESTAO FINANCEIRA DO PROJETO IOC-DID-FIO-24 - - NFS-E: 877 - PARCELA 03- CONTRATO Nº: 00010/2024 -  PROCESSO: 25030.000834/2024-74",
-          "valor": 145000.0,
-          "movimentacao_liquida": 0.0
+          "valor": 145000,
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -9408,8 +9408,8 @@
           "fonte": "3129A0046Y",
           "descricao_fonte": "TED 101/2024 - 972268",
           "observacao": ".PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 1190, CONTRATO Nº: 00032/2025  - 09.298.794/0001-96 - POWER TEC TECNOLOGIA EM INFORMATICA LTDA, PROC.(S) NUM.(S): 25030.001705/2025-84, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 01/2026.",
-          "valor": 25648.0,
-          "movimentacao_liquida": 0.0
+          "valor": 25648,
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -9422,8 +9422,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "PROC 001188/26 DOC GERADO PELO SCDP. PCDP 001188/26 P/ PGTO. DE  0 DIARIA(S) REF. A VIAGEM EM TERRITORIO NACIONAL NO PERIODO DE  15/08/2026 A  20/08/2026.",
-          "valor": 95.0,
-          "movimentacao_liquida": 95.0
+          "valor": 95,
+          "movimentacao_liquida": 95
         },
         {
           "uge": "254463",
@@ -9520,8 +9520,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "DESPESA COM PAGAMENTO DE BOLSAS DA ALUNA LUCIANA DE SOUZA AFONSO CONFORME AUTORIZADO  PERIODO: 01/05/2026 A 31/05/2027 COMPETENCIA JULHO/2026 PROCESSO: 25030.000047/2026-94",
-          "valor": 1500.0,
-          "movimentacao_liquida": 1500.0
+          "valor": 1500,
+          "movimentacao_liquida": 1500
         },
         {
           "uge": "254463",
@@ -9660,8 +9660,8 @@
           "fonte": "3129A0046Y",
           "descricao_fonte": "TED 101/2024 - 972268",
           "observacao": "12 - CANCELAMENTO DA 2026OB000522 - POR DOMICILIO BANCARIO INEXISTENTE",
-          "valor": 25648.0,
-          "movimentacao_liquida": 0.0
+          "valor": 25648,
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -9716,8 +9716,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "NF 1178, 1177, 1179, 1176 DESPESA COM AQUISICAO DE MATERIAL HOSPITALAR - PRAZO DE ENTREGA: CONFORME EDITAL - PROCESSO: 25030.000380/2026-01 - ARP 272/26",
-          "valor": 590.0,
-          "movimentacao_liquida": 590.0
+          "valor": 590,
+          "movimentacao_liquida": 590
         },
         {
           "uge": "254463",
@@ -9730,8 +9730,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 16, CONTRATO Nº: 2026NE000349  - 30.024.640/0001-00 -  DESPESA COM INSCRICAO DE FATIMA REGINA CECCHETTO, PARA PARTICIPACAO NA 35ª REUNIAO BRASILEIRA DE ANTROPOLOGIA - NO PERIODO DE 13 A 17/ 07 /26 EM GOIANIA - GO ATO 0012/2 ASSOCIACAO BRASILEIRA DE ANTROPOLOGIA, PROC.(S) NUM.(S): 25030.000605/2026-11, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 07/2026.",
-          "valor": 385.0,
-          "movimentacao_liquida": 385.0
+          "valor": 385,
+          "movimentacao_liquida": 385
         },
         {
           "uge": "254463",
@@ -9772,8 +9772,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "DESPESAS COM AQUISICAO DE MATERIAL QUIMICO - ARP Nº 139/ 2025 PRAZO DE ENTREGA: 30 DIAS APOS A ASSINATURA DO EMPENHO. PROCESSO Nº 25030.000317/2026-67",
-          "valor": 150.0,
-          "movimentacao_liquida": 150.0
+          "valor": 150,
+          "movimentacao_liquida": 150
         },
         {
           "uge": "254463",
@@ -10024,8 +10024,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 4001, 4003, CONTRATO Nº: 2026NE000345  - 02.172.698/0001-58 -  DESPESA COM AQUISICAO DE MATERIAL HOSPITALAR RADA-MED COMERCIAL LTDA, PROC.(S) NUM.(S): 25030.001230/2025-26, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 07/2026.",
-          "valor": 3040.0,
-          "movimentacao_liquida": 3040.0
+          "valor": 3040,
+          "movimentacao_liquida": 3040
         },
         {
           "uge": "254463",
@@ -10066,8 +10066,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "NF 926, 929 DESPESAS COM AQUISICAO DE MATERIAL LABORATORIAL - ARP Nº 31/2026 PRAZO DE ENTREGA: 30 DIAS APOS A ASSINATURA DO EMPENHO. PROCESSO Nº 25030.001228/2025-57",
-          "valor": 5688.0,
-          "movimentacao_liquida": 5688.0
+          "valor": 5688,
+          "movimentacao_liquida": 5688
         },
         {
           "uge": "254463",
@@ -10150,8 +10150,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "NF 100026 DESPESA COM AQUISICAO DE MATERIAL QUIMICO - PRAZO DE ENTREGA: 3CONFORME EDITAL  PROCESSO: 25030.000407/2026-58 - ARP 381/26",
-          "valor": 740.0,
-          "movimentacao_liquida": 740.0
+          "valor": 740,
+          "movimentacao_liquida": 740
         },
         {
           "uge": "254463",
@@ -10164,8 +10164,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "NF : 00048662 DESPESA COM SERVICO DE CALIBRACAO EM EQUIPAMENTO DE PRECISAO. PROCESSO: 25030.000153/2022-44",
-          "valor": 6040.0,
-          "movimentacao_liquida": 6040.0
+          "valor": 6040,
+          "movimentacao_liquida": 6040
         },
         {
           "uge": "254463",
@@ -10206,8 +10206,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "NF 190 INCRICAO PARA ROSANE HARTER GRIEP NO CONGRESSO BRASLEIRODE EPIDEMIOLOGIA , SERA REALIZADO NOS DIAS 23 A 27 DE NOVEMBRO/2024 NO RIO DE JANEIRO/RJ - PROCESSO: 25030.000654/2024-92",
-          "valor": 640.0,
-          "movimentacao_liquida": 0.0
+          "valor": 640,
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -10262,8 +10262,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "NF 1402 DESPESA COM AQUISICAO DE MATRIAL DE LIMPEZA PROD. DE HIGIENIZACAO - PRAZO DE ENTREGA: 30 DIAS APOS A ASSINATURA DO EMPENHO . O RESTANTE CONFORME CRONOGRAMA - PROCESSO: 25030.001041/202-53 - ARP ARP 422/25",
-          "valor": 11862.0,
-          "movimentacao_liquida": 11862.0
+          "valor": 11862,
+          "movimentacao_liquida": 11862
         },
         {
           "uge": "254463",
@@ -10318,8 +10318,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "DESPESA COM AQUISICAO DE MATERIAL LABORATORIAL - PRAZO DE ENTREGA: 30 DIAS APOS A ASSINATURA DE EMPENHO - PROCESSO: 25030.001319/2025-92 - ARP 367/26",
-          "valor": 2458.0,
-          "movimentacao_liquida": 2458.0
+          "valor": 2458,
+          "movimentacao_liquida": 2458
         },
         {
           "uge": "254463",
@@ -10388,8 +10388,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "NF 13717 DESPESA COM AQUISICAO DE MATERIAL QUIMICO - PRAZO DE ENTREGA: CONFORME EDITAL - PROCESSO: 25030.000406/2026-11 - ARP 315/26",
-          "valor": 130.0,
-          "movimentacao_liquida": 130.0
+          "valor": 130,
+          "movimentacao_liquida": 130
         },
         {
           "uge": "254463",
@@ -10416,8 +10416,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "NF 2090 DESPESAS COM AQUISICAO DE CADEIRA ( 2026NC3639 COGIC PARA IOC) - ARP Nº 389/2026 PRAZO DE ENTREGA: CONFORME EDITAL PROCESSO Nº 25030.000230/2026-90",
-          "valor": 14750.0,
-          "movimentacao_liquida": 14750.0
+          "valor": 14750,
+          "movimentacao_liquida": 14750
         },
         {
           "uge": "254463",
@@ -10458,8 +10458,8 @@
           "fonte": "3129A0046Y",
           "descricao_fonte": "TED 101/2024 - 972268",
           "observacao": ".PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 1190, CONTRATO Nº: 00032/2025  - 09.298.794/0001-96 - POWER TEC TECNOLOGIA EM INFORMATICA LTDA, PROC.(S) NUM.(S): 25030.001705/2025-84, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 01/2026.",
-          "valor": 25648.0,
-          "movimentacao_liquida": 0.0
+          "valor": 25648,
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -10472,8 +10472,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 28, CONTRATO Nº: 2026NE000375  - 49.442.894/0001-69 -  DESPESA COM AQUISICAO DE MATERIAL DE LIMPEZA E PRODUTO DE HIGIENIZACAO FIBO COMPANY SOFTWARE LTDA, PROC.(S) NUM.(S): 25030.000459/2026-24, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 08/2026.",
-          "valor": 270.0,
-          "movimentacao_liquida": 270.0
+          "valor": 270,
+          "movimentacao_liquida": 270
         },
         {
           "uge": "254463",
@@ -10486,8 +10486,8 @@
           "fonte": "1002A004E7",
           "descricao_fonte": "TED 47/2025 - 984004",
           "observacao": "DESPESA COM PROJETO DE ORGANIZACAO E GESTAO DO SEMINARIO LAVERAN DEANE SOBRE MALARIA - TED 47/25 FNS - SL D 2026/2027/2028. NF 1024 - PARCELA: 02 PROCESSO: 25030.001873/2025-70",
-          "valor": 210000.0,
-          "movimentacao_liquida": 210000.0
+          "valor": 210000,
+          "movimentacao_liquida": 210000
         },
         {
           "uge": "254463",
@@ -10500,8 +10500,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 106, CONTRATO Nº: 2026NE000042  - 48.763.480/0001-79 -  DESPESAS COM AQUISICAO DE HIPOCLORITO DE SODIO F.C LIMA COMERCIAL LTDA, PROC.(S) NUM.(S): 25030.001529/2025-81, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 08/2026.",
-          "valor": 2900.0,
-          "movimentacao_liquida": 2900.0
+          "valor": 2900,
+          "movimentacao_liquida": 2900
         },
         {
           "uge": "254463",
@@ -10696,8 +10696,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "DESPESA COM PAGAMENTO DE BOLSAS DE ESTUDO NO PAIS. COMPETENCIA: 01/08/2026 A 31/08/2026 PROCESSO: 25030.000047/2026-94",
-          "valor": 284300.0,
-          "movimentacao_liquida": 284300.0
+          "valor": 284300,
+          "movimentacao_liquida": 284300
         },
         {
           "uge": "254463",
@@ -10710,8 +10710,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "DESPESA COM PAGAMENTO DE BOLSAS DA ALUNA LUCIANA DE SOUZA AFONSO CONFORME SOLICITADO PELA DR NORMA CRISTINA, AUTORIZADO PELA DIRETORA TANIA CREMONINI DE ARAUJO JORGE. PERIODO: 01/05/2026 A 31/05/2027 COMPETENCIA AGOSTO/2026 PROCESSO: 25030.000924/2026-27",
-          "valor": 1500.0,
-          "movimentacao_liquida": 1500.0
+          "valor": 1500,
+          "movimentacao_liquida": 1500
         },
         {
           "uge": "254463",
@@ -10794,8 +10794,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 8535, CONTRATO Nº: 2026NE000438  - 07.137.575/0001-08 -  DESPESA COM AQUISICAO DE MATERIAL LABORATORIAL MICROBAC PRODUTOS E SERVICOS PARA LABORATORIOS LTDA, PROC.(S) NUM.(S): 25030.000448/2026-44, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 08/2026.",
-          "valor": 940.0,
-          "movimentacao_liquida": 940.0
+          "valor": 940,
+          "movimentacao_liquida": 940
         },
         {
           "uge": "254463",
@@ -10864,8 +10864,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "NF 18695 DESPESAS COM AQUISICAO DE MATERIAL LABORATORIAL - ARP Nº 390/2026 PRAZO DE ENTREGA: 30 DIAS APOS A ASSINATURA DO EMPENHO. PROCESSO Nº 25030.001562/2025-19",
-          "valor": 36166.0,
-          "movimentacao_liquida": 36166.0
+          "valor": 36166,
+          "movimentacao_liquida": 36166
         },
         {
           "uge": "254463",
@@ -10934,8 +10934,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "DESPESAS COM INSCRICOES DE 09 (NOVE) SERVIDORES DO INSTITUTO OSWALDO CRUZ (IOC) NO 61¤ CONGRESSO DA SOCIEDADE BRASILEIRA DE MEDICINA TROPICAL - MEDTROP 2026 PRAZO DE EXECUCAO: 16 A 19 DE AGOSTO DE 2026 EM BRASILIA/DF PROCESSO Nº 25030.000363/2026-66 - RPS Nº 72/2026-C",
-          "valor": 7700.0,
-          "movimentacao_liquida": 7700.0
+          "valor": 7700,
+          "movimentacao_liquida": 7700
         },
         {
           "uge": "254463",
@@ -10990,8 +10990,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 1748, CONTRATO Nº: 2026NE000444  - 40.392.813/0001-99 -  DESPESA COM AQUISICAO DE MATERIAL LABORATORIAL  COMERCIAL SOL RADIANTE LTDA, PROC.(S) NUM.(S): 25030.0001549/2025-5, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 08/2026.",
-          "valor": 2760.0,
-          "movimentacao_liquida": 2760.0
+          "valor": 2760,
+          "movimentacao_liquida": 2760
         },
         {
           "uge": "254463",
@@ -11102,8 +11102,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 18696, 18697, 18698, CONTRATO Nº: 2026NE000460  - 04.919.019/0001-97 - DESPESA COM AQUISICAO DE MATERIAL LABORATORIAL  ALFAPLAST COMERCIO DE PRODUTOS PARA LABORATORIOS LTDA, PROC.(S) NUM.(S): 25030.000290/2026-11, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 08/2026.",
-          "valor": 1182.0,
-          "movimentacao_liquida": 1182.0
+          "valor": 1182,
+          "movimentacao_liquida": 1182
         },
         {
           "uge": "254463",
@@ -11116,8 +11116,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "DESPESA COM PAGAMENTO COMPLEMENTAR DE BOLSAS DE ESTUDO NO PAIS. COMPETENCIA: 01/08/2026 A 31/08/2026 ALUNA: BARBARA ARAUJO ROSSI PROCESSO: 25030.000047/2026-94",
-          "valor": 2100.0,
-          "movimentacao_liquida": 2100.0
+          "valor": 2100,
+          "movimentacao_liquida": 2100
         },
         {
           "uge": "254463",
@@ -11144,8 +11144,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 16683, CONTRATO Nº: 2026NE000368  - 07.944.100/0001-15 - PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 16683, CONTRATO Nº: 2026NE000368  - 07.944.100/0001-15 -  DESPESAS COM AQUISICAO DE MATERIAL DE LIMPEZA E PROD. DE HIGIENIZACAO PROC9 INDUSTRIA QUIMICA LTDA, PROC.(S) NUM.(S): 25030. PROC9 INDUSTRIA QUIMICA LTDA, PROC.(S) NUM.(S): 25030.001528/2025-36, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 08",
-          "valor": 5800.0,
-          "movimentacao_liquida": 5800.0
+          "valor": 5800,
+          "movimentacao_liquida": 5800
         },
         {
           "uge": "254463",
@@ -11242,8 +11242,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "DESPESA COM SERV.PRESTADOS DE TERCEIRIZACAO NO MES DE JULHO/2026 - MODALIDADE SUBSTITUIVEL- NAO AMPARADO PELO DECRETO 9507/2018. -   NOTA FISCAL 15691-COM RECOLHIMENTO DE INSS, DARF, ISS E DEPOSITO EM CONTA VINCULADA.  PROCESSO: 25030.001486/2023-71",
-          "valor": 544352.0,
-          "movimentacao_liquida": 544352.0
+          "valor": 544352,
+          "movimentacao_liquida": 544352
         },
         {
           "uge": "254463",
@@ -11410,8 +11410,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 33089, 33088, 33090, 33087, CONTRATO Nº: 2026NE000601  - 41.306.823/0001-27 - DESPESAS COM AQUISICAO DE MATERIAL HOSPITALAR   SOCIAL INSTRUMENTOS CIRURGICOS LTDA, PROC.(S) NUM.(S): 25030.000371/2026-11, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 08/2026.",
-          "valor": 1050.0,
-          "movimentacao_liquida": 1050.0
+          "valor": 1050,
+          "movimentacao_liquida": 1050
         },
         {
           "uge": "254463",
@@ -11466,8 +11466,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 8538, 8539, 8540, CONTRATO Nº: 2026NE000589  - 07.137.575/0001-08 -  DESPESA COM AQUISICAO DE MATERIAL BIOLOGICO MICROBAC PRODUTOS E SERVICOS PARA MICROBAC PRODUTOS E SERVICOS PARA LABORATORIOS LTDA, PROC.(S) NUM.(S): 25030.000299/2026-13, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 09/2026.",
-          "valor": 2700.0,
-          "movimentacao_liquida": 2700.0
+          "valor": 2700,
+          "movimentacao_liquida": 2700
         },
         {
           "uge": "254463",
@@ -11480,8 +11480,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 2689, CONTRATO Nº: 2026NE000429  - 01.424.128/0001-45 -  DESPESA COM AQUISICAO DE MATERIAL DE PROTECAO E SEGURANCA  LUIZ TADEO DAMASCHI, PROC.(S) NUM.(S): 25030.001348/2025-54, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 08/2026.",
-          "valor": 900.0,
-          "movimentacao_liquida": 900.0
+          "valor": 900,
+          "movimentacao_liquida": 900
         },
         {
           "uge": "254463",
@@ -11494,8 +11494,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 263, CONTRATO Nº: 2026NE000499  - 63.550.245/0001-02 -  DESPESAS COM AQUISICAO DE MATERIAL LABORATORIAL SORA SCIENTIFIC BRASIL COMERCIAL LTDA, PROC.(S) NUM.(S): 25030.000293/2026-46, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 08/2026.",
-          "valor": 5250.0,
-          "movimentacao_liquida": 5250.0
+          "valor": 5250,
+          "movimentacao_liquida": 5250
         },
         {
           "uge": "254463",
@@ -11620,8 +11620,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "DESPESA COM AQUISICAO DE MATERIAL BIOLOGICO. NFS: 3395 E 3394 -  PROC 25030.000304/2026-98",
-          "valor": 1738.0,
-          "movimentacao_liquida": 1738.0
+          "valor": 1738,
+          "movimentacao_liquida": 1738
         },
         {
           "uge": "254463",
@@ -11732,8 +11732,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "INCLUSAO DE DADOS BANCARIOS",
-          "valor": 500000.0,
-          "movimentacao_liquida": 500000.0
+          "valor": 500000,
+          "movimentacao_liquida": 500000
         },
         {
           "uge": "254463",
@@ -11746,8 +11746,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 16684, CONTRATO Nº: 2026NE000367   07.944.1000001-15 -DESPESAS COM AQUISICAO DE MATERIAL QUIMICO  PROC9 INDUSTRIA QUIMICA LTDA, PROC.(S) NUM.(S): 25030.001528/2025-36, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 08-2026.",
-          "valor": 314.0,
-          "movimentacao_liquida": 314.0
+          "valor": 314,
+          "movimentacao_liquida": 314
         },
         {
           "uge": "254463",
@@ -11788,8 +11788,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "DESPESA COM PROJETO : IMPLEMENTACAO DE ARMADIHAS OVITRAMPAS NO MUNICIPIOS PRIORITARIOS VISANDO FORTALECER A VIGILANCIA ENTOMOLOGICA PARA AUXILIAR NO CONTROLE DO AEDES NO BRASIL. NF: 1733 -  PARCELA 1/03 - PROC: 25030.000991/2026-41",
-          "valor": 200000.0,
-          "movimentacao_liquida": 200000.0
+          "valor": 200000,
+          "movimentacao_liquida": 200000
         },
         {
           "uge": "254463",
@@ -11802,8 +11802,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 1193, CONTRATO Nº: 00008/2021  - 02.385.669/0001-74 -  DESPESA COM PROJETO: DESENVOLVIMENTO DE ACOES ESTRATEGICAS DE EDUCACAO, COMUNICACAO FIOTEC - FUNDACAO PARA O DESENVOLVIMENTO CIENTIFICO E TECNOLOGICO EM SAUDE, PROC.(S) NUM.(S): 25030.000767/2021-45, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 07/2026.",
-          "valor": 295000.0,
-          "movimentacao_liquida": 295000.0
+          "valor": 295000,
+          "movimentacao_liquida": 295000
         },
         {
           "uge": "254463",
@@ -11816,8 +11816,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "DESPESA COM PAGAMENTO DE BOLSAS DE ESTUDO NO PAIS. COMPETENCIA: 01/09/2026 A 30/09/2026 PROCESSO: 25030.000047/2026-94",
-          "valor": 283600.0,
-          "movimentacao_liquida": 283600.0
+          "valor": 283600,
+          "movimentacao_liquida": 283600
         },
         {
           "uge": "254463",
@@ -11830,8 +11830,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 00048661, CONTRATO Nº: 00014/2021  - 00.567.892/0001-07 - DESPESA COM SERVICO DE CALIBRACAO DE INSTRUMENTO DE MEDICAO  VISOMES COMERCIAL METROLOGICA LTDA, PROC.(S) NUM.(S): 25030.001302/2021-10, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 06/2026.",
-          "valor": 2960.0,
-          "movimentacao_liquida": 2480.0
+          "valor": 2960,
+          "movimentacao_liquida": 2480
         },
         {
           "uge": "254463",
@@ -11844,8 +11844,8 @@
           "fonte": "1002000000",
           "descricao_fonte": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 00048661, CONTRATO Nº: 00014/2021  - 00.567.892/0001-07 - DESPESA COM SERVICO DE CALIBRACAO DE INSTRUMENTO DE MEDICAO  VISOMES COMERCIAL METROLOGICA LTDA, PROC.(S) NUM.(S): 25030.001302/2021-10, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 06/2026.",
-          "valor": 2960.0,
-          "movimentacao_liquida": 0.0
+          "valor": 2960,
+          "movimentacao_liquida": 0
         },
         {
           "uge": "254463",
@@ -11872,8 +11872,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "DESPESA COM AQUISICAO DE MATERIAL DE ACONDICIONAMENTO E EMBALAGEM  - PRAZO DE ENTREGA: 30 DIAS APOS A ASSINATURA DO EMPENHO -  PROCESSO: 25030.000599/2025-11 - ARP 375/2025",
-          "valor": 979.0,
-          "movimentacao_liquida": 979.0
+          "valor": 979,
+          "movimentacao_liquida": 979
         },
         {
           "uge": "254463",
@@ -11970,8 +11970,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "DESPESA COM AQUISICAO DE MATERIAL DE ACONDICIONAMENTO E EMBALAGEM",
-          "valor": 1960.0,
-          "movimentacao_liquida": 1960.0
+          "valor": 1960,
+          "movimentacao_liquida": 1960
         },
         {
           "uge": "254463",
@@ -11998,8 +11998,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 13846, 13848, 13849, 13847, 13851, 13845, 13850, CONTRATO Nº: 2026NE000515  - 09.134.068/0001-38 - DESPESAS COM AQUISICAO DE MATERIAL BIOLOGICO  OBAH PRODUTOS E SERVICOS ANALITICOS LTDA, PROC.(S) NUM.(S): 25030.000300/2026-18, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 09/2026.",
-          "valor": 3000.0,
-          "movimentacao_liquida": 3000.0
+          "valor": 3000,
+          "movimentacao_liquida": 3000
         },
         {
           "uge": "254463",
@@ -12054,8 +12054,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 1233, CONTRATO Nº: 2026NE000564  - 31.352.507/0001-38 -  DESPESA COM AQUISICAO DE MATERIAL DE ACONDICIONAMENTO E EMBALAGEM  RS COMERCIO DE MATERIAIS E SERVICOS LTDA, PROC.(S) NUM.(S): 25030.000159/2026-45, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 09/2026.",
-          "valor": 11790.0,
-          "movimentacao_liquida": 11790.0
+          "valor": 11790,
+          "movimentacao_liquida": 11790
         },
         {
           "uge": "254463",
@@ -12082,8 +12082,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "INSCRICAO DE PROFISSIONAL NAO SOCIO PARA PARTICIPACAO NO II CONGRESSO BRASILEIRO DE BIOTECNOLOGIA INDUSTRIAL - COBBIND 2026 QUE OCORRERA NO PERIODO DE 16 A 19 DE AGOSTO DE 2026 EM AMPOS DO JORDAO/SP. RECIBO 01 - PROC: 25030.000753/2026-36",
-          "valor": 2035.0,
-          "movimentacao_liquida": 2035.0
+          "valor": 2035,
+          "movimentacao_liquida": 2035
         },
         {
           "uge": "254463",
@@ -12110,8 +12110,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 49, CONTRATO Nº: 2026NE000608  - 55.711.510/0001-69 - DESPESAS COM AQUISICAO DE UNIFORMES, TECIDOS E AVIAMENTOS  PATRICIA LUIZA DOS SANTOS TEIXEIRA DA SILVA LTDA, PROC.(S) NUM.(S): 25030.000170/2026-13, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 09/2026.",
-          "valor": 14390.0,
-          "movimentacao_liquida": 14390.0
+          "valor": 14390,
+          "movimentacao_liquida": 14390
         },
         {
           "uge": "254463",
@@ -12138,8 +12138,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 1837, CONTRATO Nº: 2026NE000395  - 56.340.616/0001-66 - DESPESA COM AQUISICAO DE MATERIAL LABORATORIAL  OGCP COMERCIAL LTDA, PROC.(S) NUM.(S): 25030.001215/2025-88, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 08/2026.",
-          "valor": 3540.0,
-          "movimentacao_liquida": 3540.0
+          "valor": 3540,
+          "movimentacao_liquida": 3540
         },
         {
           "uge": "254463",
@@ -12208,8 +12208,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 3394, CONTRATO Nº: 2026NE000599  - 02.944.432/0001-86 -  DESPESA COM AQUISICAO DE MATERIAL LABORATORIAL BIOHNANO CIENTIFICA E HOSPITALAR LTDA, PROC.(S) NUM.(S): 25030.000219/2026-20, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 09/2026.",
-          "valor": 2552.0,
-          "movimentacao_liquida": 2552.0
+          "valor": 2552,
+          "movimentacao_liquida": 2552
         },
         {
           "uge": "254463",
@@ -12264,8 +12264,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 22159, 22158, 22157, 22156, 22155, 22154, CONTRATO Nº: 2026NE000468  - 01.151.850/0001-53 - DESPESA COM AQUISICAO DE MATERIAL QUIMICO  LUDWIG BIOTECNOLOGIA LTDA, PROC.(S) NUM.(S): 25030.000279/2026-42, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 08/2026, 09/2026.",
-          "valor": 9900.0,
-          "movimentacao_liquida": 9900.0
+          "valor": 9900,
+          "movimentacao_liquida": 9900
         },
         {
           "uge": "254463",
@@ -12306,8 +12306,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "PGTO DO(S) INSTR.(S) DE COBRANCA(S) NUM.(S): 22160, CONTRATO Nº: 2026NE000558  - 01.151.850/0001-53 - DESPESA COM AQUISICAO DE MATERIAL QUIMICO  LUDWIG BIOTECNOLOGIA LTDA, PROC.(S) NUM.(S): 25030.000414/2025-50, DO(S) FORNECIMENTO(S)/SERVICO(S) PRESTADO(S) AO(S) MES(ES): 08/2026.",
-          "valor": 410.0,
-          "movimentacao_liquida": 410.0
+          "valor": 410,
+          "movimentacao_liquida": 410
         },
         {
           "uge": "254463",
@@ -12348,8 +12348,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "DESPESA COM AQUISICAO DE MATERIAL QUIMICO - PRAZO DE ENTREGA: CONFORME EDITAL PROCESSO: 25030.000287/2026-99 -  ARP 3326/26",
-          "valor": 428.0,
-          "movimentacao_liquida": 428.0
+          "valor": 428,
+          "movimentacao_liquida": 428
         },
         {
           "uge": "254463",
@@ -12474,8 +12474,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "DESPESA COM PAGAMENTO DE BOLSAS DA ALUNA LUCIANA DE SOUZA AFONSO CONFORME SOLICITADO PELA DR NORMA CRISTINA, AUTORIZADO PELA DIRETORA TANIA CREMONINI DE ARAUJO JORGE. PERIODO: 01/05/2026 A 31/05/2027 COMPETENCIA SETEMBRO/2026 PROCESSO: 25030.000924/2026-27",
-          "valor": 1500.0,
-          "movimentacao_liquida": 1500.0
+          "valor": 1500,
+          "movimentacao_liquida": 1500
         },
         {
           "uge": "254463",
@@ -12558,8 +12558,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "DESPESA COM AQUISICAO DE MATERIAL DE PROTECAO E SEGURANCA - PRAZO DE ENTREGA: 30 DIAS APOS A AASSINATURA DO EMPENHO - PROCESSO: 25030.001358/2025-90 - ARP 375/26",
-          "valor": 1400.0,
-          "movimentacao_liquida": 1400.0
+          "valor": 1400,
+          "movimentacao_liquida": 1400
         },
         {
           "uge": "254463",
@@ -12572,8 +12572,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "DESPESAS COM AQUISICAO DE MATERIAL LABORATORIAL - ARP Nº400//2026 PRAZO DE ENTREGA: 30 DIAS APOS A ASSINATURA DO EMPENHO. PROCESSO Nº 25030.000757/2026-14",
-          "valor": 22700.0,
-          "movimentacao_liquida": 22700.0
+          "valor": 22700,
+          "movimentacao_liquida": 22700
         },
         {
           "uge": "254463",
@@ -12586,8 +12586,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "DESPESAS COM AQUISICAO DE MATERIAL DE PROTECAO NF 945 PROCESSO 250300013502025-33",
-          "valor": 8100.0,
-          "movimentacao_liquida": 8100.0
+          "valor": 8100,
+          "movimentacao_liquida": 8100
         },
         {
           "uge": "254463",
@@ -12628,8 +12628,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "DESPESA COM AQUISICAO DE MATERIAL HOSPITALAR - PRAZO DE ENTREGA: CONFORME EDITAL - PROCESSO: 25030.000373/2026-00 - ARP 546/26",
-          "valor": 540.0,
-          "movimentacao_liquida": 540.0
+          "valor": 540,
+          "movimentacao_liquida": 540
         },
         {
           "uge": "254463",
@@ -12684,8 +12684,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "DESPESAS COM INSCRICAO NO 10¤ CONGRESSO BRASILEIRO DE CIENCIAS SOCIAIS E HUMANAS EM SAUDE _ NO PERIODO DE 16 A 19 DE SETEMBRO DE 2026 EM MANAUS/AM. NF 256 PROC 25030000607/2026-19",
-          "valor": 1280.0,
-          "movimentacao_liquida": 1280.0
+          "valor": 1280,
+          "movimentacao_liquida": 1280
         },
         {
           "uge": "254463",
@@ -12698,8 +12698,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "INSCRICAO EM CONGRESSO - WORLD CONGRESS OF INFLAMMATION - NO PERIODO DE 08 A 12 DE SETEMBRO /2026 EM FOZ DO IGUACU/PR - PROCESSO: 25030.000743/2026-09 - ATO 15/2026",
-          "valor": 2332.0,
-          "movimentacao_liquida": 2332.0
+          "valor": 2332,
+          "movimentacao_liquida": 2332
         },
         {
           "uge": "254463",
@@ -12712,8 +12712,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "DESPESA COM AQUISICAO DE MATERIAL DE ACONDICIONAMENTO E EMBALAGEM - PRAZO DE ENTREGA: 30 DIAS CONTADOS DA ASSINATURA DO CONTRATO OU NOTA DE EMPENHO - PROCESSO: 25030.000159/2026-45",
-          "valor": 6750.0,
-          "movimentacao_liquida": 6750.0
+          "valor": 6750,
+          "movimentacao_liquida": 6750
         },
         {
           "uge": "254463",
@@ -12726,8 +12726,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "DESPESA COM AQUISICAO DE MATERIAL LABORATORIAL NF 4362",
-          "valor": 13000.0,
-          "movimentacao_liquida": 13000.0
+          "valor": 13000,
+          "movimentacao_liquida": 13000
         },
         {
           "uge": "254463",
@@ -12824,8 +12824,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "DESPESAS COM AQUISICAO DE HIPOCLORITO DE SODIO - ARP Nº 395/2026 PRAZO DE ENTREGA: 1ª PARCELA 30 DIAS APOS A ASSINATURA DO EMPENHO, CONFORME CRONOGRAMA DE ENTREGA (PARCELADO EM 6X). PROCESSO Nº 25030.001529/2025-81 NF 111",
-          "valor": 5800.0,
-          "movimentacao_liquida": 5800.0
+          "valor": 5800,
+          "movimentacao_liquida": 5800
         },
         {
           "uge": "254463",
@@ -12936,8 +12936,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "DESPESA COM AQUISICAO DE MATERIAL PERMANENTE  CADEIRAS  NF2226",
-          "valor": 23600.0,
-          "movimentacao_liquida": 23600.0
+          "valor": 23600,
+          "movimentacao_liquida": 23600
         },
         {
           "uge": "254463",
@@ -13132,8 +13132,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "DESPESAS COM AQUISICAO DE MATERIAL LABORATORIAL - ARP Nº 280/ 2026 PROCESSO Nº 25030.000440/2026-88. NF 11653",
-          "valor": 6306.0,
-          "movimentacao_liquida": 6306.0
+          "valor": 6306,
+          "movimentacao_liquida": 6306
         },
         {
           "uge": "254463",
@@ -13329,7 +13329,7 @@
           "descricao_fonte": "RECURSOS DIVERSOS",
           "observacao": "DEPOSITO EM CONTA VINCULADA.  NF 151 - PROCESSO: 25030.001485/2023-27",
           "valor": 320062.5,
-          "movimentacao_liquida": 1280250.0
+          "movimentacao_liquida": 1280250
         },
         {
           "uge": "254463",
@@ -13426,8 +13426,8 @@
           "fonte": "1001000000",
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "DESPESAS COM AQUISICAO DE MATERIAL LABORATORIAL - RCO Nº 59/ 2026 PRAZO DE ENTREGA: 30 (TRINTA) DIAS, CONTADOS DO(A) ASSINATURA DO TERMO DE CONTRATO OU DOCUMENTO EQUIVALENTE, EM REMESSA UNICA. PROCESSO Nº  25030.001046/2026-67  NF 16 E 17",
-          "valor": 520.0,
-          "movimentacao_liquida": 520.0
+          "valor": 520,
+          "movimentacao_liquida": 520
         },
         {
           "uge": "254463",
