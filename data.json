@@ -1,6 +1,6 @@
 {
   "source_updated_at": "2026-10-22",
-  "generated_at": "2026-10-22T12:54:09Z",
+  "generated_at": "2026-10-22T17:13:00Z",
   "status": "detail_rows_embedded_from_drive_csv",
   "datasets": [
     {
@@ -1025,9 +1025,9 @@
       "short": "Orçamentário",
       "total": 999145.21,
       "detail_count": 14,
-      "source_name": "Saldo Orçamentário.csv",
-      "source_url": "https://drive.google.com/file/d/1mk3LbdLTL02YFqKoJKAoP33f7n6mEIZN/view",
-      "note": "Saldo orçamentário apresentado sem sinais negativos, conforme orientação do usuário. Total consolidado: R$ 999.145,21. Os valores detalhados foram exibidos em módulo para evitar saldo negativo na apresentação; confirme os sinais na extração oficial antes de usar os detalhes como conciliação contábil.",
+      "source_name": "Saldo Orçamentário — Google Sheets",
+      "source_url": "https://docs.google.com/spreadsheets/d/1fg4kjleradg0PtmuyvVrG7E3eUcfUvJRm4hT_fTmisE/edit",
+      "note": "Base validada diretamente da planilha Google Sheets adicionada ao Drive. 14 linhas de detalhe; nenhuma duplicidade encontrada pela chave composta UG + PTRES + Fonte + Natureza + UG Responsável + PI. Total consolidado: R$ 999.145,21.",
       "rows": [
         {
           "ug": "254463",
@@ -1069,7 +1069,7 @@
           "responsavel": "VICE PRESIDENCIA DE SAUDE GLOBAL E REL INTERN",
           "pi": "A1SRI",
           "programa": "VPSGRI",
-          "saldo": 15799
+          "saldo": 15799.0
         },
         {
           "ug": "254463",
@@ -1083,7 +1083,7 @@
           "responsavel": "INSTITUTO DE TECNOLOGIA EM FARMACOS",
           "pi": "E2FAR",
           "programa": "ARRECADACAO - EXTRA PA",
-          "saldo": 15400
+          "saldo": 15400.0
         },
         {
           "ug": "254463",
@@ -1097,7 +1097,7 @@
           "responsavel": "INSTITUTO OSWALDO CRUZ",
           "pi": "A1IOC",
           "programa": "INST OSWALDO CRUZ",
-          "saldo": 14000
+          "saldo": 14000.0
         },
         {
           "ug": "254463",
@@ -1153,7 +1153,7 @@
           "responsavel": "INSTITUTO OSWALDO CRUZ",
           "pi": "A1IOC",
           "programa": "INST OSWALDO CRUZ",
-          "saldo": 10
+          "saldo": 10.0
         },
         {
           "ug": "254463",
@@ -1167,7 +1167,7 @@
           "responsavel": "INSTITUTO OSWALDO CRUZ",
           "pi": "A1IOC",
           "programa": "INST OSWALDO CRUZ",
-          "saldo": 0
+          "saldo": 0.0
         },
         {
           "ug": "254463",
@@ -1181,7 +1181,7 @@
           "responsavel": "INSTITUTO OSWALDO CRUZ",
           "pi": "A1IOC",
           "programa": "INST OSWALDO CRUZ",
-          "saldo": 0
+          "saldo": 0.0
         },
         {
           "ug": "254463",
@@ -1195,7 +1195,7 @@
           "responsavel": "INSTITUTO OSWALDO CRUZ",
           "pi": "A1IOC",
           "programa": "INST OSWALDO CRUZ",
-          "saldo": 0
+          "saldo": 0.0
         },
         {
           "ug": "254463",
@@ -1209,7 +1209,7 @@
           "responsavel": "INSTITUTO OSWALDO CRUZ",
           "pi": "A1IOC",
           "programa": "INST OSWALDO CRUZ",
-          "saldo": 0
+          "saldo": 0.0
         },
         {
           "ug": "254463",
@@ -1223,11 +1223,11 @@
           "responsavel": "INSTITUTO DE CIENCIA E TEC EM BIOMODELOS",
           "pi": "A1CTB",
           "programa": "ICTB",
-          "saldo": 0
+          "saldo": 0.0
         }
       ],
-      "source_row_sum": -999145.21,
-      "reconciliation_status": "divergence_requires_validation"
+      "source_row_sum": 999145.21,
+      "reconciliation_status": "validated_no_duplicates"
     },
     {
       "id": "repasses",
