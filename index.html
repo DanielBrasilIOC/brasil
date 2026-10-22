@@ -7,21 +7,29 @@
 <style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#f3f6f9}iframe{display:block;width:100%;height:100%;border:0}</style>
 </head>
 <body>
-<iframe id="dashboard" src="dashboard-v2.html?v=auditoria-pre-importacao-20261022-2324" title="Painel de Gestão"></iframe>
+<iframe id="dashboard" src="dashboard-v2.html?v=correcao-titulo-20261022-2328" title="Painel de Gestão"></iframe>
 <script>
 const frame=document.getElementById('dashboard');
+const oldTitle='Painel Financeiroe Orçamentário IOC';
+const newTitle='Painel Financeiro e Orçamentário IOC';
+function corrigirTitulo(doc){
+  if(!doc || !doc.body) return;
+  if(doc.title===oldTitle) doc.title=newTitle;
+  const brand=doc.querySelector('.brand h1');
+  if(brand) brand.textContent=newTitle;
+  const walker=doc.createTreeWalker(doc.body,NodeFilter.SHOW_TEXT);
+  const nodes=[];
+  while(walker.nextNode()) nodes.push(walker.currentNode);
+  nodes.forEach(node=>{
+    if(node.nodeValue && node.nodeValue.includes(oldTitle)) node.nodeValue=node.nodeValue.replaceAll(oldTitle,newTitle);
+  });
+}
 frame.addEventListener('load',()=>{
   try{
     const doc=frame.contentDocument;
-    const oldTitle='Painel Financeiroe Orçamentário IOC';
-    const newTitle='Painel Financeiro e Orçamentário IOC';
-    if(doc.title===oldTitle) doc.title=newTitle;
-    const walker=doc.createTreeWalker(doc.body,NodeFilter.SHOW_TEXT);
-    const nodes=[];
-    while(walker.nextNode()) nodes.push(walker.currentNode);
-    nodes.forEach(node=>{
-      if(node.nodeValue && node.nodeValue.includes(oldTitle)) node.nodeValue=node.nodeValue.replaceAll(oldTitle,newTitle);
-    });
+    corrigirTitulo(doc);
+    const observer=new MutationObserver(()=>corrigirTitulo(doc));
+    observer.observe(doc.body,{subtree:true,childList:true,characterData:true});
     ['rap-thermometer.js?v=20261022f','rap-columns.js?v=20261022f'].forEach(src=>{
       const s=doc.createElement('script');
       s.src=src;
