@@ -13,6 +13,18 @@ const frame=document.getElementById('dashboard');
 frame.addEventListener('load',()=>{
   try{
     const doc=frame.contentDocument;
+    // Correção de apresentação: garante a grafia oficial do nome do painel.
+    const oldTitle='Painel Financeiroe Orçamentário IOC';
+    const newTitle='Painel Financeiro e Orçamentário IOC';
+    if(doc.title===oldTitle) doc.title=newTitle;
+    const walker=doc.createTreeWalker(doc.body,NodeFilter.SHOW_TEXT);
+    const nodes=[];
+    while(walker.nextNode()) nodes.push(walker.currentNode);
+    nodes.forEach(node=>{
+      if(node.nodeValue && node.nodeValue.includes(oldTitle)){
+        node.nodeValue=node.nodeValue.replaceAll(oldTitle,newTitle);
+      }
+    });
     ['rap-thermometer.js?v=20261022f','rap-columns.js?v=20261022f'].forEach(src=>{
       const s=doc.createElement('script');
       s.src=src;
