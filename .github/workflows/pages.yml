@@ -75,7 +75,7 @@ jobs:
                       row['situacao_prioridade'] = str(raw.get(priority_header) or '').strip()
                   if ne_header and not row.get('numero_ne'):
                       row['numero_ne'] = str(raw.get(ne_header) or '').strip()
-                  raw_value = row['saldo'].replace('R
+                  raw_value = str(row['saldo'] or '').replace('R$', '').replace(' ', '').replace('.', '').replace(',', '.')
                   try:
                       row['saldo'] = float(Decimal(raw_value)) if raw_value else None
                   except Exception:
