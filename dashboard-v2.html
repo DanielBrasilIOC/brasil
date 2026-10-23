@@ -83,7 +83,82 @@ tbody tr:hover{background:#f0f7f8}
 @media print{body{background:#fff}.shell{display:block}aside{display:none}main{max-width:none;padding:0}.top{border-bottom:1px solid #ccc}.actions,#nav,.filters,.status{display:none!important}.panel,.kpi{box-shadow:none;break-inside:avoid;border-color:#ddd}.grid{grid-template-columns:1fr 1fr}.scroll{max-height:none;overflow:visible}th{position:static}.foot{color:#555}}
 
 .status{display:none!important}
-.repasses-total{display:grid;grid-template-columns:2fr 1fr;gap:10px;margin:14px 0}.repasses-total>div{padding:14px 16px;border:1px solid var(--l);border-radius:11px;background:#f4f8fb}.priority-wrap{margin:12px 0 16px;padding:13px;border:1px solid #e1e8ee;border-radius:12px;background:#fff}.priority-head{display:flex;justify-content:space-between;gap:8px;align-items:center;font-weight:800;color:var(--n);margin-bottom:10px}.priority-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}.priority-card{border:1px solid var(--l);border-radius:10px;padding:12px;min-width:0}.priority-card.p1{background:#fff5f5;border-color:#f3c2c2}.priority-card.p2{background:#fff9ed;border-color:#f2d49c}.priority-card.p3{background:#f0faf5;border-color:#bde4d0}.priority-tag{font-size:10px;font-weight:900;letter-spacing:.3px}.p1 .priority-tag,.p1 .priority-value{color:#b42332}.p2 .priority-tag,.p2 .priority-value{color:#a65c00}.p3 .priority-tag,.p3 .priority-value{color:#18764e}.priority-level{font-weight:800;margin:3px 0 8px}.priority-value{font-size:clamp(15px,2vw,21px);font-weight:900;overflow-wrap:anywhere}.priority-meta{font-size:11px;color:var(--m);margin-top:5px}@media(max-width:700px){.repasses-total{grid-template-columns:1fr}.priority-cards{grid-template-columns:1fr}.priority-head{align-items:flex-start;flex-direction:column}}</style></head><body><div class="shell"><aside><div class="brand"><div class="mark">IOC</div><div><h1>Painel Financeiro<br><span style="white-space:nowrap">e Orçamentário IOC</span></h1><p>Instituto Oswaldo Cruz</p></div></div><div class="nav" id="nav"></div><div class="side">Transparência e acompanhamento<br>dos dados financeiros do IOC.</div></aside><main><header class="top"><div><div class="ey">Gestão • Finanças • Orçamento</div><h2 id="title">Painel Financeiro&nbsp;e Orçamentário IOC</h2><p class="sub">Instituto Oswaldo Cruz</p></div><div class="actions"><button class="btn" id="refresh">↻ Recarregar dados publicados</button><button class="btn" onclick="print()">⇩ PDF</button></div></header><div class="status" id="status">Carregando dados…</div><section id="overview"><div class="source"><strong>Fonte de recursos e destinação — filtro principal</strong><div class="desc">A seleção recalcula os indicadores e as análises abaixo, sem misturar fontes.</div><div class="filters"><select id="src"><option value="">Todas as fontes</option></select><input id="gq" style="min-width:260px" placeholder="Pesquisar fornecedor, empenho ou natureza…"><button class="btn" id="clear">Limpar</button></div></div><div class="kpis" id="kpis"></div>
+.repasses-total{display:grid;grid-template-columns:2fr 1fr;gap:10px;margin:14px 0}.repasses-total>div{padding:14px 16px;border:1px solid var(--l);border-radius:11px;background:#f4f8fb}.priority-wrap{margin:12px 0 16px;padding:13px;border:1px solid #e1e8ee;border-radius:12px;background:#fff}.priority-head{display:flex;justify-content:space-between;gap:8px;align-items:center;font-weight:800;color:var(--n);margin-bottom:10px}.priority-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}.priority-card{border:1px solid var(--l);border-radius:10px;padding:12px;min-width:0}.priority-card.p1{background:#fff5f5;border-color:#f3c2c2}.priority-card.p2{background:#fff9ed;border-color:#f2d49c}.priority-card.p3{background:#f0faf5;border-color:#bde4d0}.priority-tag{font-size:10px;font-weight:900;letter-spacing:.3px}.p1 .priority-tag,.p1 .priority-value{color:#b42332}.p2 .priority-tag,.p2 .priority-value{color:#a65c00}.p3 .priority-tag,.p3 .priority-value{color:#18764e}.priority-level{font-weight:800;margin:3px 0 8px}.priority-value{font-size:clamp(15px,2vw,21px);font-weight:900;overflow-wrap:anywhere}.priority-meta{font-size:11px;color:var(--m);margin-top:5px}@media(max-width:700px){.repasses-total{grid-template-columns:1fr}.priority-cards{grid-template-columns:1fr}.priority-head{align-items:flex-start;flex-direction:column}}
+/* Ajustes mobile adicionais — navegação e leitura em telas pequenas */
+@media(max-width:760px){
+  html{-webkit-text-size-adjust:100%;scroll-padding-top:150px}
+  body{font-size:14px;line-height:1.5}
+  .shell{display:flex;flex-direction:column;min-height:100dvh}
+  aside{position:sticky;top:0;z-index:30;padding:10px 12px 8px;gap:8px;box-shadow:0 5px 18px rgba(18,52,78,.14)}
+  .brand{align-items:center;gap:10px;padding:2px 3px 8px}
+  .brand h1{font-size:13px;line-height:1.25}
+  .brand p{font-size:10px}
+  .nav{display:flex;gap:6px;overflow-x:auto;overflow-y:hidden;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch;scroll-snap-type:x proximity;padding:2px 1px 5px}
+  .nav button{flex:0 0 auto;scroll-snap-align:start;min-height:42px;padding:10px 12px;touch-action:manipulation}
+  main{padding:14px 12px calc(24px + env(safe-area-inset-bottom,0px));}
+  .top{gap:12px;margin-bottom:13px;padding-bottom:14px}
+  .top h2{font-size:clamp(22px,6vw,29px);line-height:1.16;letter-spacing:-.03em}
+  .sub{font-size:12px}
+  .actions{display:grid;grid-template-columns:1fr 1fr;width:100%;gap:8px}
+  .actions .btn{width:100%;min-height:44px;padding:10px 8px;font-size:12px}
+  .source{padding:14px 12px;border-radius:14px}
+  .source strong{font-size:13px;line-height:1.4}
+  .filters{gap:8px}
+  .filters input,.filters select,.filters .btn,select,input{min-height:44px;font-size:14px}
+  .filters input{min-width:0!important;width:100%}
+  .kpis{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .kpi{min-width:0;min-height:102px;padding:12px 11px;border-radius:13px}
+  .label{font-size:10px;line-height:1.4}
+  .value{font-size:clamp(15px,4.2vw,20px);line-height:1.25;margin:8px 0 5px;letter-spacing:-.025em;overflow-wrap:anywhere}
+  .hint,.tiny{font-size:11px;overflow-wrap:anywhere}
+  .panel{min-width:0;padding:14px 12px;margin-bottom:12px;border-radius:14px}
+  .panel h3{font-size:14px;line-height:1.4}
+  .panel .desc,.desc{font-size:12px;line-height:1.55}
+  .head{gap:8px}
+  .badge{max-width:100%;white-space:normal;line-height:1.35}
+  .grid{grid-template-columns:minmax(0,1fr);gap:11px;margin-bottom:12px}
+  .flow{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .stage{min-width:0;padding:10px}
+  .stage .value{font-size:16px}
+  .donut{gap:14px;padding:4px 0}
+  .ring{width:124px;height:124px}
+  .ring:after{width:72px;height:72px}
+  .legend{font-size:12px;overflow-wrap:anywhere}
+  .scroll{width:100%;max-width:100%;overflow:auto;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch;max-height:min(55dvh,440px);border-radius:10px}
+  table{width:max-content;min-width:100%;font-size:11px;white-space:nowrap}
+  th{font-size:10px;padding:10px}
+  td{padding:10px;max-width:240px}
+  .expense-folders{grid-template-columns:minmax(0,1fr);gap:9px}
+  .expense-folder summary{padding:12px 11px;gap:8px}
+  .expense-folder .folder-name{overflow-wrap:anywhere}
+  .expense-folder .folder-total{font-size:12px}
+  .expense-folder .folder-body{padding:0 9px 10px}
+  .repasses-total{grid-template-columns:minmax(0,1fr);gap:8px}
+  .repasses-total>div{min-width:0;padding:12px}
+  .priority-wrap{padding:10px}
+  .priority-head{gap:7px}
+  .priority-value{font-size:18px;overflow-wrap:anywhere}
+  .alert{padding:11px 12px;font-size:12px;overflow-wrap:anywhere}
+  .foot{gap:8px;line-height:1.5}
+  button,a,select,input,summary{-webkit-tap-highlight-color:transparent}
+}
+@media(max-width:420px){
+  .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .kpi{padding:11px 9px;min-height:98px}
+  .value{font-size:clamp(14px,4vw,17px)}
+  .flow{grid-template-columns:minmax(0,1fr)}
+  .actions{grid-template-columns:minmax(0,1fr)}
+  .nav button{font-size:11px;padding:9px 10px}
+  .expense-folder summary{align-items:flex-start}
+}
+@media(max-width:350px){
+  .kpis{grid-template-columns:minmax(0,1fr)}
+  main{padding-left:10px;padding-right:10px}
+}
+@media(prefers-reduced-motion:reduce){
+  .nav{scroll-behavior:auto}
+}
+</style></head><body><div class="shell"><aside><div class="brand"><div class="mark">IOC</div><div><h1>Painel Financeiro<br><span style="white-space:nowrap">e Orçamentário IOC</span></h1><p>Instituto Oswaldo Cruz</p></div></div><div class="nav" id="nav"></div><div class="side">Transparência e acompanhamento<br>dos dados financeiros do IOC.</div></aside><main><header class="top"><div><div class="ey">Gestão • Finanças • Orçamento</div><h2 id="title">Painel Financeiro&nbsp;e Orçamentário IOC</h2><p class="sub">Instituto Oswaldo Cruz</p></div><div class="actions"><button class="btn" id="refresh">↻ Recarregar dados publicados</button><button class="btn" onclick="print()">⇩ PDF</button></div></header><div class="status" id="status">Carregando dados…</div><section id="overview"><div class="source"><strong>Fonte de recursos e destinação — filtro principal</strong><div class="desc">A seleção recalcula os indicadores e as análises abaixo, sem misturar fontes.</div><div class="filters"><select id="src"><option value="">Todas as fontes</option></select><input id="gq" style="min-width:260px" placeholder="Pesquisar fornecedor, empenho ou natureza…"><button class="btn" id="clear">Limpar</button></div></div><div class="kpis" id="kpis"></div>
 <div class="panel" style="padding:16px;margin-bottom:14px"><div class="head"><div><h3>Indicadores executivos</h3><p class="desc">Indicadores calculados com base nos dados disponíveis. Valide o escopo das comparações antes de tomar decisões.</p></div></div><div class="kpis" id="execIndicators" style="margin-bottom:0"></div></div>
 <div class="panel hide" style="padding:16px;margin-bottom:14px"><div class="head"><div><h3>Integridade das Ordens Bancárias</h3><p class="desc">Conferência por número da OB + fonte pagadora. O mesmo número em fontes diferentes é preservado como registro distinto.</p></div><span class="badge">Controle de duplicidade</span></div><div id="ordersSourcePie"></div></div><div id="integrityAudit" class="hide" aria-hidden="true"></div><div class="grid single"><article class="panel"><div class="head"><div><h3>Termômetro de Restos a Pagar</h3><p class="desc">Valores processados e não processados, com alerta para saldos antigos quando a base permite.</p></div><span class="badge" id="rapb">Verificando</span></div><div id="rap"></div></article></div><div class="grid single"><article class="panel"><h3>Alertas de gestão</h3><p class="desc">São exibidos apenas alertas sustentados pelos campos disponíveis.</p><div id="alerts"></div></article></div><article class="panel hide" style="padding:0;overflow:hidden"><div style="padding:17px"><h3>Resumo das bases</h3><p class="desc">Use o menu lateral para consultar os registros detalhados.</p></div><div class="scroll"><table><thead><tr><th>Demonstrativo</th><th>Registros</th><th>Total</th><th>Origem</th></tr></thead><tbody id="summary"></tbody></table></div></article></section><section id="details" class="hide"><div class="kpis" id="detailKpis"></div><div class="panel"><div class="head"><div><h3 id="detailTitle"></h3><p class="desc" id="detailNote"></p></div><a class="source-link" id="sourceLink" target="_blank">Abrir origem ↗</a></div><div class="filters" style="margin:12px 0"><input id="q" style="min-width:260px" placeholder="Pesquisar…"><select id="field"><option value="">Todos os campos</option></select></div><div id="expenseFolders" class="hide"></div><div class="tiny" id="count"></div><div class="scroll"><table><thead id="thead"></thead><tbody id="tbody"></tbody></table></div></div></section><footer class="foot"><span>Instituto Oswaldo Cruz • Painel Financeiro&nbsp;e Orçamentário IOC</span><span id="updated"></span></footer></main></div><script>
 const F=n=>'R$ '+new Intl.NumberFormat('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2}).format(Number(n)||0),I=n=>new Intl.NumberFormat('pt-BR').format(Number(n)||0),N=v=>{if(typeof v==='number')return Number.isFinite(v)?v:0;let s=String(v??'').trim().replace(/^R\$\s*/,'').replace(/\s/g,'');if(!s)return 0;if(s.includes(','))s=s.replace(/\./g,'').replace(',','.');let n=Number(s);return Number.isFinite(n)?n:0},E=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])),L=s=>String(s??'').toLocaleLowerCase('pt-BR');let data,active='visao',rows=[];
