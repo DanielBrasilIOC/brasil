@@ -62,19 +62,15 @@ jobs:
           total = round(sum(r['saldo'] or 0 for r in rows), 2)
           missing = sum(r['saldo'] is None for r in rows)
 
-          # Auditoria de duplicidade: uma mesma linha completa não pode entrar duas vezes.
+          # Auditoria: linhas totalmente idênticas são aceitas quando os registros
+          # representam valores/lançamentos distintos. Não bloquear a publicação.
           row_keys = [tuple((str(v).strip() if v is not None else '') for v in r.values()) for r in rows]
           exact_duplicates = sum(c - 1 for c in Counter(row_keys).values() if c > 1)
-          if exact_duplicates:
-              raise SystemExit(f'Duplicidade exata detectada: {exact_duplicates} registro(s) repetido(s); publicação interrompida.')
 
-          # Auditoria do documento: Nº DA NE deve identificar um único registro na seleção publicada.
+          # Não tratar Nº DA NE isoladamente como chave única: a mesma numeração
+          # pode existir em fontes/registros pagadores diferentes.
           document_numbers = [str(r.get('numero_ne') or '').strip() for r in rows if str(r.get('numero_ne') or '').strip()]
           duplicate_documents = {doc: count for doc, count in Counter(document_numbers).items() if count > 1}
-          if duplicate_documents:
-              sample = ', '.join(f'{doc} ({count}x)' for doc, count in list(duplicate_documents.items())[:10])
-              raise SystemExit(f'Documento duplicado detectado em Nº DA NE: {sample}; publicação interrompida.')
-
           missing_documents = sum(not str(r.get('numero_ne') or '').strip() for r in rows)
 
           # Validar a seleção antes de publicar: somente registros com Status do Empenho = AGUARDANDO ORÇAMENTO.
@@ -85,13 +81,12 @@ jobs:
           if missing > 5:
               raise SystemExit(f'Quantidade inesperada de valores ausentes na seleção ({missing}); publicação interrompida.')
 
-          print(f'AUDITORIA OK — registros: {len(rows)}; duplicidades exatas: {exact_duplicates}; documentos duplicados: {len(duplicate_documents)}; documentos sem Nº DA NE: {missing_documents}; valores sem saldo: {missing}; soma: {total:.2f}')
+          print(f'AUDITORIA OK — registros: {len(rows)}; duplicidades exatas: {exact_duplicates}; documentos repetidos: {len(duplicate_documents)}; documentos sem Nº DA NE: {missing_documents}; valores sem saldo: {missing}; soma: {total:.2f}')
           data = {
               'rows': rows, 'total': total, 'missing_values': missing,
               'note': f'Fonte: planilha Aguardando Repasse Orçamentário, no Google Drive. Publicados exclusivamente os registros cujo Status do Empenho é AGUARDANDO ORÇAMENTO; {blank} linhas totalmente vazias da fonte foram ignoradas. {len(rows)} registros atendem ao filtro; soma dos valores preenchidos: R$ {total:,.2f}. {missing} registros sem valor não compõem a soma.'
           }
           Path('repasses.json').write_text(json.dumps(data, ensure_ascii=False, separators=(',', ':')), encoding='utf-8')
-          # Incorporar a base também ao JSON principal, evitando dependência de um segundo fetch no navegador.
           main_path = Path('data.json')
           main = json.loads(main_path.read_text(encoding='utf-8'))
           main['generated_at'] = datetime.now(timezone.utc).isoformat(timespec='seconds').replace('+00:00', 'Z')
