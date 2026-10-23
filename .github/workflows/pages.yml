@@ -33,7 +33,7 @@ jobs:
           def norm(value):
               value = unicodedata.normalize('NFKD', str(value or ''))
               value = ''.join(ch for ch in value if not unicodedata.combining(ch))
-              return ''.join(ch for ch in value.upper() if ch.isalnum())
+              return ''.join(ch for ch in value.upper() if ('A' <= ch <= 'Z') or ('0' <= ch <= '9'))
           mapping = {
               "PROCESSO":"processo", "LICITAÇÃO":"licitacao", "FORNECEDOR":"fornecedor",
               "SUB GRUPO":"sub_grupo", "ELEMENTO DE DESPESA":"elemento_despesa",
