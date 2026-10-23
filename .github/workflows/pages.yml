@@ -44,8 +44,6 @@ jobs:
           }
           rows = []
           source_row_keys = []
-          priority_headers_seen = set()
-          ne_headers_seen = set()
           blank = 0
           with open('/tmp/repasses.csv', encoding='utf-8-sig', newline='') as f:
               reader = csv.DictReader(f, delimiter=';')
@@ -54,11 +52,6 @@ jobs:
                       blank += 1
                       continue
                   headers = {norm(h): h for h in raw.keys() if h is not None}
-                  # Localizar cabeçalhos equivalentes mesmo quando a planilha varia a redação.
-                  priority_header = next((h for h in raw.keys() if h is not None and "PRIORIDADE" in norm(h)), None)
-                  ne_header = next((h for h in raw.keys() if h is not None and "NE" in norm(h) and "SOLICITACAO" not in norm(h) and "STATUS" not in norm(h)), None)
-                  if priority_header: priority_headers_seen.add(str(priority_header))
-                  if ne_header: ne_headers_seen.add(str(ne_header))
                   status_header = headers.get(norm('STATUS DO EMPENHO'))
                   status = str(raw.get(status_header) or '').strip() if status_header else ''
                   if norm(status) != norm('AGUARDANDO ORÇAMENTO'):
@@ -71,79 +64,7 @@ jobs:
                       actual_header = headers.get(norm(original))
                       val = str(raw.get(actual_header) or '').strip() if actual_header else ''
                       row[key] = val
-                  if priority_header and not row.get('situacao_prioridade'):
-                      row['situacao_prioridade'] = str(raw.get(priority_header) or '').strip()
-                  if ne_header and not row.get('numero_ne'):
-                      row['numero_ne'] = str(raw.get(ne_header) or '').strip()
-                  raw_value = str(row['saldo'] or '').replace('R$', '').replace(' ', '').replace('.', '').replace(',', '.')
-                  try:
-                      row['saldo'] = float(Decimal(raw_value)) if raw_value else None
-                  except Exception:
-                      row['saldo'] = None
-                  rows.append(row)
-
-          total = round(sum(r['saldo'] or 0 for r in rows), 2)
-          missing = sum(r['saldo'] is None for r in rows)
-
-          # Auditoria: linhas totalmente idênticas são aceitas quando os registros
-          # representam valores/lançamentos distintos. Não bloquear a publicação.
-          exact_duplicates = sum(c - 1 for c in Counter(source_row_keys).values() if c > 1)
-
-          # Não tratar Nº DA NE isoladamente como chave única: a mesma numeração
-          # pode existir em fontes/registros pagadores diferentes.
-          document_numbers = [str(r.get('numero_ne') or '').strip() for r in rows if str(r.get('numero_ne') or '').strip()]
-          duplicate_documents = {doc: count for doc, count in Counter(document_numbers).items() if count > 1}
-          missing_documents = sum(not str(r.get('numero_ne') or '').strip() for r in rows)
-
-          # Validar a seleção antes de publicar: somente registros com Status do Empenho = AGUARDANDO ORÇAMENTO.
-          if not 50 <= len(rows) <= 150:
-              raise SystemExit(f'Quantidade inesperada de registros AGUARDANDO ORÇAMENTO ({len(rows)}); publicação interrompida.')
-          if total < 1500000:
-              raise SystemExit(f'Soma dos registros AGUARDANDO ORÇAMENTO inesperada ({total:.2f}); publicação interrompida.')
-          if missing > 5:
-              raise SystemExit(f'Quantidade inesperada de valores ausentes na seleção ({missing}); publicação interrompida.')
-
-          print(f'AUDITORIA OK — registros: {len(rows)}; duplicidades exatas: {exact_duplicates}; documentos repetidos: {len(duplicate_documents)}; documentos sem Nº DA NE: {missing_documents}; valores sem saldo: {missing}; soma: {total:.2f}')
-          priority_counts = Counter(str(r.get("situacao_prioridade") or "").strip() or "(vazia)" for r in rows)
-          print(f"COLUNAS DE PRIORIDADE ENCONTRADAS: {sorted(priority_headers_seen)}; distribuição: {dict(priority_counts)}")
-          print(f"COLUNAS DE Nº DA NE ENCONTRADAS: {sorted(ne_headers_seen)}")
-          data = {
-              'rows': rows, 'total': total, 'missing_values': missing,
-              'note': f'Fonte: planilha Aguardando Repasse Orçamentário, no Google Drive. Publicados exclusivamente os registros cujo Status do Empenho é AGUARDANDO ORÇAMENTO; {blank} linhas totalmente vazias da fonte foram ignoradas. {len(rows)} registros atendem ao filtro; soma dos valores preenchidos: R$ {total:,.2f}. {missing} registros sem valor não compõem a soma.'
-          }
-          Path('repasses.json').write_text(json.dumps(data, ensure_ascii=False, separators=(',', ':')), encoding='utf-8')
-          main_path = Path('data.json')
-          main = json.loads(main_path.read_text(encoding='utf-8'))
-          main['generated_at'] = datetime.now(timezone.utc).isoformat(timespec='seconds').replace('+00:00', 'Z')
-          for dataset in main.get('datasets', []):
-              if dataset.get('id') == 'repasses':
-                  dataset['rows'] = rows
-                  dataset['total'] = total
-                  dataset['missing_values'] = missing
-                  dataset['detail_count'] = len(rows)
-                  dataset['note'] = data['note']
-                  break
-          else:
-              raise SystemExit('Dataset repasses não encontrado em data.json')
-          main_path.write_text(json.dumps(main, ensure_ascii=False, separators=(',', ':')), encoding='utf-8')
-          print(f"Registros AGUARDANDO ORÇAMENTO publicados: {len(rows)}; sem valor: {missing}; soma: {total:.2f}")
-          PY
-      - name: Configurar GitHub Pages
-        uses: actions/configure-pages@v5
-      - name: Preparar arquivos estáticos do painel
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: "."
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Publicar no GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4, '').replace(' ', '').replace('.', '').replace(',', '.')
+                  raw_value = row['saldo'].replace('R$', '').replace(' ', '').replace('.', '').replace(',', '.')
                   try:
                       row['saldo'] = float(Decimal(raw_value)) if raw_value else None
                   except Exception:
