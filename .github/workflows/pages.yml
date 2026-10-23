@@ -24,11 +24,16 @@ jobs:
         run: |
           curl -fLsS "https://drive.google.com/uc?export=download&id=1ghcBkPmT-IkfWozLZVDdMvMe7eoD2J6k" -o /tmp/repasses.csv
           python - <<'PY'
-          import csv, json
+          import csv, json, unicodedata
           from collections import Counter
           from datetime import datetime, timezone
           from decimal import Decimal
           from pathlib import Path
+
+          def norm(value):
+              value = unicodedata.normalize('NFKD', str(value or ''))
+              value = ''.join(ch for ch in value if not unicodedata.combining(ch))
+              return ''.join(ch for ch in value.upper() if ch.isalnum())
           mapping = {
               "PROCESSO":"processo", "LICITAÇÃO":"licitacao", "FORNECEDOR":"fornecedor",
               "SUB GRUPO":"sub_grupo", "ELEMENTO DE DESPESA":"elemento_despesa",
@@ -38,6 +43,7 @@ jobs:
               "STATUS DO EMPENHO":"status_empenho", "FORNECEDORES":"fornecedores", "VALOR":"saldo"
           }
           rows = []
+          source_row_keys = []
           blank = 0
           with open('/tmp/repasses.csv', encoding='utf-8-sig', newline='') as f:
               reader = csv.DictReader(f, delimiter=';')
@@ -45,12 +51,18 @@ jobs:
                   if not any(str(v or '').strip() for v in raw.values()):
                       blank += 1
                       continue
-                  status = next((str(v or '').strip() for h,v in raw.items() if (h or '').strip().upper() == 'STATUS DO EMPENHO'), '')
-                  if status.upper() != 'AGUARDANDO ORÇAMENTO':
+                  headers = {norm(h): h for h in raw.keys() if h is not None}
+                  status_header = headers.get(norm('STATUS DO EMPENHO'))
+                  status = str(raw.get(status_header) or '').strip() if status_header else ''
+                  if norm(status) != norm('AGUARDANDO ORÇAMENTO'):
                       continue
+                  # Auditoria de duplicidade usa TODAS as colunas originais da fonte,
+                  # não apenas os campos exibidos no painel.
+                  source_row_keys.append(tuple((norm(h), str(raw.get(h) or '').strip()) for h in reader.fieldnames or []))
                   row = {}
                   for original, key in mapping.items():
-                      val = next((str(v or '').strip() for h,v in raw.items() if (h or '').strip().upper() == original), '')
+                      actual_header = headers.get(norm(original))
+                      val = str(raw.get(actual_header) or '').strip() if actual_header else ''
                       row[key] = val
                   raw_value = row['saldo'].replace('R$', '').replace(' ', '').replace('.', '').replace(',', '.')
                   try:
@@ -64,8 +76,7 @@ jobs:
 
           # Auditoria: linhas totalmente idênticas são aceitas quando os registros
           # representam valores/lançamentos distintos. Não bloquear a publicação.
-          row_keys = [tuple((str(v).strip() if v is not None else '') for v in r.values()) for r in rows]
-          exact_duplicates = sum(c - 1 for c in Counter(row_keys).values() if c > 1)
+          exact_duplicates = sum(c - 1 for c in Counter(source_row_keys).values() if c > 1)
 
           # Não tratar Nº DA NE isoladamente como chave única: a mesma numeração
           # pode existir em fontes/registros pagadores diferentes.
