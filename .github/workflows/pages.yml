@@ -118,7 +118,7 @@ jobs:
         run: |
           curl -fLsS "https://drive.google.com/uc?export=download&id=1lRYujrJRv7ZPam-lYVB2CxCg_WEMbraC" -o /tmp/ordens.csv
           python - <<'PY'
-          import csv, json, re
+          import csv, json
           from datetime import datetime, timezone
           from decimal import Decimal
           from pathlib import Path
@@ -139,71 +139,38 @@ jobs:
       - name: Publicar no GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4, '').replace(' ', '').strip()
-              if not value:
-                  return None
+              if not value: return None
               value = value.replace('.', '').replace(',', '.')
-              try:
-                  return float(Decimal(value))
-              except Exception:
-                  return None
+              try: return float(Decimal(value))
+              except Exception: return None
 
-          # O relatório SIAFI contém título, filtro e linhas em branco antes do cabeçalho.
           with open('/tmp/ordens.csv', encoding='cp1252', newline='') as f:
               reader = csv.reader(f)
-              for _ in range(4):
-                  next(reader, None)
+              for _ in range(4): next(reader, None)
               header = next(reader, None)
               if not header or len(header) < 12 or 'Ordem Bancária' not in header[2]:
-                  raise SystemExit(f'Cabeçalho inesperado no relatório de ordens bancárias: {header}')
-              rows = []
-              missing_values = 0
+                  raise SystemExit('Cabeçalho inesperado no relatório de ordens bancárias')
+              rows, missing_values = [], 0
               for raw in reader:
-                  if len(raw) < 12 or not any(str(v or '').strip() for v in raw):
-                      continue
+                  if len(raw) < 12 or not any(str(v or '').strip() for v in raw): continue
                   ob = str(raw[2] or '').strip()
-                  if not ob or ob == '-9':
-                      continue
+                  if not ob or ob == '-9': continue
                   valor = money(raw[10])
-                  if valor is None:
-                      missing_values += 1
-                  rows.append({
-                      'uge': str(raw[0] or '').strip(),
-                      'unidade': str(raw[1] or '').strip(),
-                      'ob': ob,
-                      'data': str(raw[3] or '').strip(),
-                      'cnpj': str(raw[4] or '').strip(),
-                      'favorecido': str(raw[5] or '').strip(),
-                      'processo': str(raw[6] or '').strip(),
-                      'fonte': str(raw[7] or '').strip(),
-                      'descricao_fonte': str(raw[8] or '').strip(),
-                      'observacao': str(raw[9] or '').strip(),
-                      'valor': valor,
-                      'movimentacao_liquida': money(raw[11])
-                  })
-
-          if not 500 <= len(rows) <= 2000:
-              raise SystemExit(f'Quantidade inesperada de ordens bancárias ({len(rows)}); publicação interrompida.')
-          if missing_values > 5:
-              raise SystemExit(f'Quantidade inesperada de valores inválidos ({missing_values}); publicação interrompida.')
-
+                  if valor is None: missing_values += 1
+                  rows.append({'uge':str(raw[0] or '').strip(),'unidade':str(raw[1] or '').strip(),'ob':ob,'data':str(raw[3] or '').strip(),'cnpj':str(raw[4] or '').strip(),'favorecido':str(raw[5] or '').strip(),'processo':str(raw[6] or '').strip(),'fonte':str(raw[7] or '').strip(),'descricao_fonte':str(raw[8] or '').strip(),'observacao':str(raw[9] or '').strip(),'valor':valor,'movimentacao_liquida':money(raw[11])})
+          if not 500 <= len(rows) <= 2000: raise SystemExit('Quantidade inesperada de ordens bancárias: ' + str(len(rows)))
+          if missing_values > 5: raise SystemExit('Valores inválidos demais: ' + str(missing_values))
           total = round(sum(r['valor'] or 0 for r in rows), 2)
-          # Não deduplicar apenas pelo número da OB: fontes pagadoras/registros distintos devem permanecer.
-          data_path = Path('data.json')
-          main = json.loads(data_path.read_text(encoding='utf-8'))
+          path = Path('data.json'); main = json.loads(path.read_text(encoding='utf-8'))
           main['generated_at'] = datetime.now(timezone.utc).isoformat(timespec='seconds').replace('+00:00', 'Z')
-          for dataset in main.get('datasets', []):
-              if dataset.get('id') == 'ordens_bancarias':
-                  dataset['rows'] = rows
-                  dataset['total'] = total
-                  dataset['detail_count'] = len(rows)
-                  dataset['note'] = f'Fonte: relatório ORDEM BANCARIAS EMITIDAS do Google Drive; registros importados sem deduplicar apenas pelo número da OB. {len(rows)} registros; {missing_values} valores ausentes ou inválidos não compõem a soma. Total Doc - Valor: R$ {total:,.2f}.'
+          for d in main.get('datasets', []):
+              if d.get('id') == 'ordens_bancarias':
+                  d['rows'], d['total'], d['detail_count'] = rows, total, len(rows)
+                  d['note'] = 'Fonte: relatório ORDEM BANCARIAS EMITIDAS do Google Drive; registros importados sem deduplicar apenas pelo número da OB. ' + str(len(rows)) + ' registros; ' + str(missing_values) + ' valores ausentes/inválidos não compõem a soma. Total Doc - Valor: R$ ' + format(total, ',.2f')
                   break
-          else:
-              raise SystemExit('Dataset ordens_bancarias não encontrado em data.json')
-
-          # O dataset de publicações pagas compartilha a fonte, mas é um recorte separado; não o alterar aqui.
-          data_path.write_text(json.dumps(main, ensure_ascii=False, separators=(',', ':')), encoding='utf-8')
-          print(f'ORDENS BANCÁRIAS OK — registros: {len(rows)}; valores ausentes/inválidos: {missing_values}; total Doc - Valor: {total:.2f}')
+          else: raise SystemExit('Dataset ordens_bancarias não encontrado em data.json')
+          path.write_text(json.dumps(main, ensure_ascii=False, separators=(',', ':')), encoding='utf-8')
+          print('ORDENS BANCÁRIAS OK — registros: ' + str(len(rows)) + '; valores inválidos: ' + str(missing_values) + '; total: ' + str(total))
           PY
       - name: Configurar GitHub Pages
         uses: actions/configure-pages@v5
