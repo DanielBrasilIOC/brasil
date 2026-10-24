@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Sincroniza as seis fontes CSV do Drive, valida os dados e atualiza data.json."""
-import csv, io, json, re, unicodedata, urllib.request
+import csv, hashlib, io, json, os, re, unicodedata, urllib.request
 from datetime import datetime, timezone
 from decimal import Decimal, InvalidOperation
 from pathlib import Path
@@ -8,6 +8,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 DATA_PATH = ROOT / "data.json"
 REPASSES_PATH = ROOT / "repasses.json"
+STATE_PATH = ROOT / "source_state.json"
 SOURCES = {
     "empenhos": "137jwUw2WB_LUvnQef6waE8ASKQEvzhup",
     "orcamentario": "1k3dZ890WgqGVSCZLwCxGPLikMutTlOfN",
@@ -129,18 +130,45 @@ def main():
     data=json.loads(DATA_PATH.read_text(encoding="utf-8"))
     ds={d.get("id"):d for d in data.get("datasets",[])}
     check(all(k in ds for k in updates),"Dataset esperado ausente em data.json")
+
+    # Compara o conteúdo bruto das seis fontes e os dados derivados do painel.
+    # O estado só é persistido depois de uma publicação bem-sucedida pelo workflow.
+    source_hashes={k:hashlib.sha256(v.encode("utf-8")).hexdigest() for k,v in src.items()}
+    previous_state=json.loads(STATE_PATH.read_text(encoding="utf-8")) if STATE_PATH.exists() else {}
+    source_changed=source_hashes != previous_state.get("hashes",{})
+    dataset_changed=any(
+        ds[k].get("rows") != rows or ds[k].get("total") != amount or
+        ds[k].get("detail_count") != len(rows)
+        for k,(rows,amount) in updates.items()
+    )
+    rep_data={"rows":rep,"total":tr,"missing_values":mr,
+              "note":"Registros filtrados por Status do Empenho = AGUARDANDO ORÇAMENTO."}
+    old_rep=json.loads(REPASSES_PATH.read_text(encoding="utf-8")) if REPASSES_PATH.exists() else {}
+    repasses_changed=any(old_rep.get(k) != rep_data.get(k) for k in ("rows","total","missing_values","note"))
+    changed=source_changed or dataset_changed or repasses_changed
+
+    if "GITHUB_OUTPUT" in os.environ:
+        with open(os.environ["GITHUB_OUTPUT"],"a",encoding="utf-8") as out:
+            out.write("changed="+("true" if changed else "false")+"\\n")
+    if not changed:
+        print(json.dumps({"status":"SEM_ALTERACOES","changed":False,
+          "generated_at":data.get("generated_at"),"fontes_alteradas":[],
+          "mensagem":"As seis fontes foram lidas e validadas; nenhum conteúdo mudou."},ensure_ascii=False))
+        return
+
+    changed_sources=[k for k in source_hashes if source_hashes.get(k) != previous_state.get("hashes",{}).get(k)]
     stamp=datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00","Z")
     for k,(rows,amount) in updates.items():
         ds[k]["rows"]=rows; ds[k]["total"]=amount; ds[k]["detail_count"]=len(rows)
     ds["repasses"]["missing_values"]=mr
     ds["repasses"]["note"]="Fonte: Google Drive. Inclui somente Status do Empenho = AGUARDANDO ORÇAMENTO."
     data["generated_at"]=stamp
-    rep_data={"rows":rep,"total":tr,"missing_values":mr,
-              "note":"Registros filtrados por Status do Empenho = AGUARDANDO ORÇAMENTO."}
     # Nenhum arquivo de saída é alterado até que todas as seis fontes passem nas validações.
     DATA_PATH.write_text(json.dumps(data,ensure_ascii=False,separators=(",",":")),encoding="utf-8")
     REPASSES_PATH.write_text(json.dumps(rep_data,ensure_ascii=False,separators=(",",":")),encoding="utf-8")
-    print(json.dumps({"status":"VALIDADO","generated_at":stamp,"fontes":{
+    STATE_PATH.write_text(json.dumps({"hashes":source_hashes},ensure_ascii=False,separators=(",",":")),encoding="utf-8")
+    print(json.dumps({"status":"ATUALIZADO","changed":True,"generated_at":stamp,
+      "fontes_alteradas":changed_sources,"fontes":{
       "financeiro":{"registros":len(fin),"total":tf},"restos":{"registros":len(rap),"total":trp},
       "empenhos":{"registros":len(empenhos),"total":te},"orcamentario":{"registros":len(orc),"total":to},
       "repasses":{"registros":len(rep),"total":tr},"ordens_bancarias":{"registros":len(ob),"total_doc_valor":tob}
