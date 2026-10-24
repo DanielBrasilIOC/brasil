@@ -3,6 +3,8 @@ name: Publicar Painel Financeiro e Orçamentário IOC
 on:
   push:
     branches: ["main"]
+    paths-ignore:
+      - "source_state.json"
   schedule:
     # GitHub Actions aceita agendamento periódico com intervalo mínimo de 5 minutos.
     - cron: "*/5 * * * *"
@@ -19,6 +21,8 @@ concurrency:
 
 jobs:
   build:
+    outputs:
+      data_changed: ${{ steps.sync.outputs.changed }}
     runs-on: ubuntu-latest
     steps:
       - name: Baixar o repositório
@@ -28,7 +32,15 @@ jobs:
         with:
           python-version: "3.12"
       - name: Sincronizar e validar as seis fontes do Google Drive
+        id: sync
         run: python .github/scripts/sync_sources.py
+      - name: Guardar estado das fontes para persistir após publicação
+        if: steps.sync.outputs.changed == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: source-state
+          path: source_state.json
+          if-no-files-found: error
       - name: Configurar GitHub Pages
         uses: actions/configure-pages@v5
       - name: Preparar arquivos estáticos do painel
@@ -36,6 +48,7 @@ jobs:
         with:
           path: "."
   deploy:
+    if: needs.build.outputs.data_changed == 'true' || github.event_name != 'schedule'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -45,3 +58,30 @@ jobs:
       - name: Publicar no GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+  persist-source-state:
+    if: needs.build.outputs.data_changed == 'true' && needs.deploy.result == 'success'
+    needs: [build, deploy]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Baixar o repositório
+        uses: actions/checkout@v4
+      - name: Recuperar estado validado das fontes
+        uses: actions/download-artifact@v4
+        with:
+          name: source-state
+          path: .state-artifact
+      - name: Persistir hashes das fontes sem armazenar dados financeiros
+        run: |
+          cp .state-artifact/source_state.json source_state.json
+          if git diff --quiet -- source_state.json; then
+            echo "Estado das fontes já está atualizado."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add source_state.json
+          git commit -m "Atualizar estado de sincronização das fontes [skip ci]"
+          git push
