@@ -14,7 +14,7 @@ SOURCES = {
     "orcamentario": "1k3dZ890WgqGVSCZLwCxGPLikMutTlOfN",
     "ordens_bancarias": "1lRYujrJRv7ZPam-lYVB2CxCg_WEMbraC",
     "repasses": "1ghcBkPmT-IkfWozLZVDdMvMe7eoD2J6k",
-    "financeiro": "1ktsiJGTRiWZf83uu5tKtNmErKyAbqyfo",
+    "financeiro": "1p4PyHEkV5YzIljLeMsHopulzN55yQMqzS6fk56STdEk",
     "restos": "1zzxhemDKryzolkykFSw3JXph1YcQ2pUj",
 }
 MOJI = {"Ã‡":"Ç","Ãƒ":"Ã","Ã‰":"É","Ã“":"Ó","Ãš":"Ú","Ã£":"ã","Ã§":"ç",
@@ -41,8 +41,12 @@ def money(v):
     return float(-abs(n) if neg else n)
 
 def download(file_id):
-    req=urllib.request.Request("https://drive.google.com/uc?export=download&id="+file_id,
-                               headers={"User-Agent":"IOC-Dashboard-Sync/1.0"})
+    if file_id == SOURCES["financeiro"]:
+        # Usa a planilha Google Sheets atual, não a cópia CSV desatualizada.
+        url = "https://docs.google.com/spreadsheets/d/" + file_id + "/export?format=csv&gid=1275876733"
+    else:
+        url = "https://drive.google.com/uc?export=download&id=" + file_id
+    req=urllib.request.Request(url, headers={"User-Agent":"IOC-Dashboard-Sync/1.0"})
     with urllib.request.urlopen(req,timeout=45) as r: b=r.read()
     try: s=b.decode("utf-8-sig")
     except UnicodeDecodeError: s=b.decode("cp1252",errors="replace")
