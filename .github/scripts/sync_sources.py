@@ -149,7 +149,7 @@ def main():
 
     if "GITHUB_OUTPUT" in os.environ:
         with open(os.environ["GITHUB_OUTPUT"],"a",encoding="utf-8") as out:
-            out.write("changed="+("true" if changed else "false")+"\\n")
+            out.write("changed="+("true" if changed else "false")+"\n")
     if not changed:
         print(json.dumps({"status":"SEM_ALTERACOES","changed":False,
           "generated_at":data.get("generated_at"),"fontes_alteradas":[],
