@@ -1,4 +1,5 @@
 name: Publicar Painel Financeiro e Orçamentário IOC
+# Atualização manual solicitada em 24/10/2026
 
 on:
   push:
