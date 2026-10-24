@@ -76,7 +76,7 @@ jobs:
       - name: Persistir hashes das fontes sem armazenar dados financeiros
         run: |
           cp .state-artifact/source_state.json source_state.json
-          if git diff --quiet -- source_state.json; then
+          if [ -z "$(git status --porcelain -- source_state.json)" ]; then
             echo "Estado das fontes já está atualizado."
             exit 0
           fi
