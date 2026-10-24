@@ -144,7 +144,7 @@ def main():
         ds[k].get("rows") != rows or ds[k].get("total") != amount or
         ds[k].get("detail_count") != len(rows)
         for k,(rows,amount) in updates.items()
-    )
+    ) or ds["financeiro"].get("source_name") != "Saldo Financeiro" or ds["financeiro"].get("source_url") != "https://docs.google.com/spreadsheets/d/" + SOURCES["financeiro"] + "/edit"
     rep_data={"rows":rep,"total":tr,"missing_values":mr,
               "note":"Registros filtrados por Status do Empenho = AGUARDANDO ORÇAMENTO."}
     old_rep=json.loads(REPASSES_PATH.read_text(encoding="utf-8")) if REPASSES_PATH.exists() else {}
@@ -164,6 +164,8 @@ def main():
     stamp=datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00","Z")
     for k,(rows,amount) in updates.items():
         ds[k]["rows"]=rows; ds[k]["total"]=amount; ds[k]["detail_count"]=len(rows)
+    ds["financeiro"]["source_name"]="Saldo Financeiro"
+    ds["financeiro"]["source_url"]="https://docs.google.com/spreadsheets/d/" + SOURCES["financeiro"] + "/edit"
     ds["repasses"]["missing_values"]=mr
     ds["repasses"]["note"]="Fonte: Google Drive. Inclui somente Status do Empenho = AGUARDANDO ORÇAMENTO."
     data["generated_at"]=stamp
