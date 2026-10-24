@@ -1055,7 +1055,7 @@
       "title": "Saldo Orçamentário",
       "short": "Orçamentário",
       "total": 998541.21,
-      "detail_count": 13,
+      "detail_count": 14,
       "source_name": "Saldo Orçamentário.csv",
       "source_url": "https://drive.google.com/file/d/1k3dZ890WgqGVSCZLwCxGPLikMutTlOfN/view?usp=drive_link",
       "note": "Fonte oficial: arquivo Saldo Orçamentário.csv no Google Drive. Relatório SIAFI, conta contábil 622110000, ano 2026, UG executora 254463. Valores negativos da extração original são exibidos como saldo positivo disponível conforme regra de apresentação previamente autorizada. 13 registros detalhados (incluindo 4 com saldo zero); chave composta UG + PTRES + Fonte + Natureza + UG Responsável + PI sem duplicidades. Total: R$ 998.541,21.",
@@ -1239,6 +1239,20 @@
           "ug_responsavel": "254427",
           "responsavel": "INSTITUTO OSWALDO CRUZ",
           "pi": "A1IOC",
+          "programa": "INST OSWALDO CRUZ",
+          "saldo": 0
+        },
+        {
+          "ug": "254463",
+          "unidade": "INSTITUTO OSWALDO CRUZ",
+          "ptres": "250316",
+          "fonte": "1001000000",
+          "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
+          "natureza_codigo": "339039-9",
+          "natureza": "NAO SE APLICA",
+          "ug_responsavel": "254427",
+          "responsavel": "INSTITUTO OSWALDO CRUZ",
+          "pi": "A1CTB",
           "programa": "INST OSWALDO CRUZ",
           "saldo": 0
         }
