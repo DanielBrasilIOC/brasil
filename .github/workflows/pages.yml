@@ -6,8 +6,9 @@ on:
     paths-ignore:
       - "source_state.json"
   schedule:
-    # Sincroniza as seis fontes a cada seis horas (UTC).
-    - cron: "0 */6 * * *"
+    # A cada 6 horas; horários em Brasília: 09h, 15h, 21h e 03h.
+    # GitHub Actions interpreta o cron em UTC: 12h, 18h, 00h e 06h.
+    - cron: "0 0,6,12,18 * * *"
   workflow_dispatch:
 
 permissions:
