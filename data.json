@@ -2953,7 +2953,7 @@
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "12 - CANCELAMENTO DA 2026OB000091 - POR DOMICILIO BANCARIO INEXISTENTE",
           "valor": 8567.65,
-          "movimentacao_liquida": 0,
+          "movimentacao_liquida": -8567.65,
           "data_pagamento": "02/03/2026"
         },
         {
@@ -7108,7 +7108,7 @@
           "descricao_fonte": "REC.LIVRES SEG.SOCIAL",
           "observacao": "12 - CANCELAMENTO DA 2026OB000334 - POR DOMICILIO BANCARIO INEXISTENTE",
           "valor": 1666.6,
-          "movimentacao_liquida": 0,
+          "movimentacao_liquida": -1666.6,
           "data_pagamento": "09/06/2026"
         },
         {
