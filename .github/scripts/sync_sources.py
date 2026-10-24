@@ -44,7 +44,7 @@ def download(file_id):
                                headers={"User-Agent":"IOC-Dashboard-Sync/1.0"})
     with urllib.request.urlopen(req,timeout=45) as r: b=r.read()
     try: s=b.decode("utf-8-sig")
-    except UnicodeDecodeError: s=b.decode("cp1252")
+    except UnicodeDecodeError: s=b.decode("cp1252",errors="replace")
     # Alguns relatórios SIAFI guardam delimitadores/caracteres como sequências escapadas.
     s=s.replace(r"\t","\t").replace(r'\"','"')
     s=re.sub(r"\\x([0-9a-fA-F]{2})",lambda m:chr(int(m.group(1),16)),s)
