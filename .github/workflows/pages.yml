@@ -4,8 +4,8 @@ on:
   push:
     branches: ["main"]
   schedule:
-    # Verifica as fontes do Drive a cada 15 minutos.
-    - cron: "*/15 * * * *"
+    # GitHub Actions aceita agendamento periódico com intervalo mínimo de 5 minutos.
+    - cron: "*/5 * * * *"
   workflow_dispatch:
 
 permissions:
