@@ -1,9 +1,5 @@
 #!/usr/bin/env python3
-"""Executa a sincronização do dashboard e registra uma trilha de auditoria CSV.
-
-A auditoria é gravada mesmo quando não há alteração e também quando a sincronização
-falha. O CSV é compatível com Excel/Google Sheets e fica versionado no repositório.
-"""
+"""Executa a sincronização do dashboard e registra uma trilha de auditoria CSV."""
 import csv
 import json
 import os
@@ -16,7 +12,6 @@ SYNC = ROOT / ".github" / "scripts" / "sync_sources.py"
 STATE = ROOT / "source_state.json"
 DATA = ROOT / "data.json"
 LOG = ROOT / "logs" / "atualizacoes_dashboard.csv"
-
 SOURCES = {
     "empenhos": "137jwUw2WB_LUvnQef6waE8ASKQEvzhup",
     "orcamentario": "1k3dZ890WgqGVSCZLwCxGPLikMutTlOfN",
@@ -26,19 +21,12 @@ SOURCES = {
     "restos": "1zzxhemDKryzolkykFSw3JXph1YcQ2pUj",
 }
 LABELS = {
-    "empenhos": "Empenhos",
-    "orcamentario": "Orçamentário",
-    "ordens_bancarias": "Ordens Bancárias",
-    "repasses": "Repasses",
-    "financeiro": "Financeiro",
-    "restos": "Restos a Pagar",
+    "empenhos": "Empenhos", "orcamentario": "Orçamentário",
+    "ordens_bancarias": "Ordens Bancárias", "repasses": "Repasses",
+    "financeiro": "Financeiro", "restos": "Restos a Pagar",
 }
-FIELDS = [
-    "timestamp_utc", "run_id", "evento", "resultado_execucao", "fonte", "fonte_id",
-    "conteudo_alterado", "registros", "total", "dashboard_atualizado",
-    "publicacao", "mensagem"
-]
-
+FIELDS = ["timestamp_utc", "run_id", "evento", "resultado_execucao", "fonte", "fonte_id",
+          "conteudo_alterado", "registros", "total", "dashboard_atualizado", "publicacao", "mensagem"]
 
 def read_json(path, default):
     try:
@@ -46,18 +34,12 @@ def read_json(path, default):
     except Exception:
         return default
 
-
 def old_hashes():
     state = read_json(STATE, {})
     return state.get("hashes", {}) if isinstance(state, dict) else {}
 
-
 def run_sync():
-    env = os.environ.copy()
-    proc = subprocess.run(
-        ["python", str(SYNC)], cwd=ROOT, env=env,
-        text=True, capture_output=True
-    )
+    proc = subprocess.run(["python", str(SYNC)], cwd=ROOT, env=os.environ.copy(), text=True, capture_output=True)
     output = (proc.stdout or "").strip()
     error = (proc.stderr or "").strip()
     parsed = {}
@@ -68,19 +50,14 @@ def run_sync():
                 parsed = candidate
                 break
         except Exception:
-            continue
+            pass
     return proc.returncode, parsed, output, error
-
 
 def source_details(data, name):
     datasets = {d.get("id"): d for d in data.get("datasets", [])}
     d = datasets.get(name, {})
     rows = d.get("rows", [])
-    total = d.get("total", "")
-    if not isinstance(rows, list):
-        rows = []
-    return len(rows), total
-
+    return (len(rows) if isinstance(rows, list) else 0), d.get("total", "")
 
 def append_rows(rows):
     LOG.parent.mkdir(parents=True, exist_ok=True)
@@ -91,88 +68,62 @@ def append_rows(rows):
             writer.writeheader()
         writer.writerows(rows)
 
+def output_values(changed, sync_ok):
+    path = os.environ.get("GITHUB_OUTPUT")
+    if not path:
+        return
+    with open(path, "a", encoding="utf-8") as out:
+        out.write("changed=" + ("true" if changed else "false") + "\n")
+        out.write("sync_ok=" + ("true" if sync_ok else "false") + "\n")
 
 def main():
     timestamp = datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")
     run_id = os.getenv("GITHUB_RUN_ID", "manual")
     event = os.getenv("GITHUB_EVENT_NAME", "manual")
     before = old_hashes()
-
     code, result, stdout, stderr = run_sync()
     after = old_hashes()
     data = read_json(DATA, {})
-    changed = result.get("changed") if result else False
+    sync_ok = code == 0 and result.get("status") in {"SEM_ALTERACOES", "ATUALIZADO"}
+    changed = bool(result.get("changed")) if sync_ok else False
     changed_sources = [k for k, v in after.items() if v != before.get(k)]
 
-    if code == 0 and result.get("status") in {"SEM_ALTERACOES", "ATUALIZADO"}:
+    if sync_ok:
         execution = result.get("status", "OK")
         message = result.get("mensagem", "Sincronização concluída.")
         dashboard_updated = "SIM" if changed else "NÃO"
-        publication = "AGUARDANDO PUBLICAÇÃO" if changed else "NÃO NECESSÁRIA"
-        if changed:
-            publication = "PUBLICAÇÃO PROGRAMADA"
+        publication = "PUBLICAÇÃO PROGRAMADA" if changed else "NÃO NECESSÁRIA"
     else:
         execution = "FALHA"
-        changed = False
+        message = (stderr or stdout or "Falha sem mensagem registrada.").replace("\n", " ")[-1000:]
         dashboard_updated = "NÃO"
         publication = "NÃO PUBLICADO"
-        message = (stderr or stdout or "Falha sem mensagem registrada.").replace("\n", " ")[-1000:]
 
     rows = []
     for name, file_id in SOURCES.items():
         count, total = source_details(data, name)
         rows.append({
-            "timestamp_utc": timestamp,
-            "run_id": run_id,
-            "evento": event,
-            "resultado_execucao": execution,
-            "fonte": LABELS[name],
-            "fonte_id": file_id,
+            "timestamp_utc": timestamp, "run_id": run_id, "evento": event,
+            "resultado_execucao": execution, "fonte": LABELS[name], "fonte_id": file_id,
             "conteudo_alterado": "SIM" if name in changed_sources else "NÃO",
-            "registros": count,
-            "total": total,
-            "dashboard_atualizado": dashboard_updated,
-            "publicacao": publication,
-            "mensagem": message,
+            "registros": count, "total": total, "dashboard_atualizado": dashboard_updated,
+            "publicacao": publication, "mensagem": message,
         })
-
-    # Linha-resumo: facilita filtros e auditoria sem perder o detalhe por fonte.
     rows.append({
-        "timestamp_utc": timestamp,
-        "run_id": run_id,
-        "evento": event,
-        "resultado_execucao": execution,
-        "fonte": "RESUMO DA EXECUÇÃO",
-        "fonte_id": "",
+        "timestamp_utc": timestamp, "run_id": run_id, "evento": event,
+        "resultado_execucao": execution, "fonte": "RESUMO DA EXECUÇÃO", "fonte_id": "",
         "conteudo_alterado": "SIM" if changed_sources else "NÃO",
-        "registros": sum(source_details(data, n)[0] for n in SOURCES),
-        "total": "",
-        "dashboard_atualizado": dashboard_updated,
-        "publicacao": publication,
-        "mensagem": (
-            f"Fontes alteradas: {', '.join(changed_sources) if changed_sources else 'nenhuma'}. "
-            f"Status do sincronizador: {execution}."
-        ),
+        "registros": sum(source_details(data, n)[0] for n in SOURCES), "total": "",
+        "dashboard_atualizado": dashboard_updated, "publicacao": publication,
+        "mensagem": f"Fontes alteradas: {', '.join(changed_sources) if changed_sources else 'nenhuma'}. Status: {execution}.",
     })
     append_rows(rows)
-
-    # O workflow precisa continuar para publicar o log, inclusive quando não houve mudança.
-    print(json.dumps({
-        "audit": "REGISTRADA",
-        "status": execution,
-        "changed": bool(changed),
-        "fontes_alteradas": changed_sources,
-        "log": str(LOG.relative_to(ROOT)),
-    }, ensure_ascii=False))
-    if code != 0:
-        # A falha já foi registrada; sinalizamos ao workflow sem impedir a persistência do log.
-        with open(os.environ.get("GITHUB_OUTPUT", os.devnull), "a", encoding="utf-8") as out:
-            out.write("changed=false\n")
-        return 0
-    with open(os.environ.get("GITHUB_OUTPUT", os.devnull), "a", encoding="utf-8") as out:
-        out.write("changed=" + ("true" if changed else "false") + "\n")
+    output_values(changed, sync_ok)
+    print(json.dumps({"audit": "REGISTRADA", "status": execution, "changed": changed,
+                      "sync_ok": sync_ok, "fontes_alteradas": changed_sources,
+                      "log": str(LOG.relative_to(ROOT))}, ensure_ascii=False))
+    # A falha fica registrada e não deve permitir publicação de dados possivelmente desatualizados.
     return 0
-
 
 if __name__ == "__main__":
     raise SystemExit(main())
