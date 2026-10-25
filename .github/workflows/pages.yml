@@ -7,7 +7,7 @@ on:
       - "source_state.json"
       - "logs/atualizacoes_dashboard.csv"
   schedule:
-    - cron: "0 0,6,12,18 * * *"
+    - cron: "*/5 * * * *"
   workflow_dispatch:
 
 permissions:
@@ -17,7 +17,7 @@ permissions:
 
 concurrency:
   group: "pages-saorc-hotfix"
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   build:
