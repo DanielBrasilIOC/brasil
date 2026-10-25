@@ -80,7 +80,7 @@ tbody tr:hover{background:#f0f7f8}
 @media(max-width:980px){#ordersSourcePie .orders-pie-layout{grid-template-columns:minmax(0,1fr)!important;gap:14px!important}#ordersSourcePie .orders-pie-layout>div:first-child svg{max-width:250px!important}#ordersSourcePie .orders-pie-layout>div:last-child{width:100%;max-width:none}}@media(max-width:760px){.shell{display:block}aside{position:relative;height:auto;overflow:visible;padding:13px 14px 11px;gap:12px}.brand{padding:2px 4px 12px;border-bottom:0}.mark{width:40px;height:40px;flex-basis:40px}.brand h1 br{display:none}.brand h1{font-size:14px}.brand p{margin:3px 0 0}.nav{display:flex;overflow-x:auto;padding:2px 1px 5px;scrollbar-width:thin}.nav button{flex:0 0 auto;min-height:38px;padding:9px 11px;font-size:11px}.nav button:hover{transform:none}.side{display:none}main{padding:20px 13px 18px}.top{align-items:flex-start;flex-direction:column;padding-bottom:15px}.actions{width:100%}.actions .btn{flex:1}.source{padding:15px}.kpis{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.kpi{padding:13px;min-height:108px}.value{font-size:clamp(16px,4vw,21px)}.panel{padding:15px;border-radius:14px}.head{align-items:flex-start;flex-direction:column;gap:8px}.grid{grid-template-columns:minmax(0,1fr);gap:12px}.flow{grid-template-columns:repeat(2,minmax(0,1fr))}.donut{flex-direction:column;align-items:center}.legend{width:100%}#ordersSourcePie>div{grid-template-columns:minmax(0,1fr)!important}#ordersSourcePie svg{max-width:250px!important}.filters>*{width:100%;min-width:0!important}.scroll{max-height:360px}table{font-size:11px}th,td{padding:10px}#details .panel>.head{padding:16px 15px 0}#details .filters,#details .tiny{padding-left:15px;padding-right:15px}}
 @media(max-width:420px){.kpis{grid-template-columns:minmax(0,1fr)}.flow{grid-template-columns:minmax(0,1fr)}.value{font-size:22px}.actions{gap:7px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important}}
-@media print{body{background:#fff}.shell{display:block}aside{display:none}main{max-width:none;padding:0}.top{border-bottom:1px solid #ccc}.actions,#nav,.filters,.status{display:none!important}.panel,.kpi{box-shadow:none;break-inside:avoid;border-color:#ddd}.grid{grid-template-columns:1fr 1fr}.scroll{max-height:none;overflow:visible}th{position:static}.foot{color:#555}}
+@media print{body{background:#fff}.shell{display:block}aside{display:none}main{max-width:none;padding:0}.top{border-bottom:1px solid #ccc}.actions,#nav,.filters,.status{display:block!important}.panel,.kpi{box-shadow:none;break-inside:avoid;border-color:#ddd}.grid{grid-template-columns:1fr 1fr}.scroll{max-height:none;overflow:visible}th{position:static}.foot{color:#555}}
 
 .status{display:none!important}
 .repasses-total{display:grid;grid-template-columns:2fr 1fr;gap:10px;margin:14px 0}.repasses-total>div{padding:14px 16px;border:1px solid var(--l);border-radius:11px;background:#f4f8fb}.priority-wrap{margin:12px 0 16px;padding:13px;border:1px solid #e1e8ee;border-radius:12px;background:#fff}.priority-head{display:flex;justify-content:space-between;gap:8px;align-items:center;font-weight:800;color:var(--n);margin-bottom:10px}.priority-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}.priority-card{border:1px solid var(--l);border-radius:10px;padding:12px;min-width:0}.priority-card.p1{background:#fff5f5;border-color:#f3c2c2}.priority-card.p2{background:#fff9ed;border-color:#f2d49c}.priority-card.p3{background:#f0faf5;border-color:#bde4d0}.priority-tag{font-size:10px;font-weight:900;letter-spacing:.3px}.p1 .priority-tag,.p1 .priority-value{color:#b42332}.p2 .priority-tag,.p2 .priority-value{color:#a65c00}.p3 .priority-tag,.p3 .priority-value{color:#18764e}.priority-level{font-weight:800;margin:3px 0 8px}.priority-value{font-size:clamp(15px,2vw,21px);font-weight:900;overflow-wrap:anywhere}.priority-meta{font-size:11px;color:var(--m);margin-top:5px}@media(max-width:700px){.repasses-total{grid-template-columns:1fr}.priority-cards{grid-template-columns:1fr}.priority-head{align-items:flex-start;flex-direction:column}}
@@ -270,5 +270,89 @@ const fonteAjuda={
 };
 document.getElementById('tbody').innerHTML=v.map(r=>'<tr>'+c.map(x=>{const val=r[x[0]];if(active==='financeiro'&&x[0]==='fonte'){const code=String(val??'').trim(),help=fonteAjuda[code]||'Este código identifica a classificação/origem do recurso. A descrição exata e as regras de uso devem ser conferidas na consulta oficial do SIAFI/Tesouro Gerencial.';return '<td class="source-cell" title="'+E(help)+'"><div class="source-code">'+(E(val)||'—')+' <span aria-hidden="true" style="color:#438b89;font-size:11px">ⓘ</span></div><details class="source-help"><summary>Para que serve a fonte?</summary><div>'+E(help)+'</div></details></td>'}return ['saldo','valor','valor_bruto','valor_ob'].includes(x[0])||x[0].startsWith('_valor_')?'<td class="money">'+(val===null||val===undefined||val===''?'—':F(val))+'</td>':'<td title="'+E(val)+'">'+(E(val)||'—')+'</td>'}).join('')+'</tr>').join('')||'<tr><td colspan="'+c.length+'">Nenhum registro encontrado.</td></tr>';
 }
-async function load(manual=false){try{statusEl.textContent=manual?'Recarregando dados publicados…':'Carregando dados publicados…';let r=await fetch('./data.json?ts='+Date.now(),{cache:'no-store'});if(!r.ok)throw Error('HTTP '+r.status);data=await r.json();if(!Array.isArray(data.datasets))throw Error('Estrutura inválida: datasets não é uma lista.');for(const d of data.datasets){d._declared_total=Number(d.total);if(!Array.isArray(d.rows))d.rows=[];if(d.id==='documentos_habeis_pendentes')d.title='Documentos hábeis pendentes de ordem bancária';if(d.id==='restos'){const before=d.rows.length;d.rows=d.rows.filter(r=>N(r.saldo)!==0);d.total=Number(d.rows.reduce((s,r)=>s+N(r.saldo),0).toFixed(2));d.detail_count=d.rows.length;if(!/saldo zero foram omitidos/i.test(d.note||''))d.note=(d.note?d.note+' ':'')+'Exibição: '+(before-d.rows.length)+' registros com saldo zero foram omitidos; o total considera apenas os registros exibidos.'}if(d.id==='financeiro'){d.rows=d.rows.map(r=>({...r,saldo:Math.abs(N(r.saldo))}));d.total=Number(d.rows.reduce((s,r)=>s+N(r.saldo),0).toFixed(2));d.note='O total corresponde à soma dos valores absolutos dos saldos financeiros detalhados. A fonte é exibida como campo informativo; não há filtro por fonte nesta seção.'}if(d.id==='ordens_bancarias'){const obTotals=new Map();d.rows.forEach((r,i)=>{const ob=String(r.ob??'').trim(),fonte=String(r.fonte??'').trim()||'Sem fonte informada',key=(ob||'__sem_ob_'+i)+'|||'+fonte;if(!obTotals.has(key))obTotals.set(key,N(r.valor))});d.total=Number([...obTotals.values()].reduce((s,v)=>s+v,0).toFixed(2));d.detail_count=d.rows.length;d.unique_ob_count=obTotals.size;d.source_count=new Set(d.rows.map(r=>String(r.fonte??'').trim()).filter(Boolean)).size;d.note='Ordens bancárias organizadas em pastas por fonte pagadora. A mesma numeração de OB pode constar em fontes diferentes e é mantida separadamente; totais calculados por combinação de OB e fonte.'}if(d.id==='documentos_habeis_pendentes'){const seen=new Set();d.total=Number(d.rows.reduce((s,r)=>{const k=String(r.documento_habil??'').trim();if(!k||seen.has(k))return s;seen.add(k);return s+N(r.valor_bruto)},0).toFixed(2));d.detail_count=d.rows.length}if(d.id==='publicacoes_pagas'){const seen=new Set();d.total=Number(d.rows.reduce((s,r,i)=>{const ob=String(r.ob??'').trim(),fonte=String(r.fonte??'').trim()||'Sem fonte informada',k=(ob||'__sem_ob_'+i)+'|||'+fonte;if(seen.has(k))return s;seen.add(k);return s+N(r.valor)},0).toFixed(2));d.unique_ob_count=new Set(d.rows.map(r=>String(r.ob??'').trim()).filter(Boolean)).size;d.unique_ob_source_count=seen.size;d.source_consolidated_rows=d.rows.length-seen.size;d.note='Os totais e agrupamentos consideram a combinação de ordem bancária (OB) e fonte pagadora. A mesma OB em fontes diferentes representa registros distintos e é contabilizada separadamente; todos os registros da base são preservados.'}}const audit=auditIntegrity();if(audit.errors.length){statusEl.textContent='Não foi possível carregar os dados. Tente novamente mais tarde.';statusEl.style.display='inline-block';statusEl.style.background='#fff8f8';statusEl.style.color='#8f2929';return}render();statusEl.style.display='none'}catch(e){statusEl.textContent='Não foi possível carregar os dados. Tente novamente mais tarde.';statusEl.style.display='inline-block';const target=document.getElementById('integrityAudit');if(target)target.innerHTML=''}}const refreshButton=document.getElementById('refresh');if(refreshButton)refreshButton.onclick=()=>load(true);load();
+function showLoadMessage(message,level='warning'){
+ statusEl.textContent=message;
+ statusEl.style.display='block';
+ statusEl.setAttribute('role','status');
+ statusEl.setAttribute('aria-live','polite');
+ statusEl.style.background=level==='error'?'#fff0f0':level==='warning'?'#fff8e8':'#e7f3ee';
+ statusEl.style.borderColor=level==='error'?'#efcaca':level==='warning'?'#f0dfb9':'#d2e8df';
+ statusEl.style.color=level==='error'?'#8f2929':level==='warning'?'#805719':'#386e5c';
+}
+async function load(manual=false){
+ statusEl.textContent=manual?'Recarregando dados publicados…':'Carregando dados publicados…';
+ statusEl.style.display='block';
+ try{
+  const response=await fetch('./data.json?ts='+Date.now(),{cache:'no-store'});
+  if(!response.ok)throw new Error('Falha ao consultar data.json (HTTP '+response.status+').');
+  const payload=await response.json();
+  if(!Array.isArray(payload.datasets))throw new Error('A estrutura publicada não contém a lista de bases esperada.');
+  data=payload;
+  for(const d of data.datasets){
+   d._declared_total=Number(d.total);
+   if(!Array.isArray(d.rows))d.rows=[];
+   if(d.id==='documentos_habeis_pendentes')d.title='Documentos hábeis pendentes de ordem bancária';
+   if(d.id==='restos'){
+    const before=d.rows.length;
+    d.rows=d.rows.filter(r=>N(r.saldo)!==0);
+    d.total=Number(d.rows.reduce((sum,row)=>sum+N(row.saldo),0).toFixed(2));
+    d.detail_count=d.rows.length;
+    if(!/saldo zero foram omitidos/i.test(d.note||''))d.note=(d.note?d.note+' ':'')+'Exibição: '+(before-d.rows.length)+' registros com saldo zero foram omitidos; o total considera apenas os registros exibidos.';
+   }
+   if(d.id==='financeiro'){
+    d.rows=d.rows.map(r=>({...r,saldo:Math.abs(N(r.saldo))}));
+    d.total=Number(d.rows.reduce((sum,row)=>sum+N(row.saldo),0).toFixed(2));
+    d.note='O total corresponde à soma dos valores absolutos dos saldos financeiros detalhados. A fonte é exibida como campo informativo; não há filtro por fonte nesta seção.';
+   }
+   if(d.id==='ordens_bancarias'){
+    const obTotals=new Map();
+    d.rows.forEach((row,index)=>{
+     const ob=String(row.ob??'').trim(),source=String(row.fonte??'').trim()||'Sem fonte informada';
+     const key=(ob||'__sem_ob_'+index)+'|||'+source;
+     if(!obTotals.has(key))obTotals.set(key,N(row.valor));
+    });
+    d.total=Number([...obTotals.values()].reduce((sum,value)=>sum+value,0).toFixed(2));
+    d.detail_count=d.rows.length;
+    d.unique_ob_count=obTotals.size;
+    d.source_count=new Set(d.rows.map(row=>String(row.fonte??'').trim()).filter(Boolean)).size;
+    d.note='Ordens bancárias organizadas em pastas por fonte pagadora. A mesma numeração de OB pode constar em fontes diferentes e é mantida separadamente; totais calculados por combinação de OB e fonte.';
+   }
+   if(d.id==='documentos_habeis_pendentes'){
+    const seen=new Set();
+    d.total=Number(d.rows.reduce((sum,row)=>{const key=String(row.documento_habil??'').trim();if(!key||seen.has(key))return sum;seen.add(key);return sum+N(row.valor_bruto)},0).toFixed(2));
+    d.detail_count=d.rows.length;
+   }
+   if(d.id==='publicacoes_pagas'){
+    const seen=new Set();
+    d.total=Number(d.rows.reduce((sum,row,index)=>{const ob=String(row.ob??'').trim(),source=String(row.fonte??'').trim()||'Sem fonte informada',key=(ob||'__sem_ob_'+index)+'|||'+source;if(seen.has(key))return sum;seen.add(key);return sum+N(row.valor)},0).toFixed(2));
+    d.unique_ob_count=new Set(d.rows.map(row=>String(row.ob??'').trim()).filter(Boolean)).size;
+    d.unique_ob_source_count=seen.size;
+    d.source_consolidated_rows=d.rows.length-seen.size;
+    d.note='Os totais e agrupamentos consideram a combinação de ordem bancária (OB) e fonte pagadora. A mesma OB em fontes diferentes representa registros distintos e é contabilizada separadamente; todos os registros da base são preservados.';
+   }
+  }
+  const audit=auditIntegrity();
+  // A auditoria informa problemas, mas não bloqueia a renderização das bases que puderam ser carregadas.
+  render();
+  if(audit.errors.length||audit.warnings.length){
+   const issues=[...audit.errors.map(message=>'Erro: '+message),...audit.warnings.map(message=>'Atenção: '+message)];
+   const preview=issues.slice(0,3).join(' ');
+   const more=issues.length>3?' Mais '+(issues.length-3)+' apontamento(s); atualize os dados ou revise a base de origem.':'';
+   showLoadMessage('Painel carregado com apontamentos de integridade. Os dados utilizáveis continuam disponíveis. '+preview+more,audit.errors.length?'error':'warning');
+   const auditBox=document.getElementById('integrityAudit');
+   if(auditBox){auditBox.classList.remove('hide');auditBox.removeAttribute('aria-hidden');auditBox.textContent=issues.join(' ');}
+  }else{
+   showLoadMessage('Dados carregados e verificações básicas concluídas.','ok');
+   const auditBox=document.getElementById('integrityAudit');
+   if(auditBox){auditBox.classList.add('hide');auditBox.setAttribute('aria-hidden','true');auditBox.textContent='';}
+  }
+ }catch(error){
+  const detail=error&&error.message?error.message:'Falha inesperada ao carregar os dados.';
+  showLoadMessage('Não foi possível carregar todas as informações. '+detail+(data&&Array.isArray(data.datasets)?' O painel tentará manter disponíveis as informações já carregadas.':' Verifique a conexão e tente novamente.'),'error');
+  if(data&&Array.isArray(data.datasets)){
+   try{render();}catch(renderError){showLoadMessage('Parte dos dados foi recebida, mas a tela não pôde ser renderizada completamente. '+(renderError&&renderError.message?renderError.message:'Revise a estrutura das bases.'),'error');}
+  }
+ }
+}
+const refreshButton=document.getElementById('refresh');if(refreshButton)refreshButton.onclick=()=>load(true);load();
 </script></body></html>
