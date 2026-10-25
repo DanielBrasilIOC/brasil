@@ -1,8 +1,7 @@
 /*
  * Classificação de envelhecimento dos Restos a Pagar.
- * A base atual não traz status de processamento: todos os registros de RAP
- * são apresentados como não classificados por processamento. A classificação abaixo fica
- * exclusivamente dentro da aba "Restos a Pagar".
+ * O status de processamento não é inferido porque a base atual não o identifica
+ * com segurança. O envelhecimento fica exclusivamente na aba "Restos a Pagar".
  */
 (function(){
   const currentYear=new Date().getFullYear();
