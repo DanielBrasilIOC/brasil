@@ -132,6 +132,9 @@ def main():
     updates={"financeiro":(fin,tf),"restos":(rap,trp),"empenhos":(empenhos,te),
              "orcamentario":(orc,to),"repasses":(rep,tr),"ordens_bancarias":(ob,tob)}
     data=json.loads(DATA_PATH.read_text(encoding="utf-8"))
+    # Remove permanentemente a base descontinuada, inclusive em futuras sincronizações.
+    obsolete_dataset_present=any(d.get("id")=="documentos_habeis_pendentes" for d in data.get("datasets",[]))
+    data["datasets"]=[d for d in data.get("datasets",[]) if d.get("id")!="documentos_habeis_pendentes"]
     ds={d.get("id"):d for d in data.get("datasets",[])}
     check(all(k in ds for k in updates),"Dataset esperado ausente em data.json")
 
@@ -140,7 +143,7 @@ def main():
     source_hashes={k:hashlib.sha256(v.encode("utf-8")).hexdigest() for k,v in src.items()}
     previous_state=json.loads(STATE_PATH.read_text(encoding="utf-8")) if STATE_PATH.exists() else {}
     source_changed=source_hashes != previous_state.get("hashes",{})
-    dataset_changed=any(
+    dataset_changed=obsolete_dataset_present or any(
         ds[k].get("rows") != rows or ds[k].get("total") != amount or
         ds[k].get("detail_count") != len(rows)
         for k,(rows,amount) in updates.items()
