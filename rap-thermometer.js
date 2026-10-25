@@ -7,10 +7,10 @@ function renderRapThermometer(d) {
   const currentYear = new Date().getFullYear();
   const getYear = r => {
     const text = String(r.empenho ?? r.numero_ne ?? r.ne ?? '');
-    const match = text.match(/((?:19|20)\\d{2})(?=\\s*NE)/i);
+    const match = text.match(/((?:19|20)\d{2})(?=\s*NE)/i);
     if (match) return Number(match[1]);
     for (const key of ['ano','ano_rap','exercicio','exercicio_rap','year']) {
-      const found = String(r[key] ?? '').match(/(?:19|20)\\d{2}/);
+      const found = String(r[key] ?? '').match(/(?:19|20)\d{2}/);
       if (found) return Number(found[0]);
     }
     return null;
