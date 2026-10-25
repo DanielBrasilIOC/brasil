@@ -7,7 +7,6 @@ on:
       - "source_state.json"
       - "logs/atualizacoes_dashboard.csv"
   schedule:
-    # Quatro verificações por dia. GitHub Actions usa UTC.
     - cron: "0 0,6,12,18 * * *"
   workflow_dispatch:
 
@@ -106,27 +105,31 @@ jobs:
             cp .sync-artifact/data.json data.json
             cp .sync-artifact/repasses.json repasses.json
             cp .sync-artifact/source_state.json source_state.json
-            FINAL="DADOS PUBLICADOS"
+            FINAL_STATUS="DADOS PUBLICADOS"
           elif [ "$DATA_CHANGED" = "true" ]; then
-            FINAL="FALHA NA PUBLICAÇÃO"
+            FINAL_STATUS="FALHA NA PUBLICAÇÃO"
           elif [ "$EVENT_NAME" = "schedule" ]; then
-            FINAL="NÃO NECESSÁRIA"
+            FINAL_STATUS="NÃO NECESSÁRIA"
           else
-            FINAL="PUBLICAÇÃO DO PAINEL SEM ALTERAÇÃO DE DADOS"
+            FINAL_STATUS="PUBLICAÇÃO DO PAINEL SEM ALTERAÇÃO DE DADOS"
           fi
+          export FINAL_STATUS
           python - <<'PY'
           import csv, os
           from datetime import datetime, timezone
           from pathlib import Path
           p=Path('logs/atualizacoes_dashboard.csv')
+          fields=['timestamp_utc','run_id','evento','resultado_execucao','fonte','fonte_id','conteudo_alterado','registros','total','dashboard_atualizado','publicacao','mensagem']
           with p.open('a', encoding='utf-8-sig', newline='') as f:
-              w=csv.DictWriter(f, fieldnames=['timestamp_utc','run_id','evento','resultado_execucao','fonte','fonte_id','conteudo_alterado','registros','total','dashboard_atualizado','publicacao','mensagem'], delimiter=';')
+              w=csv.DictWriter(f, fieldnames=fields, delimiter=';')
               w.writerow({
                   'timestamp_utc':datetime.now(timezone.utc).isoformat(timespec='seconds').replace('+00:00','Z'),
                   'run_id':os.environ['RUN_ID'], 'evento':os.environ['EVENT_NAME'],
                   'resultado_execucao':'FINALIZAÇÃO', 'fonte':'RESUMO DA PUBLICAÇÃO', 'fonte_id':'',
-                  'conteudo_alterado':'', 'registros':'', 'total':'', 'dashboard_atualizado':'SIM' if os.environ.get('DATA_CHANGED')=='true' and os.environ.get('DEPLOY_RESULT')=='success' else 'NÃO',
-                  'publicacao':os.environ.get('FINAL_STATUS',''), 'mensagem':'Resultado final da publicação da execução.'
+                  'conteudo_alterado':'', 'registros':'', 'total':'',
+                  'dashboard_atualizado':'SIM' if os.environ.get('DATA_CHANGED')=='true' and os.environ.get('DEPLOY_RESULT')=='success' else 'NÃO',
+                  'publicacao':os.environ.get('FINAL_STATUS',''),
+                  'mensagem':'Resultado final da publicação da execução.'
               })
           PY
           if [ -z "$(git status --porcelain -- data.json repasses.json source_state.json logs/atualizacoes_dashboard.csv)" ]; then
