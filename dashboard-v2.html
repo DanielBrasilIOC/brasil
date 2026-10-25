@@ -282,11 +282,38 @@ function renderPublicationFolders(d){
  box.className='panel';
  box.innerHTML='<div class="head"><div><h3>Publicações Pagas — agrupadas por fornecedor</h3><p class="desc">Cada pasta reúne os pagamentos do fornecedor identificado pelo favorecido e CNPJ. Os registros são preservados e as ordens bancárias são contabilizadas uma vez dentro de cada fornecedor.</p></div><span class="badge ok">'+I(items.length)+' fornecedores</span></div><div class="repasses-total"><div><div class="label">Total dos fornecedores exibidos</div><div class="value">'+F(grand)+'</div></div><div><div class="label">Registros exibidos</div><div class="value">'+I(items.reduce((s,g)=>s+g.filtered.length,0))+'</div></div></div>'+items.map(g=>'<details class="expense-folder"><summary><span><span class="folder-name">📁 '+E(g.name)+'</span><span class="folder-meta">'+E(g.cnpj||'CNPJ/código não informado')+' • '+I(g.filtered.length)+' registro(s) • '+I(g.unique)+' OB distintas</span></span><span class="folder-total">'+F(g.total)+'</span></summary><div class="folder-body"><div class="tiny" style="margin:10px 0">Total deste fornecedor: <b>'+F(g.total)+'</b></div><div class="scroll" style="max-height:360px"><table><thead><tr><th>Data</th><th>Ordem bancária</th><th>Fontes vinculadas à OB</th><th>Processo</th><th>Fonte do registro</th><th>Valor pago</th><th>Descrição do serviço</th></tr></thead><tbody>'+g.filtered.map(r=>'<tr><td>'+E(r.data||'—')+'</td><td>'+E(r.ob||'—')+'</td><td>'+E(sourcesForOB(d.rows,r.ob).join(' / ')||'—')+'</td><td>'+E(r.processo||'—')+'</td><td>'+E(r.fonte||'—')+'</td><td class="money">'+F(r.valor)+'</td><td title="'+E(r.observacao||'')+'">'+E(r.observacao||'—')+'</td></tr>').join('')+'</tbody></table></div></div></details>').join('')+'<div class="alert"><b>Total dos fornecedores exibidos:</b> '+F(grand)+'.';
 }
+function detail(id){
+ const d=(data?.datasets||[]).find(item=>item.id===id);
+ if(!d)return;
+ const title=document.getElementById('detailTitle');
+ const note=document.getElementById('detailNote');
+ const search=document.getElementById('q');
+ const fieldSelect=document.getElementById('field');
+ const kpis=document.getElementById('detailKpis');
+ if(title)title.textContent=d.title||id;
+ if(note)note.textContent=d.note||'Dados detalhados publicados a partir da base de origem.';
+ if(search)search.value='';
+ if(fieldSelect){
+  const keys=[...new Set((d.rows||[]).flatMap(row=>Object.keys(row)))];
+  fieldSelect.innerHTML='<option value="">Todos os campos</option>'+keys.map(key=>'<option value="'+E(key)+'">'+E(key.replace(/_/g,' '))+'</option>').join('');
+  fieldSelect.value='';
+ }
+ if(kpis){
+  const total=totalFor(all(),id);
+  const count=d.detail_count??(d.rows||[]).length;
+  kpis.innerHTML='<article class="kpi"><div class="label">Total da base</div><div class="value">'+F(total)+'</div><div class="hint">Total calculado a partir dos registros publicados</div></article>'+
+   '<article class="kpi"><div class="label">Registros</div><div class="value">'+I(count)+'</div><div class="hint">Quantidade de registros detalhados na base</div></article>'+
+   '<article class="kpi"><div class="label">Fonte de dados</div><div class="value" style="font-size:16px">'+E(d.source_name||'SIAFI / base publicada')+'</div><div class="hint">Consulte a observação da base para detalhes de atualização</div></article>';
+ }
+ if(search)search.oninput=drawTable;
+ if(fieldSelect)fieldSelect.onchange=drawTable;
+ drawTable();
+}
 function drawTable(){
 let d=data.datasets.find(x=>x.id===active);if(!d)return;
 if(active==='ordens_bancarias'){renderBankOrderFolders(d);document.getElementById('count').textContent=I(d.rows.length)+' registros de origem • '+I(new Set(d.rows.map(r=>String(r.fonte??'').trim()).filter(Boolean)).size)+' fontes pagadoras';document.getElementById('thead').innerHTML='';document.getElementById('tbody').innerHTML='';return}
  if(active==='publicacoes_pagas'){renderPublicationFolders(d);document.getElementById('count').textContent=I(d.rows.length)+' registros • '+I(new Set(d.rows.map(r=>String(r.favorecido??'').trim()||String(r.cnpj??'').trim()).filter(Boolean)).size)+' fornecedores';document.getElementById('thead').innerHTML='';document.getElementById('tbody').innerHTML='';return}
-const expenseBox=document.getElementById('expenseFolders');expenseBox.className=(active==='repasses'||active==='restos')?'panel':'hide';if(active==='restos')expenseBox.innerHTML=renderRapThermometer(d);else if(active!=='repasses')expenseBox.innerHTML='';
+const expenseBox=document.getElementById('expenseFolders');if(active==='restos'){expenseBox.className='panel';expenseBox.innerHTML=renderRapThermometer(d)}else if(active==='repasses'){renderExpenseFolders(d)}else{expenseBox.className='hide';expenseBox.innerHTML=''};
 let c=cols[active]||Object.keys(d.rows[0]||{}).map(k=>[k,k]),q=L(document.getElementById('q').value),f=document.getElementById('field').value,base=d.rows;
 if(active==='publicacoes_pagas'){
  const groups=new Map();d.rows.forEach((r,i)=>{const ob=String(r.ob??'').trim(),key=ob||'__sem_ob_'+i;if(!groups.has(key))groups.set(key,{...r,_sourceRows:[]});groups.get(key)._sourceRows.push(r)});
