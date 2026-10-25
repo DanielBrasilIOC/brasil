@@ -1,66 +1,70 @@
 /*
- * Classificação de envelhecimento dos Restos a Pagar.
- * A base atual não traz status de processamento: todos os registros de RAP
- * são apresentados como não classificados por processamento. A classificação abaixo fica
- * exclusivamente dentro da aba "Restos a Pagar".
+ * Termômetro de envelhecimento dos Restos a Pagar (RAP).
+ * Classifica pelo exercício extraído do campo Empenho, antes de "NE".
+ * Baixo: até 2 anos (inclui o exercício atual); Médio: >2 até 4; Alto: >4.
  */
-(function(){
-  const currentYear=new Date().getFullYear();
-  const getYear=r=>{
-    const text=String(r.empenho??r.numero_ne??r.ne??'');
-    // O ano está no campo Empenho imediatamente antes das letras "NE".
-    // Exemplos aceitos: 2023NE..., 2023 NE..., ...2023NE...
-    const m=text.match(/((?:19|20)\d{2})(?=\s*NE)/i);
-    if(m)return Number(m[1]);
-    for(const k of ['ano','ano_rap','exercicio','exercicio_rap','year']){
-      const y=String(r[k]??'').match(/20\d{2}/);
-      if(y)return Number(y[0]);
+function renderRapThermometer(d) {
+  const currentYear = new Date().getFullYear();
+  const getYear = r => {
+    const text = String(r.empenho ?? r.numero_ne ?? r.ne ?? '');
+    const match = text.match(/((?:19|20)\d{2})(?=\s*NE)/i);
+    if (match) return Number(match[1]);
+    for (const key of ['ano','ano_rap','exercicio','exercicio_rap','year']) {
+      const found = String(r[key] ?? '').match(/(?:19|20)\d{2}/);
+      if (found) return Number(found[0]);
     }
     return null;
   };
-  function renderAging(){
-    const title=document.getElementById('detailTitle');
-    const detail=document.getElementById('details');
-    if(!title||!detail||!/^Restos a Pagar$/i.test(title.textContent.trim())){
-      const old=document.getElementById('rap-aging');
-      if(old)old.remove();
+  const groups = {
+    low: { label: 'BAIXO', description: 'Até 2 anos', className: 'rap-low', amount: 0, count: 0, rows: [] },
+    medium: { label: 'MÉDIO', description: 'Mais de 2 até 4 anos', className: 'rap-medium', amount: 0, count: 0, rows: [] },
+    high: { label: 'ALTO', description: 'Mais de 4 anos', className: 'rap-high', amount: 0, count: 0, rows: [] }
+  };
+  const byYear = new Map();
+  const unknown = [];
+  (d.rows || []).forEach(r => {
+    const year = getYear(r);
+    const age = year === null ? null : currentYear - year;
+    if (year === null || age < 0) {
+      unknown.push(r);
       return;
     }
-    const ds=(data?.datasets||[]).find(d=>d.id==='restos');
-    if(!ds)return;
-    const byYear={};
-    ds.rows.forEach(r=>{
-      const y=getYear(r),v=N(r.saldo);
-      const key=y||'Sem ano';
-      if(!byYear[key])byYear[key]={valor:0,registros:0};
-      byYear[key].valor+=v;
-      byYear[key].registros++;
-    });
-    const aging=Object.keys(byYear).filter(k=>k!=='Sem ano').map(Number).filter(y=>y<=currentYear&&y>=1900).sort((a,b)=>b-a).map(y=>({year:y,age:currentYear-y,...byYear[y]}));
-    const total=ds.rows.reduce((s,r)=>s+N(r.saldo),0);
-    const old=aging.filter(x=>x.age>=3);
-    const highest=aging.filter(x=>x.age>=5);
-    const cards=aging.map(x=>{
-      const cls=x.age>=5?'rap-high':x.age>=3?'rap-attn':'rap-recent';
-      const label=x.age>=5?'🔴 Alto':x.age>=3?'🟡 Atenção':'🟢 Recente';
-      return `<div class="rap-age-row ${cls}"><div><b>${x.year}</b><span>${label}</span></div><strong>${F(x.valor)}</strong><small>${I(x.registros)} registro(s) • ${x.age} ano(s) de idade</small></div>`;
-    }).join('');
-    let box=document.getElementById('rap-aging');
-    if(!box){
-      box=document.createElement('article');
-      box.id='rap-aging';
-      box.className='panel';
-      const target=detail.querySelector('.kpis');
-      if(target)target.insertAdjacentElement('afterend',box); else detail.prepend(box);
-    }
-    box.innerHTML=`<div class="head"><div><h3>Classificação de envelhecimento</h3><p class="desc">Classificação somente na aba Restos a Pagar, pelo exercício identificável no empenho antes de "NE" ou em campo de ano/exercício.</p></div><span class="badge ${highest.length?'r':'ok'}">${highest.length?'Revisão prioritária':'Acompanhamento'}</span></div><div class="rap-aging-legend"><span>🟢 <b>Recente</b>: menos de 3 anos</span><span>🟡 <b>Atenção</b>: 3 anos ou mais</span><span>🔴 <b>Alto</b>: 5 anos ou mais</span></div><div class="alert ${highest.length?'r':old.length?'w':'ok'}"><b>${highest.length?'RAP antigo requer revisão':old.length?'RAP com atenção por envelhecimento':'RAP dentro do critério de envelhecimento'}</b><br>Total de Restos a Pagar: ${F(total)}. ${highest.length?`Há ${I(highest.length)} exercício(s) com 5 anos ou mais.`:old.length?`Há ${I(old.length)} exercício(s) com 3 anos ou mais.`:'Nenhum exercício identificado atingiu 3 anos.'}</div><div class="rap-aging-list">${cards||'<div class="empty">Não foi possível identificar o ano nos registros de RAP.</div>'}</div>`;
-  }
-  const style=document.createElement('style');
-  style.textContent=`#rap-aging{margin-bottom:13px}.rap-aging-legend{display:flex;gap:18px;flex-wrap:wrap;margin:14px 0;font-size:12px}.rap-aging-list{display:grid;gap:7px}.rap-age-row{display:grid;grid-template-columns:1fr auto auto;gap:14px;align-items:center;padding:11px 13px;border:1px solid #e1e8ee;border-left:4px solid #438b89;border-radius:9px;background:#fbfcfd}.rap-age-row>div{display:flex;gap:12px;align-items:center}.rap-age-row span{font-size:11px;font-weight:800}.rap-age-row strong{color:#163b5c}.rap-age-row small{color:#6d7e8b}.rap-attn{border-left-color:#a46a16;background:#fffbf3}.rap-high{border-left-color:#b33b3b;background:#fff8f8}.rap-recent{border-left-color:#438b89}@media(max-width:700px){.rap-age-row{grid-template-columns:1fr;gap:5px}}`;
-  document.head.appendChild(style);
-  const observedTitle=document.getElementById('detailTitle');
-  const observedDetails=document.getElementById('details');
-  if(observedTitle)new MutationObserver(()=>renderAging()).observe(observedTitle,{childList:true,characterData:true,subtree:true});
-  if(observedDetails)new MutationObserver(()=>renderAging()).observe(observedDetails,{attributes:true,attributeFilter:['class']});
-  renderAging();
-})();
+    const key = age > 4 ? 'high' : age > 2 ? 'medium' : 'low';
+    const group = groups[key];
+    const amount = N(r.saldo);
+    group.amount += amount;
+    group.count += 1;
+    group.rows.push(r);
+    if (!byYear.has(year)) byYear.set(year, { year, age, amount: 0, count: 0, key });
+    const summary = byYear.get(year);
+    summary.amount += amount;
+    summary.count += 1;
+  });
+  const total = Object.values(groups).reduce((sum, group) => sum + group.amount, 0);
+  const totalCount = Object.values(groups).reduce((sum, group) => sum + group.count, 0);
+  const pct = amount => total > 0 ? Math.max(0, Math.min(100, amount / total * 100)) : 0;
+  const cards = Object.values(groups).map(group => {
+    const share = pct(group.amount);
+    return '<article class="rap-thermo-card ' + group.className + '">' +
+      '<div class="rap-thermo-card-head"><span class="rap-thermo-label">' + group.label + '</span><span class="rap-thermo-range">' + group.description + '</span></div>' +
+      '<div class="rap-thermo-amount">' + F(group.amount) + '</div>' +
+      '<div class="rap-thermo-count">' + I(group.count) + ' registro(s) • ' + share.toLocaleString('pt-BR',{maximumFractionDigits:1,minimumFractionDigits:1}) + '% do valor classificado</div>' +
+      '<div class="rap-thermo-track"><span style="width:' + share.toFixed(2) + '%"></span></div>' +
+    '</article>';
+  }).join('');
+  const segments = Object.values(groups).map(group => '<span class="' + group.className + '" style="width:' + pct(group.amount).toFixed(2) + '%" title="' + group.label + ': ' + F(group.amount) + '"></span>').join('');
+  const yearRows = [...byYear.values()].sort((a,b) => b.year - a.year).map(item => {
+    const group = groups[item.key];
+    return '<tr><td><b>' + item.year + '</b></td><td>' + item.age + ' ano(s)</td><td><span class="rap-thermo-pill ' + group.className + '">' + group.label + '</span></td><td class="money">' + F(item.amount) + '</td><td>' + I(item.count) + '</td></tr>';
+  }).join('');
+  return '<section class="rap-thermometer" aria-label="Termômetro de envelhecimento dos Restos a Pagar">' +
+    '<div class="head"><div><h3>Termômetro de envelhecimento dos empenhos</h3><p class="desc">Classificação automática pelo ano identificado no número do empenho. Valores calculados pela soma do saldo dos registros de Restos a Pagar.</p></div><span class="badge">' + I(totalCount) + ' registros classificados</span></div>' +
+    '<div class="rap-thermo-legend"><span><i class="rap-legend-dot rap-low"></i>Baixo: 1 a 2 anos</span><span><i class="rap-legend-dot rap-medium"></i>Médio: mais de 2 até 4 anos</span><span><i class="rap-legend-dot rap-high"></i>Alto: mais de 4 anos</span></div>' +
+    '<div class="rap-thermo-stack" role="img" aria-label="Distribuição percentual do saldo por nível de envelhecimento">' + segments + '</div>' +
+    '<div class="rap-thermo-cards">' + cards + '</div>' +
+    '<div class="rap-thermo-total"><span><b>Saldo total classificado</b><small>' + I(totalCount) + ' registros com ano reconhecido</small></span><strong>' + F(total) + '</strong></div>' +
+    '<div class="rap-thermo-detail"><h4>Detalhamento por exercício</h4><div class="scroll"><table><thead><tr><th>Exercício</th><th>Idade</th><th>Nível</th><th>Saldo</th><th>Registros</th></tr></thead><tbody>' + (yearRows || '<tr><td colspan="5">Nenhum ano de empenho foi identificado na base publicada.</td></tr>') + '</tbody></table></div></div>' +
+    (unknown.length ? '<div class="alert w"><b>' + I(unknown.length) + ' registro(s) sem classificação automática.</b> Ano do empenho ausente ou posterior ao exercício atual; não foram incluídos nos níveis de risco. Confira o número do empenho na origem.</div>' : '') +
+    '<p class="rap-thermo-note">Observação: empenhos do exercício atual (idade inferior a 1 ano) são mantidos em Baixo para que nenhum registro recente fique sem nível. Os limites de Médio e Alto seguem exatamente as faixas definidas.</p>' +
+  '</section>';
+}
