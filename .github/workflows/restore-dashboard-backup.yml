@@ -1,0 +1,92 @@
+name: Restaurar snapshot válido do Painel Financeiro e Orçamentário IOC
+
+on:
+  workflow_dispatch:
+    inputs:
+      snapshot_path:
+        description: "Caminho exato do snapshot na branch dashboard-backups (ex.: snapshots/20261025T144500Z-run-123456)"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages-saorc-hotfix
+  cancel-in-progress: true
+
+jobs:
+  restore-and-publish:
+    name: Validar, restaurar e publicar snapshot
+    runs-on: ubuntu-latest
+    steps:
+      - name: Baixar o repositório principal
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Baixar a branch independente de backups
+        uses: actions/checkout@v4
+        with:
+          ref: dashboard-backups
+          path: backup-source
+          fetch-depth: 0
+
+      - name: Validar snapshot selecionado
+        env:
+          SNAPSHOT_PATH: ${{ inputs.snapshot_path }}
+        run: |
+          set -euo pipefail
+          if ! printf '%s' "$SNAPSHOT_PATH" | grep -Eq '^snapshots/[0-9]{8}T[0-9]{6}Z-run-[0-9]+$'; then
+            echo "Caminho de snapshot inválido. Informe o caminho exato da pasta snapshots/..."
+            exit 1
+          fi
+          test -d "backup-source/$SNAPSHOT_PATH"
+          python .github/scripts/validate_backup.py "backup-source/$SNAPSHOT_PATH" --verify-manifest
+          for file in data.json repasses.json source_state.json dashboard-v2.html index.html; do
+            cp "backup-source/$SNAPSHOT_PATH/$file" "$file"
+          done
+          rm -rf backup-source
+          python .github/scripts/validate_backup.py .
+
+      - name: Registrar restauração no histórico do GitHub
+        env:
+          SNAPSHOT_PATH: ${{ inputs.snapshot_path }}
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data.json repasses.json source_state.json dashboard-v2.html index.html
+          if git diff --cached --quiet; then
+            echo "Os arquivos atuais já correspondem ao snapshot; a publicação será revalidada."
+          else
+            git commit -m "Restaurar dashboard do snapshot ${SNAPSHOT_PATH} [skip ci]"
+            git push origin HEAD:main
+          fi
+
+      - name: Configurar GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Preparar site restaurado
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: "."
+
+      - name: Publicar versão restaurada
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+      - name: Registrar resultado da restauração
+        env:
+          SNAPSHOT_PATH: ${{ inputs.snapshot_path }}
+          PAGE_URL: ${{ steps.deployment.outputs.page_url }}
+        run: |
+          {
+            echo "## Restauração concluída"
+            echo "- Snapshot: `$SNAPSHOT_PATH`"
+            echo "- URL publicada: $PAGE_URL"
+            echo "- Os arquivos foram validados antes da restauração e antes da publicação."
+          } >> "$GITHUB_STEP_SUMMARY"
