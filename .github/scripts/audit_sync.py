@@ -77,6 +77,24 @@ def source_details(data,name):
 def append_rows(rows):
     LOG.parent.mkdir(parents=True,exist_ok=True)
     exists=LOG.exists() and LOG.stat().st_size>0
+    # Migra cabeçalhos antigos e realinha linhas que já tenham sido gravadas
+    # com o novo esquema, sem descartar o histórico existente.
+    if exists:
+        with LOG.open("r",encoding="utf-8-sig",newline="") as f:
+            existing=list(csv.reader(f,delimiter=";"))
+        if existing and existing[0] != FIELDS:
+            old_header=existing[0]
+            migrated=[]
+            for raw in existing[1:]:
+                if len(raw) == len(FIELDS):
+                    migrated.append(dict(zip(FIELDS,raw)))
+                else:
+                    previous=dict(zip(old_header,raw))
+                    migrated.append({field:previous.get(field,"") for field in FIELDS})
+            with LOG.open("w",encoding="utf-8-sig",newline="") as f:
+                writer=csv.DictWriter(f,fieldnames=FIELDS,delimiter=";")
+                writer.writeheader()
+                writer.writerows(migrated)
     with LOG.open("a",encoding="utf-8-sig",newline="") as f:
         w=csv.DictWriter(f,fieldnames=FIELDS,delimiter=";")
         if not exists: w.writeheader()
