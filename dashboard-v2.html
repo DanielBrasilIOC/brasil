@@ -397,7 +397,7 @@ function detail(id){
   const count=d.detail_count??(d.rows||[]).length;
   kpis.innerHTML='<article class="kpi"><div class="label">Total da base</div><div class="value">'+F(total)+'</div><div class="hint">Total calculado a partir dos registros publicados</div></article>'+
    '<article class="kpi"><div class="label">Registros</div><div class="value">'+I(count)+'</div><div class="hint">Quantidade de registros detalhados na base</div></article>'+
-   (String(id).toLowerCase().includes('empenho')?'':(String(id).toLowerCase()==='repasses'?'<article class="kpi"><div class="label">Fonte de dados</div><div class="value" style="font-size:14px;line-height:1.4;white-space:normal">Informações coletadas com o SAORC IOC.</div></article>':'<article class="kpi"><div class="label">FONTE DE DADOS SIAFI</div><div class="value" style="font-size:14px;line-height:1.4;white-space:normal">Todas as fontes de dados são do SIAFI.</div></article>'));
+   (String(id).toLowerCase().includes('empenho')?'':(String(id).toLowerCase()==='repasses'?'<article class="kpi"><div class="label">Fonte: SAORC</div><div class="value" style="font-size:14px;line-height:1.4;white-space:normal">Inclui somente Status da solicitação Pré-Empenho = AGUARDANDO ORÇAMENTO da COGEAD.</div></article>':'<article class="kpi"><div class="label">FONTE DE DADOS SIAFI</div><div class="value" style="font-size:14px;line-height:1.4;white-space:normal">Todas as fontes de dados são do SIAFI.</div></article>'));
  }
  if(search)search.oninput=drawTable;
  if(fieldSelect)fieldSelect.onchange=drawTable;
