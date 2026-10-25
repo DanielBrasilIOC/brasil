@@ -1,0 +1,9 @@
+﻿timestamp_utc;run_id;evento;resultado_execucao;fonte;fonte_id;conteudo_alterado;registros;total;dashboard_atualizado;publicacao;mensagem
+2026-10-25T13:34:55Z;40198253500;push;SEM_ALTERACOES;Empenhos;137jwUw2WB_LUvnQef6waE8ASKQEvzhup;NÃO;73;7742550.43;NÃO;NÃO NECESSÁRIA;"As seis fontes foram lidas e validadas; nenhum conteúdo mudou."
+2026-10-25T13:34:55Z;40198253500;push;SEM_ALTERACOES;Orçamentário;1k3dZ890WgqGVSCZLwCxGPLikMutTlOfN;NÃO;14;998541.21;NÃO;NÃO NECESSÁRIA;"As seis fontes foram lidas e validadas; nenhum conteúdo mudou."
+2026-10-25T13:34:55Z;40198253500;push;SEM_ALTERACOES;Ordens Bancárias;1lRYujrJRv7ZPam-lYVB2CxCg_WEMbraC;NÃO;888;62853501.5;NÃO;NÃO NECESSÁRIA;"As seis fontes foram lidas e validadas; nenhum conteúdo mudou."
+2026-10-25T13:34:55Z;40198253500;push;SEM_ALTERACOES;Repasses;1ghcBkPmT-IkfWozLZVDdMvMe7eoD2J6k;NÃO;66;2027270.68;NÃO;NÃO NECESSÁRIA;"As seis fontes foram lidas e validadas; nenhum conteúdo mudou."
+2026-10-25T13:34:55Z;40198253500;push;SEM_ALTERACOES;Financeiro;1p4PyHEkV5YzIljLeMsHopulzN55yQMqzS6fk56STdEk;NÃO;4;449469.41;NÃO;NÃO NECESSÁRIA;"As seis fontes foram lidas e validadas; nenhum conteúdo mudou."
+2026-10-25T13:34:55Z;40198253500;push;SEM_ALTERACOES;Restos a Pagar;1zzxhemDKryzolkykFSw3JXph1YcQ2pUj;NÃO;23;4526062.32;NÃO;NÃO NECESSÁRIA;"As seis fontes foram lidas e validadas; nenhum conteúdo mudou."
+2026-10-25T13:34:55Z;40198253500;push;SEM_ALTERACOES;RESUMO DA EXECUÇÃO;;NÃO;1068;;NÃO;NÃO NECESSÁRIA;Fontes alteradas: nenhuma. Status: SEM_ALTERACOES.
+2026-10-25T13:35:29Z;40198253500;push;FINALIZAÇÃO;RESUMO DA PUBLICAÇÃO;;;;;NÃO;PUBLICAÇÃO DO PAINEL SEM ALTERAÇÃO DE DADOS;Resultado final da publicação da execução.
