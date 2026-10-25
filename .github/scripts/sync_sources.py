@@ -170,7 +170,7 @@ def main():
     ds["financeiro"]["source_name"]="Saldo Financeiro"
     ds["financeiro"]["source_url"]="https://docs.google.com/spreadsheets/d/" + SOURCES["financeiro"] + "/edit"
     ds["repasses"]["missing_values"]=mr
-    ds["repasses"]["note"]="Fonte: SAORC. Inclui somente Status da solicitação Pré-Empenho = AGUARDANDO ORÇAMENTO da COGEAD."
+    ds["repasses"]["note"]=""
     data["generated_at"]=stamp
     # Nenhum arquivo de saída é alterado até que todas as seis fontes passem nas validações.
     DATA_PATH.write_text(json.dumps(data,ensure_ascii=False,separators=(",",":")),encoding="utf-8")
