@@ -99,6 +99,7 @@ jobs:
         env:
           DATA_CHANGED: ${{ needs.build.outputs.data_changed }}
           DEPLOY_RESULT: ${{ needs.deploy.result }}
+          SYNC_OK: ${{ needs.build.outputs.sync_ok }}
           RUN_ID: ${{ github.run_id }}
           EVENT_NAME: ${{ github.event_name }}
         run: |
@@ -113,12 +114,14 @@ jobs:
             install -D -m 0644 .sync-artifact/repasses.json repasses.json
             install -D -m 0644 .sync-artifact/source_state.json source_state.json
             FINAL_STATUS="DADOS PUBLICADOS"
+          elif [ "$SYNC_OK" != "true" ]; then
+            FINAL_STATUS="FALHA NA SINCRONIZAÇÃO — ÚLTIMA VERSÃO PRESERVADA"
           elif [ "$DATA_CHANGED" = "true" ]; then
-            FINAL_STATUS="FALHA NA PUBLICAÇÃO"
+            FINAL_STATUS="FALHA NA PUBLICAÇÃO — ÚLTIMA VERSÃO PRESERVADA"
           elif [ "$EVENT_NAME" = "schedule" ]; then
-            FINAL_STATUS="NÃO NECESSÁRIA"
+            FINAL_STATUS="VERIFICADO — SEM ALTERAÇÕES; PUBLICAÇÃO NÃO NECESSÁRIA"
           else
-            FINAL_STATUS="PUBLICAÇÃO DO PAINEL SEM ALTERAÇÃO DE DADOS"
+            FINAL_STATUS="PUBLICAÇÃO CONFERIDA — SEM ALTERAÇÃO DE DADOS"
           fi
           export FINAL_STATUS
           python - <<'PY'
