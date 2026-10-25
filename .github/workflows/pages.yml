@@ -196,6 +196,7 @@ jobs:
           SNAPSHOT_PATH="snapshots/${SNAPSHOT_ID}"
           export SNAPSHOT_ID SNAPSHOT_PATH
           mkdir -p "$RUNNER_TEMP/valid-snapshot"
+          cp .github/scripts/validate_backup.py "$RUNNER_TEMP/validate_backup.py"
           for file in data.json repasses.json source_state.json dashboard-v2.html index.html; do
             cp "$file" "$RUNNER_TEMP/valid-snapshot/$file"
           done
@@ -231,7 +232,7 @@ jobs:
           fi
           mkdir -p "$SNAPSHOT_PATH"
           cp "$RUNNER_TEMP/valid-snapshot/"* "$SNAPSHOT_PATH/"
-          python .github/scripts/validate_backup.py "$SNAPSHOT_PATH" --verify-manifest
+          python "$RUNNER_TEMP/validate_backup.py" "$SNAPSHOT_PATH" --verify-manifest
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add "$SNAPSHOT_PATH"
