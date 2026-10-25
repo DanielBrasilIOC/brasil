@@ -305,7 +305,7 @@ function detail(id){
  const fieldSelect=document.getElementById('field');
  const kpis=document.getElementById('detailKpis');
  if(title)title.textContent=d.title||id;
- if(note)note.textContent=d.note||'Dados detalhados publicados a partir da base de origem.';
+ if(note){let detailNote=d.note||'Dados detalhados publicados a partir da base de origem.';if(String(id).toLowerCase().includes('empenho'))detailNote=detailNote.replace(/Fonte\s+SIAFI\s*:\s*[^.]*\.\s*/ig,'').trim();note.textContent=detailNote;}
  if(search)search.value='';
  if(fieldSelect){
   const keys=[...new Set((d.rows||[]).flatMap(row=>Object.keys(row)))];
@@ -317,7 +317,7 @@ function detail(id){
   const count=d.detail_count??(d.rows||[]).length;
   kpis.innerHTML='<article class="kpi"><div class="label">Total da base</div><div class="value">'+F(total)+'</div><div class="hint">Total calculado a partir dos registros publicados</div></article>'+
    '<article class="kpi"><div class="label">Registros</div><div class="value">'+I(count)+'</div><div class="hint">Quantidade de registros detalhados na base</div></article>'+
-   '<article class="kpi"><div class="label">Fonte de dados</div><div class="value" style="font-size:16px">'+E(d.source_name||'SIAFI / base publicada')+'</div><div class="hint">Consulte a observação da base para detalhes de atualização</div></article>';
+   (String(id).toLowerCase().includes('empenho')?'':'<article class="kpi"><div class="label">Fonte de dados</div><div class="value" style="font-size:16px">'+E(d.source_name||'SIAFI / base publicada')+'</div><div class="hint">Consulte a observação da base para detalhes de atualização</div></article>');
  }
  if(search)search.oninput=drawTable;
  if(fieldSelect)fieldSelect.onchange=drawTable;
