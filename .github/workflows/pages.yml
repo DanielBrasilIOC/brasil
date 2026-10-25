@@ -170,3 +170,70 @@ jobs:
           git add data.json repasses.json source_state.json logs/atualizacoes_dashboard.csv
           git commit -m "Registrar auditoria da sincronização do painel [skip ci]"
           git push
+
+
+  backup-last-valid:
+    name: Guardar snapshot persistente da última versão válida
+    if: ${{ needs.build.result == 'success' && needs.build.outputs.sync_ok == 'true' && needs.persist-source-state.result == 'success' && (needs.deploy.result == 'success' || github.event_name != 'schedule') }}
+    needs: [build, deploy, persist-source-state]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Baixar a versão mais recente da branch principal
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - name: Validar arquivos e preparar snapshot imutável
+        id: prepare
+        env:
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          set -euo pipefail
+          python .github/scripts/validate_backup.py .
+          SNAPSHOT_ID="$(date -u +%Y%m%dT%H%M%SZ)-run-${RUN_ID}"
+          SNAPSHOT_PATH="snapshots/${SNAPSHOT_ID}"
+          export SNAPSHOT_ID SNAPSHOT_PATH
+          mkdir -p "$RUNNER_TEMP/valid-snapshot"
+          for file in data.json repasses.json source_state.json dashboard-v2.html index.html; do
+            cp "$file" "$RUNNER_TEMP/valid-snapshot/$file"
+          done
+          SOURCE_COMMIT="$(git rev-parse HEAD)"
+          export SOURCE_COMMIT
+          python - <<'PY'
+          import hashlib, json, os
+          from datetime import datetime, timezone
+          from pathlib import Path
+          root=Path(os.environ["RUNNER_TEMP"])/"valid-snapshot"
+          files=("data.json","repasses.json","source_state.json","dashboard-v2.html","index.html")
+          manifest={
+            "snapshot_id":os.environ["SNAPSHOT_ID"],
+            "created_at_utc":datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00","Z"),
+            "source_commit":os.environ["SOURCE_COMMIT"],
+            "run_id":os.environ["RUN_ID"],
+            "files":{name:hashlib.sha256((root/name).read_bytes()).hexdigest() for name in files},
+          }
+          (root/"manifest.json").write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+          PY
+          echo "snapshot_path=${SNAPSHOT_PATH}" >> "$GITHUB_OUTPUT"
+      - name: Gravar snapshot na branch independente dashboard-backups
+        env:
+          SNAPSHOT_PATH: ${{ steps.prepare.outputs.snapshot_path }}
+        run: |
+          set -euo pipefail
+          if git ls-remote --exit-code --heads origin dashboard-backups >/dev/null 2>&1; then
+            git fetch origin dashboard-backups
+            git checkout -B dashboard-backups origin/dashboard-backups
+          else
+            git checkout --orphan dashboard-backups
+            git rm -rf . >/dev/null 2>&1 || true
+          fi
+          mkdir -p "$SNAPSHOT_PATH"
+          cp "$RUNNER_TEMP/valid-snapshot/"* "$SNAPSHOT_PATH/"
+          python .github/scripts/validate_backup.py "$SNAPSHOT_PATH" --verify-manifest
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$SNAPSHOT_PATH"
+          git commit -m "Backup válido do dashboard: ${SNAPSHOT_PATH}"
+          git push origin dashboard-backups
