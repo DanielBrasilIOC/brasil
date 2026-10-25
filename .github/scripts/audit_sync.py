@@ -55,7 +55,7 @@ def row_diff(before, after):
         # Uma substituição é uma alteração de registro; alterações de conteúdo são contadas
         # pelo mínimo entre adicionados e removidos, sem mascarar o saldo líquido.
         altered=min(added,removed)
-        result[name]={"added":added,"removed":removed,"altered":altered,"value_changed":altered>0}
+        result[name]={"added":added,"removed":removed,"altered":altered,"value_changed":(added>0 or removed>0)}
     return result
 
 def run_sync():
