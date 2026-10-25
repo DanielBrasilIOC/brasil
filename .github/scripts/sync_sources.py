@@ -149,7 +149,7 @@ def main():
         for k,(rows,amount) in updates.items()
     ) or ds["financeiro"].get("source_name") != "Saldo Financeiro" or ds["financeiro"].get("source_url") != "https://docs.google.com/spreadsheets/d/" + SOURCES["financeiro"] + "/edit"
     rep_data={"rows":rep,"total":tr,"missing_values":mr,
-              "note":"Registros filtrados por Status do Empenho = AGUARDANDO ORÇAMENTO."}
+              "note":"Fonte: SAORC. Inclui somente Status da solicitação Pré-Empenho = AGUARDANDO ORÇAMENTO da COGEAD."}
     old_rep=json.loads(REPASSES_PATH.read_text(encoding="utf-8")) if REPASSES_PATH.exists() else {}
     repasses_changed=any(old_rep.get(k) != rep_data.get(k) for k in ("rows","total","missing_values","note"))
     changed=source_changed or dataset_changed or repasses_changed
@@ -170,7 +170,7 @@ def main():
     ds["financeiro"]["source_name"]="Saldo Financeiro"
     ds["financeiro"]["source_url"]="https://docs.google.com/spreadsheets/d/" + SOURCES["financeiro"] + "/edit"
     ds["repasses"]["missing_values"]=mr
-    ds["repasses"]["note"]="Fonte: Google Drive. Inclui somente Status do Empenho = AGUARDANDO ORÇAMENTO."
+    ds["repasses"]["note"]="Fonte: SAORC. Inclui somente Status da solicitação Pré-Empenho = AGUARDANDO ORÇAMENTO da COGEAD."
     data["generated_at"]=stamp
     # Nenhum arquivo de saída é alterado até que todas as seis fontes passem nas validações.
     DATA_PATH.write_text(json.dumps(data,ensure_ascii=False,separators=(",",":")),encoding="utf-8")
