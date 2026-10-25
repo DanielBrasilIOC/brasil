@@ -124,18 +124,40 @@ jobs:
           from datetime import datetime, timezone
           from pathlib import Path
           p=Path('logs/atualizacoes_dashboard.csv')
-          fields=['timestamp_utc','run_id','evento','resultado_execucao','fonte','fonte_id','conteudo_alterado','registros','total','dashboard_atualizado','publicacao','mensagem']
-          with p.open('a', encoding='utf-8-sig', newline='') as f:
-              w=csv.DictWriter(f, fieldnames=fields, delimiter=';')
-              w.writerow({
+          fields=['timestamp_utc','run_id','evento','resultado_execucao','fonte','fonte_id','conteudo_alterado','registros','total','registros_adicionados','registros_removidos','registros_alterados','valores_alterados','dashboard_atualizado','publicacao','mensagem']
+          legacy=['timestamp_utc','run_id','evento','resultado_execucao','fonte','fonte_id','conteudo_alterado','registros','total','dashboard_atualizado','publicacao','mensagem']
+          rows=[]
+          if p.exists() and p.stat().st_size:
+              with p.open('r',encoding='utf-8-sig',newline='') as f:
+                  old=list(csv.reader(f,delimiter=';'))
+              if old:
+                  header=old[0]
+                  for raw in old[1:]:
+                      if len(raw)==len(fields):
+                          item=dict(zip(fields,raw))
+                      elif len(raw)==len(legacy):
+                          item=dict(zip(legacy,raw))
+                      else:
+                          item=dict(zip(header,raw))
+                      rows.append({key:item.get(key,'') for key in fields})
+          with p.open('w',encoding='utf-8-sig',newline='') as f:
+              writer=csv.DictWriter(f,fieldnames=fields,delimiter=';')
+              writer.writeheader()
+              writer.writerows(rows)
+              writer.writerow({
                   'timestamp_utc':datetime.now(timezone.utc).isoformat(timespec='seconds').replace('+00:00','Z'),
                   'run_id':os.environ['RUN_ID'], 'evento':os.environ['EVENT_NAME'],
                   'resultado_execucao':'FINALIZAÇÃO', 'fonte':'RESUMO DA PUBLICAÇÃO', 'fonte_id':'',
                   'conteudo_alterado':'', 'registros':'', 'total':'',
+                  'registros_adicionados':'', 'registros_removidos':'', 'registros_alterados':'', 'valores_alterados':'',
                   'dashboard_atualizado':'SIM' if os.environ.get('DATA_CHANGED')=='true' and os.environ.get('DEPLOY_RESULT')=='success' else 'NÃO',
                   'publicacao':os.environ.get('FINAL_STATUS',''),
                   'mensagem':'Resultado final da publicação da execução.'
               })
+          # Fail the job if any row no longer matches the canonical schema.
+          with p.open('r',encoding='utf-8-sig',newline='') as f:
+              check=list(csv.reader(f,delimiter=';'))
+          assert check and check[0]==fields and all(len(row)==len(fields) for row in check[1:]), 'Histórico de auditoria com colunas inconsistentes'
           PY
           if [ -z "$(git status --porcelain -- data.json repasses.json source_state.json logs/atualizacoes_dashboard.csv)" ]; then
             echo "Nenhuma alteração para persistir."
