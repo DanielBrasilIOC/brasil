@@ -101,11 +101,15 @@ jobs:
           EVENT_NAME: ${{ github.event_name }}
         run: |
           mkdir -p logs
-          cp .audit-artifact/atualizacoes_dashboard.csv logs/atualizacoes_dashboard.csv
+          test -f .audit-artifact/atualizacoes_dashboard.csv
+          install -D -m 0644 .audit-artifact/atualizacoes_dashboard.csv logs/atualizacoes_dashboard.csv
           if [ "$DATA_CHANGED" = "true" ] && [ "$DEPLOY_RESULT" = "success" ]; then
-            cp .sync-artifact/data.json data.json
-            cp .sync-artifact/repasses.json repasses.json
-            cp .sync-artifact/source_state.json source_state.json
+            test -f .sync-artifact/data.json
+            test -f .sync-artifact/repasses.json
+            test -f .sync-artifact/source_state.json
+            install -D -m 0644 .sync-artifact/data.json data.json
+            install -D -m 0644 .sync-artifact/repasses.json repasses.json
+            install -D -m 0644 .sync-artifact/source_state.json source_state.json
             FINAL_STATUS="DADOS PUBLICADOS"
           elif [ "$DATA_CHANGED" = "true" ]; then
             FINAL_STATUS="FALHA NA PUBLICAÇÃO"
