@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Painel Financeiro e Orçamentário IOC</title>
+<style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#f3f6f9}iframe{display:block;width:100%;height:100%;border:0}</style>
+</head>
+<body>
+<iframe id="dashboard" src="dashboard-v2.html?v=202610252050-audit-time" title="Painel de Gestão"></iframe>
+<script>
+const frame=document.getElementById('dashboard');
+const DATA_URL='data.json?v='+Date.now();
+function brDate(iso){try{return new Intl.DateTimeFormat('pt-BR',{dateStyle:'short',timeStyle:'medium',timeZone:'America/Sao_Paulo'}).format(new Date(iso));}catch(e){return iso||'não informado';}}
+function injectAuditBar(doc,data){
+ if(!doc||!doc.body||!data)return;
+ const old=doc.getElementById('dataAuditBar');if(old)old.remove();
+ const oldStyle=doc.getElementById('dataAuditStyle');if(oldStyle)oldStyle.remove();
+ const style=doc.createElement('style');style.id='dataAuditStyle';style.textContent='#dataAuditBar{position:sticky;top:0;z-index:9999;display:flex;align-items:center;gap:18px;flex-wrap:wrap;padding:9px 14px;margin:0 0 10px;background:#fff;border:1px solid #dbe5eb;border-radius:10px;box-shadow:0 4px 14px rgba(18,52,78,.07);font:11px/1.35 Inter,system-ui,Arial;color:#49616f}#dataAuditBar strong{display:block;color:#163b5c;font-size:10px;text-transform:uppercase;letter-spacing:.06em}#dataAuditBar span{display:block}#dataAuditBar .audit-pub{border-left:1px solid #dbe5eb;padding-left:18px}.audit-ok{margin-left:auto;color:#28745b;font-weight:700}@media(max-width:700px){#dataAuditBar{gap:10px;padding:8px 10px}#dataAuditBar .audit-pub{border-left:0;padding-left:0}.audit-ok{width:100%;margin-left:0}}';doc.head.appendChild(style);
+ const bar=doc.createElement('div');bar.id='dataAuditBar';bar.innerHTML='<div><strong>Data de origem</strong><span>Fonte atualizada: '+(data.source_updated_at||'não informado')+'</span></div><div class="audit-pub"><strong>Publicação desta versão</strong><span>'+brDate(data.generated_at)+' (Brasília)</span></div><div class="audit-ok">✓ Publicação conferida com data.json</div>';
+ const main=doc.querySelector('main');if(main)main.prepend(bar);else doc.body.prepend(bar);
+ const candidates=[...doc.querySelectorAll('body *')].filter(el=>el.children.length===0);candidates.forEach(el=>{const t=(el.textContent||'').trim();if(/^Última atualização dos dados:/i.test(t))el.textContent='Publicação desta versão: '+brDate(data.generated_at)+' (Brasília)';});
+}
+async function refreshAudit(){try{const r=await fetch(DATA_URL,{cache:'no-store'});const data=await r.json();const doc=frame.contentDocument;if(doc)injectAuditBar(doc,data);}catch(e){console.error('Auditoria de data não aplicada',e)}}
+frame.addEventListener('load',()=>{try{const doc=frame.contentDocument;if(!doc||!doc.body)return;const title='Painel Financeiro e Orçamentário IOC';const brand=doc.querySelector('.brand h1');if(brand&&brand.textContent!==title)brand.textContent=title;const heading=doc.getElementById('title');if(heading&&heading.textContent.replace(/\s+/g,' ').trim()!==title)heading.textContent=title;if(doc.title!==title)doc.title=title;refreshAudit();}catch(e){console.error('Ajuste de título/auditoria não aplicado',e)}});
+</script>
+</body>
+</html>
