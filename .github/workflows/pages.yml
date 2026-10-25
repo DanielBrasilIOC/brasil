@@ -1,4 +1,4 @@
-name: Publicar Painel Financeiro e Orçamentário IOC
+name: Atualização automática no dashboard
 
 on:
   push:
