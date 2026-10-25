@@ -100,6 +100,7 @@ jobs:
           RUN_ID: ${{ github.run_id }}
           EVENT_NAME: ${{ github.event_name }}
         run: |
+          mkdir -p logs
           cp .audit-artifact/atualizacoes_dashboard.csv logs/atualizacoes_dashboard.csv
           if [ "$DATA_CHANGED" = "true" ] && [ "$DEPLOY_RESULT" = "success" ]; then
             cp .sync-artifact/data.json data.json
