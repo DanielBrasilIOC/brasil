@@ -571,5 +571,10 @@ async function load(manual=false){
   }
  }
 }
-const refreshButton=document.getElementById('refresh');if(refreshButton)refreshButton.onclick=()=>load(true);load();
+const refreshButton=document.getElementById('refresh');if(refreshButton)refreshButton.onclick=()=>load(true);
+// Atualiza os dados da página já aberta a cada quatro horas, somente em dias úteis.
+// Recarrega as bases sem dar refresh completo no navegador, preservando a aba e os filtros sempre que possível.
+const AUTO_REFRESH_INTERVAL_MS=4*60*60*1000;
+setInterval(()=>{const weekday=new Date().getDay();if(weekday>=1&&weekday<=5)load(false)},AUTO_REFRESH_INTERVAL_MS);
+load();
 </script></body></html>
