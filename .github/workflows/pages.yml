@@ -5,9 +5,9 @@ on:
     branches: ["main"]
     paths-ignore:
       - "source_state.json"
+      - "logs/atualizacoes_dashboard.csv"
   schedule:
-    # A cada 6 horas; horários em Brasília: 09h, 15h, 21h e 03h.
-    # GitHub Actions interpreta o cron em UTC: 12h, 18h, 00h e 06h.
+    # Quatro verificações por dia. GitHub Actions usa UTC.
     - cron: "0 0,6,12,18 * * *"
   workflow_dispatch:
 
@@ -24,6 +24,7 @@ jobs:
   build:
     outputs:
       data_changed: ${{ steps.sync.outputs.changed }}
+      sync_ok: ${{ steps.sync.outputs.sync_ok }}
     runs-on: ubuntu-latest
     steps:
       - name: Baixar o repositório
@@ -32,10 +33,10 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Sincronizar e validar as seis fontes do Google Drive
+      - name: Sincronizar fontes e registrar auditoria
         id: sync
-        run: python .github/scripts/sync_sources.py
-      - name: Guardar estado das fontes para persistir após publicação
+        run: python .github/scripts/audit_sync.py
+      - name: Guardar dados validados para persistir após publicação
         if: steps.sync.outputs.changed == 'true'
         uses: actions/upload-artifact@v4
         with:
@@ -45,14 +46,24 @@ jobs:
             repasses.json
             source_state.json
           if-no-files-found: error
+      - name: Guardar log de auditoria desta execução
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dashboard-audit-log
+          path: logs/atualizacoes_dashboard.csv
+          if-no-files-found: error
       - name: Configurar GitHub Pages
+        if: steps.sync.outputs.sync_ok == 'true'
         uses: actions/configure-pages@v5
       - name: Preparar arquivos estáticos do painel
+        if: steps.sync.outputs.sync_ok == 'true'
         uses: actions/upload-pages-artifact@v3
         with:
           path: "."
+
   deploy:
-    if: needs.build.outputs.data_changed == 'true' || github.event_name != 'schedule'
+    if: needs.build.outputs.sync_ok == 'true' && (needs.build.outputs.data_changed == 'true' || github.event_name != 'schedule')
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -64,7 +75,7 @@ jobs:
         uses: actions/deploy-pages@v4
 
   persist-source-state:
-    if: needs.build.outputs.data_changed == 'true' && needs.deploy.result == 'success'
+    if: always() && needs.build.result == 'success'
     needs: [build, deploy]
     runs-on: ubuntu-latest
     permissions:
@@ -72,24 +83,58 @@ jobs:
     steps:
       - name: Baixar o repositório
         uses: actions/checkout@v4
+      - name: Recuperar log de auditoria
+        uses: actions/download-artifact@v4
+        with:
+          name: dashboard-audit-log
+          path: .audit-artifact
       - name: Recuperar dados validados após publicação
+        if: needs.build.outputs.data_changed == 'true' && needs.deploy.result == 'success'
         uses: actions/download-artifact@v4
         with:
           name: validated-dashboard-data
           path: .sync-artifact
-      - name: Persistir os dados atuais do dashboard no repositório
+      - name: Persistir auditoria e dados publicados
+        env:
+          DATA_CHANGED: ${{ needs.build.outputs.data_changed }}
+          DEPLOY_RESULT: ${{ needs.deploy.result }}
+          RUN_ID: ${{ github.run_id }}
+          EVENT_NAME: ${{ github.event_name }}
         run: |
-          cp .sync-artifact/data.json data.json
-          cp .sync-artifact/repasses.json repasses.json
-          cp .sync-artifact/source_state.json source_state.json
-          if [ -z "$(git status --porcelain -- data.json repasses.json source_state.json)" ]; then
-            echo "Dados e estado do dashboard já estão atualizados."
+          cp .audit-artifact/atualizacoes_dashboard.csv logs/atualizacoes_dashboard.csv
+          if [ "$DATA_CHANGED" = "true" ] && [ "$DEPLOY_RESULT" = "success" ]; then
+            cp .sync-artifact/data.json data.json
+            cp .sync-artifact/repasses.json repasses.json
+            cp .sync-artifact/source_state.json source_state.json
+            FINAL="DADOS PUBLICADOS"
+          elif [ "$DATA_CHANGED" = "true" ]; then
+            FINAL="FALHA NA PUBLICAÇÃO"
+          elif [ "$EVENT_NAME" = "schedule" ]; then
+            FINAL="NÃO NECESSÁRIA"
+          else
+            FINAL="PUBLICAÇÃO DO PAINEL SEM ALTERAÇÃO DE DADOS"
+          fi
+          python - <<'PY'
+          import csv, os
+          from datetime import datetime, timezone
+          from pathlib import Path
+          p=Path('logs/atualizacoes_dashboard.csv')
+          with p.open('a', encoding='utf-8-sig', newline='') as f:
+              w=csv.DictWriter(f, fieldnames=['timestamp_utc','run_id','evento','resultado_execucao','fonte','fonte_id','conteudo_alterado','registros','total','dashboard_atualizado','publicacao','mensagem'], delimiter=';')
+              w.writerow({
+                  'timestamp_utc':datetime.now(timezone.utc).isoformat(timespec='seconds').replace('+00:00','Z'),
+                  'run_id':os.environ['RUN_ID'], 'evento':os.environ['EVENT_NAME'],
+                  'resultado_execucao':'FINALIZAÇÃO', 'fonte':'RESUMO DA PUBLICAÇÃO', 'fonte_id':'',
+                  'conteudo_alterado':'', 'registros':'', 'total':'', 'dashboard_atualizado':'SIM' if os.environ.get('DATA_CHANGED')=='true' and os.environ.get('DEPLOY_RESULT')=='success' else 'NÃO',
+                  'publicacao':os.environ.get('FINAL_STATUS',''), 'mensagem':'Resultado final da publicação da execução.'
+              })
+          PY
+          if [ -z "$(git status --porcelain -- data.json repasses.json source_state.json logs/atualizacoes_dashboard.csv)" ]; then
+            echo "Nenhuma alteração para persistir."
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data.json repasses.json source_state.json
-          git commit -m "Sincronizar dados financeiros atuais após publicação [skip ci]"
+          git add data.json repasses.json source_state.json logs/atualizacoes_dashboard.csv
+          git commit -m "Registrar auditoria da sincronização do painel [skip ci]"
           git push
-
-# Nova sincronização manual solicitada em 24/10/2026 às 22:28 UTC
