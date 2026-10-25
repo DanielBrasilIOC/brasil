@@ -32,6 +32,8 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      - name: Testar detecção de inclusão e exclusão
+        run: python .github/scripts/test_audit_sync.py
       - name: Sincronizar fontes e registrar auditoria
         id: sync
         run: python .github/scripts/audit_sync.py
