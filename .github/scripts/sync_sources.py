@@ -43,19 +43,34 @@ def money(v):
     return float(-abs(n) if neg else n)
 
 def download(file_id):
-    if file_id == SOURCES["financeiro"]:
-        # Usa a planilha Google Sheets atual, não a cópia CSV desatualizada.
-        url = "https://docs.google.com/spreadsheets/d/" + file_id + "/export?format=csv&gid=1275876733"
-    else:
-        url = "https://drive.google.com/uc?export=download&id=" + file_id
-    req=urllib.request.Request(url, headers={"User-Agent":"IOC-Dashboard-Sync/1.0"})
-    with urllib.request.urlopen(req,timeout=45) as r: b=r.read()
-    try: s=b.decode("utf-8-sig")
-    except UnicodeDecodeError: s=b.decode("cp1252",errors="replace")
-    # Alguns relatórios SIAFI guardam delimitadores/caracteres como sequências escapadas.
-    s=s.replace(r"\t","\t").replace(r'\"','"')
-    s=re.sub(r"\\x([0-9a-fA-F]{2})",lambda m:chr(int(m.group(1),16)),s)
-    return s
+    # Os seis itens são arquivos CSV listados na pasta pública do Drive.
+    # O endpoint antigo /uc pode responder HTTP 400; tenta primeiro o endpoint
+    # atual de download e mantém uma alternativa compatível.
+    urls = [
+        "https://drive.usercontent.google.com/download?id=" + urllib.parse.quote(file_id, safe="") + "&export=download&authuser=0&confirm=t",
+        "https://drive.google.com/uc?export=download&id=" + urllib.parse.quote(file_id, safe=""),
+    ]
+    errors = []
+    for url in urls:
+        try:
+            req=urllib.request.Request(url, headers={
+                "User-Agent":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+                "Accept":"text/csv,text/plain,application/octet-stream,*/*",
+            })
+            with urllib.request.urlopen(req,timeout=45) as r:
+                b=r.read()
+            try: s=b.decode("utf-8-sig")
+            except UnicodeDecodeError: s=b.decode("cp1252",errors="replace")
+            # Não aceitar páginas de erro/login como se fossem CSV.
+            if s.lstrip().lower().startswith("<!doctype html") or "accounts.google.com/ServiceLogin" in s:
+                errors.append(url.split("?")[0] + ": resposta HTML/login, não CSV")
+                continue
+            s=s.replace(r"\\t","\\t").replace(r'\\\"','"')
+            s=re.sub(r"\\\\x([0-9a-fA-F]{2})",lambda m:chr(int(m.group(1),16)),s)
+            return s
+        except Exception as exc:
+            errors.append(url.split("?")[0] + ": " + str(exc))
+    raise RuntimeError("Não foi possível baixar o CSV do Drive: " + " | ".join(errors))
 
 def table(text, delimiter, tokens):
     rows=list(csv.reader(io.StringIO(text),delimiter=delimiter))
