@@ -9,23 +9,10 @@ ROOT = Path(__file__).resolve().parents[2]
 DATA_PATH = ROOT / "data.json"
 REPASSES_PATH = ROOT / "repasses.json"
 STATE_PATH = ROOT / "source_state.json"
-SOURCES = {
-    # IDs dos seis CSVs ativos (não excluídos) dentro da pasta oficial do Drive.
-    "empenhos": "1pDEGc2LAz0fe7c4GH5fh-kzgeW0iuQHh",
-    "orcamentario": "1gQYnGiF2zLdCOR-iiW5ptNc-3fXdNuMy",
-    "ordens_bancarias": "1dTM5GfqVD63wNf2QYhOydEDd6g1Ca8rU",
-    "repasses": "1h7oF_blPx6RpuHsCjPshW-zn7IcNHGB-",
-    "financeiro": "10ghNRMaUWvaOcX3q8luLTn9CZ2_z4RSQ",
-    "restos": "1CIAIW9t9cKAnu-iUlQJpGUx_sfalHyuu",
-}
-SOURCE_URLS = {
-    "empenhos": "https://drive.google.com/file/d/1pDEGc2LAz0fe7c4GH5fh-kzgeW0iuQHh/view",
-    "orcamentario": "https://drive.google.com/file/d/1gQYnGiF2zLdCOR-iiW5ptNc-3fXdNuMy/view",
-    "ordens_bancarias": "https://drive.google.com/file/d/1dTM5GfqVD63wNf2QYhOydEDd6g1Ca8rU/view",
-    "repasses": "https://drive.google.com/file/d/1h7oF_blPx6RpuHsCjPshW-zn7IcNHGB-/view",
-    "financeiro": "https://drive.google.com/file/d/10ghNRMaUWvaOcX3q8luLTn9CZ2_z4RSQ/view",
-    "restos": "https://drive.google.com/file/d/1CIAIW9t9cKAnu-iUlQJpGUx_sfalHyuu/view",
-}
+from discover_drive_sources import discover_source_ids
+SOURCES = discover_source_ids()
+SOURCE_URLS = {k: "https://drive.google.com/file/d/" + v + "/view" for k, v in SOURCES.items()}
+
 MOJI = {"Ã‡":"Ç","Ãƒ":"Ã","Ã‰":"É","Ã“":"Ó","Ãš":"Ú","Ã£":"ã","Ã§":"ç",
         "Ã¡":"á","Ã©":"é","Ã­":"í","Ã³":"ó","Ãº":"ú","Ãª":"ê","Ã´":"ô","Ãµ":"õ"}
 

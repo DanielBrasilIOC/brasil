@@ -11,14 +11,9 @@ SYNC = ROOT / ".github" / "scripts" / "sync_sources.py"
 STATE = ROOT / "source_state.json"
 DATA = ROOT / "data.json"
 LOG = ROOT / "logs" / "atualizacoes_dashboard.csv"
-SOURCES = {
-    "empenhos": "1pDEGc2LAz0fe7c4GH5fh-kzgeW0iuQHh",
-    "orcamentario": "1gQYnGiF2zLdCOR-iiW5ptNc-3fXdNuMy",
-    "ordens_bancarias": "1dTM5GfqVD63wNf2QYhOydEDd6g1Ca8rU",
-    "repasses": "1h7oF_blPx6RpuHsCjPshW-zn7IcNHGB-",
-    "financeiro": "10ghNRMaUWvaOcX3q8luLTn9CZ2_z4RSQ",
-    "restos": "1CIAIW9t9cKAnu-iUlQJpGUx_sfalHyuu",
-}
+from discover_drive_sources import discover_source_ids
+SOURCES = discover_source_ids()
+
 LABELS = {"empenhos":"Empenhos","orcamentario":"Orçamentário","ordens_bancarias":"Ordens Bancárias","repasses":"Repasses","financeiro":"Financeiro","restos":"Restos a Pagar"}
 FIELDS = ["timestamp_utc","run_id","evento","resultado_execucao","fonte","fonte_id","conteudo_alterado","registros","total","registros_adicionados","registros_removidos","registros_alterados","valores_alterados","dashboard_atualizado","publicacao","mensagem"]
 
