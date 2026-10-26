@@ -203,54 +203,42 @@ def main():
     check(50<=len(rep)<=150 and tr>=1.5e6 and mr<=5,
           f"Validação de repasses falhou: linhas={len(rep)}, total={tr}, sem valor={mr}")
 
-    a=table(src["financeiro"],",",["UG Executora","Fonte Recursos Detalhada","Saldo"])
-    # Localizar as colunas pelo cabeçalho real, incluindo Vinculação de pagamento.
-    fin_header=TABLE_AUDITS[norm("UG Executora")]["header"]
-    fin_norm=[norm(name) for name in fin_header]
-    def finance_col(exact, predicate=None):
-        key=norm(exact)
-        if key in fin_norm: return fin_norm.index(key)
-        if predicate:
-            return next((i for i,name in enumerate(fin_norm) if predicate(name)),None)
-        return None
-    fin_cols={
-        "uge":finance_col("UG Executora"),
-        "fonte":finance_col("Fonte Recursos Detalhada"),
-        "vinculo":finance_col("Vinculação de pagamento",
-                              lambda name:"VINCULACAO" in name and "PAGAMENTO" in name),
-        "saldo":finance_col("Saldo",lambda name:"SALDO" in name),
-    }
-    required_financeiro=[name for name in ("uge","fonte","saldo") if fin_cols[name] is None]
-    check(not required_financeiro,
-          "Colunas obrigatórias ausentes no Saldo Financeiro: " + ", ".join(required_financeiro) +
-          "; cabeçalho identificado=" + repr(fin_header))
-    # A exportação Saldo Financeiro.csv não traz a coluna de vinculação.
-    # Fallback baseado nas vinculações distintas encontradas na planilha de PF
-    # (PF - Vinculação Pagamento), agrupadas por Fonte SOF. Se a própria extração
-    # passar a fornecer a coluna, o valor direto da fonte sempre terá prioridade.
-    vinculos_por_fonte_sof={
-        "1000":"400",
-        "1001":"400, 405, 414",
-        "1002":"400",
-        "1049":"400",
-    }
+    # O CSV oficial de Saldo Financeiro traz a vinculação e o valor em cada linha.
+    # Não agrupar vinculações nem inferi-las por prefixo da fonte: isso perde a
+    # correspondência exata entre fonte, vinculação e saldo.
+    finance_lines=[]
+    for line in src["financeiro"].splitlines():
+        try:
+            finance_lines.append(next(csv.reader([line], delimiter=",")))
+        except Exception:
+            finance_lines.append([line])
+    finance_header_index=next((i for i,row in enumerate(finance_lines)
+        if len(row)>=6 and norm(row[0])==norm("UG Executora")
+        and norm(row[1])==norm("Fonte Recursos Detalhada")
+        and "VINCULACAO" in norm(row[3]) and "PAGAMENTO" in norm(row[3])),None)
+    check(finance_header_index is not None,
+          "Cabeçalho oficial do Saldo Financeiro não encontrado; esperadas as colunas UG Executora, Fonte Recursos Detalhada e Vinculação Pagamento.")
+    fin_header=[clean(v) for v in finance_lines[finance_header_index]]
+    TABLE_AUDITS[norm("UG Executora")]={
+        "tokens":["UG Executora","Fonte Recursos Detalhada","Vinculação Pagamento"],
+        "delimiter":",","header":fin_header,"row_count":len(finance_lines)-finance_header_index-1,
+        "skipped_total_rows":[]}
     fin=[]
-    for r in a:
-        if len(r)<=max(i for i in fin_cols.values() if i is not None):
+    for raw in finance_lines[finance_header_index+1:]:
+        r=[clean(v) for v in raw]
+        if len(r)<6 or not r[0] or not r[1]:
             continue
-        fonte_val=clean(r[fin_cols["fonte"]])
-        vinculo=(clean(r[fin_cols["vinculo"]])
-                 if fin_cols["vinculo"] is not None else "")
-        if not vinculo:
-            vinculo=vinculos_por_fonte_sof.get(fonte_val[:4],"")
-        fin.append({"uge":r[fin_cols["uge"]],
-                    "unidade":"IOC",
-                    "fonte":fonte_val,
-                    "vinculo":vinculo,
-                    "saldo":abs(money(r[fin_cols["saldo"]]) or 0)})
+        if not norm(r[4]).startswith("SALDO MOEDA ORIGEM"):
+            continue
+        saldo=money(r[5])
+        check(saldo is not None,
+              "Saldo financeiro inválido para fonte="+r[1]+", vinculação="+r[3])
+        fin.append({"uge":r[0],"unidade":"IOC","fonte":r[1],
+                    "vinculo":r[3],"saldo":abs(saldo)})
     tf=total(fin,"saldo")
-    check(1<=len(fin)<=20 and all(r["saldo"] is not None for r in fin) and 1e5<=abs(tf)<=2e6,
-          f"Validação do saldo financeiro falhou: linhas={len(fin)}, total={tf}")
+    check(1<=len(fin)<=20 and all(r["saldo"] is not None and r["vinculo"] for r in fin)
+          and 1e5<=abs(tf)<=2e6,
+          f"Validação do saldo financeiro falhou: linhas={len(fin)}, total={tf}; cada linha deve ter vinculação própria.")
 
     a=table(src["restos"],",",["Empenho","Saldo"])
     rap=[]
@@ -290,7 +278,7 @@ def main():
         return f"{value:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
 
     notes={
-      "financeiro":f"Extração do SIAFI: 20/10/2026. Linhas de total do relatório excluídas para evitar duplicação. {len(fin)} registros detalhados; saldos negativos são exibidos sem sinal conforme autorização. Total detalhado: R$ {brl(tf)}.",
+      "financeiro":f"Extração do SIAFI: 23/10/2026. Cada linha mantém a sua própria Vinculação Pagamento e o saldo correspondente; nenhuma vinculação é agrupada. {len(fin)} registros detalhados. Total detalhado: R$ {brl(tf)}.",
       "restos":f"Fonte SIAFI: extração atual do arquivo Restos a Pagar.csv. Exibidos {len(rap)} registros com saldo diferente de zero; linhas de total não são somadas novamente. Total detalhado: R$ {brl(trp)}.",
       "empenhos":f"Fonte SIAFI: extração atual do arquivo Saldo nos empenhos 2026.csv. {len(empenhos)} registros detalhados. Total reconciliado com a linha de total da fonte e a soma da coluna Saldo: R$ {brl(te)}. Registros mantidos por linha/subitem da fonte.",
       "orcamentario":f"Fonte oficial: arquivo Saldo Orçamentário.csv. Relatório SIAFI, conta contábil 622110000, ano 2026, UG executora 254463. Valores negativos são exibidos como saldo positivo disponível conforme regra autorizada. {len(orc)} registros detalhados, incluindo {sum(1 for r in orc if abs(r.get('saldo') or 0)<0.005)} com saldo zero. Total reconciliado com a fonte: R$ {brl(to)}.",
