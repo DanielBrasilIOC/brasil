@@ -75,7 +75,7 @@ def download(file_id):
 def table(text, delimiter, tokens):
     # Algumas exportações do Drive mudam entre CSV, TSV e ponto-e-vírgula.
     # Detecta o delimitador real pelo cabeçalho esperado antes de interpretar os dados.
-    candidates = [delimiter] + [d for d in (",", ";", "\\t", "|") if d != delimiter]
+    candidates = [delimiter] + [d for d in (",", ";", "\t", "|") if d != delimiter]
     selected = None
     hi = None
     rows = []
