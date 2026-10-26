@@ -10,6 +10,7 @@ DATA_PATH = ROOT / "data.json"
 REPASSES_PATH = ROOT / "repasses.json"
 STATE_PATH = ROOT / "source_state.json"
 SOURCE_KEYS = ("empenhos", "orcamentario", "ordens_bancarias", "repasses", "financeiro", "restos")
+TABLE_AUDITS = {}
 CACHE_PATH = ROOT / ".drive_source_ids.json"
 def resolve_sources():
     if not CACHE_PATH.exists():
@@ -128,9 +129,11 @@ def table(text, delimiter, tokens):
             continue
         if len(row)<len(header): row += [""]*(len(header)-len(row))
         data.append(row[:len(header)])
-    print("TABLE_AUDIT="+json.dumps({"tokens":tokens,"delimiter":("TAB" if selected=="\\t" else selected),
-          "header":header,"row_count":len(data),"skipped_total_rows":skipped_totals,
-          "first_rows":data[:2],"last_rows":data[-3:]},ensure_ascii=False))
+    audit={"tokens":tokens,"delimiter":("TAB" if selected=="\\t" else selected),
+           "header":header,"row_count":len(data),"skipped_total_rows":skipped_totals,
+           "first_rows":data[:2],"last_rows":data[-3:]}
+    TABLE_AUDITS[norm(tokens[0])]=audit
+    print("TABLE_AUDIT="+json.dumps(audit,ensure_ascii=False))
     return data
 
 def total(rows,key): return round(sum(float(r.get(key) or 0) for r in rows),2)
@@ -213,16 +216,18 @@ def main():
         value_idx=next((i for i in range(len(r)-1,-1,-1) if money(r[i]) is not None),len(r)-1)
         vendor_idx=status_idx+1 if status_idx+1<len(r) else min(9,len(r)-1)
         rep.append({"processo":r[0] if len(r)>0 else "",
-                    "licitacao":r[1] if len(r)>1 else "",
-                    "fornecedor":r[vendor_idx],"sub_grupo":r[3] if len(r)>3 else "",
+                    "licitacao":"",
+                    "fornecedor":r[7] if len(r)>7 else "",
+                    "sub_grupo":r[3] if len(r)>3 else "",
                     "elemento_despesa":r[1] if len(r)>1 else "",
                     "elemento":r[2] if len(r)>2 else "",
                     "sub_grupo_despesa":r[3] if len(r)>3 else "",
                     "vigencia":r[4] if len(r)>4 else "",
                     "situacao_prioridade":r[5] if len(r)>5 else "",
-                    "solicitacao_ne":r[6] if len(r)>6 else "",
-                    "numero_ne":r[7] if len(r)>7 else "",
-                    "status_empenho":r[status_idx],"fornecedores":r[vendor_idx],
+                    "solicitacao_ne":"",
+                    "numero_ne":"",
+                    "status_empenho":r[status_idx],
+                    "fornecedores":r[7] if len(r)>7 else "",
                     "saldo":money(r[value_idx])})
     tr=total(rep,"saldo"); mr=sum(r["saldo"] is None for r in rep)
     check(50<=len(rep)<=150 and tr>=1.5e6 and mr<=5,
@@ -230,7 +235,7 @@ def main():
 
     a=table(src["financeiro"],",",["UG Executora","Fonte Recursos Detalhada","Saldo"])
     # O relatório atual do SIAFI contém três colunas, não o layout antigo de seis.
-    fin=[{"uge":r[0],"unidade":"IOC","fonte":r[1],"vinculo":"","saldo":money(r[2])} for r in a if len(r)>2]
+    fin=[{"uge":r[0],"unidade":"IOC","fonte":r[1],"vinculo":"","saldo":abs(money(r[2]) or 0)} for r in a if len(r)>2]
     tf=total(fin,"saldo")
     check(1<=len(fin)<=20 and all(r["saldo"] is not None for r in fin) and 1e5<=abs(tf)<=2e6,
           f"Validação do saldo financeiro falhou: linhas={len(fin)}, total={tf}")
@@ -251,6 +256,36 @@ def main():
 
     updates={"financeiro":(fin,tf),"restos":(rap,trp),"empenhos":(empenhos,te),
              "orcamentario":(orc,to),"repasses":(rep,tr),"ordens_bancarias":(ob,tob)}
+
+    def verify_source_total(token, column_index, expected, absolute=False):
+        audit=TABLE_AUDITS.get(norm(token),{})
+        totals=audit.get("skipped_total_rows",[])
+        values=[money(row[column_index]) for row in totals if len(row)>column_index]
+        values=[v for v in values if v is not None]
+        check(bool(values),f"Reconciliação bloqueada: a fonte {token} não apresentou total explícito verificável.")
+        for value in values:
+            observed=abs(value) if absolute else value
+            check(abs(observed-expected)<0.01,
+                  f"Total da fonte {token} diverge dos detalhes: total da fonte={observed:.2f}, soma dos detalhes={expected:.2f}.")
+
+    verify_source_total("Favorecido do Empenho",6,te)
+    verify_source_total("UG Responsável",7,to,absolute=True)
+    verify_source_total("Ordem Bancária",11,total(ob,"movimentacao_liquida"))
+    verify_source_total("UG Executora",2,tf)
+    verify_source_total("Empenho",5,trp)
+
+    def brl(value):
+        return f"{value:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+
+    notes={
+      "financeiro":f"Extração do SIAFI: 20/10/2026. Linhas de total do relatório excluídas para evitar duplicação. {len(fin)} registros detalhados; saldos negativos são exibidos sem sinal conforme autorização. Total detalhado: R$ {brl(tf)}.",
+      "restos":f"Fonte SIAFI: extração atual do arquivo Restos a Pagar.csv. Exibidos {len(rap)} registros com saldo diferente de zero; linhas de total não são somadas novamente. Total detalhado: R$ {brl(trp)}.",
+      "empenhos":f"Fonte SIAFI: extração atual do arquivo Saldo nos empenhos 2026.csv. {len(empenhos)} registros detalhados. Total reconciliado com a linha de total da fonte e a soma da coluna Saldo: R$ {brl(te)}. Registros mantidos por linha/subitem da fonte.",
+      "orcamentario":f"Fonte oficial: arquivo Saldo Orçamentário.csv. Relatório SIAFI, conta contábil 622110000, ano 2026, UG executora 254463. Valores negativos são exibidos como saldo positivo disponível conforme regra autorizada. {len(orc)} registros detalhados, incluindo {sum(1 for r in orc if abs(r.get('saldo') or 0)<0.005)} com saldo zero. Total reconciliado com a fonte: R$ {brl(to)}.",
+      "repasses":f"Fonte: Aguardando Repasse Orçamentário.csv. {len(rep)} registros com status AGUARDANDO ORÇAMENTO; total calculado pela coluna VALOR: R$ {brl(tr)}.",
+      "ordens_bancarias":f"Fonte: ORDEM BANCARIAS EMITIDAS.csv. {len(ob)} registros. Total do painel calculado pela soma da coluna Doc - Valor: R$ {brl(tob)}. A soma da coluna Movim. Líquido foi conferida separadamente com o total da própria fonte: R$ {brl(total(ob,'movimentacao_liquida'))}. Registros mantidos por OB + fonte pagadora."
+    }
+
     data=json.loads(DATA_PATH.read_text(encoding="utf-8"))
     # Remove permanentemente a base descontinuada, inclusive em futuras sincronizações.
     obsolete_dataset_present=any(d.get("id")=="documentos_habeis_pendentes" for d in data.get("datasets",[]))
@@ -266,7 +301,8 @@ def main():
     dataset_changed=obsolete_dataset_present or any(
         ds[k].get("rows") != rows or ds[k].get("total") != amount or
         ds[k].get("detail_count") != len(rows) or
-        ds[k].get("source_url") != "https://drive.google.com/file/d/" + SOURCES[k] + "/view"
+        ds[k].get("source_url") != "https://drive.google.com/file/d/" + SOURCES[k] + "/view" or
+        ds[k].get("note") != notes[k]
         for k,(rows,amount) in updates.items()
     ) or ds["financeiro"].get("source_name") != "Saldo Financeiro"
     rep_data={"rows":rep,"total":tr,"missing_values":mr,
@@ -291,6 +327,7 @@ def main():
     ds["financeiro"]["source_name"]="Saldo Financeiro"
     for key in updates:
         ds[key]["source_url"]="https://drive.google.com/file/d/" + SOURCES[key] + "/view"
+        ds[key]["note"]=notes[key]
     ds["repasses"]["missing_values"]=mr
     ds["repasses"]["note"]=""
     data["generated_at"]=stamp
