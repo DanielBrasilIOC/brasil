@@ -81,7 +81,7 @@ def table(text, delimiter, tokens):
     rows = []
     for candidate in candidates:
         parsed = list(csv.reader(io.StringIO(text), delimiter=candidate))
-        for i, row in enumerate(parsed[:30]):
+        for i, row in enumerate(parsed):
             joined = norm(" ".join(row))
             if len(row) > 3 and all(norm(t) in joined for t in tokens):
                 selected, hi, rows = candidate, i, parsed
