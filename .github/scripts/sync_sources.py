@@ -118,42 +118,6 @@ def main():
     check(1<=len(fin)<=20 and all(r["saldo"] is not None for r in fin) and 1e5<=abs(tf)<=2e6,
           f"Validação do saldo financeiro falhou: linhas={len(fin)}, total={tf}")
 
-    # Diagnóstico temporário: compara a antiga referência CSV com a planilha atual
-    # para localizar a origem da divergência informada, sem usar a referência antiga no painel.
-    finance_alternative = {"id":"1ktsiJGTRiWZf83uu5tKtNmErKyAbqyfo"}
-    try:
-        old_text=download(finance_alternative["id"])
-        old_rows=table(old_text,",",["UGE","Fonte Detalhada","Total"])
-        old_fin=[{"saldo":money(r[5])} for r in old_rows]
-        finance_alternative.update({"registros":len(old_fin),"total":total(old_fin,"saldo"),"status":"LIDA"})
-    except Exception as exc:
-        finance_alternative.update({"status":"ERRO","erro":str(exc)[:250]})
-
-    # Diagnóstico temporário: localiza abas compatíveis na mesma planilha.
-    finance_tabs_diagnostic={"status":"INICIADO","abas":[]}
-    try:
-        sheet_url="https://docs.google.com/spreadsheets/d/"+SOURCES["financeiro"]+"/edit"
-        req=urllib.request.Request(sheet_url,headers={"User-Agent":"IOC-Dashboard-Sync/1.0"})
-        with urllib.request.urlopen(req,timeout=20) as response:
-            html=response.read().decode("utf-8",errors="replace")
-        gids=set(re.findall(r'"sheetId"\s*:\s*(\d+)',html))
-        gids.update(re.findall(r'gid=(\d+)',html))
-        gids.add("0")
-        for gid in sorted(gids, key=lambda x:int(x))[:40]:
-            try:
-                url="https://docs.google.com/spreadsheets/d/"+SOURCES["financeiro"]+"/export?format=csv&gid="+gid
-                req=urllib.request.Request(url,headers={"User-Agent":"IOC-Dashboard-Sync/1.0"})
-                with urllib.request.urlopen(req,timeout=10) as response:
-                    tab_text=response.read().decode("utf-8-sig",errors="replace")
-                tab_rows=table(tab_text,",",["UGE","Fonte Detalhada","Total"])
-                tab_fin=[{"saldo":money(r[5])} for r in tab_rows]
-                finance_tabs_diagnostic["abas"].append({"gid":gid,"registros":len(tab_fin),"total":total(tab_fin,"saldo")})
-            except Exception:
-                continue
-        finance_tabs_diagnostic["status"]="LIDA" if finance_tabs_diagnostic["abas"] else "SEM_ABAS_COMPATIVEIS"
-    except Exception as exc:
-        finance_tabs_diagnostic={"status":"ERRO","erro":str(exc)[:250],"abas":[]}
-
     a=table(src["restos"],",",["NE CCor","Saldo"])
     rap=[]
     for r in a:
@@ -206,8 +170,7 @@ def main():
 
     source_report = {
         "financeiro": {"registros":len(fin),"total":tf,"rows_hash":row_fingerprint(fin),
-                       "diagnostico_referencia_anterior":finance_alternative,
-                       "diagnostico_abas_planilha":finance_tabs_diagnostic},
+                       },
         "restos": {"registros":len(rap),"total":trp,"rows_hash":row_fingerprint(rap)},
         "empenhos": {"registros":len(empenhos),"total":te,"rows_hash":row_fingerprint(empenhos)},
         "orcamentario": {"registros":len(orc),"total":to,"rows_hash":row_fingerprint(orc)},
