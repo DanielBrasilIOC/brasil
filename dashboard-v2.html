@@ -491,7 +491,7 @@ function detail(id){
  }
  if(search)search.oninput=drawTable;
  if(fieldSelect)fieldSelect.onchange=drawTable;
- const obFilterValue=document.getElementById('obFilterValue');if(obFilterValue)obFilterValue.oninput=drawTable;const obFilterField=document.getElementById('obFilterField');if(obFilterField)obFilterField.onchange=drawTable;
+ if(obFilterValue)obFilterValue.oninput=drawTable;if(obFilterField)obFilterField.onchange=drawTable;
  const clearDetail=document.getElementById('clearDetail');
  if(clearDetail)clearDetail.onclick=()=>{if(search)search.value='';if(fieldSelect)fieldSelect.value='';const obFilterValue=document.getElementById('obFilterValue');if(obFilterValue)obFilterValue.value='';const obFilterField=document.getElementById('obFilterField');if(obFilterField)obFilterField.value='favorecido';drawTable()};
  drawTable();
