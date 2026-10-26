@@ -400,3 +400,11 @@
 2026-10-26T16:36:57Z;40360792099;push;ATUALIZADO;Orçamentário;1gQYnGiF2zLdCOR-iiW5ptNc-3fXdNuMy;NÃO;12;999086.68;0;0;0;NÃO;SIM;PUBLICAÇÃO PROGRAMADA;"Hash fonte: inalterado; registros: +0 / -0 / alterados=0; valor total: inalterado."
 2026-10-26T16:36:57Z;40360792099;push;ATUALIZADO;RESUMO DA EXECUÇÃO;;SIM;1061;;0;0;0;NÃO;SIM;PUBLICAÇÃO PROGRAMADA;Fontes com hash alterado: nenhuma. Contagem alterada: nenhuma. Total alterado: nenhum.
 2026-10-26T16:37:44Z;40360792099;push;FINALIZAÇÃO;RESUMO DA PUBLICAÇÃO;;;;;;;;;SIM;DADOS PUBLICADOS;Resultado final da publicação da execução.
+2026-10-26T16:39:51Z;40361087142;push;SEM_ALTERACOES;Repasses;1h7oF_blPx6RpuHsCjPshW-zn7IcNHGB-;NÃO;66;2027270.68;0;0;0;NÃO;NÃO;NÃO NECESSÁRIA;"Hash fonte: inalterado; registros: +0 / -0 / alterados=0; valor total: inalterado."
+2026-10-26T16:39:51Z;40361087142;push;SEM_ALTERACOES;Ordens Bancárias;1dTM5GfqVD63wNf2QYhOydEDd6g1Ca8rU;NÃO;890;62869833.77;0;0;0;NÃO;NÃO;NÃO NECESSÁRIA;"Hash fonte: inalterado; registros: +0 / -0 / alterados=0; valor total: inalterado."
+2026-10-26T16:39:51Z;40361087142;push;SEM_ALTERACOES;Restos a Pagar;1CIAIW9t9cKAnu-iUlQJpGUx_sfalHyuu;NÃO;23;4526062.32;0;0;0;NÃO;NÃO;NÃO NECESSÁRIA;"Hash fonte: inalterado; registros: +0 / -0 / alterados=0; valor total: inalterado."
+2026-10-26T16:39:51Z;40361087142;push;SEM_ALTERACOES;Financeiro;10ghNRMaUWvaOcX3q8luLTn9CZ2_z4RSQ;NÃO;14;386726.49;0;0;0;NÃO;NÃO;NÃO NECESSÁRIA;"Hash fonte: inalterado; registros: +0 / -0 / alterados=0; valor total: inalterado."
+2026-10-26T16:39:51Z;40361087142;push;SEM_ALTERACOES;Empenhos;1pDEGc2LAz0fe7c4GH5fh-kzgeW0iuQHh;NÃO;56;5772987.78;0;0;0;NÃO;NÃO;NÃO NECESSÁRIA;"Hash fonte: inalterado; registros: +0 / -0 / alterados=0; valor total: inalterado."
+2026-10-26T16:39:51Z;40361087142;push;SEM_ALTERACOES;Orçamentário;1gQYnGiF2zLdCOR-iiW5ptNc-3fXdNuMy;NÃO;12;999086.68;0;0;0;NÃO;NÃO;NÃO NECESSÁRIA;"Hash fonte: inalterado; registros: +0 / -0 / alterados=0; valor total: inalterado."
+2026-10-26T16:39:51Z;40361087142;push;SEM_ALTERACOES;RESUMO DA EXECUÇÃO;;NÃO;1061;;0;0;0;NÃO;NÃO;NÃO NECESSÁRIA;Fontes com hash alterado: nenhuma. Contagem alterada: nenhuma. Total alterado: nenhum.
+2026-10-26T16:42:48Z;40361087142;push;FINALIZAÇÃO;RESUMO DA PUBLICAÇÃO;;;;;;;;;NÃO;PUBLICAÇÃO CONFERIDA — SEM ALTERAÇÃO DE DADOS;Resultado final da publicação da execução.
