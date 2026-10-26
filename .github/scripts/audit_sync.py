@@ -179,6 +179,7 @@ def main():
       "divergencias":reconciliation,"registros_individuais_verificados":sync_ok,
       "valores_totais_verificados":sync_ok,"fontes_verificadas":6 if len(source_report)==len(SOURCES) else 0,
       "totais_fontes":{n:{"registros":source_report.get(n,{}).get("registros"),"total":source_report.get(n,{}).get("total")} for n in SOURCES},
+      "diagnostico_financeiro_referencia_anterior":source_report.get("financeiro",{}).get("diagnostico_referencia_anterior"),
       "log":str(LOG.relative_to(ROOT))},ensure_ascii=False))
     return 0 if sync_ok else 1
 
