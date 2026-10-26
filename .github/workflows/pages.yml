@@ -62,6 +62,11 @@ jobs:
           name: dashboard-audit-log
           path: logs/atualizacoes_dashboard.csv
           if-no-files-found: error
+      - name: Interromper fluxo se a sincronização falhar
+        if: steps.sync.outputs.sync_ok != 'true'
+        run: |
+          echo "Sincronização das fontes falhou. A última versão válida será preservada."
+          exit 1
       - name: Configurar GitHub Pages
         if: steps.sync.outputs.sync_ok == 'true'
         uses: actions/configure-pages@v5
