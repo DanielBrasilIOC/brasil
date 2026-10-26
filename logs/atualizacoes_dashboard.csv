@@ -553,3 +553,4 @@
 2026-10-26T17:47:34Z;40371781021;push;SEM_ALTERACOES;RESUMO DA EXECUÇÃO;;NÃO;1061;;0;0;0;NÃO;NÃO;NÃO NECESSÁRIA;Fontes com hash alterado: nenhuma. Contagem alterada: nenhuma. Total alterado: nenhum.
 2026-10-26T17:48:17Z;40371781021;push;FINALIZAÇÃO;RESUMO DA PUBLICAÇÃO;;;;;;;;;NÃO;PUBLICAÇÃO CONFERIDA — SEM ALTERAÇÃO DE DADOS;Resultado final da publicação da execução.
 2026-10-26T17:56:15Z;40373194926;push;FALHA;REGISTRO DE FALHA DO WORKFLOW;;NÃO;;;;;;;NÃO;FALHA REGISTRADA — verificar execução no GitHub Actions;"build=failure; deploy=skipped; persistência=skipped; detalhes: https://github.com/DanielBrasilIOC/brasil/actions/runs/40373194926"
+2026-10-26T17:57:45Z;40373433005;push;FALHA;REGISTRO DE FALHA DO WORKFLOW;;NÃO;;;;;;;NÃO;FALHA REGISTRADA — verificar execução no GitHub Actions;"build=failure; deploy=skipped; persistência=skipped; detalhes: https://github.com/DanielBrasilIOC/brasil/actions/runs/40373433005"
