@@ -44,5 +44,28 @@ class RowDiffTests(unittest.TestCase):
         d = audit.row_diff(before, after)["orcamentario"]
         self.assertEqual((d["added"], d["removed"], d["altered"]), (0, 1, 0))
 
+    def test_fingerprint_independe_da_ordem_mas_preserva_duplicados(self):
+        a = [{"saldo": 10.0}, {"saldo": 20.0}, {"saldo": 10.0}]
+        b = [{"saldo": 10.0}, {"saldo": 10.0}, {"saldo": 20.0}]
+        c = [{"saldo": 10.0}, {"saldo": 20.0}]
+        self.assertEqual(audit.row_fingerprint(a), audit.row_fingerprint(b))
+        self.assertNotEqual(audit.row_fingerprint(a), audit.row_fingerprint(c))
+
+    def test_reconciliacao_detecta_divergencia_de_registro_e_total(self):
+        names = list(audit.SOURCES)
+        data = {"datasets": []}
+        report = {}
+        for name in names:
+            rows = [{"saldo": 100.0}]
+            if name == "ordens_bancarias":
+                rows = [{"valor": 100.0}]
+            data["datasets"].append({"id": name, "rows": rows, "total": 100.0})
+            report[name] = {"registros": 1, "total": 100.0,
+                            "rows_hash": audit.row_fingerprint(rows)}
+        self.assertEqual(audit.reconcile_source_rows(data, report), {})
+        data["datasets"][0]["rows"][0]["saldo"] = 99.0
+        data["datasets"][0]["total"] = 99.0
+        self.assertIn("empenhos", audit.reconcile_source_rows(data, report))
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
