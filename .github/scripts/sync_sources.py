@@ -204,8 +204,24 @@ def main():
           f"Validação de repasses falhou: linhas={len(rep)}, total={tr}, sem valor={mr}")
 
     a=table(src["financeiro"],",",["UG Executora","Fonte Recursos Detalhada","Saldo"])
-    # O relatório atual do SIAFI contém três colunas, não o layout antigo de seis.
-    fin=[{"uge":r[0],"unidade":"IOC","fonte":r[1],"vinculo":"","saldo":abs(money(r[2]) or 0)} for r in a if len(r)>2]
+    # Localizar as colunas pelo cabeçalho real, incluindo Vinculação de pagamento.
+    fin_header=TABLE_AUDITS[norm("UG Executora")]["header"]
+    fin_cols={norm(name):i for i,name in enumerate(fin_header)}
+    required_financeiro={
+        "uge":norm("UG Executora"),
+        "fonte":norm("Fonte Recursos Detalhada"),
+        "vinculo":norm("Vinculação de pagamento"),
+        "saldo":norm("Saldo"),
+    }
+    missing_financeiro=[label for label,key in required_financeiro.items() if key not in fin_cols]
+    check(not missing_financeiro,
+          "Colunas obrigatórias ausentes no Saldo Financeiro: " + ", ".join(missing_financeiro))
+    fin=[{"uge":r[fin_cols[required_financeiro["uge"]]],
+          "unidade":"IOC",
+          "fonte":r[fin_cols[required_financeiro["fonte"]]],
+          "vinculo":r[fin_cols[required_financeiro["vinculo"]]],
+          "saldo":abs(money(r[fin_cols[required_financeiro["saldo"]]]) or 0)}
+         for r in a if len(r)>max(fin_cols.values())]
     tf=total(fin,"saldo")
     check(1<=len(fin)<=20 and all(r["saldo"] is not None for r in fin) and 1e5<=abs(tf)<=2e6,
           f"Validação do saldo financeiro falhou: linhas={len(fin)}, total={tf}")
