@@ -162,12 +162,25 @@ def main():
     a=table(src["repasses"],";",["PROCESSO","STATUS DO EMPENHO","VALOR"])
     rep=[]
     for r in a:
-        status_norm=norm(r[8]) if len(r)>8 else ""
-        if "AGUARDANDOORCAMENTO" not in status_norm and "AGUARDANDOORAMENTO" not in status_norm: continue
-        rep.append({"processo":r[0],"licitacao":r[1],"fornecedor":r[9],"sub_grupo":r[3],
-                    "elemento_despesa":r[1],"elemento":r[2],"sub_grupo_despesa":r[3],
-                    "vigencia":r[4],"situacao_prioridade":r[5],"solicitacao_ne":r[6],
-                    "numero_ne":r[7],"status_empenho":r[8],"fornecedores":r[9],"saldo":money(r[10])})
+        # A exportação atual pode inserir colunas vazias; localizar status e valor
+        # pelo conteúdo da linha, em vez de depender de posições fixas.
+        status_idx=next((i for i,v in enumerate(r)
+                         if "AGUARDANDOORCAMENTO" in norm(v) or "AGUARDANDOORAMENTO" in norm(v)),None)
+        if status_idx is None: continue
+        value_idx=next((i for i in range(len(r)-1,-1,-1) if money(r[i]) is not None),len(r)-1)
+        vendor_idx=status_idx+1 if status_idx+1<len(r) else min(9,len(r)-1)
+        rep.append({"processo":r[0] if len(r)>0 else "",
+                    "licitacao":r[1] if len(r)>1 else "",
+                    "fornecedor":r[vendor_idx],"sub_grupo":r[3] if len(r)>3 else "",
+                    "elemento_despesa":r[1] if len(r)>1 else "",
+                    "elemento":r[2] if len(r)>2 else "",
+                    "sub_grupo_despesa":r[3] if len(r)>3 else "",
+                    "vigencia":r[4] if len(r)>4 else "",
+                    "situacao_prioridade":r[5] if len(r)>5 else "",
+                    "solicitacao_ne":r[6] if len(r)>6 else "",
+                    "numero_ne":r[7] if len(r)>7 else "",
+                    "status_empenho":r[status_idx],"fornecedores":r[vendor_idx],
+                    "saldo":money(r[value_idx])})
     tr=total(rep,"saldo"); mr=sum(r["saldo"] is None for r in rep)
     check(50<=len(rep)<=150 and tr>=1.5e6 and mr<=5,
           f"Validação de repasses falhou: linhas={len(rep)}, total={tr}, sem valor={mr}")
