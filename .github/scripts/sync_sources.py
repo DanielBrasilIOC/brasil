@@ -94,6 +94,7 @@ def table(text, delimiter, tokens):
         raise ValueError("Cabeçalho não encontrado: " + str(tokens) +
                          "; delimitadores testados=" + repr(candidates) +
                          "; primeira linha chars=" + str(len(first_line)) +
+                         "; primeira linha=" + repr(first_line[:160]) +
                          "; separadores=" + repr({d: first_line.count(d) for d in candidates}))
     header=[clean(v) for v in rows[hi]]
     data=[]
