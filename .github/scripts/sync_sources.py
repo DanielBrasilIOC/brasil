@@ -204,6 +204,12 @@ def main():
     tob=total(ob,"valor")
     check(500<=len(ob)<=1500 and all(r["valor"] is not None for r in ob) and 1e7<=tob<=2e8,
           f"Validação de Ordens Bancárias falhou: linhas={len(ob)}, Doc - Valor={tob}")
+    # Publicações pagas é subconjunto derivado das OBs atuais; recalcular sempre.
+    pub_rows=[r for r in ob if "PUBLICACAO" in norm(r["observacao"]) and "ARTIGO" in norm(r["observacao"])]
+    pubs=[{"data":r["data"],"ob":r["ob"],"cnpj":r["cnpj"],"favorecido":r["favorecido"],
+           "processo":r["processo"],"fonte":r["fonte"],"valor":r["valor"],"observacao":r["observacao"]}
+          for r in pub_rows]
+    tp=total(pubs,"valor")
 
     a=table(src["repasses"],";",["PROCESSO","STATUS DO EMPENHO","VALOR"])
     rep=[]
@@ -283,7 +289,8 @@ def main():
       "empenhos":f"Fonte SIAFI: extração atual do arquivo Saldo nos empenhos 2026.csv. {len(empenhos)} registros detalhados. Total reconciliado com a linha de total da fonte e a soma da coluna Saldo: R$ {brl(te)}. Registros mantidos por linha/subitem da fonte.",
       "orcamentario":f"Fonte oficial: arquivo Saldo Orçamentário.csv. Relatório SIAFI, conta contábil 622110000, ano 2026, UG executora 254463. Valores negativos são exibidos como saldo positivo disponível conforme regra autorizada. {len(orc)} registros detalhados, incluindo {sum(1 for r in orc if abs(r.get('saldo') or 0)<0.005)} com saldo zero. Total reconciliado com a fonte: R$ {brl(to)}.",
       "repasses":f"Fonte: Aguardando Repasse Orçamentário.csv. {len(rep)} registros com status AGUARDANDO ORÇAMENTO; total calculado pela coluna VALOR: R$ {brl(tr)}.",
-      "ordens_bancarias":f"Fonte: ORDEM BANCARIAS EMITIDAS.csv. {len(ob)} registros. Total do painel calculado pela soma da coluna Doc - Valor: R$ {brl(tob)}. A soma da coluna Movim. Líquido foi conferida separadamente com o total da própria fonte: R$ {brl(total(ob,'movimentacao_liquida'))}. Registros mantidos por OB + fonte pagadora."
+      "ordens_bancarias":f"Fonte: ORDEM BANCARIAS EMITIDAS.csv. {len(ob)} registros. Total do painel calculado pela soma da coluna Doc - Valor: R$ {brl(tob)}. A soma da coluna Movim. Líquido foi conferida separadamente com o total da própria fonte: R$ {brl(total(ob,'movimentacao_liquida'))}. Registros mantidos por OB + fonte pagadora.",
+      "publicacoes_pagas":f"Subconjunto derivado das Ordens Bancárias atuais: {len(pubs)} registros cuja observação menciona publicação e artigo. Total: R$ {brl(tp)}. Já incluído no total geral de OBs; não somar novamente."
     }
 
     data=json.loads(DATA_PATH.read_text(encoding="utf-8"))
@@ -304,7 +311,13 @@ def main():
         ds[k].get("source_url") != "https://drive.google.com/file/d/" + SOURCES[k] + "/view" or
         ds[k].get("note") != notes[k]
         for k,(rows,amount) in updates.items()
-    ) or ds["financeiro"].get("source_name") != "Saldo Financeiro"
+    ) or ds["financeiro"].get("source_name") != "Saldo Financeiro" or (
+        ds["publicacoes_pagas"].get("rows") != pubs or
+        ds["publicacoes_pagas"].get("total") != tp or
+        ds["publicacoes_pagas"].get("detail_count") != len(pubs) or
+        ds["publicacoes_pagas"].get("source_url") != "https://drive.google.com/file/d/" + SOURCES["ordens_bancarias"] + "/view" or
+        ds["publicacoes_pagas"].get("note") != notes["publicacoes_pagas"]
+    )
     rep_data={"rows":rep,"total":tr,"missing_values":mr,
               "note":notes["repasses"]}
     old_rep=json.loads(REPASSES_PATH.read_text(encoding="utf-8")) if REPASSES_PATH.exists() else {}
@@ -330,6 +343,10 @@ def main():
         ds[key]["note"]=notes[key]
     ds["repasses"]["missing_values"]=mr
     ds["repasses"]["note"]=notes["repasses"]
+    pub_ds=ds["publicacoes_pagas"]
+    pub_ds["rows"]=pubs; pub_ds["total"]=tp; pub_ds["detail_count"]=len(pubs)
+    pub_ds["source_url"]="https://drive.google.com/file/d/" + SOURCES["ordens_bancarias"] + "/view"
+    pub_ds["note"]=notes["publicacoes_pagas"]
     data["generated_at"]=stamp
     # Nenhum arquivo de saída é alterado até que todas as seis fontes passem nas validações.
     DATA_PATH.write_text(json.dumps(data,ensure_ascii=False,separators=(",",":")),encoding="utf-8")
