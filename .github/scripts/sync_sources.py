@@ -73,12 +73,28 @@ def download(file_id):
     raise RuntimeError("Não foi possível baixar o CSV do Drive: " + " | ".join(errors))
 
 def table(text, delimiter, tokens):
-    rows=list(csv.reader(io.StringIO(text),delimiter=delimiter))
-    hi=None
-    for i,row in enumerate(rows[:20]):
-        joined=norm(" ".join(row))
-        if len(row)>3 and all(norm(t) in joined for t in tokens): hi=i; break
-    if hi is None: raise ValueError("Cabeçalho não encontrado: "+str(tokens))
+    # Algumas exportações do Drive mudam entre CSV, TSV e ponto-e-vírgula.
+    # Detecta o delimitador real pelo cabeçalho esperado antes de interpretar os dados.
+    candidates = [delimiter] + [d for d in (",", ";", "\\t", "|") if d != delimiter]
+    selected = None
+    hi = None
+    rows = []
+    for candidate in candidates:
+        parsed = list(csv.reader(io.StringIO(text), delimiter=candidate))
+        for i, row in enumerate(parsed[:30]):
+            joined = norm(" ".join(row))
+            if len(row) > 3 and all(norm(t) in joined for t in tokens):
+                selected, hi, rows = candidate, i, parsed
+                break
+        if selected is not None:
+            break
+    if hi is None:
+        # Não registrar conteúdo financeiro bruto; apenas diagnóstico estrutural.
+        first_line = next((line for line in text.splitlines() if line.strip()), "")
+        raise ValueError("Cabeçalho não encontrado: " + str(tokens) +
+                         "; delimitadores testados=" + repr(candidates) +
+                         "; primeira linha chars=" + str(len(first_line)) +
+                         "; separadores=" + repr({d: first_line.count(d) for d in candidates}))
     header=[clean(v) for v in rows[hi]]
     data=[]
     for row in rows[hi+1:]:
