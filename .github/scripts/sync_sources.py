@@ -71,7 +71,7 @@ def table(text, delimiter, tokens):
     header=[clean(v) for v in rows[hi]]
     data=[]
     for row in rows[hi+1:]:
-        if not row or not any(clean(v) for v in row) or norm(row[0])=="TOTAL": continue
+        if not row or not any(clean(v) for v in row) or any(norm(v)=="TOTAL" for v in row): continue
         row=[clean(v) for v in row]
         if len(row)<len(header): row += [""]*(len(header)-len(row))
         data.append(row[:len(header)])
