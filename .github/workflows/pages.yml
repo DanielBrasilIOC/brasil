@@ -242,17 +242,26 @@ jobs:
           from pathlib import Path
           p=Path('logs/atualizacoes_dashboard.csv')
           fields=['timestamp_utc','run_id','evento','resultado_execucao','fonte','fonte_id','conteudo_alterado','registros','total','registros_adicionados','registros_removidos','registros_alterados','valores_alterados','dashboard_atualizado','publicacao','mensagem']
+          legacy=['timestamp_utc','run_id','evento','resultado_execucao','fonte','fonte_id','conteudo_alterado','registros','total','dashboard_atualizado','publicacao','mensagem']
+          existing=[]
           if p.exists() and p.stat().st_size:
               with p.open('r',encoding='utf-8-sig',newline='') as f:
-                  rows=list(csv.reader(f,delimiter=';'))
-              if not rows or rows[0] != fields:
-                  raise SystemExit('Cabeçalho do log inesperado; não vou sobrescrever o histórico.')
-          else:
-              with p.open('w',encoding='utf-8-sig',newline='') as f:
-                  csv.writer(f,delimiter=';').writerow(fields)
-          # Evita duplicar a mesma linha caso uma tentativa de push anterior tenha sido aceita.
-          with p.open('r',encoding='utf-8-sig',newline='') as f:
-              existing=list(csv.DictReader(f,delimiter=';'))
+                  raw=list(csv.reader(f,delimiter=';'))
+              if raw:
+                  header=raw[0]
+                  for values in raw[1:]:
+                      if len(values)==len(fields):
+                          item=dict(zip(fields,values))
+                      elif len(values)==len(legacy):
+                          item=dict(zip(legacy,values))
+                      else:
+                          item=dict(zip(header,values))
+                      existing.append({key:item.get(key,'') for key in fields})
+          # Migra o cabeçalho e todas as linhas para o esquema canônico de 16 colunas.
+          with p.open('w',encoding='utf-8-sig',newline='') as f:
+              writer=csv.DictWriter(f,fieldnames=fields,delimiter=';')
+              writer.writeheader()
+              writer.writerows(existing)
           run_id=os.environ['RUN_ID']
           if any(r.get('run_id')==run_id and r.get('fonte')=='REGISTRO DE FALHA DO WORKFLOW' for r in existing):
               print('Falha desta execução já está registrada.')
@@ -285,21 +294,11 @@ jobs:
               exit 0
             fi
             git fetch origin main
-            git reset --hard origin/main
-            # Recria a linha de falha no log mais recente após sincronizar a branch.
-            python - <<'PY'
-            import csv, os
-            from datetime import datetime, timezone
-            from pathlib import Path
-            p=Path('logs/atualizacoes_dashboard.csv')
-            fields=['timestamp_utc','run_id','evento','resultado_execucao','fonte','fonte_id','conteudo_alterado','registros','total','registros_adicionados','registros_removidos','registros_alterados','valores_alterados','dashboard_atualizado','publicacao','mensagem']
-            with p.open('r',encoding='utf-8-sig',newline='') as f: rows=list(csv.DictReader(f,delimiter=';'))
-            run_id=os.environ['RUN_ID']
-            if not any(r.get('run_id')==run_id and r.get('fonte')=='REGISTRO DE FALHA DO WORKFLOW' for r in rows):
-                row={k:'' for k in fields}
-                row.update({'timestamp_utc':datetime.now(timezone.utc).isoformat(timespec='seconds').replace('+00:00','Z'),'run_id':run_id,'evento':os.environ['EVENT_NAME'],'resultado_execucao':'FALHA','fonte':'REGISTRO DE FALHA DO WORKFLOW','conteudo_alterado':'NÃO','dashboard_atualizado':'NÃO','publicacao':'FALHA REGISTRADA — verificar execução no GitHub Actions','mensagem':f"build={os.environ['BUILD_RESULT']}; deploy={os.environ['DEPLOY_RESULT']}; persistência={os.environ['PERSIST_RESULT']}; detalhes: {os.environ['JOB_URL']}"})
-                with p.open('a',encoding='utf-8-sig',newline='') as f: csv.DictWriter(f,fieldnames=fields,delimiter=';').writerow(row)
-            PY
+            git rebase origin/main || {
+              git rebase --abort || true
+              echo "Conflito ao sincronizar o histórico; nova execução será necessária." >&2
+              exit 1
+            }
           done
           echo "Não foi possível persistir o registro de falha após 3 tentativas." >&2
           exit 1
