@@ -139,6 +139,24 @@ jobs:
               actual_repasses=json.loads(response.read().decode('utf-8-sig'))
           if expected_repasses != actual_repasses:
               failures.append('repasses.json público difere da versão validada')
+          # Além dos dados, confirma que a página principal e o documento visual do painel
+          # são servidos publicamente e contêm o título esperado.
+          for relative in ('index.html','dashboard-v2.html','dashboard-publication.json'):
+              page_url='https://danielbrasilioc.github.io/brasil/'+relative+'?verify='+os.environ['RUN_ID']+'-'+str(int(time.time()))
+              page_req=urllib.request.Request(page_url,headers={'Cache-Control':'no-cache','Pragma':'no-cache','User-Agent':'IOC-Dashboard-Publication-Check/1.0'})
+              with urllib.request.urlopen(page_req,timeout=45) as page_response:
+                  body=page_response.read().decode('utf-8-sig',errors='replace')
+                  if page_response.status != 200:
+                      failures.append(relative+': HTTP público diferente de 200')
+                  if relative=='dashboard-v2.html' and 'Painel Financeiro' not in body:
+                      failures.append('dashboard-v2.html público não contém o título esperado')
+                  if relative=='dashboard-publication.json':
+                      try:
+                          info=json.loads(body)
+                          if not info.get('published_at'):
+                              failures.append('dashboard-publication.json sem published_at')
+                      except Exception:
+                          failures.append('dashboard-publication.json não contém JSON válido')
           if failures:
               raise SystemExit('PÓS-PUBLICAÇÃO FALHOU: '+'; '.join(failures))
           print(json.dumps({'status':'PUBLICACAO_VERIFICADA','url':url,'generated_at':actual.get('generated_at'),'datasets':{n:{'registros':len(actual_sets[n]['rows']),'total':actual_sets[n]['total']} for n in required}},ensure_ascii=False))
@@ -408,6 +426,11 @@ jobs:
           mkdir -p "$SNAPSHOT_PATH"
           cp "$RUNNER_TEMP/valid-snapshot/"* "$SNAPSHOT_PATH/"
           python "$RUNNER_TEMP/validate_backup.py" "$SNAPSHOT_PATH" --verify-manifest
+          # Teste de restauração: copia o snapshot para um diretório isolado e valida de novo.
+          RESTORE_TEST="$RUNNER_TEMP/restored-snapshot"
+          mkdir -p "$RESTORE_TEST"
+          cp "$SNAPSHOT_PATH/"* "$RESTORE_TEST/"
+          python "$RUNNER_TEMP/validate_backup.py" "$RESTORE_TEST" --verify-manifest
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add "$SNAPSHOT_PATH"
