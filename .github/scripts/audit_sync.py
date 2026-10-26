@@ -157,15 +157,19 @@ def main():
 
     rows=[]
     for name,file_id in SOURCES.items():
-        count,total=after_totals[name]; d=diffs[name]
+        dashboard_count,dashboard_total=after_totals[name]; d=diffs[name]
+        source=source_report.get(name,{})
+        count=source.get("registros",dashboard_count)
+        total=source.get("total",dashboard_total)
         altered=bool(name in hash_changed or name in count_changed or name in total_changed or d["added"] or d["removed"])
         if sync_ok:
             detail=(f"Fonte original lida; reconciliação=OK; "
-                    f"hash={'ALTERADO' if name in hash_changed else 'inalterado'}; registros={count}; "
-                    f"+{d['added']} / -{d['removed']} / alterados={d['altered']}; total={total}; "
-                    f"fingerprint_registros=OK; total={'ALTERADO' if name in total_changed else 'inalterado'}.")
+                    f"hash={'ALTERADO' if name in hash_changed else 'inalterado'}; registros fonte={count}; "
+                    f"registros dashboard={dashboard_count}; +{d['added']} / -{d['removed']} / alterados={d['altered']}; "
+                    f"total fonte={total}; total dashboard={dashboard_total}; fingerprint_registros=OK.")
         else:
-            detail=(f"FALHA DE CONFERÊNCIA: {'; '.join(reconciliation.get(name, [])) or message}")
+            detail=(f"FALHA DE CONFERÊNCIA: {'; '.join(reconciliation.get(name, [])) or message}; "
+                    f"registros fonte={count}, dashboard={dashboard_count}; total fonte={total}, dashboard={dashboard_total}")
         rows.append({"timestamp_utc":ts,"run_id":run_id,"evento":event,"resultado_execucao":execution,"fonte":LABELS[name],"fonte_id":file_id,"conteudo_alterado":"SIM" if altered else "NÃO","registros":count,"total":total,"registros_adicionados":d["added"],"registros_removidos":d["removed"],"registros_alterados":d["altered"],"valores_alterados":"SIM" if d["value_changed"] or name in total_changed else "NÃO","dashboard_atualizado":dashboard_updated,"publicacao":publication,"mensagem":detail})
     rows.append({"timestamp_utc":ts,"run_id":run_id,"evento":event,"resultado_execucao":execution,"fonte":"RESUMO DA EXECUÇÃO","fonte_id":"","conteudo_alterado":"SIM" if changed else "NÃO","registros":sum(x[0] for x in after_totals.values()),"total":"","registros_adicionados":sum(diffs[n]["added"] for n in SOURCES),"registros_removidos":sum(diffs[n]["removed"] for n in SOURCES),"registros_alterados":sum(diffs[n]["altered"] for n in SOURCES),"valores_alterados":"SIM" if total_changed else "NÃO","dashboard_atualizado":dashboard_updated,"publicacao":publication,"mensagem":f"Fontes lidas: 6/6. Reconciliação fonte/dashboard: {'OK' if sync_ok else 'FALHOU'}. Hash alterado: {', '.join(hash_changed) if hash_changed else 'nenhum'}. Registros alterados: {', '.join(record_changed) if record_changed else 'nenhum'}. Quantidade alterada: {', '.join(count_changed) if count_changed else 'nenhuma'}. Total alterado: {', '.join(total_changed) if total_changed else 'nenhum'}. Divergências: {json.dumps(reconciliation, ensure_ascii=False) if reconciliation else 'nenhuma'}."})
     append_rows(rows)
@@ -174,6 +178,7 @@ def main():
       "fontes_alteradas":hash_changed,"reconciliacao_fonte_dashboard":"OK" if sync_ok else "FALHOU",
       "divergencias":reconciliation,"registros_individuais_verificados":sync_ok,
       "valores_totais_verificados":sync_ok,"fontes_verificadas":6 if len(source_report)==len(SOURCES) else 0,
+      "totais_fontes":{n:{"registros":source_report.get(n,{}).get("registros"),"total":source_report.get(n,{}).get("total")} for n in SOURCES},
       "log":str(LOG.relative_to(ROOT))},ensure_ascii=False))
     return 0 if sync_ok else 1
 
