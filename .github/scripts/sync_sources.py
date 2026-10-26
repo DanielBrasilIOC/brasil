@@ -224,14 +224,30 @@ def main():
     check(not required_financeiro,
           "Colunas obrigatórias ausentes no Saldo Financeiro: " + ", ".join(required_financeiro) +
           "; cabeçalho identificado=" + repr(fin_header))
-    # A coluna de vinculação é opcional no CSV publicado atualmente; se vier na fonte,
-    # será capturada automaticamente. Não bloquear a atualização das demais abas se faltar.
-    fin=[{"uge":r[fin_cols["uge"]],
-          "unidade":"IOC",
-          "fonte":r[fin_cols["fonte"]],
-          "vinculo":r[fin_cols["vinculo"]] if fin_cols["vinculo"] is not None else "",
-          "saldo":abs(money(r[fin_cols["saldo"]]) or 0)}
-         for r in a if len(r)>max(i for i in fin_cols.values() if i is not None)]
+    # A exportação Saldo Financeiro.csv não traz a coluna de vinculação.
+    # Fallback baseado nas vinculações distintas encontradas na planilha de PF
+    # (PF - Vinculação Pagamento), agrupadas por Fonte SOF. Se a própria extração
+    # passar a fornecer a coluna, o valor direto da fonte sempre terá prioridade.
+    vinculos_por_fonte_sof={
+        "1000":"400",
+        "1001":"400, 405, 414",
+        "1002":"400",
+        "1049":"400",
+    }
+    fin=[]
+    for r in a:
+        if len(r)<=max(i for i in fin_cols.values() if i is not None):
+            continue
+        fonte_val=clean(r[fin_cols["fonte"]])
+        vinculo=(clean(r[fin_cols["vinculo"]])
+                 if fin_cols["vinculo"] is not None else "")
+        if not vinculo:
+            vinculo=vinculos_por_fonte_sof.get(fonte_val[:4],"")
+        fin.append({"uge":r[fin_cols["uge"]],
+                    "unidade":"IOC",
+                    "fonte":fonte_val,
+                    "vinculo":vinculo,
+                    "saldo":abs(money(r[fin_cols["saldo"]]) or 0)})
     tf=total(fin,"saldo")
     check(1<=len(fin)<=20 and all(r["saldo"] is not None for r in fin) and 1e5<=abs(tf)<=2e6,
           f"Validação do saldo financeiro falhou: linhas={len(fin)}, total={tf}")
