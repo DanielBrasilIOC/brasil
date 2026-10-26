@@ -119,14 +119,17 @@ def table(text, delimiter, tokens):
                          "; linhas_com_colunas=" + repr([row[:18] for row in rows[:40] if len(row)>1][:8]) +
                          "; primeiras_linhas=" + repr([line[:180] for line in text.splitlines()[:12]]))
     header=[clean(v) for v in rows[hi]]
-    data=[]
+    data=[]; skipped_totals=[]
     for row in rows[hi+1:]:
-        if not row or not any(clean(v) for v in row) or norm(row[0])=="TOTAL": continue
+        if not row or not any(clean(v) for v in row): continue
         row=[clean(v) for v in row]
+        if any(norm(v)=="TOTAL" for v in row):
+            skipped_totals.append(row[:len(header)])
+            continue
         if len(row)<len(header): row += [""]*(len(header)-len(row))
         data.append(row[:len(header)])
     print("TABLE_AUDIT="+json.dumps({"tokens":tokens,"delimiter":("TAB" if selected=="\\t" else selected),
-          "header":header,"row_count":len(data),
+          "header":header,"row_count":len(data),"skipped_total_rows":skipped_totals,
           "first_rows":data[:2],"last_rows":data[-3:]},ensure_ascii=False))
     return data
 
@@ -262,9 +265,10 @@ def main():
     source_changed=source_hashes != previous_state.get("hashes",{})
     dataset_changed=obsolete_dataset_present or any(
         ds[k].get("rows") != rows or ds[k].get("total") != amount or
-        ds[k].get("detail_count") != len(rows)
+        ds[k].get("detail_count") != len(rows) or
+        ds[k].get("source_url") != "https://drive.google.com/file/d/" + SOURCES[k] + "/view"
         for k,(rows,amount) in updates.items()
-    ) or ds["financeiro"].get("source_name") != "Saldo Financeiro" or ds["financeiro"].get("source_url") != "https://docs.google.com/spreadsheets/d/" + SOURCES["financeiro"] + "/edit"
+    ) or ds["financeiro"].get("source_name") != "Saldo Financeiro"
     rep_data={"rows":rep,"total":tr,"missing_values":mr,
               "note":""}
     old_rep=json.loads(REPASSES_PATH.read_text(encoding="utf-8")) if REPASSES_PATH.exists() else {}
@@ -285,7 +289,8 @@ def main():
     for k,(rows,amount) in updates.items():
         ds[k]["rows"]=rows; ds[k]["total"]=amount; ds[k]["detail_count"]=len(rows)
     ds["financeiro"]["source_name"]="Saldo Financeiro"
-    ds["financeiro"]["source_url"]="https://docs.google.com/spreadsheets/d/" + SOURCES["financeiro"] + "/edit"
+    for key in updates:
+        ds[key]["source_url"]="https://drive.google.com/file/d/" + SOURCES[key] + "/view"
     ds["repasses"]["missing_values"]=mr
     ds["repasses"]["note"]=""
     data["generated_at"]=stamp
