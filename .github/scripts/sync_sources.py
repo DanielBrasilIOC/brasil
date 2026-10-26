@@ -125,6 +125,9 @@ def table(text, delimiter, tokens):
         row=[clean(v) for v in row]
         if len(row)<len(header): row += [""]*(len(header)-len(row))
         data.append(row[:len(header)])
+    print("TABLE_AUDIT="+json.dumps({"tokens":tokens,"delimiter":("TAB" if selected=="\\t" else selected),
+          "header":header,"row_count":len(data),
+          "first_rows":data[:2],"last_rows":data[-3:]},ensure_ascii=False))
     return data
 
 def total(rows,key): return round(sum(float(r.get(key) or 0) for r in rows),2)
