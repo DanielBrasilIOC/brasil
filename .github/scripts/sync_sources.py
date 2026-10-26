@@ -75,8 +75,8 @@ def download(file_id):
     if not s.strip():
         raise ValueError(f"Fonte Drive {file_id}: conteúdo textual vazio")
     # Alguns relatórios SIAFI guardam delimitadores/caracteres como sequências escapadas.
-    s=s.replace(r"\\t","\\t").replace(r'\\\"','"')
-s=re.sub(r"\\x([0-9a-fA-F]{2})",lambda m:chr(int(m.group(1),16)),s)
+    s=s.replace(r"\\t","\t").replace(r'\\\"','"')
+    s=re.sub(r"\\x([0-9a-fA-F]{2})",lambda m:chr(int(m.group(1),16)),s)
     return s
 
 def table(text, delimiter, tokens):
