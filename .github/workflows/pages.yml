@@ -35,7 +35,7 @@ jobs:
           python-version: "3.12"
       - name: Localizar os seis CSVs oficiais pelo nome na pasta pública do Drive
         env:
-          GOOGLE_DRIVE_FOLDER_ID: "1Ae3_31uGRNvfvnN5EuhiNHbk_mdkVg0L"
+          GOOGLE_DRIVE_FOLDER_ID: "1Ae3_31uGRNvfvnN5euhiNHbk_mdkVg0L"
         run: python .github/scripts/discover_drive_sources.py
       - name: Testar detecção de inclusão e exclusão
         run: python .github/scripts/test_audit_sync.py

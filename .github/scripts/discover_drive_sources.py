@@ -16,7 +16,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 CACHE = ROOT / ".drive_source_ids.json"
-FOLDER_DEFAULT = "1Ae3_31uGRNvfvnN5EuhiNHbk_mdkVg0L"
+FOLDER_DEFAULT = "1Ae3_31uGRNvfvnN5euhiNHbk_mdkVg0L"
 
 EXPECTED_NAMES = {
     "empenhos": ("Saldo nos empenhos 2026.csv",),
