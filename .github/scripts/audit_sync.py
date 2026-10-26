@@ -49,7 +49,12 @@ def source_details(data,name):
     return (len(rows) if isinstance(rows,list) else 0,d.get("total",""))
 
 def row_fingerprint(rows):
-    hashes = sorted(hashlib.sha256(json.dumps(r, ensure_ascii=False, sort_keys=True,
+    def canonical(v):
+        if isinstance(v, dict): return {k:canonical(x) for k,x in v.items()}
+        if isinstance(v, list): return [canonical(x) for x in v]
+        if isinstance(v, (int,float)) and not isinstance(v, bool): return float(v)
+        return v
+    hashes = sorted(hashlib.sha256(json.dumps(canonical(r), ensure_ascii=False, sort_keys=True,
         separators=(",", ":")).encode("utf-8")).hexdigest() for r in rows)
     return hashlib.sha256("\\n".join(hashes).encode("utf-8")).hexdigest()
 
