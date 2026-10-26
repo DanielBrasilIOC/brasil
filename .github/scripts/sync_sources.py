@@ -195,13 +195,16 @@ def main():
     check(1<=len(fin)<=20 and all(r["saldo"] is not None for r in fin) and 1e5<=abs(tf)<=2e6,
           f"Validação do saldo financeiro falhou: linhas={len(fin)}, total={tf}")
 
-    a=table(src["restos"],",",["NE CCor","Saldo"])
+    a=table(src["restos"],",",["Empenho","Saldo"])
     rap=[]
     for r in a:
-        v=money(r[10])
+        v=money(r[-1]) if r else None
         if v is None or abs(v)<0.005: continue
-        rap.append({"empenho":r[0],"cnpj":r[1],"fornecedor":r[2],"pi":r[3],"programa":r[4],
-                    "autor_emenda":r[5],"natureza_codigo":r[7],"natureza":r[8],"saldo":v})
+        # CSV oficial atual: empenho, favorecido, natureza, descrição, coluna vazia, saldo.
+        rap.append({"empenho":r[0],"cnpj":"","fornecedor":r[1] if len(r)>1 else "",
+                    "pi":"","programa":"","autor_emenda":"",
+                    "natureza_codigo":r[2] if len(r)>2 else "",
+                    "natureza":r[3] if len(r)>3 else "","saldo":v})
     trp=total(rap,"saldo")
     check(10<=len(rap)<=100 and 1e6<=trp<=15e6,
           f"Validação de Restos a Pagar falhou: linhas={len(rap)}, total={trp}")
