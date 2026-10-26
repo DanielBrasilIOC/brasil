@@ -100,7 +100,8 @@ def table(text, delimiter, tokens):
                          "; primeira linha chars=" + str(len(first_line)) +
                          "; primeira linha=" + repr(first_line[:160]) +
                          "; separadores=" + repr({d: first_line.count(d) for d in candidates}) +
-                         "; linhas_com_colunas=" + repr([row[:18] for row in rows[:40] if len(row)>1][:8]))
+                         "; linhas_com_colunas=" + repr([row[:18] for row in rows[:40] if len(row)>1][:8]) +
+                         "; primeiras_linhas=" + repr([line[:180] for line in text.splitlines()[:12]]))
     header=[clean(v) for v in rows[hi]]
     data=[]
     for row in rows[hi+1:]:
