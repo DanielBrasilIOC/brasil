@@ -48,6 +48,39 @@ def source_details(data,name):
     rows=d.get("rows",[])
     return (len(rows) if isinstance(rows,list) else 0,d.get("total",""))
 
+def row_fingerprint(rows):
+    hashes = sorted(hashlib.sha256(json.dumps(r, ensure_ascii=False, sort_keys=True,
+        separators=(",", ":")).encode("utf-8")).hexdigest() for r in rows)
+    return hashlib.sha256("\\n".join(hashes).encode("utf-8")).hexdigest()
+
+def reconcile_source_rows(data, source_report):
+    """Confere o conteúdo integral, quantidade e total de cada fonte contra o dashboard."""
+    ds={d.get("id"):d for d in data.get("datasets",[])}
+    value_fields={"ordens_bancarias":"valor"}
+    failures={}
+    for name in SOURCES:
+        d=ds.get(name,{})
+        rows=d.get("rows",[])
+        source=source_report.get(name,{})
+        problems=[]
+        if not isinstance(rows,list):
+            rows=[]; problems.append("linhas do dashboard inválidas")
+        if len(rows) != source.get("registros"):
+            problems.append(f"quantidade dashboard={len(rows)} vs fonte={source.get('registros')}")
+        if row_fingerprint(rows) != source.get("rows_hash"):
+            problems.append("conteúdo dos registros diverge da fonte original")
+        field=value_fields.get(name,"saldo")
+        try:
+            total=round(sum(float(r.get(field) or 0) for r in rows),2)
+            if abs(total-float(source.get("total"))) >= 0.005:
+                problems.append(f"total recalculado dashboard={total:.2f} vs fonte={float(source.get('total')):.2f}")
+            if abs(float(d.get("total"))-float(source.get("total"))) >= 0.005:
+                problems.append(f"total publicado={d.get('total')} vs fonte={source.get('total')}")
+        except (TypeError, ValueError):
+            problems.append("total não pôde ser recalculado")
+        if problems: failures[name]=problems
+    return failures
+
 def run_sync():
     p=subprocess.run(["python",str(SYNC)],cwd=ROOT,env=os.environ.copy(),text=True,capture_output=True)
     out=(p.stdout or "").strip(); err=(p.stderr or "").strip(); parsed={}
@@ -94,6 +127,13 @@ def main():
     after_state=read_json(STATE,{})
     after_hashes=after_state.get("hashes",{}) if isinstance(after_state,dict) else {}
     sync_ok=code==0 and result.get("status") in {"SEM_ALTERACOES","ATUALIZADO"}
+    source_report=result.get("fontes",{}) if isinstance(result,dict) else {}
+    reconciliation=reconcile_source_rows(after_data,source_report) if sync_ok and len(source_report)==len(SOURCES) else {
+        n:["métricas completas das seis fontes não foram retornadas"] for n in SOURCES
+    }
+    if reconciliation:
+        sync_ok=False
+        stderr=(stderr+"; " if stderr else "")+"Falha na reconciliação fonte/dashboard: "+json.dumps(reconciliation,ensure_ascii=False)
 
     hash_changed=[n for n in SOURCES if before_hashes.get(n)!=after_hashes.get(n)]
     diffs=row_diff(before_snapshot,after_snapshot) if sync_ok else {n:{"added":0,"removed":0,"altered":0,"value_changed":False} for n in SOURCES}
@@ -114,14 +154,22 @@ def main():
     for name,file_id in SOURCES.items():
         count,total=after_totals[name]; d=diffs[name]
         altered=bool(name in hash_changed or name in count_changed or name in total_changed or d["added"] or d["removed"])
-        detail=(f"Fonte lida e validada; hash={'ALTERADO' if name in hash_changed else 'inalterado'}; "
-                f"registros={count}; +{d['added']} / -{d['removed']} / alterados={d['altered']}; "
-                f"total={total}; total={'ALTERADO' if name in total_changed else 'inalterado'}.")
+        if sync_ok:
+            detail=(f"Fonte original lida; reconciliação=OK; "
+                    f"hash={'ALTERADO' if name in hash_changed else 'inalterado'}; registros={count}; "
+                    f"+{d['added']} / -{d['removed']} / alterados={d['altered']}; total={total}; "
+                    f"fingerprint_registros=OK; total={'ALTERADO' if name in total_changed else 'inalterado'}.")
+        else:
+            detail=(f"FALHA DE CONFERÊNCIA: {'; '.join(reconciliation.get(name, [])) or message}")
         rows.append({"timestamp_utc":ts,"run_id":run_id,"evento":event,"resultado_execucao":execution,"fonte":LABELS[name],"fonte_id":file_id,"conteudo_alterado":"SIM" if altered else "NÃO","registros":count,"total":total,"registros_adicionados":d["added"],"registros_removidos":d["removed"],"registros_alterados":d["altered"],"valores_alterados":"SIM" if d["value_changed"] or name in total_changed else "NÃO","dashboard_atualizado":dashboard_updated,"publicacao":publication,"mensagem":detail if sync_ok else message})
     rows.append({"timestamp_utc":ts,"run_id":run_id,"evento":event,"resultado_execucao":execution,"fonte":"RESUMO DA EXECUÇÃO","fonte_id":"","conteudo_alterado":"SIM" if changed else "NÃO","registros":sum(x[0] for x in after_totals.values()),"total":"","registros_adicionados":sum(diffs[n]["added"] for n in SOURCES),"registros_removidos":sum(diffs[n]["removed"] for n in SOURCES),"registros_alterados":sum(diffs[n]["altered"] for n in SOURCES),"valores_alterados":"SIM" if total_changed else "NÃO","dashboard_atualizado":dashboard_updated,"publicacao":publication,"mensagem":f"Fontes lidas: 6/6. Hash alterado: {', '.join(hash_changed) if hash_changed else 'nenhum'}. Registros alterados: {', '.join(record_changed) if record_changed else 'nenhum'}. Quantidade alterada: {', '.join(count_changed) if count_changed else 'nenhuma'}. Total alterado: {', '.join(total_changed) if total_changed else 'nenhum'}."})
     append_rows(rows)
     output_values(changed,sync_ok)
-    print(json.dumps({"audit":"REGISTRADA","status":execution,"changed":changed,"sync_ok":sync_ok,"fontes_alteradas":hash_changed,"registros_individuais_verificados":True,"valores_totais_verificados":True,"fontes_verificadas":6,"log":str(LOG.relative_to(ROOT))},ensure_ascii=False))
-    return 0
+    print(json.dumps({"audit":"REGISTRADA","status":execution,"changed":changed,"sync_ok":sync_ok,
+      "fontes_alteradas":hash_changed,"reconciliacao_fonte_dashboard":"OK" if sync_ok else "FALHOU",
+      "divergencias":reconciliation,"registros_individuais_verificados":sync_ok,
+      "valores_totais_verificados":sync_ok,"fontes_verificadas":6 if len(source_report)==len(SOURCES) else 0,
+      "log":str(LOG.relative_to(ROOT))},ensure_ascii=False))
+    return 0 if sync_ok else 1
 
 if __name__=="__main__": raise SystemExit(main())
