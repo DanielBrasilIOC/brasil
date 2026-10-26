@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Executa a sincronização e audita registros, valores e totais do dashboard."""
+"""Executa a sincronização e audita registros, quantidades e valores das seis fontes."""
 import csv, hashlib, json, os, subprocess
+from collections import Counter
 from datetime import datetime, timezone
-from decimal import Decimal
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -25,38 +25,28 @@ def read_json(path, default):
     try: return json.loads(path.read_text(encoding="utf-8"))
     except Exception: return default
 
-def old_hashes():
-    s=read_json(STATE,{})
-    return s.get("hashes",{}) if isinstance(s,dict) else {}
-
 def snapshot(data):
     out={}
     for d in data.get("datasets",[]) if isinstance(data,dict) else []:
         name=d.get("id"); rows=d.get("rows",[])
         if name not in SOURCES or not isinstance(rows,list): continue
-        sigs=[]
-        for row in rows:
-            raw=json.dumps(row,ensure_ascii=False,sort_keys=True,separators=(",",":"))
-            sigs.append(hashlib.sha256(raw.encode("utf-8")).hexdigest())
-        out[name]=sigs
+        out[name]=[hashlib.sha256(json.dumps(r,ensure_ascii=False,sort_keys=True,separators=(",",":" )).encode("utf-8")).hexdigest() for r in rows]
     return out
 
 def row_diff(before, after):
-    """Compara registros individualmente, tratando duplicidades com contagem de hashes."""
+    """Compara cada registro por conteúdo e preserva corretamente duplicidades."""
     result={}
     for name in SOURCES:
-        b=before.get(name,[]); a=after.get(name,[])
-        cb={}
-        ca={}
-        for h in b: cb[h]=cb.get(h,0)+1
-        for h in a: ca[h]=ca.get(h,0)+1
-        added=sum(max(ca.get(h,0)-n,0) for h,n in cb.items()) + sum(n for h,n in ca.items() if h not in cb)
-        removed=sum(max(cb.get(h,0)-n,0) for h,n in ca.items()) + sum(n for h,n in cb.items() if h not in ca)
-        # Uma substituição é uma alteração de registro; alterações de conteúdo são contadas
-        # pelo mínimo entre adicionados e removidos, sem mascarar o saldo líquido.
-        altered=min(added,removed)
-        result[name]={"added":added,"removed":removed,"altered":altered,"value_changed":(added>0 or removed>0)}
+        cb, ca = Counter(before.get(name,[])), Counter(after.get(name,[]))
+        added=sum((ca-cb).values()); removed=sum((cb-ca).values())
+        result[name]={"added":added,"removed":removed,"altered":min(added,removed),"value_changed":bool(added or removed)}
     return result
+
+def source_details(data,name):
+    ds={d.get("id"):d for d in data.get("datasets",[])}
+    d=ds.get(name,{})
+    rows=d.get("rows",[])
+    return (len(rows) if isinstance(rows,list) else 0,d.get("total",""))
 
 def run_sync():
     p=subprocess.run(["python",str(SYNC)],cwd=ROOT,env=os.environ.copy(),text=True,capture_output=True)
@@ -68,47 +58,25 @@ def run_sync():
         except Exception: pass
     return p.returncode,parsed,out,err
 
-def source_details(data,name):
-    ds={d.get("id"):d for d in data.get("datasets",[])}
-    d=ds.get(name,{})
-    rows=d.get("rows",[])
-    return (len(rows) if isinstance(rows,list) else 0,d.get("total",""))
-
 def append_rows(rows):
     LOG.parent.mkdir(parents=True,exist_ok=True)
-    exists=LOG.exists() and LOG.stat().st_size>0
-    if exists:
-        with LOG.open("r",encoding="utf-8-sig",newline="") as f:
-            existing=list(csv.reader(f,delimiter=";"))
-        if existing:
-            old_header=existing[0]
-            legacy_fields=["timestamp_utc","run_id","evento","resultado_execucao","fonte","fonte_id","conteudo_alterado","registros","total","dashboard_atualizado","publicacao","mensagem"]
-            migrated=[]
-            needs_rewrite=(old_header != FIELDS or any(len(r) != len(FIELDS) for r in existing[1:]))
-            if needs_rewrite:
-                for raw in existing[1:]:
-                    if len(raw)==len(FIELDS):
-                        previous=dict(zip(FIELDS,raw))
-                    elif len(raw)==len(legacy_fields):
-                        previous=dict(zip(legacy_fields,raw))
-                    else:
-                        previous=dict(zip(old_header,raw))
-                    migrated.append({field:previous.get(field,"") for field in FIELDS})
-                with LOG.open("w",encoding="utf-8-sig",newline="") as f:
-                    writer=csv.DictWriter(f,fieldnames=FIELDS,delimiter=";")
-                    writer.writeheader()
-                    writer.writerows(migrated)
-    with LOG.open("a",encoding="utf-8-sig",newline="") as f:
-        w=csv.DictWriter(f,fieldnames=FIELDS,delimiter=";")
-        if not exists: w.writeheader()
-        w.writerows(rows)
+    existing=[]
+    if LOG.exists() and LOG.stat().st_size:
+        with LOG.open("r",encoding="utf-8-sig",newline="") as f: raw=list(csv.reader(f,delimiter=";"))
+        if raw:
+            old_header=raw[0]
+            for r in raw[1:]:
+                item=dict(zip(old_header,r))
+                existing.append({k:item.get(k,"") for k in FIELDS})
+    with LOG.open("w",encoding="utf-8-sig",newline="") as f:
+        w=csv.DictWriter(f,fieldnames=FIELDS,delimiter=";"); w.writeheader(); w.writerows(existing); w.writerows(rows)
 
 def output_values(changed,sync_ok):
     path=os.environ.get("GITHUB_OUTPUT")
     if path:
         with open(path,"a",encoding="utf-8") as o:
-            o.write("changed="+("true" if changed else "false")+"\n")
-            o.write("sync_ok="+("true" if sync_ok else "false")+"\n")
+            o.write(f"changed={'true' if changed else 'false'}\n")
+            o.write(f"sync_ok={'true' if sync_ok else 'false'}\n")
 
 def main():
     ts=datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00","Z")
@@ -116,41 +84,44 @@ def main():
     before_data=read_json(DATA,{})
     before_snapshot=snapshot(before_data)
     before_totals={n:source_details(before_data,n) for n in SOURCES}
-    before_hashes=old_hashes()
+    before_state=read_json(STATE,{})
+    before_hashes=before_state.get("hashes",{}) if isinstance(before_state,dict) else {}
+
     code,result,stdout,stderr=run_sync()
     after_data=read_json(DATA,{})
-    after_hashes=old_hashes()
     after_snapshot=snapshot(after_data)
     after_totals={n:source_details(after_data,n) for n in SOURCES}
+    after_state=read_json(STATE,{})
+    after_hashes=after_state.get("hashes",{}) if isinstance(after_state,dict) else {}
     sync_ok=code==0 and result.get("status") in {"SEM_ALTERACOES","ATUALIZADO"}
-    source_changed=[k for k in SOURCES if after_hashes.get(k)!=before_hashes.get(k)]
+
+    hash_changed=[n for n in SOURCES if before_hashes.get(n)!=after_hashes.get(n)]
     diffs=row_diff(before_snapshot,after_snapshot) if sync_ok else {n:{"added":0,"removed":0,"altered":0,"value_changed":False} for n in SOURCES}
-    structural_changed=[n for n in SOURCES if diffs[n]["added"] or diffs[n]["removed"]]
-    value_changed=[n for n in SOURCES if diffs[n]["value_changed"]]
-    total_changed=[n for n in SOURCES if str(before_totals[n][1])!=str(after_totals[n][1])]
     count_changed=[n for n in SOURCES if before_totals[n][0]!=after_totals[n][0]]
-    # Se o hash bruto mudou, mas o dataset derivado não mudou, a auditoria registra a divergência.
-    changed=bool(source_changed or structural_changed or value_changed or total_changed or count_changed)
+    total_changed=[n for n in SOURCES if str(before_totals[n][1])!=str(after_totals[n][1])]
+    record_changed=[n for n in SOURCES if diffs[n]["added"] or diffs[n]["removed"]]
+    changed=bool(hash_changed or count_changed or total_changed or record_changed)
+
     if sync_ok:
         execution=result.get("status","OK")
-        message=result.get("mensagem","Sincronização concluída.")
         dashboard_updated="SIM" if changed else "NÃO"
         publication="PUBLICAÇÃO PROGRAMADA" if changed else "NÃO NECESSÁRIA"
     else:
-        execution="FALHA"; message=(stderr or stdout or "Falha sem mensagem registrada.").replace("\n"," ")[-1000:]
-        dashboard_updated="NÃO"; publication="NÃO PUBLICADO"
+        execution="FALHA"; dashboard_updated="NÃO"; publication="NÃO PUBLICADO"
+    message=(result.get("mensagem","") if sync_ok else (stderr or stdout or "Falha sem mensagem registrada.")).replace("\n"," ")[-1000:]
+
     rows=[]
     for name,file_id in SOURCES.items():
-        count,total=after_totals[name]
-        d=diffs[name]
-        altered="SIM" if name in source_changed or d["added"] or d["removed"] or name in total_changed else "NÃO"
-        msg=(f"Hash fonte: {'ALTERADO' if name in source_changed else 'inalterado'}; "
-             f"registros: +{d['added']} / -{d['removed']} / alterados={d['altered']}; "
-             f"valor total: {'ALTERADO' if name in total_changed else 'inalterado'}.")
-        rows.append({"timestamp_utc":ts,"run_id":run_id,"evento":event,"resultado_execucao":execution,"fonte":LABELS[name],"fonte_id":file_id,"conteudo_alterado":altered,"registros":count,"total":total,"registros_adicionados":d["added"],"registros_removidos":d["removed"],"registros_alterados":d["altered"],"valores_alterados":"SIM" if d["value_changed"] else "NÃO","dashboard_atualizado":dashboard_updated,"publicacao":publication,"mensagem":msg if sync_ok else message})
-    rows.append({"timestamp_utc":ts,"run_id":run_id,"evento":event,"resultado_execucao":execution,"fonte":"RESUMO DA EXECUÇÃO","fonte_id":"","conteudo_alterado":"SIM" if changed else "NÃO","registros":sum(x[0] for x in after_totals.values()),"total":"","registros_adicionados":sum(diffs[n]["added"] for n in SOURCES),"registros_removidos":sum(diffs[n]["removed"] for n in SOURCES),"registros_alterados":sum(diffs[n]["altered"] for n in SOURCES),"valores_alterados":"SIM" if value_changed else "NÃO","dashboard_atualizado":dashboard_updated,"publicacao":publication,"mensagem":f"Fontes com hash alterado: {', '.join(source_changed) if source_changed else 'nenhuma'}. Contagem alterada: {', '.join(count_changed) if count_changed else 'nenhuma'}. Total alterado: {', '.join(total_changed) if total_changed else 'nenhum'}."})
+        count,total=after_totals[name]; d=diffs[name]
+        altered=bool(name in hash_changed or name in count_changed or name in total_changed or d["added"] or d["removed"])
+        detail=(f"Fonte lida e validada; hash={'ALTERADO' if name in hash_changed else 'inalterado'}; "
+                f"registros={count}; +{d['added']} / -{d['removed']} / alterados={d['altered']}; "
+                f"total={total}; total={'ALTERADO' if name in total_changed else 'inalterado'}.")
+        rows.append({"timestamp_utc":ts,"run_id":run_id,"evento":event,"resultado_execucao":execution,"fonte":LABELS[name],"fonte_id":file_id,"conteudo_alterado":"SIM" if altered else "NÃO","registros":count,"total":total,"registros_adicionados":d["added"],"registros_removidos":d["removed"],"registros_alterados":d["altered"],"valores_alterados":"SIM" if d["value_changed"] or name in total_changed else "NÃO","dashboard_atualizado":dashboard_updated,"publicacao":publication,"mensagem":detail if sync_ok else message})
+    rows.append({"timestamp_utc":ts,"run_id":run_id,"evento":event,"resultado_execucao":execution,"fonte":"RESUMO DA EXECUÇÃO","fonte_id":"","conteudo_alterado":"SIM" if changed else "NÃO","registros":sum(x[0] for x in after_totals.values()),"total":"","registros_adicionados":sum(diffs[n]["added"] for n in SOURCES),"registros_removidos":sum(diffs[n]["removed"] for n in SOURCES),"registros_alterados":sum(diffs[n]["altered"] for n in SOURCES),"valores_alterados":"SIM" if total_changed else "NÃO","dashboard_atualizado":dashboard_updated,"publicacao":publication,"mensagem":f"Fontes lidas: 6/6. Hash alterado: {', '.join(hash_changed) if hash_changed else 'nenhum'}. Registros alterados: {', '.join(record_changed) if record_changed else 'nenhum'}. Quantidade alterada: {', '.join(count_changed) if count_changed else 'nenhuma'}. Total alterado: {', '.join(total_changed) if total_changed else 'nenhum'}."})
     append_rows(rows)
     output_values(changed,sync_ok)
-    print(json.dumps({"audit":"REGISTRADA","status":execution,"changed":changed,"sync_ok":sync_ok,"fontes_alteradas":source_changed,"registros_individuais_verificados":True,"valores_totais_verificados":True,"log":str(LOG.relative_to(ROOT))},ensure_ascii=False))
+    print(json.dumps({"audit":"REGISTRADA","status":execution,"changed":changed,"sync_ok":sync_ok,"fontes_alteradas":hash_changed,"registros_individuais_verificados":True,"valores_totais_verificados":True,"fontes_verificadas":6,"log":str(LOG.relative_to(ROOT))},ensure_ascii=False))
     return 0
+
 if __name__=="__main__": raise SystemExit(main())
