@@ -121,6 +121,9 @@ def main():
     before_totals={n:source_details(before_data,n) for n in SOURCES}
     before_hashes=old_hashes()
     code,result,stdout,stderr=run_sync()
+    if code != 0:
+        print("SYNC_STDOUT: " + (stdout or "")[-3000:])
+        print("SYNC_STDERR: " + (stderr or "")[-3000:])
     after_data=read_json(DATA,{})
     after_hashes=old_hashes()
     after_snapshot=snapshot(after_data)
