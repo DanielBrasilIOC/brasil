@@ -22,12 +22,12 @@ Este backup é uma cópia do repositório inteiro no commit de origem, incluindo
 
 ## Como baixar uma cópia local
 
-Abra o arquivo ZIP deste branch no GitHub ou use o link de download do ZIP informado na conversa. Guarde o ZIP fora do repositório, para que uma falha no repositório não seja a única cópia disponível.
+Baixe o ZIP deste branch pelo link fornecido na conversa e guarde-o fora do repositório, para que uma falha no repositório não seja a única cópia disponível.
 
 ## Como recuperar
 
 1. Confira o conteúdo do backup antes de restaurar.
-2. Para recuperar um arquivo isolado, copie-o deste branch para `main) por meio de um commit revisado.
+2. Para recuperar um arquivo isolado, copie-o deste branch para `main` por meio de um commit revisado.
 3. Para recuperar o projeto inteiro, compare o branch de backup com `main` e restaure os arquivos necessários, preservando os dados mais recentes que tenham sido validados depois da data do snapshot.
 4. Não publique o branch de backup como produção. A publicação automática é configurada para `main`.
 
