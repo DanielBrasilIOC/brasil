@@ -162,7 +162,8 @@ def main():
     a=table(src["repasses"],";",["PROCESSO","STATUS DO EMPENHO","VALOR"])
     rep=[]
     for r in a:
-        if norm(r[8]) not in {"AGUARDANDOORCAMENTO","AGUARDANDOORAMENTO"}: continue
+        status_norm=norm(r[8]) if len(r)>8 else ""
+        if "AGUARDANDOORCAMENTO" not in status_norm and "AGUARDANDOORAMENTO" not in status_norm: continue
         rep.append({"processo":r[0],"licitacao":r[1],"fornecedor":r[9],"sub_grupo":r[3],
                     "elemento_despesa":r[1],"elemento":r[2],"sub_grupo_despesa":r[3],
                     "vigencia":r[4],"situacao_prioridade":r[5],"solicitacao_ne":r[6],
