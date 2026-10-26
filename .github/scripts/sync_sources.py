@@ -103,7 +103,7 @@ def table(text, delimiter, tokens):
             parsed.append(row)
         for i, row in enumerate(parsed):
             joined = norm(" ".join(row))
-            if len(row) > 3 and all(norm(t) in joined for t in tokens):
+            if len(row) >= len(tokens) and all(norm(t) in joined for t in tokens):
                 selected, hi, rows = candidate, i, parsed
                 break
         if selected is not None:
