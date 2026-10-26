@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Painel Financeiro e Orçamentário IOC</title>
+<style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#f3f6f9}iframe{display:block;width:100%;height:100%;border:0}</style>
+</head>
+<body>
+<iframe id="dashboard" src="dashboard-v2.html?v=202610261755-vinculacao" title="Painel Financeiro e Orçamentário IOC"></iframe>
+<script>
+const frame=document.getElementById('dashboard');
+frame.addEventListener('load',()=>{try{const doc=frame.contentDocument;if(!doc||!doc.body)return;const title='Painel Financeiro e Orçamentário IOC';const brand=doc.querySelector('.brand h1');if(brand&&brand.textContent!==title)brand.textContent=title;const heading=doc.getElementById('title');if(heading&&heading.textContent.replace(/\s+/g,' ').trim()!==title)heading.textContent=title;if(doc.title!==title)doc.title=title;}catch(e){console.error('Ajuste de título não aplicado',e)}});
+</script>
+</body>
+</html>
