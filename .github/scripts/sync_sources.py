@@ -56,15 +56,27 @@ def money(v):
     return float(n.quantize(Decimal("0.01")))
 
 def download(file_id):
-    # Sempre lê o arquivo ativo diretamente da pasta oficial indicada pelo usuário.
+    """Baixa a fonte e recusa respostas HTML/login/erro em vez de tratá-las como CSV."""
     url = "https://drive.google.com/uc?export=download&id=" + file_id
-    req=urllib.request.Request(url, headers={"User-Agent":"IOC-Dashboard-Sync/1.0"})
-    with urllib.request.urlopen(req,timeout=45) as r: b=r.read()
-    try: s=b.decode("utf-8-sig")
-    except UnicodeDecodeError: s=b.decode("cp1252",errors="replace")
+    req=urllib.request.Request(url, headers={"User-Agent":"IOC-Dashboard-Sync/1.1"})
+    with urllib.request.urlopen(req,timeout=45) as r:
+        b=r.read()
+        final_url=r.geturl()
+    check(bool(b), f"Fonte Drive {file_id}: arquivo vazio")
+    if len(b) > 50 * 1024 * 1024:
+        raise ValueError(f"Fonte Drive {file_id}: arquivo excede o limite de 50 MiB")
+    try:
+        s=b.decode("utf-8-sig")
+    except UnicodeDecodeError:
+        s=b.decode("cp1252",errors="strict")
+    stripped=s.lstrip().lower()
+    if stripped.startswith("<!doctype html") or stripped.startswith("<html") or "accounts.google.com" in final_url:
+        raise ValueError(f"Fonte Drive {file_id}: o download retornou HTML/login, não CSV")
+    if not s.strip():
+        raise ValueError(f"Fonte Drive {file_id}: conteúdo textual vazio")
     # Alguns relatórios SIAFI guardam delimitadores/caracteres como sequências escapadas.
-    s=s.replace(r"\t","\t").replace(r'\"','"')
-    s=re.sub(r"\\x([0-9a-fA-F]{2})",lambda m:chr(int(m.group(1),16)),s)
+    s=s.replace(r"\\t","\\t").replace(r'\\\"','"')
+    s=re.sub(r"\\\\x([0-9a-fA-F]{2})",lambda m:chr(int(m.group(1),16)),s)
     return s
 
 def table(text, delimiter, tokens):
