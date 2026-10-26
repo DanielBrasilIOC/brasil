@@ -6,6 +6,9 @@ on:
     branches: ["main"]
     paths-ignore:
       - "source_state.json"
+      - "data.json"
+      - "repasses.json"
+      - "dashboard-publication.json"
       - "logs/atualizacoes_dashboard.csv"
   schedule:
     - cron: "0 3,7,11,15,19,23 * * 1-5"
@@ -186,7 +189,22 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add data.json repasses.json source_state.json logs/atualizacoes_dashboard.csv
           git commit -m "Registrar auditoria da sincronização do painel [skip ci]"
-          git push
+          for attempt in 1 2 3; do
+            if git push origin HEAD:main; then
+              echo "Auditoria e dados persistidos."
+              exit 0
+            fi
+            echo "Push concorrente (tentativa $attempt/3); sincronizando com main."
+            git fetch origin main
+            git rebase origin/main || {
+              git rebase --abort || true
+              git reset --hard origin/main
+              echo "Conflito ao reaplicar o commit; reconstruir o log na próxima execução." >&2
+              exit 1
+            }
+          done
+          echo "Não foi possível persistir após 3 tentativas." >&2
+          exit 1
 
 
   record-failed-run:
