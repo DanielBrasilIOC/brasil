@@ -214,30 +214,30 @@ jobs:
               install -D -m 0644 .sync-artifact/repasses.json repasses.json
               install -D -m 0644 .sync-artifact/source_state.json source_state.json
             fi
-            python - <<'PY'
-            import csv
-            from pathlib import Path
-            fields=['timestamp_utc','run_id','evento','resultado_execucao','fonte','fonte_id','conteudo_alterado','registros','total','registros_adicionados','registros_removidos','registros_alterados','valores_alterados','dashboard_atualizado','publicacao','mensagem']
-            legacy=['timestamp_utc','run_id','evento','resultado_execucao','fonte','fonte_id','conteudo_alterado','registros','total','dashboard_atualizado','publicacao','mensagem']
-            def read(path):
-                p=Path(path)
-                if not p.exists() or not p.stat().st_size: return []
-                with p.open('r',encoding='utf-8-sig',newline='') as f: raw=list(csv.reader(f,delimiter=';'))
-                if not raw: return []
-                header=raw[0]; out=[]
-                for values in raw[1:]:
-                    if len(values)==len(fields): item=dict(zip(fields,values))
-                    elif len(values)==len(legacy): item=dict(zip(legacy,values))
-                    else: item=dict(zip(header,values))
-                    out.append(tuple(item.get(k,'') for k in fields))
-                return out
-            merged=[]; seen=set()
-            for row in read('logs/atualizacoes_dashboard.csv')+read(__import__('os').environ['RUNNER_TEMP']+'/local-audit.csv'):
-                if row not in seen: seen.add(row); merged.append(row)
-            p=Path('logs/atualizacoes_dashboard.csv')
-            with p.open('w',encoding='utf-8-sig',newline='') as f:
-                w=csv.writer(f,delimiter=';'); w.writerow(fields); w.writerows(merged)
-            PY
+          python - <<'PY'
+          import csv
+          from pathlib import Path
+          fields=['timestamp_utc','run_id','evento','resultado_execucao','fonte','fonte_id','conteudo_alterado','registros','total','registros_adicionados','registros_removidos','registros_alterados','valores_alterados','dashboard_atualizado','publicacao','mensagem']
+          legacy=['timestamp_utc','run_id','evento','resultado_execucao','fonte','fonte_id','conteudo_alterado','registros','total','dashboard_atualizado','publicacao','mensagem']
+          def read(path):
+              p=Path(path)
+              if not p.exists() or not p.stat().st_size: return []
+              with p.open('r',encoding='utf-8-sig',newline='') as f: raw=list(csv.reader(f,delimiter=';'))
+              if not raw: return []
+              header=raw[0]; out=[]
+              for values in raw[1:]:
+                  if len(values)==len(fields): item=dict(zip(fields,values))
+                  elif len(values)==len(legacy): item=dict(zip(legacy,values))
+                  else: item=dict(zip(header,values))
+                  out.append(tuple(item.get(k,'') for k in fields))
+              return out
+          merged=[]; seen=set()
+          for row in read('logs/atualizacoes_dashboard.csv')+read(__import__('os').environ['RUNNER_TEMP']+'/local-audit.csv'):
+              if row not in seen: seen.add(row); merged.append(row)
+          p=Path('logs/atualizacoes_dashboard.csv')
+          with p.open('w',encoding='utf-8-sig',newline='') as f:
+              w=csv.writer(f,delimiter=';'); w.writerow(fields); w.writerows(merged)
+          PY
             git add data.json repasses.json source_state.json logs/atualizacoes_dashboard.csv
             git commit -m "Mesclar auditoria e persistir dados validados [skip ci]"
           done
