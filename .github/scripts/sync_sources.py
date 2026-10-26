@@ -62,7 +62,7 @@ def download(file_id):
             try: s=b.decode("utf-8-sig")
             except UnicodeDecodeError: s=b.decode("cp1252",errors="replace")
             # Não aceitar páginas de erro/login como se fossem CSV.
-            if s.lstrip().lower().startswith(("<!doctype html", "<html")) or "accounts.google.com/ServiceLogin" in s:
+            if re.search(r"<(?:!doctype|html|head|body|div|script|meta)\\b", s[:2000], re.I) or "accounts.google.com/ServiceLogin" in s:
                 errors.append(url.split("?")[0] + ": resposta HTML/login, não CSV")
                 continue
             nonempty = [line for line in s.splitlines() if line.strip()]
