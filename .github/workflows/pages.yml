@@ -1,4 +1,5 @@
 name: Atualização automática no dashboard
+# Configuração estável restaurada do último ponto validado em 25/10/2026.
 
 on:
   push:
