@@ -127,9 +127,13 @@ def extract_folder_files(page, folder_id):
             name = html.unescape(re.sub(r"<[^>]+>", "", title_match.group(1))).strip()
             if normalize(name) not in {normalize(n) for values in EXPECTED_NAMES.values() for n in values}:
                 continue
-            id_match = re.search(r'/file/d/([A-Za-z0-9_-]{20,80})', chunk)
+            # O HTML público atual do Drive identifica cada linha como id="entry-<FILE_ID>".
+            # As variantes antigas usavam /file/d/<ID> ou ?id=<ID>.
+            id_match = re.search(r'\\bid=["\\']entry-([A-Za-z0-9_-]{20,80})["\\']', chunk, re.I)
             if not id_match:
-                id_match = re.search(r'[?&]id=([A-Za-z0-9_-]{20,80})', chunk)
+                id_match = re.search(r'/file/d/([A-Za-z0-9_-]{20,80})', chunk, re.I)
+            if not id_match:
+                id_match = re.search(r'[?&]id=([A-Za-z0-9_-]{20,80})', chunk, re.I)
             if not id_match:
                 continue
             file_id = id_match.group(1)
