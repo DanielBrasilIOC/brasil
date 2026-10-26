@@ -130,10 +130,8 @@ def table(text, delimiter, tokens):
         if len(row)<len(header): row += [""]*(len(header)-len(row))
         data.append(row[:len(header)])
     audit={"tokens":tokens,"delimiter":("TAB" if selected=="\\t" else selected),
-           "header":header,"row_count":len(data),"skipped_total_rows":skipped_totals,
-           "first_rows":data[:2],"last_rows":data[-3:]}
+           "header":header,"row_count":len(data),"skipped_total_rows":skipped_totals}
     TABLE_AUDITS[norm(tokens[0])]=audit
-    print("TABLE_AUDIT="+json.dumps(audit,ensure_ascii=False))
     return data
 
 def total(rows,key): return round(sum(float(r.get(key) or 0) for r in rows),2)
@@ -142,40 +140,6 @@ def check(ok,msg):
 
 def main():
     src={k:download(v) for k,v in SOURCES.items()}
-
-    # Auditoria independente da estrutura bruta antes de qualquer transformação.
-    raw_report={}
-    for key, content in src.items():
-        lines=[line for line in content.splitlines() if line.strip()]
-        candidates=[]
-        for delim in (",",";","\\t","|"):
-            parsed=[]
-            for line in lines:
-                try: row=next(csv.reader([line],delimiter=delim))
-                except Exception: row=[line]
-                parsed.append(row)
-            widths=[len(row) for row in parsed]
-            score=(sum(width>1 for width in widths),sum(widths),max(widths,default=0))
-            candidates.append((score,delim,parsed))
-        _, delim, parsed=max(candidates,key=lambda x:x[0])
-        maxcols=max((len(row) for row in parsed),default=0)
-        colstats=[]
-        for ci in range(maxcols):
-            nums=[money(row[ci]) for row in parsed if ci<len(row)]
-            nums=[v for v in nums if v is not None]
-            if len(nums)>=2:
-                colstats.append({"col":ci+1,"numeric_count":len(nums),"numeric_sum":round(sum(nums),2)})
-        raw_report[key]={"delimiter":("TAB" if delim=="\\t" else delim),
-                         "nonempty_lines":len(lines),"max_columns":maxcols,
-                         "column_numeric_sums":colstats,
-                         "first_lines":[{"line":i+1,"fields":[clean(v)[:85] for v in row[:12]]}
-                                        for i,row in enumerate(parsed[:22])]}
-    print("SOURCE_RAW_AUDIT="+json.dumps(raw_report,ensure_ascii=False))
-    summary=os.environ.get("GITHUB_STEP_SUMMARY")
-    if summary:
-        with open(summary,"a",encoding="utf-8") as out:
-            out.write("## Auditoria estrutural bruta das seis fontes\n\n")
-            out.write(json.dumps(raw_report,ensure_ascii=False,indent=2)+"\n")
 
     a=table(src["empenhos"],"\t",["Favorecido do Empenho","Empenho","Saldo"])
     # O CSV oficial atual tem cinco campos nomeados; não atribuir valores a campos ausentes.
