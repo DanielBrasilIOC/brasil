@@ -84,20 +84,23 @@ def table(text, delimiter, tokens):
     hi = None
     rows = []
     for candidate in candidates:
-        parsed = list(csv.reader(io.StringIO(text), delimiter=candidate))
-        # Algumas exportações do Drive entregam cada linha CSV como um único
-        # campo contendo outra linha CSV. Detecta isso e interpreta uma segunda vez.
-        if parsed and max((len(row) for row in parsed), default=0) <= 1:
-            nested = []
-            for row in parsed:
-                cell = row[0] if row else ""
+        # Interpretar cada linha isoladamente: os filtros/títulos do Tesouro
+        # podem conter aspas sem par, que contaminam o estado do CSV se lidos em bloco.
+        parsed = []
+        for line in text.splitlines():
+            try:
+                row = next(csv.reader([line], delimiter=candidate))
+            except Exception:
+                row = [line]
+            # Algumas exportações duplicam as aspas de cada campo.
+            if len(row) == 1 and candidate in row[0]:
                 try:
-                    inner = next(csv.reader([cell], delimiter=candidate))
+                    inner = next(csv.reader([row[0]], delimiter=candidate))
+                    if len(inner) > 1:
+                        row = inner
                 except Exception:
-                    inner = [cell]
-                nested.append(inner if len(inner) > 1 else row)
-            if max((len(row) for row in nested), default=0) > 1:
-                parsed = nested
+                    pass
+            parsed.append(row)
         for i, row in enumerate(parsed):
             joined = norm(" ".join(row))
             if len(row) > 3 and all(norm(t) in joined for t in tokens):
@@ -185,8 +188,9 @@ def main():
     check(50<=len(rep)<=150 and tr>=1.5e6 and mr<=5,
           f"Validação de repasses falhou: linhas={len(rep)}, total={tr}, sem valor={mr}")
 
-    a=table(src["financeiro"],",",["UGE","Fonte Detalhada","Total"])
-    fin=[{"uge":r[0],"unidade":r[1],"fonte":r[2],"vinculo":r[3],"saldo":money(r[5])} for r in a]
+    a=table(src["financeiro"],",",["UG Executora","Fonte Recursos Detalhada","Saldo"])
+    # O relatório atual do SIAFI contém três colunas, não o layout antigo de seis.
+    fin=[{"uge":r[0],"unidade":"IOC","fonte":r[1],"vinculo":"","saldo":money(r[2])} for r in a if len(r)>2]
     tf=total(fin,"saldo")
     check(1<=len(fin)<=20 and all(r["saldo"] is not None for r in fin) and 1e5<=abs(tf)<=2e6,
           f"Validação do saldo financeiro falhou: linhas={len(fin)}, total={tf}")
