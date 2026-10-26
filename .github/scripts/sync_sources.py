@@ -40,24 +40,42 @@ def norm(v):
     return "".join(c for c in s if c.isalnum() and not unicodedata.combining(c))
 
 def money(v):
-    s=clean(v).replace("R$","").replace(" ","")
-    if not s or s in {"-","—"}: return None
+    """Converte moeda sem mascarar valores inválidos como zero/None."""
+    s=clean(v).replace("R$","").replace("\u00a0","").replace(" ","")
+    if not s or s in {"-","—","–"}: return None
     neg=s.startswith("(") and s.endswith(")")
     s=s.strip("()")
     if "," in s: s=s.replace(".","").replace(",",".")
-    try: n=Decimal(s)
-    except InvalidOperation: return None
-    return float(-abs(n) if neg else n)
+    try:
+        n=Decimal(s)
+    except InvalidOperation as exc:
+        raise ValueError(f"Valor monetário inválido: {v!r}") from exc
+    if not n.is_finite():
+        raise ValueError(f"Valor monetário não finito: {v!r}")
+    n = -abs(n) if neg else n
+    return float(n.quantize(Decimal("0.01")))
 
 def download(file_id):
-    # Sempre lê o arquivo ativo diretamente da pasta oficial indicada pelo usuário.
+    """Baixa a fonte e recusa respostas HTML/login/erro em vez de tratá-las como CSV."""
     url = "https://drive.google.com/uc?export=download&id=" + file_id
-    req=urllib.request.Request(url, headers={"User-Agent":"IOC-Dashboard-Sync/1.0"})
-    with urllib.request.urlopen(req,timeout=45) as r: b=r.read()
-    try: s=b.decode("utf-8-sig")
-    except UnicodeDecodeError: s=b.decode("cp1252",errors="replace")
+    req=urllib.request.Request(url, headers={"User-Agent":"IOC-Dashboard-Sync/1.1"})
+    with urllib.request.urlopen(req,timeout=45) as r:
+        b=r.read()
+        final_url=r.geturl()
+    check(bool(b), f"Fonte Drive {file_id}: arquivo vazio")
+    if len(b) > 50 * 1024 * 1024:
+        raise ValueError(f"Fonte Drive {file_id}: arquivo excede o limite de 50 MiB")
+    try:
+        s=b.decode("utf-8-sig")
+    except UnicodeDecodeError:
+        s=b.decode("cp1252",errors="strict")
+    stripped=s.lstrip().lower()
+    if stripped.startswith("<!doctype html") or stripped.startswith("<html") or "accounts.google.com" in final_url:
+        raise ValueError(f"Fonte Drive {file_id}: o download retornou HTML/login, não CSV")
+    if not s.strip():
+        raise ValueError(f"Fonte Drive {file_id}: conteúdo textual vazio")
     # Alguns relatórios SIAFI guardam delimitadores/caracteres como sequências escapadas.
-    s=s.replace(r"\t","\t").replace(r'\"','"')
+    s=s.replace(r"\\t","\t").replace(r'\\\"','"')
     s=re.sub(r"\\x([0-9a-fA-F]{2})",lambda m:chr(int(m.group(1),16)),s)
     return s
 
@@ -77,7 +95,9 @@ def table(text, delimiter, tokens):
         data.append(row[:len(header)])
     return data
 
-def total(rows,key): return round(sum(float(r.get(key) or 0) for r in rows),2)
+def total(rows,key):
+    # Soma em Decimal para evitar acumulação de erros binários de ponto flutuante.
+    return float(sum((Decimal(str(r.get(key) or 0)) for r in rows), Decimal("0")).quantize(Decimal("0.01")))
 def check(ok,msg):
     if not ok: raise ValueError(msg)
 
@@ -94,9 +114,15 @@ def main():
 
     a=table(src["orcamentario"],",",["UG Executora","Fonte Recursos Detalhada","Saldo"])
     # Exportação ativa com oito colunas; o relatório não traz PTRES nem o código numérico da UG.
-    orc=[{"ug":"254463","unidade":r[0],"ptres":"","fonte":r[1],"descricao_fonte":r[2],
-          "natureza_codigo":r[3],"natureza":r[3],"ug_responsavel":"","responsavel":r[4],
-          "pi":r[5],"programa":r[6],"saldo":abs(money(r[7]) or 0)} for r in a]
+    orc=[]
+    for r in a:
+        value=money(r[7])
+        check(value is not None, "Validação orçamentária falhou: há saldo vazio ou inválido; a publicação foi bloqueada")
+        # O relatório orçamentário exporta saldos com sinal invertido para este indicador;
+        # preserva-se a regra de apresentação original, sem converter valores inválidos em zero.
+        orc.append({"ug":"254463","unidade":r[0],"ptres":"","fonte":r[1],"descricao_fonte":r[2],
+                    "natureza_codigo":r[3],"natureza":r[3],"ug_responsavel":"","responsavel":r[4],
+                    "pi":r[5],"programa":r[6],"saldo":abs(value)})
     to=total(orc,"saldo")
     check(5<=len(orc)<=50 and 1e5<=to<=10e6,f"Validação orçamentária falhou: linhas={len(orc)}, total={to}")
 
@@ -125,8 +151,10 @@ def main():
     fin=[{"uge":r[0],"unidade":"INSTITUTO OSWALDO CRUZ","fonte":r[1],"vinculo":"",
           "saldo":money(r[2])} for r in a]
     tf=total(fin,"saldo")
-    check(1<=len(fin)<=20 and all(r["saldo"] is not None for r in fin) and 1e5<=abs(tf)<=2e6,
+    check(1<=len(fin)<=20 and all(r["saldo"] is not None for r in fin) and 1e5<=tf<=2e6,
           f"Validação do saldo financeiro falhou: linhas={len(fin)}, total={tf}")
+    check(all(r["saldo"] >= 0 for r in fin),
+          "Validação do saldo financeiro falhou: há saldo negativo na fonte; a publicação foi bloqueada para revisão")
 
     a=table(src["restos"],",",["Empenho","Saldo"])
     rap=[]

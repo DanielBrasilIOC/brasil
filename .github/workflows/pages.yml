@@ -9,6 +9,8 @@ on:
   schedule:
     - cron: "0 3,7,11,15,19,23 * * 1-5"
   workflow_dispatch:
+  pull_request:
+    branches: ["main"]
 
 permissions:
   contents: read
@@ -37,8 +39,8 @@ jobs:
       - name: Sincronizar fontes e registrar auditoria
         id: sync
         run: python .github/scripts/audit_sync.py
-      - name: Guardar dados validados para persistir após publicação
-        if: steps.sync.outputs.changed == 'true'
+      - name: Guardar dados validados para conferência pós-publicação
+        if: steps.sync.outputs.sync_ok == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: validated-dashboard-data
@@ -73,7 +75,7 @@ jobs:
           path: "."
 
   deploy:
-    if: needs.build.outputs.sync_ok == 'true' && (needs.build.outputs.data_changed == 'true' || github.event_name != 'schedule')
+    if: github.event_name != 'pull_request' && needs.build.outputs.sync_ok == 'true' && (needs.build.outputs.data_changed == 'true' || github.event_name != 'schedule')
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -84,9 +86,67 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v4
 
-  persist-source-state:
-    if: always() && needs.build.result == 'success'
+  verify-publication:
+    name: Conferir os dados efetivamente publicados
+    if: >-
+      needs.build.outputs.sync_ok == 'true' &&
+      (needs.deploy.result == 'success' ||
+       (needs.build.outputs.data_changed != 'true' && github.event_name == 'schedule'))
     needs: [build, deploy]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Recuperar dados validados desta execução
+        uses: actions/download-artifact@v4
+        with:
+          name: validated-dashboard-data
+          path: .validated
+      - name: Comparar a versão pública com a versão validada
+        env:
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          python - <<'PY'
+          import json, os, time, urllib.request
+          from pathlib import Path
+          root=Path('.validated')
+          expected=json.loads((root/'data.json').read_text(encoding='utf-8'))
+          expected_repasses=json.loads((root/'repasses.json').read_text(encoding='utf-8'))
+          url='https://danielbrasilioc.github.io/brasil/data.json?verify='+os.environ['RUN_ID']+'-'+str(int(time.time()))
+          req=urllib.request.Request(url,headers={'Cache-Control':'no-cache','Pragma':'no-cache','User-Agent':'IOC-Dashboard-Publication-Check/1.0'})
+          with urllib.request.urlopen(req,timeout=45) as response:
+              if response.status != 200:
+                  raise SystemExit(f'HTTP público inesperado: {response.status}')
+              actual=json.loads(response.read().decode('utf-8-sig'))
+          expected_sets={d.get('id'):d for d in expected.get('datasets',[])}
+          actual_sets={d.get('id'):d for d in actual.get('datasets',[])}
+          required=('financeiro','restos','empenhos','orcamentario','repasses','ordens_bancarias')
+          failures=[]
+          for name in required:
+              e=expected_sets.get(name); a=actual_sets.get(name)
+              if not e or not a:
+                  failures.append(f'{name}: dataset ausente')
+                  continue
+              if e.get('rows') != a.get('rows'):
+                  failures.append(f'{name}: registros públicos diferentes dos validados')
+              if len(e.get('rows',[])) != len(a.get('rows',[])):
+                  failures.append(f'{name}: quantidade pública divergente')
+              if round(float(e.get('total',0)),2) != round(float(a.get('total',0)),2):
+                  failures.append(f'{name}: total público divergente')
+          if expected.get('generated_at') != actual.get('generated_at'):
+              failures.append('generated_at público não corresponde à versão validada')
+          rep_url='https://danielbrasilioc.github.io/brasil/repasses.json?verify='+os.environ['RUN_ID']+'-'+str(int(time.time()))
+          req=urllib.request.Request(rep_url,headers={'Cache-Control':'no-cache','Pragma':'no-cache','User-Agent':'IOC-Dashboard-Publication-Check/1.0'})
+          with urllib.request.urlopen(req,timeout=45) as response:
+              actual_repasses=json.loads(response.read().decode('utf-8-sig'))
+          if expected_repasses != actual_repasses:
+              failures.append('repasses.json público difere da versão validada')
+          if failures:
+              raise SystemExit('PÓS-PUBLICAÇÃO FALHOU: '+'; '.join(failures))
+          print(json.dumps({'status':'PUBLICACAO_VERIFICADA','url':url,'generated_at':actual.get('generated_at'),'datasets':{n:{'registros':len(actual_sets[n]['rows']),'total':actual_sets[n]['total']} for n in required}},ensure_ascii=False))
+          PY
+
+  persist-source-state:
+    if: github.event_name != 'pull_request' && always() && needs.build.result == 'success'
+    needs: [build, deploy, verify-publication]
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -109,13 +169,14 @@ jobs:
           DATA_CHANGED: ${{ needs.build.outputs.data_changed }}
           DEPLOY_RESULT: ${{ needs.deploy.result }}
           SYNC_OK: ${{ needs.build.outputs.sync_ok }}
+          VERIFY_RESULT: ${{ needs.verify-publication.result }}
           RUN_ID: ${{ github.run_id }}
           EVENT_NAME: ${{ github.event_name }}
         run: |
           mkdir -p logs
           test -f .audit-artifact/atualizacoes_dashboard.csv
           install -D -m 0644 .audit-artifact/atualizacoes_dashboard.csv logs/atualizacoes_dashboard.csv
-          if [ "$DATA_CHANGED" = "true" ] && [ "$DEPLOY_RESULT" = "success" ]; then
+          if [ "$DATA_CHANGED" = "true" ] && [ "$DEPLOY_RESULT" = "success" ] && [ "$VERIFY_RESULT" = "success" ]; then
             test -f .sync-artifact/data.json
             test -f .sync-artifact/repasses.json
             test -f .sync-artifact/source_state.json
@@ -125,8 +186,10 @@ jobs:
             FINAL_STATUS="DADOS PUBLICADOS"
           elif [ "$SYNC_OK" != "true" ]; then
             FINAL_STATUS="FALHA NA SINCRONIZAÇÃO — ÚLTIMA VERSÃO PRESERVADA"
-          elif [ "$DATA_CHANGED" = "true" ]; then
+          elif [ "$DATA_CHANGED" = "true" ] && [ "$DEPLOY_RESULT" != "success" ]; then
             FINAL_STATUS="FALHA NA PUBLICAÇÃO — ÚLTIMA VERSÃO PRESERVADA"
+          elif [ "$DATA_CHANGED" = "true" ] && [ "$VERIFY_RESULT" != "success" ]; then
+            FINAL_STATUS="FALHA NA CONFERÊNCIA PÚBLICA — ÚLTIMA VERSÃO VÁLIDA PRESERVADA NO REPOSITÓRIO"
           elif [ "$EVENT_NAME" = "schedule" ]; then
             FINAL_STATUS="VERIFICADO — SEM ALTERAÇÕES; PUBLICAÇÃO NÃO NECESSÁRIA"
           else
@@ -154,6 +217,12 @@ jobs:
                       else:
                           item=dict(zip(header,raw))
                       rows.append({key:item.get(key,'') for key in fields})
+          # Corrige as linhas desta execução com o resultado real da publicação/conferência.
+          final_ok=(os.environ.get('DATA_CHANGED')=='true' and os.environ.get('DEPLOY_RESULT')=='success' and os.environ.get('VERIFY_RESULT')=='success')
+          for item in rows:
+              if item.get('run_id')==os.environ['RUN_ID'] and item.get('fonte')!='RESUMO DA PUBLICAÇÃO':
+                  item['dashboard_atualizado']='SIM' if final_ok else 'NÃO'
+                  item['publicacao']=os.environ.get('FINAL_STATUS','')
           with p.open('w',encoding='utf-8-sig',newline='') as f:
               writer=csv.DictWriter(f,fieldnames=fields,delimiter=';')
               writer.writeheader()
@@ -164,7 +233,7 @@ jobs:
                   'resultado_execucao':'FINALIZAÇÃO', 'fonte':'RESUMO DA PUBLICAÇÃO', 'fonte_id':'',
                   'conteudo_alterado':'', 'registros':'', 'total':'',
                   'registros_adicionados':'', 'registros_removidos':'', 'registros_alterados':'', 'valores_alterados':'',
-                  'dashboard_atualizado':'SIM' if os.environ.get('DATA_CHANGED')=='true' and os.environ.get('DEPLOY_RESULT')=='success' else 'NÃO',
+                  'dashboard_atualizado':'SIM' if os.environ.get('DATA_CHANGED')=='true' and os.environ.get('DEPLOY_RESULT')=='success' and os.environ.get('VERIFY_RESULT')=='success' else 'NÃO',
                   'publicacao':os.environ.get('FINAL_STATUS',''),
                   'mensagem':'Resultado final da publicação da execução.'
               })
@@ -186,8 +255,8 @@ jobs:
 
   record-failed-run:
     name: Registrar falha do fluxo no log persistente
-    if: ${{ always() && (needs.build.result == 'failure' || needs.deploy.result == 'failure' || needs.persist-source-state.result == 'failure') }}
-    needs: [build, deploy, persist-source-state]
+    if: ${{ github.event_name != 'pull_request' && always() && (needs.build.result == 'failure' || needs.deploy.result == 'failure' || needs.verify-publication.result == 'failure' || needs.persist-source-state.result == 'failure') }}
+    needs: [build, deploy, verify-publication, persist-source-state]
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -204,6 +273,7 @@ jobs:
           BUILD_RESULT: ${{ needs.build.result }}
           DEPLOY_RESULT: ${{ needs.deploy.result }}
           PERSIST_RESULT: ${{ needs.persist-source-state.result }}
+          VERIFY_RESULT: ${{ needs.verify-publication.result }}
           JOB_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
           set -euo pipefail
@@ -230,7 +300,7 @@ jobs:
               print('Falha desta execução já está registrada.')
           else:
               detail=(f"build={os.environ['BUILD_RESULT']}; deploy={os.environ['DEPLOY_RESULT']}; "
-                      f"persistência={os.environ['PERSIST_RESULT']}; detalhes: {os.environ['JOB_URL']}")
+                      f"conferência_pública={os.environ['VERIFY_RESULT']}; persistência={os.environ['PERSIST_RESULT']}; detalhes: {os.environ['JOB_URL']}")
               row={k:'' for k in fields}
               row.update({
                 'timestamp_utc':datetime.now(timezone.utc).isoformat(timespec='seconds').replace('+00:00','Z'),
@@ -279,8 +349,8 @@ jobs:
 
   backup-last-valid:
     name: Guardar snapshot persistente da última versão válida
-    if: ${{ needs.build.result == 'success' && needs.build.outputs.sync_ok == 'true' && needs.persist-source-state.result == 'success' && (needs.deploy.result == 'success' || github.event_name != 'schedule') }}
-    needs: [build, deploy, persist-source-state]
+    if: ${{ github.event_name != 'pull_request' && needs.build.result == 'success' && needs.build.outputs.sync_ok == 'true' && needs.verify-publication.result == 'success' && needs.persist-source-state.result == 'success' && (needs.deploy.result == 'success' || github.event_name != 'schedule') }}
+    needs: [build, deploy, verify-publication, persist-source-state]
     runs-on: ubuntu-latest
     permissions:
       contents: write

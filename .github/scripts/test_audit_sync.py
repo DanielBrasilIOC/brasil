@@ -35,6 +35,12 @@ class RowDiffTests(unittest.TestCase):
                            {"orcamentario":[orc("1",10),orc("3",30),orc("4",40)]})["orcamentario"]
         self.assertEqual((d["added"],d["removed"],d["altered"]),(1,1,0))
 
+    def test_inclusao_nao_significa_valor_alterado(self):
+        d = audit.row_diff({"orcamentario":[orc("1",10)]},
+                           {"orcamentario":[orc("1",10),orc("2",30)]})["orcamentario"]
+        self.assertEqual((d["added"],d["removed"],d["altered"]),(1,0,0))
+        self.assertFalse(d["value_changed"])
+
     def test_contagens_de_duplicados(self):
         d = audit.row_diff({"orcamentario":[orc("1",10),orc("1",10)]},
                            {"orcamentario":[orc("1",10)]})["orcamentario"]
@@ -60,6 +66,22 @@ class RowDiffTests(unittest.TestCase):
         data["datasets"][0]["rows"][0]["saldo"]=99.0
         data["datasets"][0]["total"]=99.0
         self.assertIn("empenhos",audit.reconcile_source_rows(data,report))
+
+class MoneyParsingTests(unittest.TestCase):
+    def test_moeda_brasileira(self):
+        spec = importlib.util.spec_from_file_location("sync_sources", SCRIPT.with_name("sync_sources.py"))
+        sync = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(sync)
+        self.assertEqual(sync.money("R$ 1.234,56"), 1234.56)
+        self.assertEqual(sync.money("(1.234,56)"), -1234.56)
+        self.assertIsNone(sync.money("-"))
+
+    def test_moeda_invalida_nao_vira_zero(self):
+        spec = importlib.util.spec_from_file_location("sync_sources", SCRIPT.with_name("sync_sources.py"))
+        sync = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(sync)
+        with self.assertRaises(ValueError):
+            sync.money("R$ NÃO É NÚMERO")
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)

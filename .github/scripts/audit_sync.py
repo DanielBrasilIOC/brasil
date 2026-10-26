@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Executa a sincronização e audita registros, quantidades e valores das seis fontes."""
 import csv, hashlib, json, os, subprocess
+from decimal import Decimal, InvalidOperation
 from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
@@ -67,19 +68,42 @@ def row_diff(before, after):
         for row in after.get(name,[]):
             new_groups.setdefault(record_key(name,row),Counter())[record_signature(row)] += 1
         added=removed=altered=0
+        value_changed=False
+        money_fields=("valor","saldo","movimentacao_liquida")
         for key in set(old_groups) | set(new_groups):
             old_counts=old_groups.get(key,Counter()).copy()
             new_counts=new_groups.get(key,Counter()).copy()
-            exact=min(sum(old_counts.values()),sum(new_counts.values()))
             common=old_counts & new_counts
-            old_unmatched=sum((old_counts-common).values())
-            new_unmatched=sum((new_counts-common).values())
-            changed=min(old_unmatched,new_unmatched)
-            altered += changed
-            removed += old_unmatched-changed
-            added += new_unmatched-changed
+            old_unmatched=old_counts-common
+            new_unmatched=new_counts-common
+            old_n=sum(old_unmatched.values())
+            new_n=sum(new_unmatched.values())
+            paired=min(old_n,new_n)
+            altered += paired
+            removed += old_n-paired
+            added += new_n-paired
+            # Só sinaliza alteração de valor quando um registro com a mesma chave
+            # permanece, mas um campo monetário muda; inclusão/exclusão é outra categoria.
+            old_rows=[]
+            new_rows=[]
+            for sig,count in old_unmatched.items():
+                old_rows.extend([json.loads(sig)]*count)
+            for sig,count in new_unmatched.items():
+                new_rows.extend([json.loads(sig)]*count)
+            for old_row,new_row in zip(old_rows[:paired],new_rows[:paired]):
+                for field in money_fields:
+                    if field in old_row or field in new_row:
+                        try:
+                            old_value=Decimal(str(old_row.get(field) or 0)).quantize(Decimal("0.01"))
+                            new_value=Decimal(str(new_row.get(field) or 0)).quantize(Decimal("0.01"))
+                        except (InvalidOperation, ValueError):
+                            value_changed=True
+                            break
+                        if old_value != new_value:
+                            value_changed=True
+                            break
         result[name]={"added":added,"removed":removed,"altered":altered,
-                      "value_changed":bool(added or removed or altered)}
+                      "value_changed":value_changed}
     return result
 
 def source_details(data,name):
@@ -116,12 +140,14 @@ def reconcile_source_rows(data, source_report):
             problems.append("conteúdo dos registros diverge da fonte original")
         field=value_fields.get(name,"saldo")
         try:
-            total=round(sum(float(r.get(field) or 0) for r in rows),2)
-            if abs(total-float(source.get("total"))) >= 0.005:
-                problems.append(f"total recalculado dashboard={total:.2f} vs fonte={float(source.get('total')):.2f}")
-            if abs(float(d.get("total"))-float(source.get("total"))) >= 0.005:
-                problems.append(f"total publicado={d.get('total')} vs fonte={source.get('total')}")
-        except (TypeError, ValueError):
+            total=sum((Decimal(str(r.get(field) or 0)) for r in rows),Decimal("0")).quantize(Decimal("0.01"))
+            source_total=Decimal(str(source.get("total"))).quantize(Decimal("0.01"))
+            dashboard_total=Decimal(str(d.get("total"))).quantize(Decimal("0.01"))
+            if abs(total-source_total) >= Decimal("0.005"):
+                problems.append(f"total recalculado dashboard={total} vs fonte={source_total}")
+            if abs(dashboard_total-source_total) >= Decimal("0.005"):
+                problems.append(f"total publicado={dashboard_total} vs fonte={source_total}")
+        except (TypeError, ValueError, InvalidOperation):
             problems.append("total não pôde ser recalculado")
         if problems: failures[name]=problems
     return failures
@@ -219,7 +245,8 @@ def main():
       "divergencias":reconciliation,"registros_individuais_verificados":sync_ok,
       "valores_totais_verificados":sync_ok,"fontes_verificadas":6 if len(source_report)==len(SOURCES) else 0,
       "totais_fontes":{n:{"registros":source_report.get(n,{}).get("registros"),"total":source_report.get(n,{}).get("total")} for n in SOURCES},
-      "log":str(LOG.relative_to(ROOT))},ensure_ascii=False))
+      "log":str(LOG.relative_to(ROOT)),
+      "erro_sync":(stderr or stdout or "")[-2000:] if not sync_ok else ""},ensure_ascii=False))
     return 0 if sync_ok else 1
 
 if __name__=="__main__": raise SystemExit(main())
