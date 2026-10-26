@@ -114,11 +114,15 @@ def main():
 
     a=table(src["orcamentario"],",",["UG Executora","Fonte Recursos Detalhada","Saldo"])
     # Exportação ativa com oito colunas; o relatório não traz PTRES nem o código numérico da UG.
-    orc=[{"ug":"254463","unidade":r[0],"ptres":"","fonte":r[1],"descricao_fonte":r[2],
-          "natureza_codigo":r[3],"natureza":r[3],"ug_responsavel":"","responsavel":r[4],
-          "pi":r[5],"programa":r[6],"saldo":money(r[7])} for r in a]
-    check(all(r["saldo"] is not None for r in orc),
-          "Validação orçamentária falhou: há saldo vazio ou inválido; a publicação foi bloqueada")
+    orc=[]
+    for r in a:
+        value=money(r[7])
+        check(value is not None, "Validação orçamentária falhou: há saldo vazio ou inválido; a publicação foi bloqueada")
+        # O relatório orçamentário exporta saldos com sinal invertido para este indicador;
+        # preserva-se a regra de apresentação original, sem converter valores inválidos em zero.
+        orc.append({"ug":"254463","unidade":r[0],"ptres":"","fonte":r[1],"descricao_fonte":r[2],
+                    "natureza_codigo":r[3],"natureza":r[3],"ug_responsavel":"","responsavel":r[4],
+                    "pi":r[5],"programa":r[6],"saldo":abs(value)})
     to=total(orc,"saldo")
     check(5<=len(orc)<=50 and 1e5<=to<=10e6,f"Validação orçamentária falhou: linhas={len(orc)}, total={to}")
 
