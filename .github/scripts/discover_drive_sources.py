@@ -164,7 +164,25 @@ def discover_source_ids():
         raise ValueError("GOOGLE_DRIVE_FOLDER_ID vazio")
     page = fetch_folder_page(folder_id)
     files = extract_folder_files(page, folder_id)
-    ids = select_sources(files, folder_id)
+    try:
+        ids = select_sources(files, folder_id)
+    except ValueError as exc:
+        # Diagnóstico seguro para descobrir qual variante de página o Drive está servindo.
+        expected_names = [name for values in EXPECTED_NAMES.values() for name in values]
+        title_match = re.search(r"<title[^>]*>(.*?)</title>", page, re.I | re.S)
+        diagnostics = {
+            "html_chars": len(page),
+            "embedded_entries": len(re.findall(r"flip-entry", page, re.I)),
+            "expected_names_found": {name: (name.casefold() in html.unescape(page).casefold()) for name in expected_names},
+            "has_drive_folder_marker": folder_id in page,
+            "has_login_marker": bool(re.search(r"ServiceLogin|accounts\\.google\\.com", page, re.I)),
+            "title": (title_match.group(1)[:180] if title_match else "(sem título)"),
+            "sample_around_saldo": [
+                html.unescape(page[max(0, m.start()-100):m.start()+220]).replace("\\n", " ")[:320]
+                for m in list(re.finditer("Saldo", page, re.I))[:3]
+            ],
+        }
+        raise ValueError(f"{exc} Diagnóstico da página: {json.dumps(diagnostics, ensure_ascii=False)}")
     CACHE.write_text(json.dumps(ids, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     return ids
 
