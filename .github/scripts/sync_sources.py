@@ -206,21 +206,29 @@ def main():
     a=table(src["financeiro"],",",["UG Executora","Fonte Recursos Detalhada","Saldo"])
     # Localizar as colunas pelo cabeçalho real, incluindo Vinculação de pagamento.
     fin_header=TABLE_AUDITS[norm("UG Executora")]["header"]
-    fin_cols={norm(name):i for i,name in enumerate(fin_header)}
-    required_financeiro={
-        "uge":norm("UG Executora"),
-        "fonte":norm("Fonte Recursos Detalhada"),
-        "vinculo":norm("Vinculação de pagamento"),
-        "saldo":norm("Saldo"),
+    fin_norm=[norm(name) for name in fin_header]
+    def finance_col(exact, predicate=None):
+        key=norm(exact)
+        if key in fin_norm: return fin_norm.index(key)
+        if predicate:
+            return next((i for i,name in enumerate(fin_norm) if predicate(name)),None)
+        return None
+    fin_cols={
+        "uge":finance_col("UG Executora"),
+        "fonte":finance_col("Fonte Recursos Detalhada"),
+        "vinculo":finance_col("Vinculação de pagamento",
+                              lambda name:"VINCULACAO" in name and "PAGAMENTO" in name),
+        "saldo":finance_col("Saldo",lambda name:"SALDO" in name),
     }
-    missing_financeiro=[label for label,key in required_financeiro.items() if key not in fin_cols]
+    missing_financeiro=[label for label,index in fin_cols.items() if index is None]
     check(not missing_financeiro,
-          "Colunas obrigatórias ausentes no Saldo Financeiro: " + ", ".join(missing_financeiro))
-    fin=[{"uge":r[fin_cols[required_financeiro["uge"]]],
+          "Colunas obrigatórias ausentes no Saldo Financeiro: " + ", ".join(missing_financeiro) +
+          "; cabeçalho identificado=" + repr(fin_header))
+    fin=[{"uge":r[fin_cols["uge"]],
           "unidade":"IOC",
-          "fonte":r[fin_cols[required_financeiro["fonte"]]],
-          "vinculo":r[fin_cols[required_financeiro["vinculo"]]],
-          "saldo":abs(money(r[fin_cols[required_financeiro["saldo"]]]) or 0)}
+          "fonte":r[fin_cols["fonte"]],
+          "vinculo":r[fin_cols["vinculo"]],
+          "saldo":abs(money(r[fin_cols["saldo"]]) or 0)}
          for r in a if len(r)>max(fin_cols.values())]
     tf=total(fin,"saldo")
     check(1<=len(fin)<=20 and all(r["saldo"] is not None for r in fin) and 1e5<=abs(tf)<=2e6,
