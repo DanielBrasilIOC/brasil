@@ -42,7 +42,8 @@ jobs:
           python -m pip install --disable-pip-version-check "google-auth[requests]>=2.30,<3"
           python .github/scripts/discover_drive_sources.py
       - name: Testar detecção de inclusão e exclusão
-        run: python .github/scripts/test_audit_sync.py
+        run: |
+          python .github/scripts/test_audit_sync.py
           python .github/scripts/test_drive_discovery.py
       - name: Sincronizar fontes e registrar auditoria
         id: sync
