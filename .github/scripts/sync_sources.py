@@ -158,8 +158,13 @@ def main():
         with open(os.environ["GITHUB_OUTPUT"],"a",encoding="utf-8") as out:
             out.write("changed="+("true" if changed else "false")+"\n")
     def row_fingerprint(rows):
-        # Hash multiconjunto: a ordem não importa, mas duplicidades e qualquer campo importam.
-        hashes = sorted(hashlib.sha256(json.dumps(r, ensure_ascii=False, sort_keys=True,
+        # Normaliza inteiros e floats para evitar falso positivo (ex.: 15000 vs 15000.0).
+        def canonical(v):
+            if isinstance(v, dict): return {k:canonical(x) for k,x in v.items()}
+            if isinstance(v, list): return [canonical(x) for x in v]
+            if isinstance(v, (int,float)) and not isinstance(v, bool): return float(v)
+            return v
+        hashes = sorted(hashlib.sha256(json.dumps(canonical(r), ensure_ascii=False, sort_keys=True,
             separators=(",", ":")).encode("utf-8")).hexdigest() for r in rows)
         return hashlib.sha256("\\n".join(hashes).encode("utf-8")).hexdigest()
 
