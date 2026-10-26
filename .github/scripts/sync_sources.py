@@ -112,7 +112,7 @@ def check(ok,msg):
 def main():
     src={k:download(v) for k,v in SOURCES.items()}
 
-    a=table(src["empenhos"],"\\t",["Favorecido do Empenho","Empenho","Saldo"])
+    a=table(src["empenhos"],"\t",["Favorecido do Empenho","Empenho","Saldo"])
     # O CSV oficial atual tem cinco campos nomeados; não atribuir valores a campos ausentes.
     empenhos=[{"empenho":r[1],"ne_ccor":"","subitem":r[2],"natureza":"",
                "cnpj":"","fornecedor":r[0],"observacao":"",
