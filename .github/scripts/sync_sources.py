@@ -157,10 +157,25 @@ def main():
     if "GITHUB_OUTPUT" in os.environ:
         with open(os.environ["GITHUB_OUTPUT"],"a",encoding="utf-8") as out:
             out.write("changed="+("true" if changed else "false")+"\n")
+    def row_fingerprint(rows):
+        # Hash multiconjunto: a ordem não importa, mas duplicidades e qualquer campo importam.
+        hashes = sorted(hashlib.sha256(json.dumps(r, ensure_ascii=False, sort_keys=True,
+            separators=(",", ":")).encode("utf-8")).hexdigest() for r in rows)
+        return hashlib.sha256("\\n".join(hashes).encode("utf-8")).hexdigest()
+
+    source_report = {
+        "financeiro": {"registros":len(fin),"total":tf,"rows_hash":row_fingerprint(fin)},
+        "restos": {"registros":len(rap),"total":trp,"rows_hash":row_fingerprint(rap)},
+        "empenhos": {"registros":len(empenhos),"total":te,"rows_hash":row_fingerprint(empenhos)},
+        "orcamentario": {"registros":len(orc),"total":to,"rows_hash":row_fingerprint(orc)},
+        "repasses": {"registros":len(rep),"total":tr,"rows_hash":row_fingerprint(rep)},
+        "ordens_bancarias": {"registros":len(ob),"total":tob,"rows_hash":row_fingerprint(ob)}
+    }
     if not changed:
         print(json.dumps({"status":"SEM_ALTERACOES","changed":False,
           "generated_at":data.get("generated_at"),"fontes_alteradas":[],
-          "mensagem":"As seis fontes foram lidas e validadas; nenhum conteúdo mudou."},ensure_ascii=False))
+          "fontes":source_report,
+          "mensagem":"As seis fontes originais foram lidas, analisadas e comparadas; nenhum conteúdo mudou."},ensure_ascii=False))
         return
 
     changed_sources=[k for k in source_hashes if source_hashes.get(k) != previous_state.get("hashes",{}).get(k)]
@@ -177,9 +192,5 @@ def main():
     REPASSES_PATH.write_text(json.dumps(rep_data,ensure_ascii=False,separators=(",",":")),encoding="utf-8")
     STATE_PATH.write_text(json.dumps({"hashes":source_hashes},ensure_ascii=False,separators=(",",":")),encoding="utf-8")
     print(json.dumps({"status":"ATUALIZADO","changed":True,"generated_at":stamp,
-      "fontes_alteradas":changed_sources,"fontes":{
-      "financeiro":{"registros":len(fin),"total":tf},"restos":{"registros":len(rap),"total":trp},
-      "empenhos":{"registros":len(empenhos),"total":te},"orcamentario":{"registros":len(orc),"total":to},
-      "repasses":{"registros":len(rep),"total":tr},"ordens_bancarias":{"registros":len(ob),"total_doc_valor":tob}
-    }},ensure_ascii=False))
+      "fontes_alteradas":changed_sources,"fontes":source_report},ensure_ascii=False))
 if __name__=="__main__": main()
