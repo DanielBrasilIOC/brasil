@@ -118,6 +118,17 @@ def main():
     check(1<=len(fin)<=20 and all(r["saldo"] is not None for r in fin) and 1e5<=abs(tf)<=2e6,
           f"Validação do saldo financeiro falhou: linhas={len(fin)}, total={tf}")
 
+    # Diagnóstico temporário: compara a antiga referência CSV com a planilha atual
+    # para localizar a origem da divergência informada, sem usar a referência antiga no painel.
+    finance_alternative = {"id":"1ktsiJGTRiWZf83uu5tKtNmErKyAbqyfo"}
+    try:
+        old_text=download(finance_alternative["id"])
+        old_rows=table(old_text,",",["UGE","Fonte Detalhada","Total"])
+        old_fin=[{"saldo":money(r[5])} for r in old_rows]
+        finance_alternative.update({"registros":len(old_fin),"total":total(old_fin,"saldo"),"status":"LIDA"})
+    except Exception as exc:
+        finance_alternative.update({"status":"ERRO","erro":str(exc)[:250]})
+
     a=table(src["restos"],",",["NE CCor","Saldo"])
     rap=[]
     for r in a:
@@ -169,7 +180,8 @@ def main():
         return hashlib.sha256("\\n".join(hashes).encode("utf-8")).hexdigest()
 
     source_report = {
-        "financeiro": {"registros":len(fin),"total":tf,"rows_hash":row_fingerprint(fin)},
+        "financeiro": {"registros":len(fin),"total":tf,"rows_hash":row_fingerprint(fin),
+                       "diagnostico_referencia_anterior":finance_alternative},
         "restos": {"registros":len(rap),"total":trp,"rows_hash":row_fingerprint(rap)},
         "empenhos": {"registros":len(empenhos),"total":te,"rows_hash":row_fingerprint(empenhos)},
         "orcamentario": {"registros":len(orc),"total":to,"rows_hash":row_fingerprint(orc)},
