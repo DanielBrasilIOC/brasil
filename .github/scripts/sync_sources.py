@@ -10,12 +10,21 @@ DATA_PATH = ROOT / "data.json"
 REPASSES_PATH = ROOT / "repasses.json"
 STATE_PATH = ROOT / "source_state.json"
 SOURCES = {
-    "empenhos": "137jwUw2WB_LUvnQef6waE8ASKQEvzhup",
-    "orcamentario": "1k3dZ890WgqGVSCZLwCxGPLikMutTlOfN",
-    "ordens_bancarias": "1lRYujrJRv7ZPam-lYVB2CxCg_WEMbraC",
-    "repasses": "1ghcBkPmT-IkfWozLZVDdMvMe7eoD2J6k",
-    "financeiro": "1p4PyHEkV5YzIljLeMsHopulzN55yQMqzS6fk56STdEk",
-    "restos": "1zzxhemDKryzolkykFSw3JXph1YcQ2pUj",
+    # IDs dos seis CSVs ativos (não excluídos) dentro da pasta oficial do Drive.
+    "empenhos": "1pDEGc2LAz0fe7c4GH5fh-kzgeW0iuQHh",
+    "orcamentario": "1gQYnGiF2zLdCOR-iiW5ptNc-3fXdNuMy",
+    "ordens_bancarias": "1dTM5GfqVD63wNf2QYhOydEDd6g1Ca8rU",
+    "repasses": "1h7oF_blPx6RpuHsCjPshW-zn7IcNHGB-",
+    "financeiro": "10ghNRMaUWvaOcX3q8luLTn9CZ2_z4RSQ",
+    "restos": "1CIAIW9t9cKAnu-iUlQJpGUx_sfalHyuu",
+}
+SOURCE_URLS = {
+    "empenhos": "https://drive.google.com/file/d/1pDEGc2LAz0fe7c4GH5fh-kzgeW0iuQHh/view",
+    "orcamentario": "https://drive.google.com/file/d/1gQYnGiF2zLdCOR-iiW5ptNc-3fXdNuMy/view",
+    "ordens_bancarias": "https://drive.google.com/file/d/1dTM5GfqVD63wNf2QYhOydEDd6g1Ca8rU/view",
+    "repasses": "https://drive.google.com/file/d/1h7oF_blPx6RpuHsCjPshW-zn7IcNHGB-/view",
+    "financeiro": "https://drive.google.com/file/d/10ghNRMaUWvaOcX3q8luLTn9CZ2_z4RSQ/view",
+    "restos": "https://drive.google.com/file/d/1CIAIW9t9cKAnu-iUlQJpGUx_sfalHyuu/view",
 }
 MOJI = {"Ã‡":"Ç","Ãƒ":"Ã","Ã‰":"É","Ã“":"Ó","Ãš":"Ú","Ã£":"ã","Ã§":"ç",
         "Ã¡":"á","Ã©":"é","Ã­":"í","Ã³":"ó","Ãº":"ú","Ãª":"ê","Ã´":"ô","Ãµ":"õ"}
@@ -41,11 +50,8 @@ def money(v):
     return float(-abs(n) if neg else n)
 
 def download(file_id):
-    if file_id == SOURCES["financeiro"]:
-        # Usa a planilha Google Sheets atual, não a cópia CSV desatualizada.
-        url = "https://docs.google.com/spreadsheets/d/" + file_id + "/export?format=csv&gid=1275876733"
-    else:
-        url = "https://drive.google.com/uc?export=download&id=" + file_id
+    # Sempre lê o arquivo ativo diretamente da pasta oficial indicada pelo usuário.
+    url = "https://drive.google.com/uc?export=download&id=" + file_id
     req=urllib.request.Request(url, headers={"User-Agent":"IOC-Dashboard-Sync/1.0"})
     with urllib.request.urlopen(req,timeout=45) as r: b=r.read()
     try: s=b.decode("utf-8-sig")
@@ -60,7 +66,7 @@ def table(text, delimiter, tokens):
     hi=None
     for i,row in enumerate(rows[:20]):
         joined=norm(" ".join(row))
-        if len(row)>3 and all(norm(t) in joined for t in tokens): hi=i; break
+        if len(row)>1 and all(norm(t) in joined for t in tokens): hi=i; break
     if hi is None: raise ValueError("Cabeçalho não encontrado: "+str(tokens))
     header=[clean(v) for v in rows[hi]]
     data=[]
@@ -78,17 +84,19 @@ def check(ok,msg):
 def main():
     src={k:download(v) for k,v in SOURCES.items()}
 
-    a=table(src["empenhos"],"\t",["Conta Corrente","Saldo"])
-    empenhos=[{"empenho":r[0],"ne_ccor":r[1],"subitem":r[2],"natureza":r[3],
-               "cnpj":r[4],"fornecedor":r[5],"observacao":r[6],"saldo":money(r[7])} for r in a]
+    a=table(src["empenhos"],"\t",["Empenho","Saldo"])
+    # Exportação ativa: favorecido, empenho, subitem/descrição, código, fonte/descrição, saldo.
+    empenhos=[{"empenho":r[1],"ne_ccor":r[1],"subitem":r[3],"natureza":r[2],
+               "cnpj":"","fornecedor":r[0],"observacao":r[5],"saldo":money(r[6])} for r in a]
     te=total(empenhos,"saldo")
     check(50<=len(empenhos)<=150 and all(r["saldo"] is not None for r in empenhos) and 1e6<=te<=30e6,
           f"Validação de Empenhos 2026 falhou: linhas={len(empenhos)}, total={te}")
 
-    a=table(src["orcamentario"],",",["UG Executora","PTRES","Saldo"])
-    orc=[{"ug":r[0],"unidade":r[1],"ptres":r[2],"fonte":r[3],"descricao_fonte":r[4],
-          "natureza_codigo":r[5],"natureza":r[6],"ug_responsavel":r[7],"responsavel":r[8],
-          "pi":r[9],"programa":r[10],"saldo":abs(money(r[11]) or 0)} for r in a]
+    a=table(src["orcamentario"],",",["UG Executora","Fonte Recursos Detalhada","Saldo"])
+    # Exportação ativa com oito colunas; o relatório não traz PTRES nem o código numérico da UG.
+    orc=[{"ug":"254463","unidade":r[0],"ptres":"","fonte":r[1],"descricao_fonte":r[2],
+          "natureza_codigo":r[3],"natureza":r[3],"ug_responsavel":"","responsavel":r[4],
+          "pi":r[5],"programa":r[6],"saldo":abs(money(r[7]) or 0)} for r in a]
     to=total(orc,"saldo")
     check(5<=len(orc)<=50 and 1e5<=to<=10e6,f"Validação orçamentária falhou: linhas={len(orc)}, total={to}")
 
@@ -112,19 +120,21 @@ def main():
     check(50<=len(rep)<=150 and tr>=1.5e6 and mr<=5,
           f"Validação de repasses falhou: linhas={len(rep)}, total={tr}, sem valor={mr}")
 
-    a=table(src["financeiro"],",",["UGE","Fonte Detalhada","Total"])
-    fin=[{"uge":r[0],"unidade":r[1],"fonte":r[2],"vinculo":r[3],"saldo":money(r[5])} for r in a]
+    a=table(src["financeiro"],",",["UG Executora","Fonte Recursos Detalhada","Saldo"])
+    # Soma apenas os registros detalhados; table() exclui as linhas Total.
+    fin=[{"uge":r[0],"unidade":"INSTITUTO OSWALDO CRUZ","fonte":r[1],"vinculo":"",
+          "saldo":money(r[2])} for r in a]
     tf=total(fin,"saldo")
     check(1<=len(fin)<=20 and all(r["saldo"] is not None for r in fin) and 1e5<=abs(tf)<=2e6,
           f"Validação do saldo financeiro falhou: linhas={len(fin)}, total={tf}")
 
-    a=table(src["restos"],",",["NE CCor","Saldo"])
+    a=table(src["restos"],",",["Empenho","Saldo"])
     rap=[]
     for r in a:
-        v=money(r[10])
+        v=money(r[5])
         if v is None or abs(v)<0.005: continue
-        rap.append({"empenho":r[0],"cnpj":r[1],"fornecedor":r[2],"pi":r[3],"programa":r[4],
-                    "autor_emenda":r[5],"natureza_codigo":r[7],"natureza":r[8],"saldo":v})
+        rap.append({"empenho":r[0],"cnpj":"","fornecedor":r[1],"pi":"","programa":"",
+                    "autor_emenda":"","natureza_codigo":r[2],"natureza":r[3],"saldo":v})
     trp=total(rap,"saldo")
     check(10<=len(rap)<=100 and 1e6<=trp<=15e6,
           f"Validação de Restos a Pagar falhou: linhas={len(rap)}, total={trp}")
@@ -187,8 +197,13 @@ def main():
     stamp=datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00","Z")
     for k,(rows,amount) in updates.items():
         ds[k]["rows"]=rows; ds[k]["total"]=amount; ds[k]["detail_count"]=len(rows)
-    ds["financeiro"]["source_name"]="Saldo Financeiro"
-    ds["financeiro"]["source_url"]="https://docs.google.com/spreadsheets/d/" + SOURCES["financeiro"] + "/edit"
+    source_names={"empenhos":"Saldo nos empenhos 2026.csv","orcamentario":"Saldo Orçamentário.csv",
+                  "ordens_bancarias":"ORDEM BANCARIAS EMITIDAS.csv",
+                  "repasses":"Aguardando Repasse Orçamentário.csv","financeiro":"Saldo Financeiro.csv",
+                  "restos":"Restos a Pagar.csv"}
+    for name in SOURCES:
+        ds[name]["source_name"]=source_names[name]
+        ds[name]["source_url"]=SOURCE_URLS[name]
     ds["repasses"]["missing_values"]=mr
     ds["repasses"]["note"]=""
     data["generated_at"]=stamp
