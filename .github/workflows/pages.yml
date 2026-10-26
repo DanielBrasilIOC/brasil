@@ -47,6 +47,7 @@ jobs:
           python .github/scripts/test_drive_discovery.py
       - name: Sincronizar fontes e registrar auditoria
         id: sync
+        if: github.event_name != 'pull_request'
         run: python .github/scripts/audit_sync.py
       - name: Guardar dados validados para conferência pós-publicação
         if: steps.sync.outputs.sync_ok == 'true'
