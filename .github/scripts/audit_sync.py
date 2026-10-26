@@ -132,7 +132,13 @@ def main():
     total_changed=[n for n in SOURCES if str(before_totals[n][1])!=str(after_totals[n][1])]
     count_changed=[n for n in SOURCES if before_totals[n][0]!=after_totals[n][0]]
     # Se o hash bruto mudou, mas o dataset derivado não mudou, a auditoria registra a divergência.
-    changed=bool(source_changed or structural_changed or value_changed or total_changed or count_changed)
+    repasses_before=read_json(ROOT / "repasses.json",{})
+    repasses_after=read_json(ROOT / "repasses.json",{})
+    # Inclui metadados, links e datasets derivados na decisão de publicação.
+    # A comparação de linhas/valores sozinha não detecta correções de nota ou origem.
+    dataset_content_changed=before_data.get("datasets") != after_data.get("datasets")
+    repasses_content_changed=repasses_before != repasses_after
+    changed=bool(source_changed or structural_changed or value_changed or total_changed or count_changed or dataset_content_changed or repasses_content_changed)
     if sync_ok:
         execution=result.get("status","OK")
         message=result.get("mensagem","Sincronização concluída.")
