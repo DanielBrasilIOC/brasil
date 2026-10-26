@@ -35,6 +35,12 @@ class RowDiffTests(unittest.TestCase):
                            {"orcamentario":[orc("1",10),orc("3",30),orc("4",40)]})["orcamentario"]
         self.assertEqual((d["added"],d["removed"],d["altered"]),(1,1,0))
 
+    def test_inclusao_nao_significa_valor_alterado(self):
+        d = audit.row_diff({"orcamentario":[orc("1",10)]},
+                           {"orcamentario":[orc("1",10),orc("2",30)]})["orcamentario"]
+        self.assertEqual((d["added"],d["removed"],d["altered"]),(1,0,0))
+        self.assertFalse(d["value_changed"])
+
     def test_contagens_de_duplicados(self):
         d = audit.row_diff({"orcamentario":[orc("1",10),orc("1",10)]},
                            {"orcamentario":[orc("1",10)]})["orcamentario"]
