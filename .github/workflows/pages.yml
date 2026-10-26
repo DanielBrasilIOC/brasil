@@ -57,6 +57,15 @@ jobs:
       - name: Configurar GitHub Pages
         if: steps.sync.outputs.sync_ok == 'true'
         uses: actions/configure-pages@v5
+      - name: Registrar horário da versão preparada para publicação
+        if: steps.sync.outputs.sync_ok == 'true'
+        run: |
+          python - <<'PY'
+          import json
+          from datetime import datetime, timezone
+          with open('dashboard-publication.json','w',encoding='utf-8') as f:
+              json.dump({'published_at':datetime.now(timezone.utc).isoformat(timespec='seconds').replace('+00:00','Z')},f)
+          PY
       - name: Preparar arquivos estáticos do painel
         if: steps.sync.outputs.sync_ok == 'true'
         uses: actions/upload-pages-artifact@v3
