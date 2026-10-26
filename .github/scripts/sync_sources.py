@@ -85,6 +85,19 @@ def table(text, delimiter, tokens):
     rows = []
     for candidate in candidates:
         parsed = list(csv.reader(io.StringIO(text), delimiter=candidate))
+        # Algumas exportações do Drive entregam cada linha CSV como um único
+        # campo contendo outra linha CSV. Detecta isso e interpreta uma segunda vez.
+        if parsed and max((len(row) for row in parsed), default=0) <= 1:
+            nested = []
+            for row in parsed:
+                cell = row[0] if row else ""
+                try:
+                    inner = next(csv.reader([cell], delimiter=candidate))
+                except Exception:
+                    inner = [cell]
+                nested.append(inner if len(inner) > 1 else row)
+            if max((len(row) for row in nested), default=0) > 1:
+                parsed = nested
         for i, row in enumerate(parsed):
             joined = norm(" ".join(row))
             if len(row) > 3 and all(norm(t) in joined for t in tokens):
@@ -128,10 +141,13 @@ def main():
     check(50<=len(empenhos)<=150 and all(r["saldo"] is not None for r in empenhos) and 1e6<=te<=30e6,
           f"Validação de Empenhos 2026 falhou: linhas={len(empenhos)}, total={te}")
 
-    a=table(src["orcamentario"],",",["UG Executora","PTRES","Saldo"])
-    orc=[{"ug":r[0],"unidade":r[1],"ptres":r[2],"fonte":r[3],"descricao_fonte":r[4],
-          "natureza_codigo":r[5],"natureza":r[6],"ug_responsavel":r[7],"responsavel":r[8],
-          "pi":r[9],"programa":r[10],"saldo":abs(money(r[11]) or 0)} for r in a]
+    a=table(src["orcamentario"],",",["UG Responsável","Natureza Despesa Detalhada","Saldo"])
+    # Estrutura confirmada no CSV oficial atual: 8 colunas; o relatório já não
+    # contém PTRES nem os campos antigos de programa/unidade na mesma posição.
+    orc=[{"ug":r[0],"unidade":r[4],"ptres":"","fonte":r[1],"descricao_fonte":r[2],
+          "natureza_codigo":r[3],"natureza":r[3],"ug_responsavel":r[4],
+          "responsavel":r[6] if len(r)>6 else "", "pi":r[5],"programa":"",
+          "saldo":abs(money(r[7]) or 0)} for r in a]
     to=total(orc,"saldo")
     check(5<=len(orc)<=50 and 1e5<=to<=10e6,f"Validação orçamentária falhou: linhas={len(orc)}, total={to}")
 
