@@ -455,6 +455,93 @@ td{vertical-align:middle}
 @media(prefers-reduced-motion:reduce){
  .kpi,.panel,.source,.expense-folder,.priority-wrap,.btn,tbody tr{transition:none!important}
 }
+
+/* Refinamento profissional e responsividade final — sem alterar conteúdo ou dados */
+:root{--surface:#fff;--ink:#203b4d;--line:#dfe8ee;--accent:#28766f;--focus:#86c8bd}
+*{box-sizing:border-box}
+body{color:var(--ink);-webkit-font-smoothing:antialiased}
+button,select,input{touch-action:manipulation}
+.top{gap:18px}
+.last-updated{box-shadow:0 2px 8px rgba(25,65,80,.035)}
+#nav button{white-space:nowrap}
+.panel,.kpi,.source{transition:box-shadow .18s ease,border-color .18s ease}
+.panel:hover{border-color:#d2e0e7}
+.scroll{overscroll-behavior-x:contain;scrollbar-width:thin;scrollbar-color:#aebfc9 #f1f5f7}
+#details .scroll{border:1px solid #e7edf1}
+#details table thead th{position:sticky;top:0}
+#details table tbody tr:last-child td{border-bottom:0}
+#details .panel>.head{gap:12px}
+#details[data-dataset="financeiro"] #tbody td:nth-child(3){font-weight:800;color:#173f5c}
+#details[data-dataset="financeiro"] #tbody td:nth-child(2){font-weight:750;color:#28766f}
+@media(min-width:761px){
+ aside{z-index:20}
+ #nav button{min-height:44px}
+ main{padding-left:clamp(24px,3vw,48px);padding-right:clamp(24px,3vw,48px)}
+ .kpi:hover{box-shadow:0 12px 28px rgba(23,55,78,.09);border-color:#cfdee6}
+}
+@media(max-width:760px){
+ html{scroll-padding-top:138px}
+ .shell{display:flex;flex-direction:column;min-width:0}
+ aside{position:sticky;top:0;height:auto;max-height:none;z-index:50;padding:8px 10px 7px;gap:5px;border-radius:0 0 14px 14px}
+ .brand{justify-content:flex-start;padding:2px 3px 7px;gap:9px}
+ .mark{width:36px;height:36px;flex-basis:36px;border-radius:11px}
+ .brand h1{font-size:13px;line-height:1.22}
+ .brand p{font-size:10px}
+ .nav{margin:0 -2px;padding:3px 2px 5px;gap:6px;scrollbar-width:none;mask-image:linear-gradient(to right,#000 0%,#000 94%,transparent 100%)}
+ .nav::-webkit-scrollbar{display:none}
+ .nav button{min-height:39px;padding:8px 11px;border-radius:10px;font-size:11px;background:#ffffff0b}
+ .nav button.active{box-shadow:inset 0 -2px #8ed0c5;background:#ffffff1b}
+ main{width:100%;min-width:0;padding:14px 11px calc(28px + env(safe-area-inset-bottom,0px))}
+ .top{gap:10px;padding-bottom:13px;margin-bottom:12px}
+ .top h2{font-size:clamp(22px,6vw,29px);overflow-wrap:anywhere}
+ .sub{margin-top:4px}
+ .last-updated{width:100%;font-size:11px;padding:9px 10px;gap:5px;align-items:flex-start}
+ .last-updated strong{white-space:nowrap}
+ .d1-notice{width:100%;max-width:none;padding:10px 12px}
+ .status{margin:10px 0 12px}
+ .source{margin-bottom:12px;padding:13px 12px;border-radius:13px}
+ .kpis{gap:8px;margin-bottom:12px}
+ .kpi{min-height:98px;padding:12px 10px;border-radius:12px}
+ .kpi .label{font-size:10px}
+ .kpi .value{font-size:clamp(15px,4.3vw,19px);line-height:1.22}
+ .panel{padding:13px 11px;border-radius:13px;margin-bottom:11px}
+ .panel h3{font-size:14px}
+ .head{flex-direction:row;align-items:flex-start;flex-wrap:wrap}
+ #details .panel{padding:0}
+ #details .panel>.head{padding:14px 12px 10px}
+ #details .filters,#details .tiny{padding-left:12px;padding-right:12px}
+ #details .scroll{margin:7px 0 0;max-height:none;border-radius:0 0 12px 12px}
+ #details table{font-size:11px}
+ #details th,#details td{padding:10px 9px}
+ /* Em Saldo Financeiro, os cinco campos passam a cartões legíveis no celular; nenhum campo é removido. */
+ #details[data-dataset="financeiro"] .scroll{overflow:visible;border:0;margin:0 10px 12px}
+ #details[data-dataset="financeiro"] table{display:block;width:100%;min-width:0!important;table-layout:auto;border-collapse:separate;border-spacing:0}
+ #details[data-dataset="financeiro"] thead{display:none}
+ #details[data-dataset="financeiro"] tbody{display:grid;grid-template-columns:minmax(0,1fr);gap:9px}
+ #details[data-dataset="financeiro"] tbody tr{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0;background:#fff;border:1px solid #dfe8ee;border-radius:12px;overflow:hidden;box-shadow:0 3px 10px rgba(24,57,77,.035)}
+ #details[data-dataset="financeiro"] tbody td{display:flex;flex-direction:column;justify-content:flex-start;gap:5px;min-width:0!important;width:auto!important;max-width:none;padding:10px 11px;text-align:left!important;white-space:normal;overflow-wrap:anywhere;border-bottom:1px solid #edf1f4;font-size:12px;line-height:1.4}
+ #details[data-dataset="financeiro"] tbody td:before{font-size:9px;font-weight:800;letter-spacing:.055em;text-transform:uppercase;color:#708391}
+ #details[data-dataset="financeiro"] tbody td:nth-child(1){grid-column:1/-1;background:#f5f9fb;text-align:left!important}
+ #details[data-dataset="financeiro"] tbody td:nth-child(1):before{content:"Fonte pagadora"}
+ #details[data-dataset="financeiro"] tbody td:nth-child(2):before{content:"Vinculação Pagamento"}
+ #details[data-dataset="financeiro"] tbody td:nth-child(3){font-size:14px;text-align:left!important;padding-right:11px!important}
+ #details[data-dataset="financeiro"] tbody td:nth-child(3):before{content:"Saldo"}
+ #details[data-dataset="financeiro"] tbody td:nth-child(4):before{content:"UGE"}
+ #details[data-dataset="financeiro"] tbody td:nth-child(5){grid-column:1/-1;border-bottom:0}
+ #details[data-dataset="financeiro"] tbody td:nth-child(5):before{content:"Unidade"}
+ .rap-records-scroll table,.source-correlation-body .scroll{max-height:55dvh}
+}
+@media(max-width:420px){
+ main{padding-left:9px;padding-right:9px}
+ .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .kpi{padding:10px 9px;min-height:92px}
+ .kpi .value{font-size:15px}
+ .actions{grid-template-columns:minmax(0,1fr)}
+ #details[data-dataset="financeiro"] tbody tr{grid-template-columns:repeat(2,minmax(0,1fr))}
+ #details[data-dataset="financeiro"] tbody td{padding:9px}
+}
+@media(max-width:340px){.brand h1{font-size:12px}.nav button{font-size:10px;padding:8px 9px}.kpis{grid-template-columns:minmax(0,1fr)}}
+@media(prefers-reduced-motion:reduce){.panel,.kpi,.source{transition:none!important}}
 </style></head><body><div class="shell"><aside><div class="brand" role="button" tabindex="0" title="Voltar à Visão executiva" aria-label="Voltar à Visão executiva" onclick="show('visao')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();show('visao')}" style="cursor:pointer"><div class="mark" aria-hidden="true">IOC</div><div><h1>Painel Financeiro<br><span style="white-space:nowrap">e Orçamentário IOC</span></h1><p>Instituto Oswaldo Cruz</p></div></div><div class="nav" id="nav"></div><div class="side">Transparência e acompanhamento<br>dos dados financeiros do IOC.</div></aside><main><header class="top"><div><div class="ey">Gestão • Finanças • Orçamento</div><h2 id="title">Painel Financeiro&nbsp;e Orçamentário IOC</h2><p class="sub">Instituto Oswaldo Cruz</p><p class="last-updated" id="dashboardPublishedAt" role="status"><span class="last-updated-dot" aria-hidden="true"></span><strong>Painel atualizado em:</strong> verificando publicação…</p></div><div class="actions"><div class="d1-notice" role="note" aria-label="Aviso sobre a atualização dos dados"><span class="d1-icon" aria-hidden="true">i</span><div><strong>Defasagem dos dados: D-1</strong><p>Para fins analíticos, os dados desta tela possuem D-1 (um dia de atraso).</p></div></div></div></header><div class="status" id="status">Carregando dados…</div><section id="overview"><div class="source executive-intro"><strong>Resumo executivo</strong><div class="desc">Indicadores consolidados das seis áreas do painel, apresentados sem filtros e sem repetição de informações.</div></div><div class="kpis executive-kpis" id="kpis"></div><div id="integrityAudit" class="hide" aria-hidden="true"></div><div class="panel hide" aria-hidden="true"><div id="execIndicators"></div><div id="ordersSourcePie"></div><div id="sourceCorrelationBody"></div><div id="alerts"></div></div></section><section id="details" class="hide"><div class="kpis" id="detailKpis"></div><div class="panel"><div class="head"><div><h3 id="detailTitle"></h3><p class="desc" id="detailNote"></p></div><button class="btn" id="clearDetail" type="button" style="display:none;flex:0 0 auto">Limpar pesquisa</button></div><div class="filters detail-filters" style="margin:12px 0"><input id="q" style="min-width:260px" placeholder="Pesquisar…"><select id="field"><option value="">Todos os campos</option></select></div><div class="ob-filters" id="obFilters" style="margin:12px 0;display:none"><label class="ob-filter-label" for="obFilterField">Escolha o campo para filtrar<select id="obFilterField" aria-label="Campo que deseja filtrar"><option value="favorecido">Favorecido</option><option value="data_pagamento">Data de pagamento</option><option value="valor">Valor</option><option value="fonte">Fonte</option></select></label><label class="ob-filter-label" for="obFilterValue">Digite o que deseja localizar<input id="obFilterValue" type="search" placeholder="Digite o termo do filtro…" aria-label="Valor a pesquisar"></label></div><div id="expenseFolders" class="hide"></div><div class="tiny" id="count"></div><div class="scroll" id="detailTableWrap"><table><thead id="thead"></thead><tbody id="tbody"></tbody></table></div></div></section><footer class="foot"><span class="foot-brand">Instituto Oswaldo Cruz • Painel Financeiro&nbsp;e Orçamentário IOC</span><span class="foot-credit"><strong>Desenvolvimento e Suporte</strong><span>Daniel Moura Brasil · SEGEF-IOC</span></span><span class="foot-version">Versão 2.0</span><span id="updated"></span></footer></main></div><script src="./rap-thermometer.js"></script>
 <script>
 const F=n=>'R$ '+new Intl.NumberFormat('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2}).format(Number(n)||0),I=n=>new Intl.NumberFormat('pt-BR').format(Number(n)||0),N=v=>{if(typeof v==='number')return Number.isFinite(v)?v:0;let s=String(v??'').trim().replace(/^R\$\s*/,'').replace(/\s/g,'');if(!s)return 0;if(s.includes(','))s=s.replace(/\./g,'').replace(',','.');let n=Number(s);return Number.isFinite(n)?n:0},E=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])),L=s=>String(s??'').toLocaleLowerCase('pt-BR');let data,active='visao',rows=[];
