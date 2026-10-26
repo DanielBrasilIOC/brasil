@@ -10,14 +10,16 @@ SYNC = ROOT / ".github" / "scripts" / "sync_sources.py"
 STATE = ROOT / "source_state.json"
 DATA = ROOT / "data.json"
 LOG = ROOT / "logs" / "atualizacoes_dashboard.csv"
-SOURCES = {
-    "empenhos": "137jwUw2WB_LUvnQef6waE8ASKQEvzhup",
-    "orcamentario": "1k3dZ890WgqGVSCZLwCxGPLikMutTlOfN",
-    "ordens_bancarias": "1lRYujrJRv7ZPam-lYVB2CxCg_WEMbraC",
-    "repasses": "1ghcBkPmT-IkfWozLZVDdMvMe7eoD2J6k",
-    "financeiro": "1p4PyHEK5V5YzIljLeMsHopulzN55yQMqzS6fk56STdEk",
-    "restos": "1zzxhemDKryzolkykFSw3JXph1YcQ2pUj",
-}
+CACHE_PATH = ROOT / ".drive_source_ids.json"
+SOURCE_KEYS = ("empenhos", "orcamentario", "ordens_bancarias", "repasses", "financeiro", "restos")
+def resolve_sources():
+    if not CACHE_PATH.exists():
+        raise RuntimeError("IDs das fontes não foram descobertos nesta execução; auditoria bloqueada.")
+    ids = json.loads(CACHE_PATH.read_text(encoding="utf-8"))
+    if not isinstance(ids, dict) or set(ids) != set(SOURCE_KEYS) or len(set(ids.values())) != len(SOURCE_KEYS):
+        raise RuntimeError("A descoberta não retornou exatamente seis IDs distintos.")
+    return ids
+SOURCES = resolve_sources()
 LABELS = {"empenhos":"Empenhos","orcamentario":"Orçamentário","ordens_bancarias":"Ordens Bancárias","repasses":"Repasses","financeiro":"Financeiro","restos":"Restos a Pagar"}
 FIELDS = ["timestamp_utc","run_id","evento","resultado_execucao","fonte","fonte_id","conteudo_alterado","registros","total","registros_adicionados","registros_removidos","registros_alterados","valores_alterados","dashboard_atualizado","publicacao","mensagem"]
 
