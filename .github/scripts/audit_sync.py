@@ -25,21 +25,61 @@ def read_json(path, default):
     try: return json.loads(path.read_text(encoding="utf-8"))
     except Exception: return default
 
+KEY_FIELDS = {
+    "empenhos": ("empenho","ne_ccor","subitem","cnpj","observacao"),
+    "orcamentario": ("ug","unidade","ptres","fonte","natureza_codigo","pi","programa"),
+    "ordens_bancarias": ("ob","fonte","processo","data","cnpj","favorecido"),
+    "repasses": ("processo","numero_ne","status_empenho","fornecedores"),
+    "financeiro": ("uge","fonte","vinculo"),
+    "restos": ("empenho","cnpj","natureza_codigo","pi","programa"),
+}
+
+def canonical(v):
+    if isinstance(v, dict): return {k:canonical(x) for k,x in v.items()}
+    if isinstance(v, list): return [canonical(x) for x in v]
+    if isinstance(v, (int,float)) and not isinstance(v, bool): return float(v)
+    return v
+
+def record_signature(row):
+    return json.dumps(canonical(row),ensure_ascii=False,sort_keys=True,separators=(",",":"))
+
+def record_key(name,row):
+    fields=KEY_FIELDS.get(name,())
+    values=tuple(str(row.get(field,"")).strip() for field in fields)
+    # If no configured key fields are present, use the complete row as identity.
+    return values if any(values) else (record_signature(row),)
+
 def snapshot(data):
     out={}
     for d in data.get("datasets",[]) if isinstance(data,dict) else []:
         name=d.get("id"); rows=d.get("rows",[])
-        if name not in SOURCES or not isinstance(rows,list): continue
-        out[name]=[hashlib.sha256(json.dumps(r,ensure_ascii=False,sort_keys=True,separators=(",",":" )).encode("utf-8")).hexdigest() for r in rows]
+        if name in SOURCES and isinstance(rows,list):
+            out[name]=[r for r in rows if isinstance(r,dict)]
     return out
 
 def row_diff(before, after):
-    """Compara cada registro por conteúdo e preserva corretamente duplicidades."""
+    """Compara registros por chave estável; alterações não viram inclusão/exclusão."""
     result={}
     for name in SOURCES:
-        cb, ca = Counter(before.get(name,[])), Counter(after.get(name,[]))
-        added=sum((ca-cb).values()); removed=sum((cb-ca).values())
-        result[name]={"added":added,"removed":removed,"altered":min(added,removed),"value_changed":bool(added or removed)}
+        old_groups={}; new_groups={}
+        for row in before.get(name,[]):
+            old_groups.setdefault(record_key(name,row),Counter())[record_signature(row)] += 1
+        for row in after.get(name,[]):
+            new_groups.setdefault(record_key(name,row),Counter())[record_signature(row)] += 1
+        added=removed=altered=0
+        for key in set(old_groups) | set(new_groups):
+            old_counts=old_groups.get(key,Counter()).copy()
+            new_counts=new_groups.get(key,Counter()).copy()
+            exact=min(sum(old_counts.values()),sum(new_counts.values()))
+            common=old_counts & new_counts
+            old_unmatched=sum((old_counts-common).values())
+            new_unmatched=sum((new_counts-common).values())
+            changed=min(old_unmatched,new_unmatched)
+            altered += changed
+            removed += old_unmatched-changed
+            added += new_unmatched-changed
+        result[name]={"added":added,"removed":removed,"altered":altered,
+                      "value_changed":bool(added or removed or altered)}
     return result
 
 def source_details(data,name):
@@ -144,7 +184,7 @@ def main():
     diffs=row_diff(before_snapshot,after_snapshot) if sync_ok else {n:{"added":0,"removed":0,"altered":0,"value_changed":False} for n in SOURCES}
     count_changed=[n for n in SOURCES if before_totals[n][0]!=after_totals[n][0]]
     total_changed=[n for n in SOURCES if str(before_totals[n][1])!=str(after_totals[n][1])]
-    record_changed=[n for n in SOURCES if diffs[n]["added"] or diffs[n]["removed"]]
+    record_changed=[n for n in SOURCES if diffs[n]["added"] or diffs[n]["removed"] or diffs[n]["altered"]]
     changed=bool(hash_changed or count_changed or total_changed or record_changed)
 
     if sync_ok:
