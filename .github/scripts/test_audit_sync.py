@@ -61,5 +61,21 @@ class RowDiffTests(unittest.TestCase):
         data["datasets"][0]["total"]=99.0
         self.assertIn("empenhos",audit.reconcile_source_rows(data,report))
 
+class MoneyParsingTests(unittest.TestCase):
+    def test_moeda_brasileira(self):
+        spec = importlib.util.spec_from_file_location("sync_sources", SCRIPT.with_name("sync_sources.py"))
+        sync = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(sync)
+        self.assertEqual(sync.money("R$ 1.234,56"), 1234.56)
+        self.assertEqual(sync.money("(1.234,56)"), -1234.56)
+        self.assertIsNone(sync.money("-"))
+
+    def test_moeda_invalida_nao_vira_zero(self):
+        spec = importlib.util.spec_from_file_location("sync_sources", SCRIPT.with_name("sync_sources.py"))
+        sync = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(sync)
+        with self.assertRaises(ValueError):
+            sync.money("R$ NÃO É NÚMERO")
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
