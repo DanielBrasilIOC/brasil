@@ -31,7 +31,7 @@ MOJI = {"Ã‡":"Ç","Ãƒ":"Ã","Ã‰":"É","Ã“":"Ó","Ãš":"Ú","Ã£":"�
 
 def clean(v):
     s = str(v or "").replace("\ufeff","").strip()
-s=s.replace(r"\\t","\t").replace(r'\\\"','"')
+    for a,b in MOJI.items(): s=s.replace(a,b)
     return s
 
 def norm(v):
