@@ -112,9 +112,12 @@ def check(ok,msg):
 def main():
     src={k:download(v) for k,v in SOURCES.items()}
 
-    a=table(src["empenhos"],"\t",["Conta Corrente","Saldo"])
-    empenhos=[{"empenho":r[0],"ne_ccor":r[1],"subitem":r[2],"natureza":r[3],
-               "cnpj":r[4],"fornecedor":r[5],"observacao":r[6],"saldo":money(r[7])} for r in a]
+    a=table(src["empenhos"],"\\t",["Favorecido do Empenho","Empenho","Saldo"])
+    # O CSV oficial atual tem cinco campos nomeados; não atribuir valores a campos ausentes.
+    empenhos=[{"empenho":r[1],"ne_ccor":"","subitem":r[2],"natureza":"",
+               "cnpj":"","fornecedor":r[0],"observacao":"",
+               "fonte_recursos_detalhada":r[4] if len(r)>4 else "",
+               "saldo":money(r[6]) if len(r)>6 else None} for r in a]
     te=total(empenhos,"saldo")
     check(50<=len(empenhos)<=150 and all(r["saldo"] is not None for r in empenhos) and 1e6<=te<=30e6,
           f"Validação de Empenhos 2026 falhou: linhas={len(empenhos)}, total={te}")
