@@ -220,16 +220,18 @@ def main():
                               lambda name:"VINCULACAO" in name and "PAGAMENTO" in name),
         "saldo":finance_col("Saldo",lambda name:"SALDO" in name),
     }
-    missing_financeiro=[label for label,index in fin_cols.items() if index is None]
-    check(not missing_financeiro,
-          "Colunas obrigatórias ausentes no Saldo Financeiro: " + ", ".join(missing_financeiro) +
+    required_financeiro=[name for name in ("uge","fonte","saldo") if fin_cols[name] is None]
+    check(not required_financeiro,
+          "Colunas obrigatórias ausentes no Saldo Financeiro: " + ", ".join(required_financeiro) +
           "; cabeçalho identificado=" + repr(fin_header))
+    # A coluna de vinculação é opcional no CSV publicado atualmente; se vier na fonte,
+    # será capturada automaticamente. Não bloquear a atualização das demais abas se faltar.
     fin=[{"uge":r[fin_cols["uge"]],
           "unidade":"IOC",
           "fonte":r[fin_cols["fonte"]],
-          "vinculo":r[fin_cols["vinculo"]],
+          "vinculo":r[fin_cols["vinculo"]] if fin_cols["vinculo"] is not None else "",
           "saldo":abs(money(r[fin_cols["saldo"]]) or 0)}
-         for r in a if len(r)>max(fin_cols.values())]
+         for r in a if len(r)>max(i for i in fin_cols.values() if i is not None)]
     tf=total(fin,"saldo")
     check(1<=len(fin)<=20 and all(r["saldo"] is not None for r in fin) and 1e5<=abs(tf)<=2e6,
           f"Validação do saldo financeiro falhou: linhas={len(fin)}, total={tf}")
