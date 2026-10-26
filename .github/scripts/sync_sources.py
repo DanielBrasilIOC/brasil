@@ -70,8 +70,9 @@ def download(file_id):
             if len(nonempty) < 2 and len(s.strip()) < 300:
                 errors.append(url.split("?")[0] + ": resposta curta sem conteúdo CSV; caracteres=" + str(len(s)))
                 continue
-            s=s.replace(r"\\t","\\t").replace(r'\\\"','"')
-            s=re.sub(r"\\\\x([0-9a-fA-F]{2})",lambda m:chr(int(m.group(1),16)),s)
+            s=s.replace(r"\r\n", "\n").replace(r"\n", "\n").replace(r"\r", "\n")
+            s=s.replace(r'\"', '"').replace(r"\t", "\t")
+            s=re.sub(r"\\x([0-9a-fA-F]{2})",lambda m:chr(int(m.group(1),16)),s)
             return s
         except Exception as exc:
             errors.append(url.split("?")[0] + ": " + str(exc))
@@ -228,7 +229,7 @@ def main():
         r=[clean(v) for v in raw]
         if len(r)<6 or not r[0] or not r[1]:
             continue
-        if not norm(r[4]).startswith("SALDO MOEDA ORIGEM"):
+        if not norm(r[4]).startswith("SALDOMOEDAORIGEM"):
             continue
         saldo=money(r[5])
         check(saldo is not None,
