@@ -169,8 +169,7 @@ def main():
         return hashlib.sha256("\\n".join(hashes).encode("utf-8")).hexdigest()
 
     source_report = {
-        "financeiro": {"registros":len(fin),"total":tf,"rows_hash":row_fingerprint(fin),
-                       },
+        "financeiro": {"registros":len(fin),"total":tf,"rows_hash":row_fingerprint(fin)},
         "restos": {"registros":len(rap),"total":trp,"rows_hash":row_fingerprint(rap)},
         "empenhos": {"registros":len(empenhos),"total":te,"rows_hash":row_fingerprint(empenhos)},
         "orcamentario": {"registros":len(orc),"total":to,"rows_hash":row_fingerprint(orc)},
