@@ -9,14 +9,16 @@ ROOT = Path(__file__).resolve().parents[2]
 DATA_PATH = ROOT / "data.json"
 REPASSES_PATH = ROOT / "repasses.json"
 STATE_PATH = ROOT / "source_state.json"
-SOURCES = {
-    "empenhos": "137jwUw2WB_LUvnQef6waE8ASKQEvzhup",
-    "orcamentario": "1k3dZ890WgqGVSCZLwCxGPLikMutTlOfN",
-    "ordens_bancarias": "1lRYujrJRv7ZPam-lYVB2CxCg_WEMbraC",
-    "repasses": "1ghcBkPmT-IkfWozLZVDdMvMe7eoD2J6k",
-    "financeiro": "1p4PyHEkV5YzIljLeMsHopulzN55yQMqzS6fk56STdEk",
-    "restos": "1zzxhemDKryzolkykFSw3JXph1YcQ2pUj",
-}
+SOURCE_KEYS = ("empenhos", "orcamentario", "ordens_bancarias", "repasses", "financeiro", "restos")
+CACHE_PATH = ROOT / ".drive_source_ids.json"
+def resolve_sources():
+    if not CACHE_PATH.exists():
+        raise RuntimeError("IDs das fontes não foram descobertos nesta execução; não usar IDs antigos.")
+    ids = json.loads(CACHE_PATH.read_text(encoding="utf-8"))
+    if not isinstance(ids, dict) or set(ids) != set(SOURCE_KEYS) or len(set(ids.values())) != len(SOURCE_KEYS):
+        raise RuntimeError("A descoberta não retornou exatamente seis IDs distintos.")
+    return ids
+SOURCES = resolve_sources()
 MOJI = {"Ã‡":"Ç","Ãƒ":"Ã","Ã‰":"É","Ã“":"Ó","Ãš":"Ú","Ã£":"ã","Ã§":"ç",
         "Ã¡":"á","Ã©":"é","Ã­":"í","Ã³":"ó","Ãº":"ú","Ãª":"ê","Ã´":"ô","Ãµ":"õ"}
 
