@@ -129,7 +129,7 @@ def extract_folder_files(page, folder_id):
                 continue
             # O HTML público atual do Drive identifica cada linha como id="entry-<FILE_ID>".
             # As variantes antigas usavam /file/d/<ID> ou ?id=<ID>.
-            id_match = re.search(r'\\bid=["\\']entry-([A-Za-z0-9_-]{20,80})["\\']', chunk, re.I)
+            id_match = re.search(r"""\bid=["']entry-([A-Za-z0-9_-]{20,80})["']""", chunk, re.I)
             if not id_match:
                 id_match = re.search(r'/file/d/([A-Za-z0-9_-]{20,80})', chunk, re.I)
             if not id_match:
