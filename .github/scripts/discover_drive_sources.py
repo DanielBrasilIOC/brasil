@@ -114,7 +114,7 @@ def extract_folder_files(page, folder_id):
     """Extrai os IDs dos CSVs da listagem pública simplificada do Drive."""
     files = []
     # A visualização embeddedfolderview agrupa cada arquivo em um bloco flip-entry.
-    starts = [m.start() for m in re.finditer(r'<div\b[^>]*class=["\'][^"\']*\bflip-entry\b[^"\']*["\']', page, re.I)]
+    starts = [m.start() for m in re.finditer(r"""<div\b[^>]*class=["']flip-entry["']""", page, re.I)]
     if starts:
         chunks = [page[pos:(starts[i + 1] if i + 1 < len(starts) else len(page))] for i, pos in enumerate(starts)]
         for chunk in chunks:
