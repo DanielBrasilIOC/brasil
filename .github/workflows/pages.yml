@@ -215,6 +215,12 @@ jobs:
                       else:
                           item=dict(zip(header,raw))
                       rows.append({key:item.get(key,'') for key in fields})
+          # Corrige as linhas desta execução com o resultado real da publicação/conferência.
+          final_ok=(os.environ.get('DATA_CHANGED')=='true' and os.environ.get('DEPLOY_RESULT')=='success' and os.environ.get('VERIFY_RESULT')=='success')
+          for item in rows:
+              if item.get('run_id')==os.environ['RUN_ID'] and item.get('fonte')!='RESUMO DA PUBLICAÇÃO':
+                  item['dashboard_atualizado']='SIM' if final_ok else 'NÃO'
+                  item['publicacao']=os.environ.get('FINAL_STATUS','')
           with p.open('w',encoding='utf-8-sig',newline='') as f:
               writer=csv.DictWriter(f,fieldnames=fields,delimiter=';')
               writer.writeheader()
@@ -341,7 +347,7 @@ jobs:
 
   backup-last-valid:
     name: Guardar snapshot persistente da última versão válida
-    if: ${{ needs.build.result == 'success' && needs.build.outputs.sync_ok == 'true' && needs.verify-publication.result == 'success' && needs.persist-source-state.result == 'success' && (needs.deploy.result == 'success' || github.event_name == 'schedule') }}
+    if: ${{ needs.build.result == 'success' && needs.build.outputs.sync_ok == 'true' && needs.verify-publication.result == 'success' && needs.persist-source-state.result == 'success' && (needs.deploy.result == 'success' || github.event_name != 'schedule') }}
     needs: [build, deploy, verify-publication, persist-source-state]
     runs-on: ubuntu-latest
     permissions:
