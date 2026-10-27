@@ -41,6 +41,15 @@ frame.addEventListener('load',()=>{try{
     if(!details)return;
 
     // O filtro nativo duplica o campo personalizado; ocultá-lo diretamente em cada atualização do DOM.
+    // Remover filtros nativos por coluna (Empenho e Fornecedor), preservando o campo único personalizado.
+    details.querySelectorAll('input,select').forEach(el=>{
+      const ph=norm(el.getAttribute('placeholder'));
+      if(ph.includes('FILTRAR POR EMPENHO')||ph.includes('FILTRAR POR FORNECEDOR')){
+        const wrapper=el.closest('label')||el.parentElement;
+        if(wrapper)wrapper.style.setProperty('display','none','important');
+        el.style.setProperty('display','none','important');
+      }
+    });
     const nativeEmpenhosFilters=details.querySelector('#empenhosFilters');
     if(nativeEmpenhosFilters){nativeEmpenhosFilters.style.setProperty('display','none','important');nativeEmpenhosFilters.setAttribute('aria-hidden','true');}
 
