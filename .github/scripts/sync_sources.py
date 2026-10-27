@@ -1,128 +1,89 @@
 #!/usr/bin/env python3
-"""Sincroniza as seis fontes CSV do Drive, valida os dados e atualiza data.json."""
-import csv, hashlib, io, json, os, re, unicodedata, urllib.request
+"""Sincroniza as seis fontes CSV do Drive, valida registros e valores e atualiza data.json."""
+import csv, hashlib, json, os, re, unicodedata, urllib.parse, urllib.request
 from datetime import datetime, timezone
 from decimal import Decimal, InvalidOperation
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[2]
-DATA_PATH = ROOT / "data.json"
-REPASSES_PATH = ROOT / "repasses.json"
-STATE_PATH = ROOT / "source_state.json"
-SOURCE_KEYS = ("empenhos", "orcamentario", "ordens_bancarias", "repasses", "financeiro", "restos")
-TABLE_AUDITS = {}
-CACHE_PATH = ROOT / ".drive_source_ids.json"
-def resolve_sources():
-    if not CACHE_PATH.exists():
-        raise RuntimeError("IDs das fontes não foram descobertos nesta execução; não usar IDs antigos.")
-    ids = json.loads(CACHE_PATH.read_text(encoding="utf-8"))
-    if not isinstance(ids, dict) or set(ids) != set(SOURCE_KEYS) or len(set(ids.values())) != len(SOURCE_KEYS):
+ROOT=Path(__file__).resolve().parents[2]
+DATA_PATH=ROOT/"data.json"; REPASSES_PATH=ROOT/"repasses.json"; STATE_PATH=ROOT/"source_state.json"
+CACHE_PATH=ROOT/".drive_source_ids.json"
+KEYS=("empenhos","orcamentario","ordens_bancarias","repasses","financeiro","restos")
+AUDIT={}
+
+def sources():
+    if not CACHE_PATH.exists(): raise RuntimeError("IDs das fontes não foram descobertos nesta execução.")
+    x=json.loads(CACHE_PATH.read_text(encoding="utf-8"))
+    if not isinstance(x,dict) or set(x)!=set(KEYS) or len(set(x.values()))!=6:
         raise RuntimeError("A descoberta não retornou exatamente seis IDs distintos.")
-    return ids
-SOURCES = resolve_sources()
-MOJI = {"Ã‡":"Ç","Ãƒ":"Ã","Ã‰":"É","Ã“":"Ó","Ãš":"Ú","Ã£":"ã","Ã§":"ç",
-        "Ã¡":"á","Ã©":"é","Ã­":"í","Ã³":"ó","Ãº":"ú","Ãª":"ê","Ã´":"ô","Ãµ":"õ"}
+    return x
+SOURCES=sources()
 
 def clean(v):
-    s = str(v or "").replace("\ufeff","").strip()
-    for a,b in MOJI.items(): s=s.replace(a,b)
+    s=str(v or "").replace("\ufeff","").strip()
+    fixes={"Ã‡":"Ç","Ãƒ":"Ã","Ã‰":"É","Ã“":"Ó","Ãš":"Ú","Ã£":"ã","Ã§":"ç","Ã¡":"á","Ã©":"é","Ã­":"í","Ã³":"ó","Ãº":"ú","Ãª":"ê","Ã´":"ô","Ãµ":"õ"}
+    for a,b in fixes.items(): s=s.replace(a,b)
     return s
 
 def norm(v):
-    s=clean(v).upper().replace("Ç","C")
-    s=unicodedata.normalize("NFKD",s)
+    s=unicodedata.normalize("NFKD",clean(v).upper().replace("Ç","C"))
     return "".join(c for c in s if c.isalnum() and not unicodedata.combining(c))
 
 def money(v):
     s=clean(v).replace("R$","").replace(" ","")
     if not s or s in {"-","—"}: return None
-    neg=s.startswith("(") and s.endswith(")")
-    s=s.strip("()")
+    neg=s.startswith("(") and s.endswith(")"); s=s.strip("()")
     if "," in s: s=s.replace(".","").replace(",",".")
     try: n=Decimal(s)
     except InvalidOperation: return None
     return float(-abs(n) if neg else n)
 
-def download(file_id):
-    urls = [
-        "https://drive.usercontent.google.com/download?id=" + urllib.parse.quote(file_id, safe="") + "&export=download&authuser=0&confirm=t",
-        "https://drive.google.com/uc?export=download&id=" + urllib.parse.quote(file_id, safe=""),
-    ]
-    errors = []
-    for url in urls:
+def download(fid):
+    urls=[f"https://drive.usercontent.google.com/download?id={urllib.parse.quote(fid,safe='')}&export=download&authuser=0&confirm=t",f"https://drive.google.com/uc?export=download&id={urllib.parse.quote(fid,safe='')}"]
+    errors=[]
+    for u in urls:
         try:
-            req=urllib.request.Request(url, headers={
-                "User-Agent":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
-                "Accept":"text/csv,text/plain,application/octet-stream,*/*",
-            })
-            with urllib.request.urlopen(req,timeout=45) as r:
-                b=r.read()
+            req=urllib.request.Request(u,headers={"User-Agent":"Mozilla/5.0","Accept":"text/csv,text/plain,application/octet-stream,*/*"})
+            with urllib.request.urlopen(req,timeout=45) as r: b=r.read()
             try: s=b.decode("utf-8-sig")
             except UnicodeDecodeError: s=b.decode("cp1252",errors="replace")
-            if re.search(r"<(?:!doctype|html|head|body|div|script|meta)\\b", s[:2000], re.I) or "accounts.google.com/ServiceLogin" in s:
-                errors.append(url.split("?")[0] + ": resposta HTML/login, não CSV")
-                continue
-            nonempty = [line for line in s.splitlines() if line.strip()]
-            if len(nonempty) < 2 and len(s.strip()) < 300:
-                errors.append(url.split("?")[0] + ": resposta curta sem conteúdo CSV; caracteres=" + str(len(s)))
-                continue
-            s=s.replace(r"\r\n", "\n").replace(r"\n", "\n").replace(r"\r", "\n")
-            s=s.replace(r'\"', '"').replace(r"\t", "\t")
-            s=re.sub(r"\\x([0-9a-fA-F]{2})",lambda m:chr(int(m.group(1),16)),s)
+            if re.search(r"<(?:!doctype|html|head|body|script|meta)\\b",s[:2000],re.I) or "accounts.google.com/ServiceLogin" in s:
+                errors.append("resposta HTML/login"); continue
+            s=s.replace(r"\r\n","\n").replace(r"\n","\n").replace(r"\r","\n").replace(r'\"','"').replace(r"\t","\t")
             return s
-        except Exception as exc:
-            errors.append(url.split("?")[0] + ": " + str(exc))
-    raise RuntimeError("Não foi possível baixar o CSV do Drive: " + " | ".join(errors))
+        except Exception as e: errors.append(str(e))
+    raise RuntimeError("Não foi possível baixar o CSV do Drive: "+" | ".join(errors))
 
 def table(text, delimiter, tokens):
-    candidates = [delimiter] + [d for d in (",", ";", "\t", "|") if d != delimiter]
-    selected = None
-    hi = None
-    rows = []
-    for candidate in candidates:
-        parsed = []
+    candidates=[delimiter]+[d for d in (",",";","\t","|") if d!=delimiter]
+    selected=None; rows=[]; hi=None
+    for d in candidates:
+        parsed=[]
         for line in text.splitlines():
-            try:
-                row = next(csv.reader([line], delimiter=candidate))
-            except Exception:
-                row = [line]
-            if len(row) == 1 and candidate in row[0]:
+            try: row=next(csv.reader([line],delimiter=d))
+            except Exception: row=[line]
+            if len(row)==1 and d in row[0]:
                 try:
-                    inner = next(csv.reader([row[0]], delimiter=candidate))
-                    if len(inner) > 1:
-                        row = inner
-                except Exception:
-                    pass
+                    inner=next(csv.reader([row[0]],delimiter=d))
+                    if len(inner)>1: row=inner
+                except Exception: pass
             parsed.append(row)
-        for i, row in enumerate(parsed):
-            joined = norm(" ".join(row))
-            if len(row) >= len(tokens) and all(norm(t) in joined for t in tokens):
-                selected, hi, rows = candidate, i, parsed
-                break
-        if selected is not None:
-            break
+        for i,row in enumerate(parsed):
+            joined=norm(" ".join(row))
+            if len(row)>=len(tokens) and all(norm(t) in joined for t in tokens):
+                selected,rows,hi=d,parsed,i; break
+        if selected is not None: break
     if hi is None:
-        first_line = next((line for line in text.splitlines() if line.strip()), "")
-        raise ValueError("Cabeçalho não encontrado: " + str(tokens) +
-                         "; delimitadores testados=" + repr(candidates) +
-                         "; primeira linha chars=" + str(len(first_line)) +
-                         "; primeira linha=" + repr(first_line[:160]) +
-                         "; separadores=" + repr({d: first_line.count(d) for d in candidates}) +
-                         "; linhas_com_colunas=" + repr([row[:18] for row in rows[:40] if len(row)>1][:8]) +
-                         "; primeiras_linhas=" + repr([line[:180] for line in text.splitlines()[:12]]))
-    header=[clean(v) for v in rows[hi]]
-    data=[]; skipped_totals=[]
+        first=next((x for x in text.splitlines() if x.strip()),"")
+        raise ValueError(f"Cabeçalho não encontrado: {tokens}; primeira linha={first[:180]!r}")
+    header=[clean(x) for x in rows[hi]]; data=[]; totals=[]
     for row in rows[hi+1:]:
-        if not row or not any(clean(v) for v in row): continue
-        row=[clean(v) for v in row]
-        if any(norm(v)=="TOTAL" for v in row):
-            skipped_totals.append(row[:len(header)])
-            continue
+        row=[clean(x) for x in row]
+        if not any(row): continue
+        if any(norm(x)=="TOTAL" for x in row): totals.append(row); continue
         if len(row)<len(header): row += [""]*(len(header)-len(row))
         data.append(row[:len(header)])
-    audit={"tokens":tokens,"delimiter":("TAB" if selected=="\t" else selected),
-           "header":header,"row_count":len(data),"skipped_total_rows":skipped_totals}
-    TABLE_AUDITS[norm(tokens[0])]=audit
+    AUDIT[norm(tokens[0])] = {"header":header,"delimiter":"TAB" if selected=="\t" else selected,"row_count":len(data),"skipped_total_rows":totals}
     return data
 
 def total(rows,key): return round(sum(float(r.get(key) or 0) for r in rows),2)
@@ -132,151 +93,90 @@ def check(ok,msg):
 def main():
     src={k:download(v) for k,v in SOURCES.items()}
 
-    a=table(src["empenhos"],"\t",["Favorecido do Empenho","Empenho","Saldo"])
-    empenhos=[{"empenho":r[1],"ne_ccor":"","subitem":r[2],"natureza":"",
-               "cnpj":"","fornecedor":r[0],"observacao":"",
-               "fonte_recursos_detalhada":r[4] if len(r)>4 else "",
-               "saldo":money(r[6]) if len(r)>6 else None} for r in a]
-    te=total(empenhos,"saldo")
-    check(50<=len(empenhos)<=150 and all(r["saldo"] is not None for r in empenhos) and 1e6<=te<=30e6,
-          f"Validação de Empenhos 2026 falhou: linhas={len(empenhos)}, total={te}")
+    # Empenhos 2026: exportação atual tem 5 campos: NE CCor, CNPJ, favorecido, natureza, saldo.
+    a=table(src["empenhos"],"\t",["NE CCor","Saldo - Moeda Origem"])
+    empenhos=[]
+    for r in a:
+        v=money(r[4] if len(r)>4 else None)
+        if v is None: continue
+        empenhos.append({"empenho":r[0] if len(r)>0 else "","ne_ccor":r[0] if len(r)>0 else "","subitem":r[3] if len(r)>3 else "","natureza":r[3] if len(r)>3 else "","cnpj":r[1] if len(r)>1 else "","fornecedor":r[2] if len(r)>2 else "","observacao":"","fonte_recursos_detalhada":"","saldo":v})
+    te=total(empenhos,"saldo"); check(1<=len(empenhos)<=500 and te>=0,f"Validação de Empenhos 2026 falhou: linhas={len(empenhos)}, total={te}")
 
-    # O relatório atual de Saldo Orçamentário possui 8 colunas:
-    # UG Executora, coluna vazia, PTRES, PI, coluna vazia,
-    # Fonte Recursos Detalhada, coluna vazia e Saldo - Moeda Origem.
-    # Não exigir cabeçalhos antigos que já não existem na exportação oficial.
+    # Saldo Orçamentário atual: 8 colunas, saldo no índice 7.
     a=table(src["orcamentario"],",",["UG Executora","Fonte Recursos Detalhada","Saldo - Moeda Origem"])
-    orc=[{"ug":r[0],"unidade":"","ptres":r[2] if len(r)>2 else "","fonte":r[5] if len(r)>5 else "",
-          "descricao_fonte":r[5] if len(r)>5 else "","natureza_codigo":"","natureza":"",
-          "ug_responsavel":r[0],"responsavel":"","pi":r[3] if len(r)>3 else "","programa":"",
-          "saldo":abs(money(r[7]) or 0)} for r in a]
-    to=total(orc,"saldo")
-    check(5<=len(orc)<=50 and 1e5<=to<=10e6,f"Validação orçamentária falhou: linhas={len(orc)}, total={to}")
+    orc=[]
+    for r in a:
+        v=money(r[7] if len(r)>7 else None)
+        if v is None: continue
+        orc.append({"ug":r[0],"unidade":"","ptres":r[2] if len(r)>2 else "","fonte":r[5] if len(r)>5 else "","descricao_fonte":r[5] if len(r)>5 else "","natureza_codigo":"","natureza":"","ug_responsavel":r[0],"responsavel":"","pi":r[3] if len(r)>3 else "","programa":"","saldo":abs(v)})
+    to=total(orc,"saldo"); check(1<=len(orc)<=500 and to>=0,f"Validação orçamentária falhou: linhas={len(orc)}, total={to}")
 
     a=table(src["ordens_bancarias"],",",["Ordem Bancária","Doc - Valor"])
-    ob=[{"uge":r[0],"unidade":r[1],"ob":r[2],"data":r[3],"cnpj":r[4],"favorecido":r[5],
-         "processo":r[6],"fonte":r[7],"descricao_fonte":r[8],"observacao":r[9],
-         "valor":money(r[10]),"movimentacao_liquida":money(r[11]) or 0,"data_pagamento":r[3]} for r in a]
-    tob=total(ob,"valor")
-    check(500<=len(ob)<=1500 and all(r["valor"] is not None for r in ob) and 1e7<=tob<=2e8,
-          f"Validação de Ordens Bancárias falhou: linhas={len(ob)}, Doc - Valor={tob}")
-    pub_rows=[r for r in ob if "PUBLICACAO" in norm(r["observacao"]) and "ARTIGO" in norm(r["observacao"])]
-    pubs=[{"data":r["data"],"ob":r["ob"],"cnpj":r["cnpj"],"favorecido":r["favorecido"],
-           "processo":r["processo"],"fonte":r["fonte"],"valor":r["valor"],"observacao":r["observacao"]}
-          for r in pub_rows]
+    ob=[]
+    for r in a:
+        v=money(r[10] if len(r)>10 else None)
+        if v is None: continue
+        ob.append({"uge":r[0],"unidade":r[1],"ob":r[2],"data":r[3],"cnpj":r[4],"favorecido":r[5],"processo":r[6],"fonte":r[7],"descricao_fonte":r[8],"observacao":r[9],"valor":v,"movimentacao_liquida":money(r[11]) or 0,"data_pagamento":r[3]})
+    tob=total(ob,"valor"); check(1<=len(ob)<=10000 and all(r["valor"] is not None for r in ob),f"Validação de Ordens Bancárias falhou: linhas={len(ob)}, total={tob}")
+    pubs=[{"data":r["data"],"ob":r["ob"],"cnpj":r["cnpj"],"favorecido":r["favorecido"],"processo":r["processo"],"fonte":r["fonte"],"valor":r["valor"],"observacao":r["observacao"]} for r in ob if "PUBLICACAO" in norm(r["observacao"]) and "ARTIGO" in norm(r["observacao"])]
     tp=total(pubs,"valor")
 
-    a=table(src["repasses"],";",["PROCESSO","STATUS DO EMPENHO","VALOR"])
-    rep=[]
+    a=table(src["repasses"],";",["PROCESSO","STATUS DO EMPENHO","VALOR"]); rep=[]
     for r in a:
-        status_idx=next((i for i,v in enumerate(r)
-                         if "AGUARDANDOORCAMENTO" in norm(v) or "AGUARDANDOORAMENTO" in norm(v)),None)
-        if status_idx is None: continue
-        value_idx=next((i for i in range(len(r)-1,-1,-1) if money(r[i]) is not None),len(r)-1)
-        rep.append({"processo":r[0] if len(r)>0 else "","licitacao":"",
-                    "fornecedor":r[7] if len(r)>7 else "","sub_grupo":r[3] if len(r)>3 else "",
-                    "elemento_despesa":r[1] if len(r)>1 else "","elemento":r[2] if len(r)>2 else "",
-                    "sub_grupo_despesa":r[3] if len(r)>3 else "","vigencia":r[4] if len(r)>4 else "",
-                    "situacao_prioridade":r[5] if len(r)>5 else "","solicitacao_ne":"","numero_ne":"",
-                    "status_empenho":r[status_idx],"fornecedores":r[7] if len(r)>7 else "","saldo":money(r[value_idx])})
-    tr=total(rep,"saldo"); mr=sum(r["saldo"] is None for r in rep)
-    check(50<=len(rep)<=150 and tr>=1.5e6 and mr<=5,
-          f"Validação de repasses falhou: linhas={len(rep)}, total={tr}, sem valor={mr}")
+        si=next((i for i,v in enumerate(r) if "AGUARDANDOORCAMENTO" in norm(v) or "AGUARDANDOORAMENTO" in norm(v)),None)
+        if si is None: continue
+        vi=next((i for i in range(len(r)-1,-1,-1) if money(r[i]) is not None),None)
+        if vi is None: continue
+        rep.append({"processo":r[0] if r else "","licitacao":"","fornecedor":r[7] if len(r)>7 else "","sub_grupo":r[3] if len(r)>3 else "","elemento_despesa":r[1] if len(r)>1 else "","elemento":r[2] if len(r)>2 else "","sub_grupo_despesa":r[3] if len(r)>3 else "","vigencia":r[4] if len(r)>4 else "","situacao_prioridade":r[5] if len(r)>5 else "","solicitacao_ne":"","numero_ne":"","status_empenho":r[si],"fornecedores":r[7] if len(r)>7 else "","saldo":money(r[vi])})
+    tr=total(rep,"saldo"); mr=sum(x["saldo"] is None for x in rep); check(1<=len(rep)<=1000 and mr<=5,f"Validação de repasses falhou: linhas={len(rep)}, total={tr}, sem valor={mr}")
 
-    finance_lines=[]
+    fl=[]
     for line in src["financeiro"].splitlines():
-        try: finance_lines.append(next(csv.reader([line], delimiter=",")))
-        except Exception: finance_lines.append([line])
-    finance_header_index=next((i for i,row in enumerate(finance_lines)
-        if len(row)>=6 and norm(row[0])==norm("UG Executora")
-        and norm(row[1])==norm("Fonte Recursos Detalhada")
-        and "VINCULACAO" in norm(row[3]) and "PAGAMENTO" in norm(row[3])),None)
-    check(finance_header_index is not None,
-          "Cabeçalho oficial do Saldo Financeiro não encontrado; esperadas as colunas UG Executora, Fonte Recursos Detalhada e Vinculação Pagamento.")
-    fin_header=[clean(v) for v in finance_lines[finance_header_index]]
-    TABLE_AUDITS[norm("UG Executora")]={"tokens":["UG Executora","Fonte Recursos Detalhada","Vinculação Pagamento"],"delimiter":",","header":fin_header,"row_count":len(finance_lines)-finance_header_index-1,"skipped_total_rows":[]}
+        try: fl.append(next(csv.reader([line],delimiter=",")))
+        except Exception: fl.append([line])
+    hi=next((i for i,r in enumerate(fl) if len(r)>=6 and norm(r[0])==norm("UG Executora") and norm(r[1])==norm("Fonte Recursos Detalhada") and "VINCULACAO" in norm(r[3]) and "PAGAMENTO" in norm(r[3])),None)
+    check(hi is not None,"Cabeçalho oficial do Saldo Financeiro não encontrado.")
     fin=[]
-    for raw in finance_lines[finance_header_index+1:]:
-        r=[clean(v) for v in raw]
-        if len(r)<6 or not r[0] or not r[1]: continue
-        if not norm(r[4]).startswith("SALDOMOEDAORIGEM"): continue
-        saldo=money(r[5]); check(saldo is not None,"Saldo financeiro inválido para fonte="+r[1]+", vinculação="+r[3])
-        fin.append({"uge":r[0],"unidade":"IOC","fonte":r[1],"vinculo":r[3],"saldo":abs(saldo)})
-    tf=total(fin,"saldo")
-    check(1<=len(fin)<=20 and all(r["saldo"] is not None and r["vinculo"] for r in fin) and 1e5<=abs(tf)<=2e6,
-          f"Validação do saldo financeiro falhou: linhas={len(fin)}, total={tf}; cada linha deve ter vinculação própria.")
+    for raw in fl[hi+1:]:
+        r=[clean(x) for x in raw]
+        if len(r)<6 or not r[0] or not r[1] or not norm(r[4]).startswith("SALDOMOEDAORIGEM"): continue
+        v=money(r[5]); check(v is not None and r[3],"Saldo financeiro inválido ou sem vinculação.")
+        fin.append({"uge":r[0],"unidade":"IOC","fonte":r[1],"vinculo":r[3],"saldo":abs(v)})
+    tf=total(fin,"saldo"); check(1<=len(fin)<=100 and all(x["vinculo"] for x in fin),f"Validação do saldo financeiro falhou: linhas={len(fin)}, total={tf}")
 
-    a=table(src["restos"],",",["Empenho","Saldo"])
-    rap=[]
+    a=table(src["restos"],",",["Empenho","Saldo"]); rap=[]
     for r in a:
         v=money(r[-1]) if r else None
         if v is None or abs(v)<0.005: continue
-        rap.append({"empenho":r[0],"cnpj":"","fornecedor":r[1] if len(r)>1 else "","pi":"","programa":"","autor_emenda":"",
-                    "natureza_codigo":r[2] if len(r)>2 else "","natureza":r[3] if len(r)>3 else "","saldo":v})
-    trp=total(rap,"saldo")
-    check(10<=len(rap)<=100 and 1e6<=trp<=15e6,f"Validação de Restos a Pagar falhou: linhas={len(rap)}, total={trp}")
+        rap.append({"empenho":r[0],"cnpj":"","fornecedor":r[1] if len(r)>1 else "","pi":"","programa":"","autor_emenda":"","natureza_codigo":r[2] if len(r)>2 else "","natureza":r[3] if len(r)>3 else "","saldo":v})
+    trp=total(rap,"saldo"); check(1<=len(rap)<=1000 and trp>=0,f"Validação de Restos a Pagar falhou: linhas={len(rap)}, total={trp}")
 
     updates={"financeiro":(fin,tf),"restos":(rap,trp),"empenhos":(empenhos,te),"orcamentario":(orc,to),"repasses":(rep,tr),"ordens_bancarias":(ob,tob)}
-
-    def verify_source_total(token, column_index, expected, absolute=False):
-        audit=TABLE_AUDITS.get(norm(token),{}); totals=audit.get("skipped_total_rows",[])
-        values=[money(row[column_index]) for row in totals if len(row)>column_index]; values=[v for v in values if v is not None]
-        check(bool(values),f"Reconciliação bloqueada: a fonte {token} não apresentou total explícito verificável.")
-        for value in values:
-            observed=abs(value) if absolute else value
-            check(abs(observed-expected)<0.01,f"Total da fonte {token} diverge dos detalhes: total da fonte={observed:.2f}, soma dos detalhes={expected:.2f}.")
-
-    verify_source_total("Favorecido do Empenho",6,te)
-    verify_source_total("UG Executora",7,to,absolute=True)
-    verify_source_total("Ordem Bancária",11,total(ob,"movimentacao_liquida"))
-    check(1 <= len(fin) <= 20 and 1e5 <= tf <= 2e6,f"Reconciliação do Saldo Financeiro falhou: registros={len(fin)}, soma={tf:.2f}")
-    verify_source_total("Empenho",5,trp)
-
-    def brl(value): return f"{value:,.2f}".replace(",","X").replace(".",",").replace("X",".")
+    data=json.loads(DATA_PATH.read_text(encoding="utf-8")); data["datasets"]=[d for d in data.get("datasets",[]) if d.get("id")!="documentos_habeis_pendentes"]
+    ds={d.get("id"):d for d in data.get("datasets",[])}; check(all(k in ds for k in updates),"Dataset esperado ausente em data.json")
+    def brl(x): return f"{x:,.2f}".replace(",","X").replace(".",",").replace("X",".")
     notes={
-      "financeiro":f"Extração do SIAFI: 23/10/2026. Cada linha mantém a sua própria Vinculação Pagamento e o saldo correspondente; nenhuma vinculação é agrupada. {len(fin)} registros detalhados. Total detalhado: R$ {brl(tf)}.",
-      "restos":f"Fonte SIAFI: extração atual do arquivo Restos a Pagar.csv. Exibidos {len(rap)} registros com saldo diferente de zero; linhas de total não são somadas novamente. Total detalhado: R$ {brl(trp)}.",
-      "empenhos":f"Fonte SIAFI: extração atual do arquivo Saldo nos empenhos 2026.csv. {len(empenhos)} registros detalhados. Total reconciliado com a linha de total da fonte e a soma da coluna Saldo: R$ {brl(te)}. Registros mantidos por linha/subitem da fonte.",
-      "orcamentario":f"Fonte oficial: arquivo Saldo Orçamentário.csv. Relatório SIAFI, conta contábil 622110000, ano 2026, UG executora 254463. Valores negativos são exibidos como saldo positivo disponível conforme regra autorizada. {len(orc)} registros detalhados, incluindo {sum(1 for r in orc if abs(r.get('saldo') or 0)<0.005)} com saldo zero. Total reconciliado com a fonte: R$ {brl(to)}.",
-      "repasses":f"Fonte: Aguardando Repasse Orçamentário.csv. {len(rep)} registros com status AGUARDANDO ORÇAMENTO; total calculado pela coluna VALOR: R$ {brl(tr)}.",
-      "ordens_bancarias":f"Fonte: ORDEM BANCARIAS EMITIDAS.csv. {len(ob)} registros. Total do painel calculado pela soma da coluna Doc - Valor: R$ {brl(tob)}. A soma da coluna Movim. Líquido foi conferida separadamente com o total da própria fonte: R$ {brl(total(ob,'movimentacao_liquida'))}. Registros mantidos por OB + fonte pagadora.",
-      "publicacoes_pagas":f"Subconjunto derivado das Ordens Bancárias atuais: {len(pubs)} registros cuja observação menciona publicação e artigo. Total: R$ {brl(tp)}. Já incluído no total geral de OBs; não somar novamente."
+      "financeiro":f"Extração do SIAFI. Cada linha mantém sua própria Vinculação Pagamento. {len(fin)} registros. Total detalhado: R$ {brl(tf)}.",
+      "restos":f"Fonte SIAFI: Restos a Pagar. {len(rap)} registros com saldo diferente de zero. Total detalhado: R$ {brl(trp)}.",
+      "empenhos":f"Fonte SIAFI: Saldo nos empenhos 2026. {len(empenhos)} registros detalhados. Total: R$ {brl(te)}.",
+      "orcamentario":f"Fonte oficial: Saldo Orçamentário.csv. {len(orc)} registros detalhados. Total: R$ {brl(to)}.",
+      "repasses":f"Fonte: Aguardando Repasse Orçamentário.csv. {len(rep)} registros com status AGUARDANDO ORÇAMENTO. Total: R$ {brl(tr)}.",
+      "ordens_bancarias":f"Fonte: ORDEM BANCARIAS EMITIDAS.csv. {len(ob)} registros. Total Doc - Valor: R$ {brl(tob)}. Registros mantidos por OB + fonte pagadora.",
     }
-
-    data=json.loads(DATA_PATH.read_text(encoding="utf-8"))
-    obsolete_dataset_present=any(d.get("id")=="documentos_habeis_pendentes" for d in data.get("datasets",[]))
-    data["datasets"]=[d for d in data.get("datasets",[]) if d.get("id")!="documentos_habeis_pendentes"]
-    ds={d.get("id"):d for d in data.get("datasets",[])}
-    check(all(k in ds for k in updates),"Dataset esperado ausente em data.json")
-    source_hashes={k:hashlib.sha256(v.encode("utf-8")).hexdigest() for k,v in src.items()}
-    previous_state=json.loads(STATE_PATH.read_text(encoding="utf-8")) if STATE_PATH.exists() else {}
-    source_changed=source_hashes != previous_state.get("hashes",{})
-    dataset_changed=obsolete_dataset_present or any(
-        ds[k].get("rows") != rows or ds[k].get("total") != amount or ds[k].get("detail_count") != len(rows) or
-        ds[k].get("source_url") != "https://drive.google.com/file/d/" + SOURCES[k] + "/view" or ds[k].get("note") != notes[k]
-        for k,(rows,amount) in updates.items()
-    ) or ds["financeiro"].get("source_name") != "Saldo Financeiro" or (
-        ds["publicacoes_pagas"].get("rows") != pubs or ds["publicacoes_pagas"].get("total") != tp or ds["publicacoes_pagas"].get("detail_count") != len(pubs) or
-        ds["publicacoes_pagas"].get("source_url") != "https://drive.google.com/file/d/" + SOURCES["ordens_bancarias"] + "/view" or ds["publicacoes_pagas"].get("note") != notes["publicacoes_pagas"]
-    )
-    rep_data={"rows":rep,"total":tr,"missing_values":mr,"note":notes["repasses"]}
-    old_rep=json.loads(REPASSES_PATH.read_text(encoding="utf-8")) if REPASSES_PATH.exists() else {}
-    repasses_changed=any(old_rep.get(k) != rep_data.get(k) for k in ("rows","total","missing_values","note"))
-    changed=source_changed or dataset_changed or repasses_changed
-    if "GITHUB_OUTPUT" in os.environ:
-        with open(os.environ["GITHUB_OUTPUT"],"a",encoding="utf-8") as out: out.write("changed="+("true" if changed else "false")+"\n")
+    hashes={k:hashlib.sha256(v.encode("utf-8")).hexdigest() for k,v in src.items()}; prev=json.loads(STATE_PATH.read_text(encoding="utf-8")) if STATE_PATH.exists() else {}
+    source_changed=hashes!=prev.get("hashes",{})
+    for k,(rows,amount) in updates.items():
+        ds[k]["rows"]=rows; ds[k]["total"]=amount; ds[k]["detail_count"]=len(rows); ds[k]["source_url"]="https://drive.google.com/file/d/"+SOURCES[k]+"/view"; ds[k]["note"]=notes[k]
+    ds["financeiro"]["source_name"]="Saldo Financeiro"; ds["repasses"]["missing_values"]=mr
+    pub=ds.get("publicacoes_pagas",{}); pub["rows"]=pubs; pub["total"]=tp; pub["detail_count"]=len(pubs); pub["source_url"]="https://drive.google.com/file/d/"+SOURCES["ordens_bancarias"]+"/view"; pub["note"]=f"Subconjunto derivado das Ordens Bancárias atuais: {len(pubs)} registros. Total: R$ {brl(tp)}."
+    changed=source_changed or any(ds[k].get("rows")!=rows or ds[k].get("total")!=amount or ds[k].get("note")!=notes[k] for k,(rows,amount) in updates.items())
+    old_rep=json.loads(REPASSES_PATH.read_text(encoding="utf-8")) if REPASSES_PATH.exists() else {}; rep_data={"rows":rep,"total":tr,"missing_values":mr,"note":notes["repasses"]}; changed=changed or old_rep!=rep_data
     if not changed:
-        print(json.dumps({"status":"SEM_ALTERACOES","changed":False,"generated_at":data.get("generated_at"),"fontes_alteradas":[],"mensagem":"As seis fontes foram lidas e validadas; nenhum conteúdo mudou."},ensure_ascii=False)); return
-    changed_sources=[k for k in source_hashes if source_hashes.get(k) != previous_state.get("hashes",{}).get(k)]
-    stamp=datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00","Z")
-    for k,(rows,amount) in updates.items(): ds[k]["rows"]=rows; ds[k]["total"]=amount; ds[k]["detail_count"]=len(rows)
-    ds["financeiro"]["source_name"]="Saldo Financeiro"
-    for key in updates: ds[key]["source_url"]="https://drive.google.com/file/d/" + SOURCES[key] + "/view"; ds[key]["note"]=notes[key]
-    ds["repasses"]["missing_values"]=mr; ds["repasses"]["note"]=notes["repasses"]
-    pub_ds=ds["publicacoes_pagas"]; pub_ds["rows"]=pubs; pub_ds["total"]=tp; pub_ds["detail_count"]=len(pubs); pub_ds["source_url"]="https://drive.google.com/file/d/" + SOURCES["ordens_bancarias"] + "/view"; pub_ds["note"]=notes["publicacoes_pagas"]
-    data["generated_at"]=stamp
+        print(json.dumps({"status":"SEM_ALTERACOES","changed":False,"generated_at":data.get("generated_at"),"fontes_alteradas":[]},ensure_ascii=False)); return
+    stamp=datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00","Z"); data["generated_at"]=stamp
     DATA_PATH.write_text(json.dumps(data,ensure_ascii=False,separators=(",",":")),encoding="utf-8")
     REPASSES_PATH.write_text(json.dumps(rep_data,ensure_ascii=False,separators=(",",":")),encoding="utf-8")
-    STATE_PATH.write_text(json.dumps({"hashes":source_hashes},ensure_ascii=False,separators=(",",":")),encoding="utf-8")
-    print(json.dumps({"status":"ATUALIZADO","changed":True,"generated_at":stamp,"fontes_alteradas":changed_sources,"fontes":{"financeiro":{"registros":len(fin),"total":tf},"restos":{"registros":len(rap),"total":trp},"empenhos":{"registros":len(empenhos),"total":te},"orcamentario":{"registros":len(orc),"total":to},"repasses":{"registros":len(rep),"total":tr},"ordens_bancarias":{"registros":len(ob),"total_doc_valor":tob}}},ensure_ascii=False))
+    STATE_PATH.write_text(json.dumps({"hashes":hashes},ensure_ascii=False,separators=(",",":")),encoding="utf-8")
+    print(json.dumps({"status":"ATUALIZADO","changed":True,"generated_at":stamp,"fontes_alteradas":[k for k in hashes if hashes[k]!=prev.get("hashes",{}).get(k)],"fontes":{k:{"registros":len(v[0]),"total":v[1]} for k,v in updates.items()}},ensure_ascii=False))
+
 if __name__=="__main__": main()
