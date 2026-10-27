@@ -7,7 +7,7 @@
 <style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#f3f6f9}iframe{display:block;width:100%;height:100%;border:0}</style>
 </head>
 <body>
-<iframe id="dashboard" src="dashboard-v2.html?v=202610271820-remocao-definitiva" title="Painel Financeiro e Orçamentário IOC"></iframe>
+<iframe id="dashboard" src="dashboard-v2.html?v=202610271825-restaurado" title="Painel Financeiro e Orçamentário IOC"></iframe>
 <script>
 const frame=document.getElementById('dashboard');
 frame.addEventListener('load',()=>{try{
@@ -35,12 +35,6 @@ frame.addEventListener('load',()=>{try{
   const applyEmpenhos=()=>{
     const details=doc.querySelector('#details[data-dataset="empenhos"]');
     if(!details)return;
-
-    // Remoção explícita do seletor nativo "Todos os campos" na aba Empenhos 2026.
-    // O observer reaplica a regra caso a interface recrie o elemento.
-    const obsoleteFieldSelect=details.querySelector('#field');
-    if(obsoleteFieldSelect)obsoleteFieldSelect.remove();
-    details.querySelectorAll('.detail-filters select').forEach(el=>el.remove());
 
     // Remove NE CCOR somente da apresentação, preservando integralmente os dados.
     details.querySelectorAll('table').forEach(table=>{
