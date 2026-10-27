@@ -120,7 +120,7 @@ def main():
     unique_obs={r["ob"] for r in ob}
     tob=total(ob,"valor"); check(1<=len(ob)<=10000 and all(r["valor"] is not None for r in ob) and all(r["ob"] for r in ob) and len(unique_obs)==len(ob),f"Validação de Ordens Bancárias falhou: linhas={len(ob)}, OBs únicas={len(unique_obs)}, total={tob}")
     # Publicações Pagas: registros da mesma planilha cujo código do favorecido começa com EX.
-    pubs=[{"data":r["data"],"ob":r["ob"],"cnpj":r["cnpj"],"favorecido":r["favorecido"],"processo":r["processo"],"valor":r["valor"],"observacao":r["observacao"]} for r in ob if norm(r["cnpj"]).startswith("EX")]
+    pubs=[{"data":r["data"],"ob":r["ob"],"cnpj":r["cnpj"],"favorecido":r["favorecido"],"processo":r["processo"],"valor":r["valor"],"observacao":r["observacao"]} for r in ob if norm(r["cnpj"]).startswith("EX") and r["ob"]!="254463252012026OB000089"]
     tp=total(pubs,"valor")
 
     a=table(src["repasses"],";",["PROCESSO","STATUS DO EMPENHO","VALOR"]); rep=[]
