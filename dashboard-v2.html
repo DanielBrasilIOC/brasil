@@ -689,6 +689,7 @@ function detail(id){
  if(search)search.value='';const empenhoInput=document.getElementById('filterEmpenho'),fornecedorInput=document.getElementById('filterFornecedor');if(empenhoInput)empenhoInput.value='';if(fornecedorInput)fornecedorInput.value='';const empenhosFilters=document.getElementById('empenhosFilters');if(empenhosFilters)empenhosFilters.style.display=id==='empenhos'?'grid':'none';
  const obFilterValue=document.getElementById('obFilterValue');if(obFilterValue)obFilterValue.value='';const obFilterField=document.getElementById('obFilterField');if(obFilterField)obFilterField.value='favorecido';
  if(fieldSelect){
+  fieldSelect.style.display=id==='empenhos'?'none':'';
   const keys=[...new Set((d.rows||[]).flatMap(row=>Object.keys(row)))];
   fieldSelect.innerHTML='<option value="">Todos os campos</option>'+keys.map(key=>'<option value="'+E(key)+'">'+E(key.replace(/_/g,' '))+'</option>').join('');
   fieldSelect.value='';
