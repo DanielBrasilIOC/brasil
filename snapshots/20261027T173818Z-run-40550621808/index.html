@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Painel Financeiro e Orçamentário IOC</title>
+<style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#f3f6f9}iframe{display:block;width:100%;height:100%;border:0}</style>
+</head>
+<body>
+<iframe id="dashboard" src="dashboard-v2.html?v=202610271725-sem-ne-ccor" title="Painel Financeiro e Orçamentário IOC"></iframe>
+<script>
+const frame=document.getElementById('dashboard');
+frame.addEventListener('load',()=>{try{
+  const doc=frame.contentDocument;if(!doc||!doc.body)return;
+  const title='Painel Financeiro e Orçamentário IOC';
+  const brand=doc.querySelector('.brand h1');if(brand&&brand.textContent!==title)brand.textContent=title;
+  const heading=doc.getElementById('title');if(heading&&heading.textContent.replace(/\s+/g,' ').trim()!==title)heading.textContent=title;
+  if(doc.title!==title)doc.title=title;
+
+  const style=doc.createElement('style');
+  style.textContent=`
+    th.neccor-hidden,td.neccor-hidden{display:none!important}
+    .empenhos-custom-filters{display:flex;flex-wrap:wrap;gap:9px;align-items:end;margin:0 0 12px;padding:12px;background:#f7fafb;border:1px solid #e0e8ee;border-radius:12px}
+    .empenhos-custom-filters label{display:grid;gap:5px;min-width:190px;flex:1;font-size:11px;font-weight:700;color:#153b57}
+    .empenhos-custom-filters input{width:100%;min-height:38px;box-sizing:border-box}
+    .empenhos-custom-filters button{min-height:38px;border:1px solid #d7e2e9;border-radius:10px;background:#fff;color:#26495e;padding:9px 13px;font-weight:700;cursor:pointer}
+    @media(max-width:700px){.empenhos-custom-filters{display:grid;grid-template-columns:1fr}.empenhos-custom-filters label{min-width:0}.empenhos-custom-filters button{width:100%}}
+  `;
+  doc.head.appendChild(style);
+
+  const norm=s=>(s||'').replace(/\s+/g,' ').trim().toUpperCase();
+  const isEmpenho=s=>{const x=norm(s);return x.includes('EMPENHO')||x==='NE CCOR'||x==='NE C COR'||x==='NECCOR'};
+  const isFornecedor=s=>{const x=norm(s);return x.includes('FORNECEDOR')||x.includes('FAVORECIDO')||x.includes('CNPJ')};
+
+  const applyEmpenhos=()=>{
+    const details=doc.querySelector('#details[data-dataset="empenhos"]');
+    if(!details)return;
+
+    // Remove NE CCOR somente da apresentação, preservando integralmente os dados.
+    details.querySelectorAll('table').forEach(table=>{
+      const headers=Array.from(table.querySelectorAll('thead th'));
+      headers.forEach((th,i)=>{
+        if(isEmpenho(th.textContent) && (norm(th.textContent).includes('NE CCOR')||norm(th.textContent).includes('NECCOR'))){
+          th.classList.add('neccor-hidden');
+          table.querySelectorAll('tbody tr').forEach(tr=>{if(tr.children[i])tr.children[i].classList.add('neccor-hidden')});
+        }
+      });
+    });
+
+    // Na aba Empenhos 2026, deixar visíveis somente os filtros Empenho e Fornecedor.
+    details.querySelectorAll('.detail-filters,.filters').forEach(box=>{
+      if(box.classList.contains('empenhos-custom-filters'))return;
+      box.querySelectorAll('label,select,input,button,.filter,.filter-group').forEach(el=>{
+        const text=norm(el.textContent)+' '+norm(el.getAttribute('aria-label'))+' '+norm(el.getAttribute('placeholder'));
+        if(!isEmpenho(text)&&!isFornecedor(text))el.style.display='none';
+      });
+    });
+
+    let panel=details.querySelector('.empenhos-custom-filters');
+    if(!panel){
+      panel=doc.createElement('div');panel.className='empenhos-custom-filters';panel.innerHTML=`
+        <label>Empenho<input id="empenhosFilterEmpenho" type="search" placeholder="Filtrar por empenho"></label>
+        <label>Fornecedor<input id="empenhosFilterFornecedor" type="search" placeholder="Filtrar por fornecedor"></label>
+        <button id="empenhosClearFilters" type="button">Limpar filtro</button>`;
+      const target=details.querySelector('.detail-filters')||details.querySelector('.filters')||details.firstElementChild;
+      if(target&&target.parentNode)target.parentNode.insertBefore(panel,target);else details.prepend(panel);
+      const applyRows=()=>{
+        const e=norm(panel.querySelector('#empenhosFilterEmpenho')?.value);
+        const f=norm(panel.querySelector('#empenhosFilterFornecedor')?.value);
+        details.querySelectorAll('table').forEach(table=>{
+          const hs=Array.from(table.querySelectorAll('thead th')).map(x=>norm(x.textContent));
+          const ei=hs.findIndex(h=>h.includes('EMPENHO')||h==='NE CCOR'||h==='NE C COR'||h==='NECCOR');
+          const fi=hs.findIndex(h=>h.includes('FORNECEDOR')||h.includes('FAVORECIDO')||h.includes('CNPJ'));
+          table.querySelectorAll('tbody tr').forEach(tr=>{
+            const cells=Array.from(tr.children);
+            const ev=ei>=0?norm(cells[ei]?.textContent):'';
+            const fv=fi>=0?norm(cells[fi]?.textContent):'';
+            tr.style.display=(!e||ev.includes(e))&&(!f||fv.includes(f))?'':'none';
+          });
+        });
+      };
+      panel.querySelectorAll('input').forEach(i=>i.addEventListener('input',applyRows));
+      panel.querySelector('#empenhosClearFilters').addEventListener('click',()=>{panel.querySelectorAll('input').forEach(i=>i.value='');applyRows()});
+    }
+  };
+
+  applyEmpenhos();
+  new MutationObserver(()=>applyEmpenhos()).observe(doc.body,{subtree:true,childList:true});
+}catch(e){console.error('Ajuste do painel não aplicado',e)}});
+</script>
+</body>
+</html>
