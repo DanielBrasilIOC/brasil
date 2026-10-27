@@ -111,14 +111,16 @@ def main():
         orc.append({"ug":r[0],"unidade":"","ptres":r[2] if len(r)>2 else "","fonte":r[5] if len(r)>5 else "","descricao_fonte":r[5] if len(r)>5 else "","natureza_codigo":"","natureza":"","ug_responsavel":r[0],"responsavel":"","pi":r[3] if len(r)>3 else "","programa":"","saldo":abs(v)})
     to=total(orc,"saldo"); check(1<=len(orc)<=500 and to>=0,f"Validação orçamentária falhou: linhas={len(orc)}, total={to}")
 
-    a=table(src["ordens_bancarias"],",",["Ordem Bancária","Doc - Valor"])
+    a=table(src["ordens_bancarias"],";",["DIA","OB","VALOR"])
     ob=[]
     for r in a:
-        v=money(r[10] if len(r)>10 else None)
+        v=money(r[5] if len(r)>5 else None)
         if v is None: continue
-        ob.append({"uge":r[0],"unidade":r[1],"ob":r[2],"data":r[3],"cnpj":r[4],"favorecido":r[5],"processo":r[6],"fonte":r[7],"descricao_fonte":r[8],"observacao":r[9],"valor":v,"movimentacao_liquida":money(r[11]) or 0,"data_pagamento":r[3]})
-    tob=total(ob,"valor"); check(1<=len(ob)<=10000 and all(r["valor"] is not None for r in ob),f"Validação de Ordens Bancárias falhou: linhas={len(ob)}, total={tob}")
-    pubs=[{"data":r["data"],"ob":r["ob"],"cnpj":r["cnpj"],"favorecido":r["favorecido"],"processo":r["processo"],"fonte":r["fonte"],"valor":r["valor"],"observacao":r["observacao"]} for r in ob if "PUBLICACAO" in norm(r["observacao"]) and "ARTIGO" in norm(r["observacao"])]
+        ob.append({"ob":r[1] if len(r)>1 else "", "data":r[0] if len(r)>0 else "", "data_pagamento":r[0] if len(r)>0 else "", "processo":r[2] if len(r)>2 else "", "cnpj":r[3] if len(r)>3 else "", "favorecido":r[4] if len(r)>4 else "", "observacao":r[6] if len(r)>6 else "", "valor":v})
+    unique_obs={r["ob"] for r in ob}
+    tob=total(ob,"valor"); check(1<=len(ob)<=10000 and all(r["valor"] is not None for r in ob) and all(r["ob"] for r in ob) and len(unique_obs)==len(ob),f"Validação de Ordens Bancárias falhou: linhas={len(ob)}, OBs únicas={len(unique_obs)}, total={tob}")
+    # Publicações Pagas: registros da mesma planilha cujo código do favorecido começa com EX.
+    pubs=[{"data":r["data"],"ob":r["ob"],"cnpj":r["cnpj"],"favorecido":r["favorecido"],"processo":r["processo"],"valor":r["valor"],"observacao":r["observacao"]} for r in ob if norm(r["cnpj"]).startswith("EX")]
     tp=total(pubs,"valor")
 
     a=table(src["repasses"],";",["PROCESSO","STATUS DO EMPENHO","VALOR"]); rep=[]
@@ -161,15 +163,16 @@ def main():
       "empenhos":f"Fonte SIAFI: Saldo nos empenhos 2026. {len(empenhos)} registros detalhados. Total: R$ {brl(te)}.",
       "orcamentario":f"Fonte oficial: Saldo Orçamentário.csv. {len(orc)} registros detalhados. Total: R$ {brl(to)}.",
       "repasses":f"Fonte: Aguardando Repasse Orçamentário.csv. {len(rep)} registros com status AGUARDANDO ORÇAMENTO. Total: R$ {brl(tr)}.",
-      "ordens_bancarias":f"Fonte: ORDEM BANCARIAS EMITIDAS.csv. {len(ob)} registros. Total Doc - Valor: R$ {brl(tob)}. Registros mantidos por OB + fonte pagadora.",
+      "ordens_bancarias":f"Fonte: ORDEM BANCARIAS EMITIDAS.csv. {len(ob)} registros únicos por OB, sem coluna Fonte. Total Valor (R$): R$ {brl(tob)}.",
     }
     hashes={k:hashlib.sha256(v.encode("utf-8")).hexdigest() for k,v in src.items()}; prev=json.loads(STATE_PATH.read_text(encoding="utf-8")) if STATE_PATH.exists() else {}
     source_changed=hashes!=prev.get("hashes",{})
     for k,(rows,amount) in updates.items():
         ds[k]["rows"]=rows; ds[k]["total"]=amount; ds[k]["detail_count"]=len(rows); ds[k]["source_url"]="https://drive.google.com/file/d/"+SOURCES[k]+"/view"; ds[k]["note"]=notes[k]
     ds["financeiro"]["source_name"]="Saldo Financeiro"; ds["repasses"]["missing_values"]=mr
-    pub=ds.get("publicacoes_pagas",{}); pub["rows"]=pubs; pub["total"]=tp; pub["detail_count"]=len(pubs); pub["source_url"]="https://drive.google.com/file/d/"+SOURCES["ordens_bancarias"]+"/view"; pub["note"]=f"Subconjunto derivado das Ordens Bancárias atuais: {len(pubs)} registros. Total: R$ {brl(tp)}."
-    changed=source_changed or any(ds[k].get("rows")!=rows or ds[k].get("total")!=amount or ds[k].get("note")!=notes[k] for k,(rows,amount) in updates.items())
+    pub=ds.get("publicacoes_pagas",{}); pub_note=f"Publicações Pagas: {len(pubs)} registros da planilha de Ordens Bancárias, filtrados pelo código do favorecido iniciado por EX. Total: R$ {brl(tp)}."; pub_url="https://drive.google.com/file/d/"+SOURCES["ordens_bancarias"]+"/view"; pub_changed=pub.get("rows")!=pubs or pub.get("total")!=tp or pub.get("note")!=pub_note or pub.get("source_url")!=pub_url; pub["rows"]=pubs; pub["total"]=tp; pub["detail_count"]=len(pubs); pub["source_url"]=pub_url; pub["source_name"]="ORDEM BANCARIAS EMITIDAS.csv"; pub["note"]=pub_note
+    ds["ordens_bancarias"]["source_name"]="ORDEM BANCARIAS EMITIDAS.csv"
+    changed=source_changed or pub_changed or any(ds[k].get("rows")!=rows or ds[k].get("total")!=amount or ds[k].get("note")!=notes[k] for k,(rows,amount) in updates.items())
     old_rep=json.loads(REPASSES_PATH.read_text(encoding="utf-8")) if REPASSES_PATH.exists() else {}; rep_data={"rows":rep,"total":tr,"missing_values":mr,"note":notes["repasses"]}; changed=changed or old_rep!=rep_data
     if not changed:
         print(json.dumps({"status":"SEM_ALTERACOES","changed":False,"generated_at":data.get("generated_at"),"fontes_alteradas":[]},ensure_ascii=False)); return
