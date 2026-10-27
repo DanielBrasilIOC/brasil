@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Painel Financeiro e Orçamentário IOC</title>
+<style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#f3f6f9}iframe{display:block;width:100%;height:100%;border:0}</style>
+</head>
+<body>
+<iframe id="dashboard" src="dashboard-v2.html?v=202610271657-hide-neccor" title="Painel Financeiro e Orçamentário IOC"></iframe>
+<script>
+const frame=document.getElementById('dashboard');
+frame.addEventListener('load',()=>{try{
+  const doc=frame.contentDocument;if(!doc||!doc.body)return;
+  const title='Painel Financeiro e Orçamentário IOC';
+  const brand=doc.querySelector('.brand h1');if(brand&&brand.textContent!==title)brand.textContent=title;
+  const heading=doc.getElementById('title');if(heading&&heading.textContent.replace(/\s+/g,' ').trim()!==title)heading.textContent=title;
+  if(doc.title!==title)doc.title=title;
+  const style=doc.createElement('style');
+  style.textContent='#details[data-dataset="empenhos"] th[data-neccor-hidden],#details[data-dataset="empenhos"] td[data-neccor-hidden]{display:none!important}';
+  doc.head.appendChild(style);
+  const hideNeCcor=()=>{
+    const details=doc.getElementById('details');
+    if(!details||details.dataset.dataset!=='empenhos')return;
+    details.querySelectorAll('table').forEach(table=>{
+      const headers=Array.from(table.querySelectorAll('thead th'));
+      headers.forEach((th,i)=>{
+        const label=th.textContent.replace(/\s+/g,' ').trim().toUpperCase();
+        if(label==='NE CCOR'||label==='NE C COR'||label==='NECCOR'){
+          th.dataset.neccorHidden='1';
+          table.querySelectorAll('tbody tr').forEach(tr=>{if(tr.children[i])tr.children[i].dataset.neccorHidden='1'});
+        }
+      });
+    });
+  };
+  hideNeCcor();
+  new MutationObserver(hideNeCcor).observe(doc.body,{subtree:true,childList:true});
+}catch(e){console.error('Ajuste do painel não aplicado',e)}});
+</script>
+</body>
+</html>
