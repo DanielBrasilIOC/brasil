@@ -73,30 +73,7 @@ frame.addEventListener('load',()=>{try{
       });
     });
 
-    let panel=details.querySelector('.empenhos-custom-filters');
-    if(!panel){
-      panel=doc.createElement('div');panel.className='empenhos-custom-filters';panel.innerHTML=`
-        <label>Pesquisar empenho ou fornecedor<input id="empenhosFilterQuery" type="search" placeholder="Filtrar por empenho ou fornecedor"></label>
-        <button id="empenhosClearFilters" type="button">Limpar filtro</button>`;
-      const target=details.querySelector('.detail-filters')||details.querySelector('.filters')||details.firstElementChild;
-      if(target&&target.parentNode)target.parentNode.insertBefore(panel,target);else details.prepend(panel);
-      const applyRows=()=>{
-        const q=norm(panel.querySelector('#empenhosFilterQuery')?.value);
-        details.querySelectorAll('table').forEach(table=>{
-          const hs=Array.from(table.querySelectorAll('thead th')).map(x=>norm(x.textContent));
-          const ei=hs.findIndex(h=>h.includes('EMPENHO')||h==='NE CCOR'||h==='NE C COR'||h==='NECCOR');
-          const fi=hs.findIndex(h=>h.includes('FORNECEDOR')||h.includes('FAVORECIDO')||h.includes('CNPJ'));
-          table.querySelectorAll('tbody tr').forEach(tr=>{
-            const cells=Array.from(tr.children);
-            const ev=ei>=0?norm(cells[ei]?.textContent):'';
-            const fv=fi>=0?norm(cells[fi]?.textContent):'';
-            tr.style.display=(!q||ev.includes(q)||fv.includes(q))?'':'none';
-          });
-        });
-      };
-      panel.querySelector('#empenhosFilterQuery').addEventListener('input',applyRows);
-      panel.querySelector('#empenhosClearFilters').addEventListener('click',()=>{panel.querySelector('#empenhosFilterQuery').value='';applyRows()});
-    }
+    // Usar somente o filtro nativo #empenhosFilters, que já pesquisa empenho OU fornecedor.
   };
 
   applyEmpenhos();
