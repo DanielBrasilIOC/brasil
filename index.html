@@ -20,6 +20,8 @@ frame.addEventListener('load',()=>{try{
   const style=doc.createElement('style');
   style.textContent=`
     th.neccor-hidden,td.neccor-hidden{display:none!important}
+    #details[data-dataset="empenhos"] #empenhosFilters{display:none!important}
+    #details[data-dataset="empenhos"] .empenhos-custom-filters{display:flex!important}
     #details[data-dataset="empenhos"] table thead input,#details[data-dataset="empenhos"] table thead select,#details[data-dataset="empenhos"] table thead label{display:none!important}
     #details[data-dataset="empenhos"] table thead .filter,#details[data-dataset="empenhos"] table thead [class*="filter"]{display:none!important}
     .empenhos-custom-filters{display:flex;flex-wrap:wrap;gap:9px;align-items:end;margin:0 0 12px;padding:12px;background:#f7fafb;border:1px solid #e0e8ee;border-radius:12px}
