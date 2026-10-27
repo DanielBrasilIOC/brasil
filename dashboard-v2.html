@@ -700,7 +700,7 @@ function detail(id){
    '<article class="kpi"><div class="label">Registros</div><div class="value">'+I(count)+'</div><div class="hint">Quantidade de registros detalhados na base</div></article>'+
    (String(id).toLowerCase().includes('empenho')||String(id).toLowerCase()==='repasses'?'':'<article class="kpi"><div class="label">FONTE DE DADOS SIAFI</div><div class="value" style="font-size:14px;line-height:1.4;white-space:normal">Todas as fontes de dados são do SIAFI.</div></article>');
  }
- const empenhoInput=document.getElementById('filterEmpenho'),fornecedorInput=document.getElementById('filterFornecedor');if(empenhoInput)empenhoInput.oninput=drawTable;if(fornecedorInput)fornecedorInput.oninput=drawTable;const clearEmpenhos=document.getElementById('clearEmpenhosFilters');if(clearEmpenhos)clearEmpenhos.onclick=()=>{if(empenhoInput)empenhoInput.value='';if(fornecedorInput)fornecedorInput.value='';drawTable()};
+ if(empenhoInput)empenhoInput.oninput=drawTable;if(fornecedorInput)fornecedorInput.oninput=drawTable;const clearEmpenhos=document.getElementById('clearEmpenhosFilters');if(clearEmpenhos)clearEmpenhos.onclick=()=>{if(empenhoInput)empenhoInput.value='';if(fornecedorInput)fornecedorInput.value='';drawTable()};
  if(search)search.oninput=drawTable;
  if(fieldSelect)fieldSelect.onchange=drawTable;
  if(obFilterValue)obFilterValue.oninput=drawTable;if(obFilterField)obFilterField.onchange=drawTable;
