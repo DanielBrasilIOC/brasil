@@ -682,9 +682,7 @@ function detail(id){
  const title=document.getElementById('detailTitle');
  const note=document.getElementById('detailNote');
  const search=document.getElementById('q');
- let fieldSelect=document.getElementById('field');
- if(id==='empenhos'){if(fieldSelect)fieldSelect.remove();fieldSelect=null;}
- else if(!fieldSelect){fieldSelect=document.createElement('select');fieldSelect.id='field';fieldSelect.innerHTML='<option value="">Todos os campos</option>';const filterBar=document.querySelector('.detail-filters');if(filterBar)filterBar.appendChild(fieldSelect);}
+ const fieldSelect=document.getElementById('field');
  const kpis=document.getElementById('detailKpis');
  if(title)title.textContent=d.title||id;
  if(note){let detailNote=d.note||'Dados detalhados publicados a partir da base de origem.';if(String(id).toLowerCase()==='orcamentario')detailNote='FONTE DE DADOS SIAFI';if(String(id).toLowerCase()==='repasses')detailNote='';if(String(id).toLowerCase().includes('empenho'))detailNote=detailNote.replace(/Fonte\s+SIAFI\s*:\s*[^.]*\.\s*/ig,'').trim();note.textContent=detailNote;}
