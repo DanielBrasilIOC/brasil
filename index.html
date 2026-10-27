@@ -20,8 +20,6 @@ frame.addEventListener('load',()=>{try{
   const style=doc.createElement('style');
   style.textContent=`
     th.neccor-hidden,td.neccor-hidden{display:none!important}
-    #details[data-dataset="empenhos"] #empenhosFilters{display:none!important}
-    #details[data-dataset="empenhos"] .empenhos-custom-filters{display:flex!important}
     #details[data-dataset="empenhos"] table thead input,#details[data-dataset="empenhos"] table thead select,#details[data-dataset="empenhos"] table thead label{display:none!important}
     #details[data-dataset="empenhos"] table thead .filter,#details[data-dataset="empenhos"] table thead [class*="filter"]{display:none!important}
     .empenhos-custom-filters{display:flex;flex-wrap:wrap;gap:9px;align-items:end;margin:0 0 12px;padding:12px;background:#f7fafb;border:1px solid #e0e8ee;border-radius:12px}
@@ -40,18 +38,9 @@ frame.addEventListener('load',()=>{try{
     const details=doc.querySelector('#details[data-dataset="empenhos"]');
     if(!details)return;
 
-    // O filtro nativo duplica o campo personalizado; ocultá-lo diretamente em cada atualização do DOM.
-    // Remover filtros nativos por coluna (Empenho e Fornecedor), preservando o campo único personalizado.
-    details.querySelectorAll('input,select').forEach(el=>{
-      const ph=norm(el.getAttribute('placeholder'));
-      if(ph.includes('FILTRAR POR EMPENHO')||ph.includes('FILTRAR POR FORNECEDOR')){
-        const wrapper=el.closest('label')||el.parentElement;
-        if(wrapper)wrapper.style.setProperty('display','none','important');
-        el.style.setProperty('display','none','important');
-      }
-    });
+    // Manter visível o filtro nativo único: pesquisa empenho OU fornecedor e tem botão Limpar filtro.
     const nativeEmpenhosFilters=details.querySelector('#empenhosFilters');
-    if(nativeEmpenhosFilters){nativeEmpenhosFilters.style.setProperty('display','none','important');nativeEmpenhosFilters.setAttribute('aria-hidden','true');}
+    if(nativeEmpenhosFilters){nativeEmpenhosFilters.style.removeProperty('display');nativeEmpenhosFilters.removeAttribute('aria-hidden');}
 
     // Remove NE CCOR somente da apresentação, preservando integralmente os dados.
     details.querySelectorAll('table').forEach(table=>{
