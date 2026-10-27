@@ -40,6 +40,10 @@ frame.addEventListener('load',()=>{try{
     const details=doc.querySelector('#details[data-dataset="empenhos"]');
     if(!details)return;
 
+    // O filtro nativo duplica o campo personalizado; ocultá-lo diretamente em cada atualização do DOM.
+    const nativeEmpenhosFilters=details.querySelector('#empenhosFilters');
+    if(nativeEmpenhosFilters){nativeEmpenhosFilters.style.setProperty('display','none','important');nativeEmpenhosFilters.setAttribute('aria-hidden','true');}
+
     // Remove NE CCOR somente da apresentação, preservando integralmente os dados.
     details.querySelectorAll('table').forEach(table=>{
       const headers=Array.from(table.querySelectorAll('thead th'));
