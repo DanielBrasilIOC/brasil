@@ -20,10 +20,10 @@ class CsvDecodeTests(unittest.TestCase):
         decoded = sync.decode_csv_bytes(raw)
         self.assertIn("Fundação", decoded)
         self.assertIn("1.234,56", decoded)
-        self.assertNotIn("\\x00", decoded)
+        self.assertNotIn("\x00", decoded)
 
     def test_utf8_com_bom(self):
-        raw = "\\ufeffFavorecido;Valor\\nFundação;12,34".encode("utf-8")
+        raw = "\ufeffFavorecido;Valor\nFundação;12,34".encode("utf-8")
         decoded = sync.decode_csv_bytes(raw)
         self.assertIn("Favorecido", decoded)
         self.assertIn("Fundação", decoded)
@@ -34,7 +34,7 @@ class CsvDecodeTests(unittest.TestCase):
 
     def test_codificacao_invalida_nao_substitui_silenciosamente(self):
         with self.assertRaises(UnicodeDecodeError):
-            sync.decode_csv_bytes(b"\\xff\\xfe")
+            sync.decode_csv_bytes(b"\\xff\\xfe\\x00")
 
 class RowDiffTests(unittest.TestCase):
     def test_inclusao_de_registro(self):
