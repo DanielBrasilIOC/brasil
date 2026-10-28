@@ -579,6 +579,75 @@ thead th{line-height:1.4;letter-spacing:.005em}tbody tr:nth-child(even){backgrou
 .last-updated{align-items:flex-start}
 .last-updated-dot{margin-top:.32em}
 @media(max-width:760px){.last-updated{align-items:flex-start}}
+
+/* Ajustes de responsividade e acabamento — sem alterar dados ou regras de negócio */
+:root{--focus:#6fb8b0}
+html{overflow-x:clip}
+body{min-width:320px;overflow-x:clip}
+button,input,select{max-width:100%}
+button:focus-visible,a:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.kpi,.panel,.source,.priority-wrap,.priority-card{min-width:0}
+.value,.label,.hint,.desc,.sub{overflow-wrap:anywhere}
+#details .scroll,.scroll,.source-correlation-body .scroll{width:100%;max-width:100%;overflow:auto;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch}
+#details table,.source-correlation-body table{width:max-content;min-width:100%}
+#details th,#details td{white-space:nowrap}
+#details td[title],.source-correlation-body td[title]{max-width:320px;overflow:hidden;text-overflow:ellipsis}
+#details .head{flex-wrap:wrap}
+#details .filters{align-items:stretch}
+#details .filters input,#details .filters select{min-width:0}
+.top{min-width:0}
+.actions{flex-wrap:wrap}
+@media(min-width:761px){
+  .shell{grid-template-columns:248px minmax(0,1fr)}
+  aside{width:auto;min-width:0}
+  main{min-width:0}
+  .kpis{grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr))}
+  #details .scroll{max-height:min(58vh,620px)}
+}
+@media(max-width:760px){
+  .shell{display:block;min-width:0}
+  aside{position:relative;z-index:5;padding:12px 12px 8px;gap:9px}
+  .brand{align-items:center;gap:10px;padding:2px 3px 10px}
+  .brand h1{max-width:calc(100vw - 95px);font-size:14px;line-height:1.25}
+  .brand p{font-size:10px}
+  .nav{display:flex;gap:6px;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x proximity;padding:2px 1px 7px;max-width:100%;overscroll-behavior-x:contain}
+  .nav button{scroll-snap-align:start;flex:0 0 auto;max-width:85vw;min-height:40px}
+  main{padding:17px 12px 18px}
+  .top{gap:9px;margin-bottom:13px}
+  .top h2{font-size:clamp(23px,6vw,30px);overflow-wrap:anywhere}
+  .sub{font-size:12px}
+  .actions{display:grid;grid-template-columns:repeat(auto-fit,minmax(125px,1fr));width:100%}
+  .actions .btn{width:100%;min-height:42px}
+  .source{padding:13px 14px}
+  .kpis{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .kpi{min-height:102px;padding:12px}
+  .value{font-size:clamp(16px,4.1vw,21px);letter-spacing:-.025em}
+  .grid,.supplier{grid-template-columns:minmax(0,1fr)}
+  .panel{padding:14px}
+  .panel .head{gap:8px}
+  .filters{display:grid;grid-template-columns:minmax(0,1fr);width:100%}
+  .filters>*{width:100%;min-width:0!important}
+  #details .panel>.head{padding:14px 13px 0}
+  #details .filters,#details .tiny{padding-left:13px;padding-right:13px}
+  #details .scroll{max-height:62vh;margin-top:8px}
+  #details th,#details td{padding:10px 11px}
+  .priority-cards{grid-template-columns:minmax(0,1fr)}
+  .repasses-total{grid-template-columns:minmax(0,1fr)}
+  .expense-folders{grid-template-columns:minmax(0,1fr)}
+  .supplier-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .flow{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .foot{font-size:10px;line-height:1.6}
+}
+@media(max-width:420px){
+  main{padding-right:10px;padding-left:10px}
+  .kpis{grid-template-columns:minmax(0,1fr)}
+  .kpi{min-height:88px}
+  .supplier-kpis,.flow{grid-template-columns:minmax(0,1fr)}
+  .priority-card{padding:11px}
+  #details .panel>.head{padding-right:10px;padding-left:10px}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
 </style></head><body><div class="shell"><aside><div class="brand" role="button" tabindex="0" title="Voltar à Visão executiva" aria-label="Voltar à Visão executiva" onclick="show('visao')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();show('visao')}" style="cursor:pointer"><div class="mark" aria-hidden="true">IOC</div><div><h1>Painel Financeiro<br><span style="white-space:nowrap">e Orçamentário IOC</span></h1><p>Instituto Oswaldo Cruz</p></div></div><div class="nav" id="nav"></div><div class="side">Transparência e acompanhamento<br>dos dados financeiros do IOC.</div></aside><main><header class="top"><div><div class="ey">Gestão • Finanças • Orçamento</div><h2 id="title">Painel Financeiro&nbsp;e Orçamentário IOC</h2><p class="sub">Instituto Oswaldo Cruz</p><p class="last-updated" id="dashboardPublishedAt" role="status"><span class="last-updated-dot" aria-hidden="true"></span><strong>Painel atualizado em:</strong> verificando publicação…</p></div><div class="actions"><div class="d1-notice" role="note" aria-label="Aviso sobre a atualização dos dados"><span class="d1-icon" aria-hidden="true">i</span><div><strong>Defasagem dos dados: D-1</strong><p>Para fins analíticos, os dados desta tela possuem D-1 (um dia de atraso).</p></div></div></div></header><div class="status" id="status">Carregando dados…</div><section id="overview"><div class="source executive-intro"><strong>Resumo executivo</strong><div class="desc">Indicadores consolidados das seis áreas do painel, apresentados sem filtros e sem repetição de informações.</div></div><div class="kpis executive-kpis" id="kpis"></div><div id="integrityAudit" class="hide" aria-hidden="true"></div><div class="panel hide" aria-hidden="true"><div id="execIndicators"></div><div id="ordersSourcePie"></div><div id="sourceCorrelationBody"></div><div id="alerts"></div></div></section><section id="details" class="hide"><div class="kpis" id="detailKpis"></div><div class="panel"><div class="head"><div><h3 id="detailTitle"></h3><p class="desc" id="detailNote"></p></div><button class="btn" id="clearDetail" type="button" style="display:none;flex:0 0 auto">Limpar pesquisa</button></div><div class="filters detail-filters" style="margin:12px 0"><input id="q" style="min-width:260px" placeholder="Pesquisar…"><select id="field"><option value="">Todos os campos</option></select></div><div id="empenhosFilters" class="empenhos-filters" style="display:none;margin:12px 0"><label>Pesquisar empenho ou fornecedor<input id="filterEmpenho" type="search" placeholder="Filtrar por empenho ou fornecedor"></label><button class="btn" id="clearEmpenhosFilters" type="button">Limpar filtro</button></div><div class="ob-filters" id="obFilters" style="margin:12px 0;display:none"><label class="ob-filter-label" for="obFilterField">Escolha o campo para filtrar<select id="obFilterField" aria-label="Campo que deseja filtrar"><option value="favorecido">Favorecido</option><option value="data_pagamento">Data de pagamento</option><option value="valor">Valor</option></select></label><label class="ob-filter-label" for="obFilterValue">Digite o que deseja localizar<input id="obFilterValue" type="search" placeholder="Digite o termo do filtro…" aria-label="Valor a pesquisar"></label></div><div class="repasses-filters" id="repassesFilters" style="display:none;margin:12px 0"><label for="filterProcesso">Processo<input id="filterProcesso" type="search" placeholder="Pesquisar processo"></label><label for="filterNumeroNe">Número da solicitação<input id="filterNumeroNe" type="search" placeholder="Pesquisar número da solicitação"></label><label for="filterFornecedor">Fornecedor<input id="filterFornecedor" type="search" placeholder="Pesquisar fornecedor"></label></div><div id="expenseFolders" class="hide"></div><div class="tiny" id="count"></div><div class="scroll" id="detailTableWrap"><table><thead id="thead"></thead><tbody id="tbody"></tbody></table></div></div></section><footer class="foot"><span class="foot-brand">Instituto Oswaldo Cruz • Painel Financeiro&nbsp;e Orçamentário IOC</span><span class="foot-credit"><strong>Desenvolvimento e Suporte</strong><span>Daniel Moura Brasil · SEGEF-IOC</span></span><span class="foot-version">Versão 2.0</span><span id="updated"></span></footer></main></div><script src="./rap-thermometer.js"></script>
 <script>
 const F=n=>'R$ '+new Intl.NumberFormat('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2}).format(Number(n)||0),I=n=>new Intl.NumberFormat('pt-BR').format(Number(n)||0),N=v=>{if(typeof v==='number')return Number.isFinite(v)?v:0;let s=String(v??'').trim().replace(/^R\$\s*/,'').replace(/\s/g,'');if(!s)return 0;if(s.includes(','))s=s.replace(/\./g,'').replace(',','.');let n=Number(s);return Number.isFinite(n)?n:0},E=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])),L=s=>String(s??'').toLocaleLowerCase('pt-BR');let data,active='visao',rows=[];
