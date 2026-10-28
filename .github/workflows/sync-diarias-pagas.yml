@@ -25,60 +25,33 @@ jobs:
           python - <<'PY'
           import csv, json, re, urllib.request
           from datetime import datetime, timezone
-          from decimal import Decimal
 
           fid = __import__('os').environ['DRIVE_FILE_ID']
-          urls = [
-              f'https://drive.usercontent.google.com/download?id={fid}&export=download&authuser=0&confirm=t',
-              f'https://drive.google.com/uc?export=download&id={fid}'
-          ]
           raw = None
-          for url in urls:
+          for url in [f'https://drive.usercontent.google.com/download?id={fid}&export=download&authuser=0&confirm=t', f'https://drive.google.com/uc?export=download&id={fid}']:
               try:
-                  req = urllib.request.Request(url, headers={'User-Agent':'Mozilla/5.0'})
-                  with urllib.request.urlopen(req, timeout=60) as r:
-                      b = r.read()
-                  text = b.decode('utf-8-sig')
-                  if not re.search(r'<(?:!doctype|html|head|body|script|meta)\\b', text[:2000], re.I):
-                      raw = text
-                      break
-              except Exception:
-                  try:
-                      text = b.decode('cp1252', errors='replace')
-                      if not re.search(r'<(?:!doctype|html|head|body|script|meta)\\b', text[:2000], re.I):
-                          raw = text
-                          break
-                  except Exception:
-                      pass
-          if raw is None:
-              raise SystemExit('Não foi possível baixar DIARIAS PAGAS.csv do Drive.')
+                  req=urllib.request.Request(url,headers={'User-Agent':'Mozilla/5.0'})
+                  with urllib.request.urlopen(req,timeout=60) as r: b=r.read()
+                  try: text=b.decode('utf-8-sig')
+                  except UnicodeDecodeError: text=b.decode('cp1252',errors='replace')
+                  if not re.search(r'<(?:!doctype|html|head|body|script|meta)\\b',text[:2000],re.I): raw=text; break
+              except Exception: pass
+          if raw is None: raise SystemExit('Não foi possível baixar DIARIAS PAGAS.csv do Drive.')
 
-          lines = raw.splitlines()
-          while lines and not lines[0].strip(): lines.pop(0)
-          if lines and 'DIARIAS PAGAS' in lines[0].upper(): lines.pop(0)
-          reader = csv.DictReader(lines, delimiter=chr(9))
+          lines=raw.splitlines()
+          header_idx=next((i for i,line in enumerate(lines) if 'Favorecido Doc.' in line and 'OB - Valor Linha' in line),None)
+          if header_idx is None: raise SystemExit('Cabeçalho de DIARIAS PAGAS não encontrado.')
+          records=list(csv.reader(lines[header_idx+1:],delimiter=chr(9)))
           rows=[]
-          for r in reader:
-              if not any(str(v or '').strip() for v in r.values()): continue
-              s=str(r.get('OB - Valor Linha','')).replace('R$','').replace('.','').replace(',','.').strip()
-              try: valor=float(Decimal(s))
+          for r in records:
+              if len(r)<6 or not any(x.strip() for x in r): continue
+              s=r[3].replace('R$','').replace('.','').replace(',','.').strip()
+              try: valor=float(s)
               except Exception: continue
-              rows.append({
-                'favorecido':str(r.get('Favorecido Doc.','')).strip(),
-                'data_pagamento':str(r.get('Transação - Dia','')).strip(),
-                'classificacao_orcamentaria':str(r.get('OB - Classificação Orçamentária 1','')).strip(),
-                'valor':valor,
-                'documento':str(r.get('Documento','')).strip(),
-                'observacao':str(r.get('DH - Observação','')).strip()
-              })
+              rows.append({'favorecido':r[0].strip(),'data_pagamento':r[1].strip(),'classificacao_orcamentaria':r[2].strip(),'valor':valor,'documento':r[4].strip(),'observacao':r[5].strip()})
+          if not rows: raise SystemExit('DIARIAS PAGAS foi baixada, mas nenhum registro válido foi encontrado.')
           total=round(sum(x['valor'] for x in rows),2)
-          dataset={
-            'id':'diarias_pagas','title':'Diárias Pagas','short':'Diárias Pagas',
-            'source_name':'DIARIAS PAGAS.csv',
-            'source_url':f'https://drive.google.com/file/d/{fid}/view?usp=drivesdk',
-            'source_modified_at':datetime.now(timezone.utc).isoformat(),
-            'total':total,'detail_count':len(rows),'rows':rows
-          }
+          dataset={'id':'diarias_pagas','title':'Diárias Pagas','short':'Diárias Pagas','source_name':'DIARIAS PAGAS.csv','source_url':f'https://drive.google.com/file/d/{fid}/view?usp=drivesdk','source_modified_at':datetime.now(timezone.utc).isoformat(),'total':total,'detail_count':len(rows),'rows':rows}
           with open('data.json',encoding='utf-8') as f: data=json.load(f)
           data['datasets']=[d for d in data.get('datasets',[]) if d.get('id')!='diarias_pagas']+[dataset]
           data['generated_at']=datetime.now(timezone.utc).isoformat().replace('+00:00','Z')
