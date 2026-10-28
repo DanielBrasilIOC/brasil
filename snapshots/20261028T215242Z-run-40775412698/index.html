@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Painel Financeiro e Orçamentário IOC</title>
+<style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#f3f6f9}iframe{display:block;width:100%;height:100%;border:0}</style>
+</head>
+<body>
+<iframe id="dashboard" src="dashboard-v2.html?v=202610282125-bolsistas-pagos" title="Painel Financeiro e Orçamentário IOC"></iframe>
+<script>
+const frame=document.getElementById('dashboard');
+frame.addEventListener('load',()=>{try{
+  const doc=frame.contentDocument;if(!doc||!doc.body)return;
+  const title='Painel Financeiro e Orçamentário IOC';
+  const brand=doc.querySelector('.brand h1');if(brand&&brand.textContent!==title)brand.textContent=title;
+  const heading=doc.getElementById('title');if(heading&&heading.textContent.replace(/\s+/g,' ').trim()!==title)heading.textContent=title;
+  if(doc.title!==title)doc.title=title;
+  const style=doc.createElement('style');style.textContent=`th.neccor-hidden,td.neccor-hidden{display:none!important}.executive-extra-kpis{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:14px}.executive-extra-kpis .kpi{min-height:132px;padding:20px;background:linear-gradient(145deg,#fff,#f9fcfd);border:1px solid #e0e8ed;border-radius:16px;box-shadow:0 8px 24px rgba(19,55,78,.055)}.executive-extra-kpis .label{font-size:12px;font-weight:750;color:#687d8b}.executive-extra-kpis .value{font-size:clamp(20px,2vw,28px);font-weight:820;color:#173b53;margin:9px 0 6px}.executive-extra-kpis .hint{color:#6a7f8d;font-size:12px}.extra-detail-panel{margin-top:14px;padding:20px;background:#fff;border:1px solid #e0e8ed;border-radius:16px;box-shadow:0 8px 24px rgba(19,55,78,.055)}.extra-detail-panel h3{margin:0;color:#153b57;font-size:15px}.extra-detail-panel p{color:#667b89;font-size:12px;line-height:1.55}@media(max-width:700px){.executive-extra-kpis{grid-template-columns:1fr}.executive-extra-kpis .kpi{min-height:105px;padding:14px}.extra-detail-panel{padding:14px}}`;doc.head.appendChild(style);
+  const norm=s=>(s||'').replace(/\s+/g,' ').trim().toUpperCase();
+  const applyUI=()=>{
+    const details=doc.querySelector('#details[data-dataset="empenhos"]');
+    if(details){details.querySelectorAll('table').forEach(table=>{Array.from(table.querySelectorAll('thead th')).forEach((th,i)=>{if(norm(th.textContent).includes('NE CCOR')||norm(th.textContent).includes('NECCOR')){th.classList.add('neccor-hidden');table.querySelectorAll('tbody tr').forEach(tr=>{if(tr.children[i])tr.children[i].classList.add('neccor-hidden')})}})});}
+    const repasses=doc.querySelector('#details[data-dataset="repasses"]');
+    if(repasses){repasses.querySelectorAll('th').forEach(th=>{if(/nº?\s*ne|numero\s*ne|número\s*ne|número da solicitação|numero da solicitacao/i.test(th.textContent))th.textContent='Número NE'});repasses.querySelectorAll('input').forEach(inp=>{if(/numero\s*ne|número\s*ne|numero da solicitacao|número da solicitação/i.test((inp.id||'')+' '+(inp.placeholder||'')+' '+(inp.getAttribute('aria-label')||''))){inp.placeholder='Pesquisar Número NE';inp.setAttribute('aria-label','Número NE')}});}
+  };
+  const addExecutiveExtras=async()=>{const kpis=doc.getElementById('kpis');if(!kpis)return;Array.from(kpis.querySelectorAll('.kpi')).forEach(el=>{const label=norm(el.querySelector('.label')?.textContent);if(label==='PUBLICAÇÕES PAGAS'||label==='DIÁRIAS PAGAS')el.remove()});let payload;try{const r=await fetch('./data.json?ts='+Date.now(),{cache:'no-store'});if(!r.ok)return;payload=await r.json()}catch(e){return}const ds=Array.isArray(payload.datasets)?payload.datasets:[],pub=ds.find(d=>d.id==='publicacoes_pagas'),dia=ds.find(d=>d.id==='diarias_pagas');const money=n=>'R$ '+new Intl.NumberFormat('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2}).format(Number(n)||0);const total=d=>{if(!d||!Array.isArray(d.rows))return 0;const seen=new Set();return d.rows.reduce((s,r,i)=>{const k=String(r.ob??'').trim()||'__'+i;if(seen.has(k))return s;seen.add(k);let v=r.valor??r.valor_pago??r.valor_diaria??0;if(typeof v==='string'){v=v.replace(/R\$\s*/g,'').replace(/\./g,'').replace(',','.')}return s+(Number(v)||0)},0)};const count=d=>Array.isArray(d?.rows)?d.rows.length:0;let wrap=doc.getElementById('executiveExtraKpis');if(!wrap){wrap=doc.createElement('div');wrap.id='executiveExtraKpis';wrap.className='executive-extra-kpis';kpis.parentNode.insertBefore(wrap,kpis.nextSibling)}wrap.innerHTML='<article class="kpi"><div class="label">Publicações Pagas</div><div class="value">'+(pub?money(total(pub)):'Base não publicada')+'</div><div class="hint">'+(pub?count(pub)+' registros da base de ordens bancárias':'A base de Publicações Pagas não está disponível nesta publicação.')+'</div></article><article class="kpi"><div class="label">Diárias Pagas</div><div class="value">'+(dia?money(total(dia)):'Base não publicada')+'</div><div class="hint">'+(dia?count(dia)+' registros da base de diárias':'A base de Diárias Pagas ainda não está publicada no data.json.')+'</div></article>';let p=doc.getElementById('extraDiariasPanel');if(!p){p=doc.createElement('section');p.id='extraDiariasPanel';doc.getElementById('details').parentNode.appendChild(p)}p.className='extra-detail-panel hide';p.innerHTML='<div class="head"><div><h3>Diárias Pagas</h3><p class="desc">Registros da planilha de diárias pagas.</p></div></div><div class="diarias-filters filters" style="margin:14px 0"><label style="display:grid;gap:5px;flex:1;min-width:200px;font-size:12px;font-weight:700;color:#153b57">Favorecido<input id="diariasFilterFavorecido" type="text" placeholder="Pesquisar favorecido"></label><label style="display:grid;gap:5px;min-width:180px;font-size:12px;font-weight:700;color:#153b57">Data de pagamento<input id="diariasFilterData" type="date"></label><button id="diariasClearFilters" class="btn" type="button">Limpar</button></div><div id="diariasCount" class="tiny" style="margin:8px 0"></div><div class="scroll"><table><thead><tr><th>Favorecido</th><th>Data de pagamento</th><th>Classificação Orçamentária</th><th>Valor</th><th>Documento</th><th>Observação</th></tr></thead><tbody id="diariasRows"><tr><td colspan="6">Carregando dados…</td></tr></tbody></table></div>';};
+  let diariasRows=[];const diariasNorm=s=>(s??'').toString().normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').toLocaleLowerCase('pt-BR').trim();const diariasEsc=s=>String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');const diariasDate=s=>{const v=String(s??'').trim();if(/^\\d{4}-\\d{2}-\\d{2}/.test(v))return v.slice(0,10);const m=v.match(/^(\\d{2})\\/(\\d{2})\\/(\\d{4})/);return m?m[3]+'-'+m[2]+'-'+m[1]:''};const renderDiarias=()=>{const body=doc.getElementById('diariasRows'),count=doc.getElementById('diariasCount');if(!body)return;const fav=diariasNorm(doc.getElementById('diariasFilterFavorecido')?.value),date=doc.getElementById('diariasFilterData')?.value||'';const rows=diariasRows.filter(r=>(!fav||diariasNorm(r.favorecido).includes(fav))&&(!date||diariasDate(r.data_pagamento)===date));body.innerHTML=rows.map(r=>'<tr><td>'+diariasEsc(r.favorecido||'—')+'</td><td>'+diariasEsc(r.data_pagamento||'—')+'</td><td>'+diariasEsc(r.classificacao_orcamentaria||'—')+'</td><td class="money">'+diariasEsc((()=>{let v=r.valor??0;if(typeof v==='string'){v=v.replace(/R\\$\\s*/g,'').replace(/\\./g,'').replace(',','.')}return 'R$ '+new Intl.NumberFormat('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2}).format(Number(v)||0)})())+'</td><td>'+diariasEsc(r.documento||'—')+'</td><td title="'+diariasEsc(r.observacao||'')+'">'+diariasEsc(r.observacao||'—')+'</td></tr>').join('')||'<tr><td colspan="6">Nenhum registro encontrado para os filtros informados.</td></tr>';if(count)count.textContent=rows.length+' de '+diariasRows.length+' registros';};const loadDiariasRows=async()=>{try{const response=await fetch('./data.json?ts='+Date.now(),{cache:'no-store'});if(!response.ok)throw new Error('HTTP '+response.status);const payload=await response.json();const d=(payload.datasets||[]).find(x=>x.id==='diarias_pagas');diariasRows=Array.isArray(d?.rows)?d.rows:[];renderDiarias()}catch(e){const body=doc.getElementById('diariasRows');if(body)body.innerHTML='<tr><td colspan="6">Não foi possível carregar a base de Diárias Pagas.</td></tr>'}};const showExtraDiarias=()=>{const o=doc.getElementById('overview'),d=doc.getElementById('details'),p=doc.getElementById('extraDiariasPanel');if(o)o.classList.add('hide');if(d)d.classList.add('hide');if(p){p.classList.remove('hide');loadDiariasRows();const fav=doc.getElementById('diariasFilterFavorecido'),date=doc.getElementById('diariasFilterData'),clear=doc.getElementById('diariasClearFilters');if(fav)fav.oninput=renderDiarias;if(date)date.onchange=renderDiarias;if(clear)clear.onclick=()=>{if(fav)fav.value='';if(date)date.value='';renderDiarias()}}doc.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('active',b.dataset.x==='diarias_pagas'))};window.showExtraDiarias=showExtraDiarias;
+  applyUI();new MutationObserver(()=>applyUI()).observe(doc.body,{subtree:true,childList:true});
+  // Intercepta a navegação de Diárias Pagas no elemento estável #nav.
+  // A navegação interna recria os botões; por isso o listener fica no contêiner,
+  // em fase de captura, antes do onclick genérico que abre o filtro "Todos os campos".
+  const navEl=doc.getElementById('nav');
+  if(navEl&&!navEl.dataset.diariasOverride){
+    navEl.dataset.diariasOverride='1';
+    navEl.addEventListener('click',ev=>{
+      const button=ev.target&&ev.target.closest?ev.target.closest('button[data-x="diarias_pagas"]'):null;
+      if(!button)return;
+      ev.preventDefault();
+      ev.stopImmediatePropagation();
+      showExtraDiarias();
+    },true);
+  }
+  // Ao voltar à Visão Executiva ou a outra aba, oculta o painel personalizado.
+  const overviewNav=doc.getElementById('nav');
+  if(overviewNav&&!overviewNav.dataset.hideDiariasOnNav){
+    overviewNav.dataset.hideDiariasOnNav='1';
+    overviewNav.addEventListener('click',ev=>{
+      const button=ev.target&&ev.target.closest?ev.target.closest('button[data-x]'):null;
+      if(!button||button.dataset.x==='diarias_pagas')return;
+      const p=doc.getElementById('extraDiariasPanel');
+      if(p)p.classList.add('hide');
+    },true);
+  }
+  const ensureExecutiveExtras=()=>{addExecutiveExtras();};
+  ensureExecutiveExtras();setTimeout(ensureExecutiveExtras,800);setTimeout(ensureExecutiveExtras,1800);
+  const kpis=doc.getElementById('kpis');if(kpis)new MutationObserver(()=>{if(!doc.getElementById('executiveExtraKpis'))ensureExecutiveExtras()}).observe(kpis,{childList:true,subtree:true});
+}catch(e){console.error('Ajuste do painel não aplicado',e)}});
+</script>
+</body>
+</html>
