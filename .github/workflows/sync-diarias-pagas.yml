@@ -18,9 +18,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Localizar DIARIAS PAGAS.csv pelo nome na pasta oficial
+        id: source
+        env:
+          GOOGLE_DRIVE_FOLDER_ID: 1Ae3_31uGRNvfvnN5EuhiNHbk_mdkVg0L
+        run: python .github/scripts/discover_diarias_source.py
+
       - name: Baixar e integrar Diárias Pagas
         env:
-          DRIVE_FILE_ID: 1pIo7jabcLwEjb6OauH847bb3Ifb-lVHV
+          DRIVE_FILE_ID: ${{ steps.source.outputs.file_id }}
         run: |
           python - <<'PY'
           import csv, json, re, urllib.request
