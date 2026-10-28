@@ -183,7 +183,7 @@ def discover_source_ids():
         diarias_id = str(diarias[0].get("id") or "").strip()
         if not diarias_id:
             raise ValueError("DIARIAS PAGAS.csv: ID vazio.")
-        (ROOT / ".diarias_source_id").write_text(diarias_id + "\\n", encoding="utf-8")
+        (ROOT / ".diarias_source_id").write_text(diarias_id + "\n", encoding="utf-8")
     except ValueError as exc:
         # Diagnóstico seguro para descobrir qual variante de página o Drive está servindo.
         expected_names = [name for values in EXPECTED_NAMES.values() for name in values]
@@ -196,7 +196,7 @@ def discover_source_ids():
             "has_login_marker": bool(re.search(r"ServiceLogin|accounts\\.google\\.com", page, re.I)),
             "title": (title_match.group(1)[:180] if title_match else "(sem título)"),
             "sample_around_saldo": [
-                html.unescape(page[max(0, m.start()-100):m.start()+220]).replace("\\n", " ")[:320]
+                html.unescape(page[max(0, m.start()-100):m.start()+220]).replace("\n", " ")[:320]
                 for m in list(re.finditer("Saldo", page, re.I))[:3]
             ],
         }
