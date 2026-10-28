@@ -25,10 +25,8 @@ jobs:
           python - <<'PY'
           import csv, json, re, urllib.request
           from datetime import datetime, timezone
-
-          fid = __import__('os').environ['DRIVE_FILE_ID']
-          raw = None
-          for url in [f'https://drive.usercontent.google.com/download?id={fid}&export=download&authuser=0&confirm=t', f'https://drive.google.com/uc?export=download&id={fid}']:
+          fid=__import__('os').environ['DRIVE_FILE_ID']; raw=None
+          for url in [f'https://drive.usercontent.google.com/download?id={fid}&export=download&authuser=0&confirm=t',f'https://drive.google.com/uc?export=download&id={fid}']:
               try:
                   req=urllib.request.Request(url,headers={'User-Agent':'Mozilla/5.0'})
                   with urllib.request.urlopen(req,timeout=60) as r: b=r.read()
@@ -37,16 +35,12 @@ jobs:
                   if not re.search(r'<(?:!doctype|html|head|body|script|meta)\\b',text[:2000],re.I): raw=text; break
               except Exception: pass
           if raw is None: raise SystemExit('Não foi possível baixar DIARIAS PAGAS.csv do Drive.')
-
-          lines=raw.splitlines()
-          header_idx=next((i for i,line in enumerate(lines) if 'Favorecido Doc.' in line and 'OB - Valor Linha' in line),None)
-          if header_idx is None: raise SystemExit('Cabeçalho de DIARIAS PAGAS não encontrado.')
-          records=list(csv.reader(lines[header_idx+1:],delimiter=chr(9)))
+          lines=raw.splitlines(); hi=next((i for i,line in enumerate(lines) if 'Favorecido Doc.' in line and 'OB - Valor Linha' in line),None)
+          if hi is None: raise SystemExit('Cabeçalho de DIARIAS PAGAS não encontrado.')
           rows=[]
-          for r in records:
+          for r in csv.reader(lines[hi+1:],delimiter=chr(9)):
               if len(r)<6 or not any(x.strip() for x in r): continue
-              s=r[3].replace('R$','').replace('.','').replace(',','.').strip()
-              try: valor=float(s)
+              try: valor=float(r[3].replace('R$','').replace('.','').replace(',','.').strip())
               except Exception: continue
               rows.append({'favorecido':r[0].strip(),'data_pagamento':r[1].strip(),'classificacao_orcamentaria':r[2].strip(),'valor':valor,'documento':r[4].strip(),'observacao':r[5].strip()})
           if not rows: raise SystemExit('DIARIAS PAGAS foi baixada, mas nenhum registro válido foi encontrado.')
@@ -59,14 +53,12 @@ jobs:
           print(f'Diárias Pagas: {len(rows)} registros; total R$ {total:,.2f}'.replace(',','X').replace('.',',').replace('X','.'))
           PY
 
-      - name: Validar e publicar somente se houve mudança
+      - name: Publicar com proteção contra concorrência
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add data.json
-          if git diff --cached --quiet; then
-            echo 'Nenhuma alteração na base de Diárias Pagas.'
-          else
-            git commit -m 'Atualiza Diárias Pagas a partir do Drive'
-            git push
-          fi
+          if git diff --cached --quiet; then echo 'Nenhuma alteração na base de Diárias Pagas.'; exit 0; fi
+          git commit -m 'Atualiza Diárias Pagas a partir do Drive'
+          git pull --rebase origin main
+          git push origin HEAD:main
