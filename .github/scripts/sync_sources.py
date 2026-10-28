@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Sincroniza as seis fontes CSV do Drive, valida registros e valores e atualiza data.json."""
-import csv, hashlib, json, os, re, unicodedata, urllib.parse, urllib.request
+import csv, hashlib, json, os, re, tempfile, unicodedata, urllib.parse, urllib.request
 from datetime import datetime, timezone
 from decimal import Decimal, InvalidOperation
 from pathlib import Path
@@ -38,6 +38,22 @@ def money(v):
     except InvalidOperation: return None
     return float(-abs(n) if neg else n)
 
+def decode_csv_bytes(raw):
+    """Decodifica CSV do Drive respeitando BOM e sem substituir bytes inválidos silenciosamente."""
+    if raw.startswith((b"\xff\xfe", b"\xfe\xff")):
+        text = raw.decode("utf-16")
+    elif raw.startswith(b"\xef\xbb\xbf"):
+        text = raw.decode("utf-8-sig")
+    else:
+        try:
+            text = raw.decode("utf-8")
+        except UnicodeDecodeError:
+            text = raw.decode("cp1252")
+    text = text.replace("\r\n", "\n").replace("\r", "\n")
+    if "\x00" in text:
+        raise ValueError("CSV contém bytes NUL após a decodificação; codificação inesperada.")
+    return text
+
 def download(fid):
     urls=[f"https://drive.usercontent.google.com/download?id={urllib.parse.quote(fid,safe='')}&export=download&authuser=0&confirm=t",f"https://drive.google.com/uc?export=download&id={urllib.parse.quote(fid,safe='')}"]
     errors=[]
@@ -45,15 +61,14 @@ def download(fid):
         try:
             req=urllib.request.Request(u,headers={"User-Agent":"Mozilla/5.0","Accept":"text/csv,text/plain,application/octet-stream,*/*"})
             with urllib.request.urlopen(req,timeout=45) as r: b=r.read()
-            try: s=b.decode("utf-8-sig")
-            except UnicodeDecodeError: s=b.decode("cp1252",errors="replace")
-            if re.search(r"<(?:!doctype|html|head|body|script|meta)\\b",s[:2000],re.I) or "accounts.google.com/ServiceLogin" in s:
+            text=decode_csv_bytes(b)
+            if re.search(r"<(?:!doctype|html|head|body|script|meta)\b",text[:2000],re.I) or "accounts.google.com/ServiceLogin" in text:
                 errors.append("resposta HTML/login"); continue
-            s=s.replace(r"\r\n","\n").replace(r"\n","\n").replace(r"\r","\n").replace(r'\"','"').replace(r"\t","\t")
-            return s
+            if not text.strip():
+                errors.append("arquivo vazio"); continue
+            return text
         except Exception as e: errors.append(str(e))
-    raise RuntimeError("Não foi possível baixar o CSV do Drive: "+" | ".join(errors))
-
+    raise RuntimeError("Não foi possível baixar/decodificar o CSV do Drive: "+" | ".join(errors))
 def table(text, delimiter, tokens):
     candidates=[delimiter]+[d for d in (",",";","\t","|") if d!=delimiter]
     selected=None; rows=[]; hi=None
@@ -90,6 +105,17 @@ def total(rows,key): return round(sum(float(r.get(key) or 0) for r in rows),2)
 def check(ok,msg):
     if not ok: raise ValueError(msg)
 
+def atomic_json_write(path, payload):
+    """Escreve JSON temporário e só troca o destino após gravação completa."""
+    path = Path(path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with tempfile.NamedTemporaryFile("w", encoding="utf-8", dir=path.parent, delete=False) as tmp:
+        tmp.write(json.dumps(payload, ensure_ascii=False, separators=(",", ":")))
+        tmp.flush()
+        os.fsync(tmp.fileno())
+        temp_path = Path(tmp.name)
+    temp_path.replace(path)
+
 def main():
     src={k:download(v) for k,v in SOURCES.items()}
 
@@ -98,7 +124,7 @@ def main():
     empenhos=[]
     for r in a:
         v=money(r[4] if len(r)>4 else None)
-        if v is None: continue
+        check(v is not None, f"Saldo inválido em Empenhos 2026: {r!r}")
         empenhos.append({"empenho":r[0] if len(r)>0 else "","ne_ccor":r[0] if len(r)>0 else "","subitem":r[3] if len(r)>3 else "","natureza":r[3] if len(r)>3 else "","cnpj":r[1] if len(r)>1 else "","fornecedor":r[2] if len(r)>2 else "","observacao":"","fonte_recursos_detalhada":"","saldo":v})
     te=total(empenhos,"saldo"); check(1<=len(empenhos)<=500 and te>=0,f"Validação de Empenhos 2026 falhou: linhas={len(empenhos)}, total={te}")
 
@@ -107,7 +133,7 @@ def main():
     orc=[]
     for r in a:
         v=money(r[7] if len(r)>7 else None)
-        if v is None: continue
+        check(v is not None, f"Saldo inválido em Saldo Orçamentário: {r!r}")
         orc.append({"ug":r[0],"unidade":"","ptres":r[2] if len(r)>2 else "","fonte":r[5] if len(r)>5 else "","descricao_fonte":r[5] if len(r)>5 else "","natureza_codigo":"","natureza":"","ug_responsavel":r[0],"responsavel":"","pi":r[3] if len(r)>3 else "","programa":"","saldo":abs(v)})
     to=total(orc,"saldo"); check(1<=len(orc)<=500 and to>=0,f"Validação orçamentária falhou: linhas={len(orc)}, total={to}")
 
@@ -115,7 +141,7 @@ def main():
     ob=[]
     for r in a:
         v=money(r[5] if len(r)>5 else None)
-        if v is None: continue
+        check(v is not None, f"Valor inválido em Ordens Bancárias: {r!r}")
         ob.append({"ob":r[1] if len(r)>1 else "", "data":r[0] if len(r)>0 else "", "data_pagamento":r[0] if len(r)>0 else "", "processo":r[2] if len(r)>2 else "", "cnpj":r[3] if len(r)>3 else "", "favorecido":r[4] if len(r)>4 else "", "observacao":r[6] if len(r)>6 else "", "valor":v})
     unique_obs={r["ob"] for r in ob}
     tob=total(ob,"valor"); check(1<=len(ob)<=10000 and all(r["valor"] is not None for r in ob) and all(r["ob"] for r in ob) and len(unique_obs)==len(ob),f"Validação de Ordens Bancárias falhou: linhas={len(ob)}, OBs únicas={len(unique_obs)}, total={tob}")
@@ -152,7 +178,8 @@ def main():
     a=table(src["restos"],",",["Empenho","Saldo"]); rap=[]
     for r in a:
         v=money(r[-1]) if r else None
-        if v is None or abs(v)<0.005: continue
+        check(v is not None, f"Saldo inválido em Restos a Pagar: {r!r}")
+        if abs(v)<0.005: continue
         rap.append({"empenho":r[0],"cnpj":"","fornecedor":r[1] if len(r)>1 else "","pi":"","programa":"","autor_emenda":"","natureza_codigo":r[2] if len(r)>2 else "","natureza":r[3] if len(r)>3 else "","saldo":v})
     trp=total(rap,"saldo"); check(1<=len(rap)<=1000 and trp>=0,f"Validação de Restos a Pagar falhou: linhas={len(rap)}, total={trp}")
 
@@ -179,10 +206,15 @@ def main():
     old_rep=json.loads(REPASSES_PATH.read_text(encoding="utf-8")) if REPASSES_PATH.exists() else {}; rep_data={"rows":rep,"total":tr,"missing_values":mr,"note":notes["repasses"]}; changed=changed or old_rep!=rep_data
     if not changed:
         print(json.dumps({"status":"SEM_ALTERACOES","changed":False,"generated_at":data.get("generated_at"),"fontes_alteradas":[]},ensure_ascii=False)); return
-    stamp=datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00","Z"); data["generated_at"]=stamp
-    DATA_PATH.write_text(json.dumps(data,ensure_ascii=False,separators=(",",":")),encoding="utf-8")
-    REPASSES_PATH.write_text(json.dumps(rep_data,ensure_ascii=False,separators=(",",":")),encoding="utf-8")
-    STATE_PATH.write_text(json.dumps({"hashes":hashes},ensure_ascii=False,separators=(",",":")),encoding="utf-8")
+    stamp=datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00","Z")
+    data["generated_at"]=stamp
+    data["source_updated_at"]=stamp[:10]
+    data["status"]="drive_csv_sync_"+stamp[:10]
+    # Só grava após todos os arquivos serem baixados, interpretados e validados.
+    # Escrita atômica evita JSON truncado se o processo for interrompido.
+    atomic_json_write(DATA_PATH, data)
+    atomic_json_write(REPASSES_PATH, rep_data)
+    atomic_json_write(STATE_PATH, {"hashes":hashes})
     print(json.dumps({"status":"ATUALIZADO","changed":True,"generated_at":stamp,"fontes_alteradas":[k for k in hashes if hashes[k]!=prev.get("hashes",{}).get(k)],"fontes":{k:{"registros":len(v[0]),"total":v[1]} for k,v in updates.items()}},ensure_ascii=False))
 
 if __name__=="__main__": main()
