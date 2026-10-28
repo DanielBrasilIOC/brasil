@@ -20,7 +20,11 @@ def resolve_sources():
         raise RuntimeError("A descoberta não retornou exatamente seis IDs distintos.")
     return ids
 SOURCES = resolve_sources()
-LABELS = {"empenhos":"Empenhos","orcamentario":"Orçamentário","ordens_bancarias":"Ordens Bancárias","repasses":"Repasses","financeiro":"Financeiro","restos":"Restos a Pagar"}
+DIARIAS_ID_PATH = ROOT / ".diarias_source_id"
+if not DIARIAS_ID_PATH.exists(): raise RuntimeError("DIARIAS PAGAS.csv não foi descoberta por nome; auditoria bloqueada.")
+SOURCES["diarias"] = DIARIAS_ID_PATH.read_text(encoding="utf-8").strip()
+if not SOURCES["diarias"]: raise RuntimeError("ID de DIARIAS PAGAS.csv vazio; auditoria bloqueada.")
+LABELS = {"empenhos":"Empenhos","orcamentario":"Orçamentário","ordens_bancarias":"Ordens Bancárias","repasses":"Repasses","financeiro":"Financeiro","restos":"Restos a Pagar","diarias":"Diárias Pagas"}
 FIELDS = ["timestamp_utc","run_id","evento","resultado_execucao","fonte","fonte_id","conteudo_alterado","registros","total","registros_adicionados","registros_removidos","registros_alterados","valores_alterados","dashboard_atualizado","publicacao","mensagem"]
 
 def read_json(path, default):
@@ -35,12 +39,13 @@ def snapshot(data):
     out={}
     for d in data.get("datasets",[]) if isinstance(data,dict) else []:
         name=d.get("id"); rows=d.get("rows",[])
-        if name not in SOURCES or not isinstance(rows,list): continue
+        key = "diarias" if name == "diarias_pagas" else name
+        if key not in SOURCES or not isinstance(rows,list): continue
         sigs=[]
         for row in rows:
             raw=json.dumps(row,ensure_ascii=False,sort_keys=True,separators=(",",":"))
             sigs.append(hashlib.sha256(raw.encode("utf-8")).hexdigest())
-        out[name]=sigs
+        out[key]=sigs
     return out
 
 def row_diff(before, after):
@@ -72,7 +77,8 @@ def run_sync():
 
 def source_details(data,name):
     ds={d.get("id"):d for d in data.get("datasets",[])}
-    d=ds.get(name,{})
+    dataset_id = "diarias_pagas" if name == "diarias" else name
+    d=ds.get(dataset_id,{})
     rows=d.get("rows",[])
     return (len(rows) if isinstance(rows,list) else 0,d.get("total",""))
 
