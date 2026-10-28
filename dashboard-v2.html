@@ -867,7 +867,7 @@ async function load(manual=false){
    if(d.id==='financeiro'){
     d.rows=d.rows.map(r=>({...r,saldo:Math.abs(N(r.saldo))}));
     d.total=Number(d.rows.reduce((sum,row)=>sum+N(row.saldo),0).toFixed(2));
-    d.note='O total corresponde à soma dos valores absolutos dos saldos financeiros detalhados. A fonte é exibida como campo informativo; não há filtro por fonte nesta seção.';
+    d.note='O valor total representa a soma dos saldos financeiros detalhados. A fonte pagadora é apresentada para fins de identificação e consulta das informações.';
    }
    if(d.id==='ordens_bancarias'){
     const seen=new Set();
