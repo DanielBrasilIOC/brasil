@@ -78,9 +78,12 @@ def select_sources(files, folder_id):
 
 def fetch_folder_page(folder_id):
     """Tenta endpoints públicos do Drive e só retorna HTML com evidência da pasta."""
+    folder = urllib.parse.quote(folder_id, safe="")
     urls = [
-        "https://drive.google.com/embeddedfolderview?id=" + urllib.parse.quote(folder_id, safe="") + "#list",
-        "https://drive.google.com/drive/folders/" + urllib.parse.quote(folder_id, safe="") + "?usp=sharing",
+        "https://drive.google.com/embeddedfolderview?id=" + folder + "#list",
+        "https://drive.google.com/drive/folders/" + folder + "?usp=sharing",
+        "https://drive.google.com/drive/folders/" + folder,
+        "https://drive.google.com/drive/u/0/folders/" + folder,
     ]
     errors = []
     for url in urls:
