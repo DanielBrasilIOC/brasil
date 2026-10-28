@@ -41,7 +41,7 @@ jobs:
                   else:
                       try: text=b.decode('utf-8')
                       except UnicodeDecodeError: text=b.decode('cp1252')
-                  if not re.search(r'<(?:!doctype|html|head|body|script|meta)\\b',text[:2000],re.I): raw=text; break
+                  if not re.search(r'<(?:!doctype|html|head|body|script|meta)\b',text[:2000],re.I): raw=text; break
               except Exception: pass
           if raw is None: raise SystemExit('Não foi possível baixar DIARIAS PAGAS.csv do Drive.')
           lines=raw.splitlines(); hi=next((i for i,line in enumerate(lines) if 'Favorecido Doc.' in line and 'OB - Valor Linha' in line),None)
