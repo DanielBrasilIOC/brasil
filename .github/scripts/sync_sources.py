@@ -7,7 +7,7 @@ from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[2]
 DATA_PATH=ROOT/"data.json"; REPASSES_PATH=ROOT/"repasses.json"; STATE_PATH=ROOT/"source_state.json"
-CACHE_PATH=ROOT/".drive_source_ids.json"
+CACHE_PATH=ROOT/".drive_source_ids.json"; DIARIAS_ID_PATH=ROOT/".diarias_source_id"
 KEYS=("empenhos","orcamentario","ordens_bancarias","repasses","financeiro","restos")
 AUDIT={}
 
@@ -18,6 +18,9 @@ def sources():
         raise RuntimeError("A descoberta não retornou exatamente seis IDs distintos.")
     return x
 SOURCES=sources()
+if not DIARIAS_ID_PATH.exists(): raise RuntimeError("DIARIAS PAGAS.csv não foi localizada pelo nome na pasta oficial.")
+DIARIAS_ID=DIARIAS_ID_PATH.read_text(encoding="utf-8").strip()
+if not DIARIAS_ID: raise RuntimeError("ID de DIARIAS PAGAS.csv vazio após descoberta por nome.")
 
 def clean(v):
     s=str(v or "").replace("\ufeff","").strip()
@@ -117,7 +120,7 @@ def atomic_json_write(path, payload):
     temp_path.replace(path)
 
 def main():
-    src={k:download(v) for k,v in SOURCES.items()}
+    src={k:download(v) for k,v in SOURCES.items()}; src["diarias"]=download(DIARIAS_ID)
 
     # Empenhos 2026: exportação atual tem 5 campos: NE CCor, CNPJ, favorecido, natureza, saldo.
     a=table(src["empenhos"],"\t",["NE CCor","Saldo - Moeda Origem"])
@@ -182,6 +185,21 @@ def main():
         if abs(v)<0.005: continue
         rap.append({"empenho":r[0],"cnpj":"","fornecedor":r[1] if len(r)>1 else "","pi":"","programa":"","autor_emenda":"","natureza_codigo":r[2] if len(r)>2 else "","natureza":r[3] if len(r)>3 else "","saldo":v})
     trp=total(rap,"saldo"); check(1<=len(rap)<=1000 and trp>=0,f"Validação de Restos a Pagar falhou: linhas={len(rap)}, total={trp}")
+
+    # Diárias Pagas: fonte SERPRO separada, localizada pelo nome na pasta oficial do Drive.
+    dl=src["diarias"].splitlines()
+    dhi=next((i for i,line in enumerate(dl) if "Favorecido Doc." in line and "OB - Valor Linha" in line),None)
+    check(dhi is not None,"Cabeçalho oficial de DIARIAS PAGAS.csv não encontrado.")
+    diarias=[]
+    for r in csv.reader(dl[dhi+1:],delimiter="\\t"):
+        if not r or not any(clean(x) for x in r): continue
+        if clean(r[0]).upper()=="TOTAL": continue
+        check(len(r)>=6, f"Registro incompleto em DIARIAS PAGAS.csv: {r!r}")
+        v=money(r[3])
+        check(v is not None, f"Valor inválido em DIARIAS PAGAS.csv: {r!r}")
+        diarias.append({"favorecido":clean(r[0]),"data_pagamento":clean(r[1]),"classificacao_orcamentaria":clean(r[2]),"valor":v,"documento":clean(r[4]),"observacao":clean(r[5])})
+    td=total(diarias,"valor")
+    check(1<=len(diarias)<=1000 and all(r["favorecido"] for r in diarias),f"Validação de Diárias Pagas falhou: linhas={len(diarias)}, total={td}")
 
     updates={"financeiro":(fin,tf),"restos":(rap,trp),"empenhos":(empenhos,te),"orcamentario":(orc,to),"repasses":(rep,tr),"ordens_bancarias":(ob,tob)}
     data=json.loads(DATA_PATH.read_text(encoding="utf-8")); data["datasets"]=[d for d in data.get("datasets",[]) if d.get("id")!="documentos_habeis_pendentes"]
