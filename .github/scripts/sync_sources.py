@@ -141,8 +141,8 @@ def main():
     fin=[]
     for raw in fl[hi+1:]:
         r=[clean(x) for x in raw]
-        if len(r)<6 or not r[0] or not r[1] or not norm(r[4]).startswith("SALDOMOEDAORIGEM"): continue
-        v=money(r[5]); check(v is not None and r[3],"Saldo financeiro inválido ou sem vinculação.")
+        if len(r)<7 or not r[0] or not r[1] or not norm(r[5]).startswith("SALDOMOEDAORIGEM"): continue
+        v=money(r[6]); check(v is not None and r[3],"Saldo financeiro inválido ou sem vinculação.")
         fin.append({"uge":r[0],"unidade":"IOC","fonte":r[1],"vinculo":r[3],"saldo":abs(v)})
     tf=total(fin,"saldo"); check(1<=len(fin)<=100 and all(x["vinculo"] for x in fin),f"Validação do saldo financeiro falhou: linhas={len(fin)}, total={tf}")
 
