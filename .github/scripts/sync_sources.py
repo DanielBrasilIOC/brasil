@@ -157,9 +157,9 @@ def main():
         si=next((i for i,v in enumerate(r) if "AGUARDANDOORCAMENTO" in norm(v) or "AGUARDANDOORAMENTO" in norm(v)),None)
         if si is None: continue
         vi=next((i for i in range(len(r)-1,-1,-1) if money(r[i]) is not None),None)
-        if vi is None: continue
+        check(vi is not None, f"Valor ausente ou inválido em Aguardando Repasse Orçamentário: {r!r}")
         rep.append({"processo":r[0] if r else "","licitacao":"","fornecedor":r[7] if len(r)>7 else "","sub_grupo":r[3] if len(r)>3 else "","elemento_despesa":r[1] if len(r)>1 else "","elemento":r[2] if len(r)>2 else "","sub_grupo_despesa":r[3] if len(r)>3 else "","vigencia":r[4] if len(r)>4 else "","situacao_prioridade":r[5] if len(r)>5 else "","solicitacao_ne":"","numero_ne":"","status_empenho":r[si],"fornecedores":r[7] if len(r)>7 else "","saldo":money(r[vi])})
-    tr=total(rep,"saldo"); mr=sum(x["saldo"] is None for x in rep); check(1<=len(rep)<=1000 and mr<=5,f"Validação de repasses falhou: linhas={len(rep)}, total={tr}, sem valor={mr}")
+    tr=total(rep,"saldo"); mr=sum(x["saldo"] is None for x in rep); check(1<=len(rep)<=1000 and mr==0,f"Validação de repasses falhou: linhas={len(rep)}, total={tr}, sem valor={mr}")
 
     fl=[]
     for line in src["financeiro"].splitlines():
