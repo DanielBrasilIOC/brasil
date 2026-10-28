@@ -1,0 +1,928 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Painel Financeiro e Orçamentário IOC</title><style>:root{--n:#163b5c;--b:#2d6587;--t:#438b89;--m:#6d7e8b;--bg:#f3f6f9;--l:#e1e8ee;--r:#b33b3b;--w:#a46a16}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:#243746;font:14px/1.5 Inter,system-ui,Arial}.shell{display:grid;grid-template-columns:235px 1fr;min-height:100vh}aside{background:linear-gradient(180deg,#153754,#1c4b69);color:#fff;padding:22px 14px;display:flex;flex-direction:column;gap:20px}.brand{display:flex;gap:10px;align-items:center;padding:4px}.mark{width:42px;height:42px;border:1px solid #83a7bb;border-radius:12px;display:grid;place-items:center;font-weight:800;background:#ffffff12}.brand h1{font-size:14px;line-height:1.2;margin:0}.brand p{font-size:11px;color:#b7cedb;margin:4px 0}.nav{display:grid;gap:5px}.nav button{border:0;background:transparent;color:#d8e5ed;text-align:left;padding:11px;border-radius:9px;cursor:pointer}.nav button.active,.nav button:hover{background:#ffffff19;color:#fff}.side{margin-top:auto;border-top:1px solid #ffffff24;padding:15px 8px;color:#b7cedb;font-size:11px}main{padding:26px clamp(14px,3vw,36px);min-width:0}.top{display:flex;justify-content:space-between;gap:15px;align-items:center;margin-bottom:14px}.ey{font-size:10px;letter-spacing:1.4px;text-transform:uppercase;color:var(--t);font-weight:800}.top h2{margin:4px 0;color:var(--n);font-size:clamp(23px,3vw,31px)}.sub,.desc,.hint,.tiny{color:var(--m);font-size:12px}.sub{margin:0}.actions,.filters{display:flex;gap:7px;flex-wrap:wrap}.btn,select,input{border:1px solid var(--l);border-radius:8px;background:#fff;color:#243746;padding:9px 10px;font:12px system-ui}.btn{font-weight:700;cursor:pointer}.status{display:inline-block;background:#e5f2ec;color:#527365;border-radius:99px;padding:6px 10px;font-size:11px;margin-bottom:14px}.source{background:linear-gradient(110deg,#eaf3f6,#f7fafb);border:1px solid #cddfe7;border-radius:13px;padding:14px 17px;margin-bottom:14px}.source strong{color:var(--n)}.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:11px;margin-bottom:14px}.kpi,.panel{background:#fff;border:1px solid var(--l);border-radius:13px;box-shadow:0 8px 25px #1b394f0a}.kpi{padding:14px}.label{font-size:11px;color:var(--m);font-weight:700}.value{font-size:clamp(17px,2vw,24px);font-weight:800;color:var(--n);margin:7px 0}.grid{display:grid;grid-template-columns:1.2fr 1fr;gap:13px;margin-bottom:13px}.panel{padding:17px;min-width:0}.head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.panel h3{margin:0;color:var(--n);font-size:15px}.badge{padding:5px 8px;border-radius:99px;background:#eef4f7;color:var(--b);font-size:10px;font-weight:800;white-space:nowrap}.badge.w{background:#fff4df;color:var(--w)}.badge.r{background:#fdeaea;color:var(--r)}.badge.ok{background:#e7f4ee;color:#28745b}.flow{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}.stage{background:#f7fafb;border:1px solid var(--l);border-radius:11px;padding:12px;min-height:100px}.stage .value{font-size:19px}.empty{padding:22px;text-align:center;border:1px dashed #cbd7de;border-radius:10px;background:#fafcfd;color:var(--m);margin-top:10px}.empty strong{display:block;color:var(--n);margin-bottom:4px}.donut{display:flex;align-items:center;gap:20px;min-height:175px}.ring{width:140px;height:140px;border-radius:50%;display:grid;place-items:center;flex:none}.ring:after{content:'';width:82px;height:82px;background:#fff;border-radius:50%}.legend{display:grid;gap:8px;font-size:12px}.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;background:var(--t)}.red{background:var(--r)}.gold{background:#c49a55}.alert{padding:10px 12px;border:1px solid var(--l);border-left:4px solid var(--b);border-radius:8px;background:#fbfcfd;margin-top:8px}.alert.r{border-left-color:var(--r);background:#fff8f8}.alert.w{border-left-color:var(--w);background:#fffbf3}.scroll{overflow:auto;max-height:310px}table{border-collapse:collapse;width:100%;font-size:12px;white-space:nowrap}th{position:sticky;top:0;background:#f5f8fa;color:#5e7280;text-align:left;padding:10px;border-bottom:1px solid var(--l)}td{padding:10px;border-bottom:1px solid #edf1f4;max-width:430px;overflow:hidden;text-overflow:ellipsis}.money{text-align:right;font-weight:750;color:var(--n)}.source-link{display:none!important}.chart{min-height:160px;overflow:auto}.chart svg{width:100%;min-width:420px}.supplier{display:grid;grid-template-columns:1fr 1.8fr;gap:12px}.supplier-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.expense-folders{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:10px;margin:14px 0}.expense-folder{background:#f8fafb;border:1px solid var(--l);border-radius:12px;overflow:hidden}.expense-folder summary{list-style:none;cursor:pointer;padding:13px 14px;display:flex;justify-content:space-between;gap:10px;align-items:center}.expense-folder summary::-webkit-details-marker{display:none}.expense-folder summary:hover{background:#f2f7f9}.expense-folder .folder-name{font-weight:800;color:var(--n)}.expense-folder .folder-meta{display:block;color:var(--m);font-size:11px;margin-top:3px}.expense-folder .folder-total{font-weight:850;color:var(--n);white-space:nowrap}.expense-folder .folder-body{padding:0 12px 12px;border-top:1px solid var(--l)}.expense-folder table{font-size:11px}.expense-folder th,.expense-folder td{padding:8px}.expense-folder .folder-bar{height:5px;background:#e6eef2;border-radius:99px;overflow:hidden;margin:0 14px 12px}.expense-folder .folder-bar span{display:block;height:100%;background:var(--t);border-radius:99px}.foot{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;color:#8795a0;font-size:10px;padding:14px 2px}.hide{display:none!important}@media(max-width:1000px){.shell{grid-template-columns:190px 1fr}.kpis{grid-template-columns:repeat(2,1fr)}.grid,.supplier{grid-template-columns:1fr}.flow{grid-template-columns:repeat(2,1fr)}}@media(max-width:700px){.shell{display:block}aside{padding:10px}.side{display:none}.nav{display:flex;overflow:auto}.nav button{white-space:nowrap}.top{align-items:flex-start;flex-direction:column}.kpis{grid-template-columns:1fr 1fr}.flow{grid-template-columns:1fr}.supplier-kpis{grid-template-columns:1fr}.filters>*{width:100%}.donut{flex-direction:column;align-items:flex-start}}
+
+#details[data-dataset="restos"] .filters{display:none!important}
+#details[data-dataset="orcamentario"] .detail-filters{display:none!important}
+#details[data-dataset="financeiro"] .detail-filters{display:none!important}
+#details[data-dataset="empenhos"] #clearDetail{display:inline-flex!important}
+#details[data-dataset="empenhos"] .detail-filters{display:none!important}#details[data-dataset="empenhos"] .empenhos-filters{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;align-items:end}#details[data-dataset="empenhos"] .empenhos-filters label{display:grid;gap:5px;font-size:12px;font-weight:750;color:var(--n)}#details[data-dataset="empenhos"] .empenhos-filters input{width:100%;min-width:0}#details[data-dataset="empenhos"] .empenhos-filters button{min-height:40px;grid-column:1/-1}@media(max-width:700px){#details[data-dataset="empenhos"] .empenhos-filters{grid-template-columns:minmax(0,1fr)}#details[data-dataset="empenhos"] .empenhos-filters button{grid-column:auto;width:100%}}
+#details[data-dataset="ordens_bancarias"] .detail-filters{display:none!important}
+#details[data-dataset="ordens_bancarias"] .ob-filters{display:grid!important;grid-template-columns:minmax(220px,1fr);gap:9px;max-width:480px;width:100%}#details[data-dataset="ordens_bancarias"] .ob-filter-label{display:grid;gap:5px;font-size:12px;font-weight:700;color:var(--n)}#details[data-dataset="ordens_bancarias"] .ob-filter-label select,#details[data-dataset="ordens_bancarias"] .ob-filter-label input{width:100%;min-width:0}
+#details[data-dataset="ordens_bancarias"] #clearDetail{display:inline-flex!important}
+#details[data-dataset="repasses"] #clearDetail{display:inline-flex!important}
+#details[data-dataset="repasses"] .detail-filters{display:none!important}#details[data-dataset="repasses"] .repasses-filters{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;align-items:end;padding:0 20px}#details[data-dataset="repasses"] .repasses-filters label{display:grid;gap:5px;font-size:12px;font-weight:750;color:var(--n)}#details[data-dataset="repasses"] .repasses-filters input{width:100%;min-width:0}@media(max-width:700px){#details[data-dataset="repasses"] .repasses-filters{grid-template-columns:minmax(0,1fr);padding:0 15px}}
+#details[data-dataset]:not([data-dataset="empenhos"]):not([data-dataset="repasses"]) #clearDetail{display:none!important}
+/* Refinamento visual global — identidade institucional IOC */
+:root{color-scheme:light;--n:#153b57;--b:#2d6685;--t:#398780;--m:#667b89;--bg:#f4f7fa;--l:#e0e8ee;--r:#ad4545;--w:#9a6b1d;--shadow:0 10px 30px rgba(23,55,78,.055);--radius:16px}
+html{scroll-behavior:smooth}
+body{font-family:Inter,"Segoe UI",Roboto,system-ui,-apple-system,sans-serif;letter-spacing:.005em;background:radial-gradient(ellipse at 85% 0%,#e9f1f6 0,transparent 36%),var(--bg);color:#263c4b}
+.shell{grid-template-columns:252px minmax(0,1fr)}
+aside{position:sticky;top:0;height:100vh;overflow:auto;padding:25px 16px;background:linear-gradient(160deg,#12344e 0%,#1b4b68 58%,#235b70 100%);box-shadow:8px 0 30px rgba(18,52,78,.07);gap:25px}
+.brand{padding:7px 8px 18px;border-bottom:1px solid #ffffff20;gap:12px}
+.mark{width:46px;height:46px;flex:0 0 46px;border-radius:14px;border:1px solid #9dbdca;background:linear-gradient(145deg,#ffffff20,#ffffff08);box-shadow:inset 0 1px 0 #ffffff20;font-size:13px;letter-spacing:.04em}
+.brand h1{font-size:15px;letter-spacing:.01em}
+.brand p{font-size:11px;line-height:1.45}
+.nav{gap:6px}
+.nav button{position:relative;display:flex;align-items:center;gap:9px;min-height:42px;padding:11px 12px;border:1px solid transparent;border-radius:11px;font-size:12px;font-weight:600;transition:background .18s ease,border-color .18s ease,transform .18s ease}
+.nav button:hover{background:#ffffff12;border-color:#ffffff10;transform:translateX(2px)}
+.nav button.active{background:linear-gradient(100deg,#ffffff20,#ffffff0c);border-color:#ffffff20;box-shadow:inset 3px 0 #8ed0c5;color:#fff}
+.side{line-height:1.65}
+main{max-width:1800px;width:100%;margin:0 auto;padding:30px clamp(18px,3vw,44px) 24px}
+.top{padding:4px 0 19px;border-bottom:1px solid #dce5eb;margin-bottom:16px;align-items:center}
+.ey{letter-spacing:1.7px;font-size:10px;color:#317f7a}
+.top h2{font-size:clamp(25px,2.5vw,34px);letter-spacing:-.035em;line-height:1.15;margin:7px 0}
+.sub{font-size:13px}
+.actions{gap:9px}
+.btn,select,input{min-height:38px;border:1px solid #d7e2e9;border-radius:10px;padding:9px 12px;font:inherit;font-size:12px;transition:border-color .18s ease,box-shadow .18s ease,background .18s ease}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;background:#fff;color:#26495e;box-shadow:0 2px 6px #163b5c08;font-weight:700}
+.btn:hover{background:#f5fafc;border-color:#9ebac9;box-shadow:0 4px 12px #163b5c12}
+button:focus-visible,a:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid #80bdb6;outline-offset:2px}
+.status{margin:14px 0 16px;padding:7px 12px;background:#e7f3ee;border:1px solid #d2e8df;color:#386e5c;font-size:11px;font-weight:650;letter-spacing:.01em}
+.source{background:linear-gradient(115deg,#edf5f8,#f9fbfc 78%);border:1px solid #d5e4eb;border-radius:var(--radius);padding:18px 20px;margin-bottom:16px;box-shadow:0 4px 16px #193c5206}
+.source strong{display:block;font-size:13px;margin-bottom:4px}
+.source .desc{margin:0 0 12px}
+.filters{gap:9px;align-items:center}
+.filters input{flex:1;min-width:190px}
+.kpis{gap:12px;margin-bottom:16px}
+.kpi,.panel{border:1px solid #e0e8ed;border-radius:var(--radius);box-shadow:var(--shadow)}
+.kpi{position:relative;overflow:hidden;padding:17px 17px 16px;min-height:116px;background:linear-gradient(145deg,#fff 0%,#fcfdfe 100%)}
+.kpi:before{content:"";position:absolute;inset:0 auto 0 0;width:3px;background:linear-gradient(180deg,#6eb2aa,#2d6685);opacity:.9}
+.label{font-size:11px;line-height:1.4;color:#687d8b;letter-spacing:.015em}
+.value{font-size:clamp(18px,1.55vw,25px);line-height:1.2;letter-spacing:-.035em;font-variant-numeric:tabular-nums;margin:9px 0 6px;overflow-wrap:anywhere}
+.hint,.tiny,.desc{line-height:1.55}
+.panel{padding:20px;margin-bottom:15px;background:rgba(255,255,255,.96)}
+.panel h3{font-size:15px;line-height:1.35;letter-spacing:-.01em}
+.panel .desc{margin:5px 0 0}
+.head{align-items:center;margin-bottom:12px}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:5px 9px;border:1px solid #e0eaf0;border-radius:999px;font-size:10px;letter-spacing:.02em;background:#f0f5f8}
+.badge.w{border-color:#f0dfb9}.badge.r{border-color:#f2d4d4}.badge.ok{border-color:#d2e8dc}
+.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:15px;margin-bottom:15px}
+.grid.single{grid-template-columns:minmax(0,1fr)}
+.grid .panel{height:100%;margin:0}
+#execIndicators{margin-top:14px}
+#execIndicators .kpi{min-height:120px}
+#ordersSourcePie{padding-top:5px}
+.chart{min-height:150px}
+.chart svg{display:block}
+.donut{gap:24px;padding:8px 0}
+.ring{box-shadow:inset 0 0 0 1px #e8eef2}
+.legend{gap:10px;line-height:1.5}
+.alert{padding:13px 15px;border-radius:11px;margin-top:10px;line-height:1.6}
+.alert b{color:#294b60}
+.alert.r{border-color:#f0dede;border-left-color:var(--r);background:#fffafa}
+.alert.w{border-color:#f0e5ce;border-left-color:var(--w);background:#fffdf8}
+.empty{padding:26px 18px;border-radius:12px;line-height:1.6}
+.scroll{max-height:430px;border-radius:0 0 12px 12px;scrollbar-color:#bdcdd6 #f4f7f9;scrollbar-width:thin}
+table{font-size:12px;line-height:1.45;border-collapse:separate;border-spacing:0}
+th{z-index:1;padding:12px 13px;background:#f2f6f8;color:#587080;font-size:10px;font-weight:800;letter-spacing:.045em;text-transform:uppercase;border-bottom:1px solid #dce6ec}
+td{padding:11px 13px;border-bottom:1px solid #edf1f4;max-width:430px}
+tbody tr:nth-child(even){background:#fbfcfd}
+tbody tr:hover{background:#f0f7f8}
+.money{font-variant-numeric:tabular-nums}
+.source-link{display:none!important}
+#summary td:first-child b{color:#294c61}
+#details .panel{padding:0;overflow:hidden}
+#details .panel>.head{padding:20px 20px 0}
+#details .filters,#details .tiny{padding-left:20px;padding-right:20px}
+#details .scroll{margin-top:8px}#details[data-dataset="financeiro"] table{width:100%;min-width:680px;table-layout:fixed}#details[data-dataset="financeiro"] th:nth-child(1),#details[data-dataset="financeiro"] td:nth-child(1){width:155px;text-align:center}#details[data-dataset="financeiro"] th:nth-child(2),#details[data-dataset="financeiro"] td:nth-child(2){width:100px;text-align:center}#details[data-dataset="financeiro"] th:nth-child(3),#details[data-dataset="financeiro"] td:nth-child(3){width:155px!important;text-align:right!important;padding-right:13px!important;font-variant-numeric:tabular-nums}#details[data-dataset="financeiro"] #thead th.saldo-col,#details[data-dataset="financeiro"] #tbody td:nth-child(3){text-align:right!important;padding-right:13px!important;padding-left:13px!important}#details[data-dataset="financeiro"] th:nth-child(4),#details[data-dataset="financeiro"] td:nth-child(4){width:100px;text-align:center}#details[data-dataset="financeiro"] th:nth-child(5),#details[data-dataset="financeiro"] td:nth-child(5){text-align:left;white-space:normal;overflow-wrap:anywhere}
+#detailKpis{margin-bottom:15px}
+.foot{margin-top:20px;border-top:1px solid #dce5eb;padding:17px 2px;color:#7c8d98;font-size:10px}
+.hide{display:none!important}
+.source-correlation{border-top:3px solid #398780}.source-correlation .filters{margin:12px 0}.source-correlation select{width:min(100%,520px);min-height:42px}.source-correlation-body .kpis{margin-top:12px}.source-correlation-body table{min-width:650px}.source-correlation-body .scroll{max-height:320px}.source-correlation-body .empty{margin-top:8px}@media(max-width:700px){.source-correlation .head{align-items:flex-start;flex-direction:column}.source-correlation .filters select{width:100%}}@media(max-width:1100px){.shell{grid-template-columns:218px minmax(0,1fr)}main{padding:24px 20px}.grid{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:980px){#ordersSourcePie .orders-pie-layout{grid-template-columns:minmax(0,1fr)!important;gap:14px!important}#ordersSourcePie .orders-pie-layout>div:first-child svg{max-width:250px!important}#ordersSourcePie .orders-pie-layout>div:last-child{width:100%;max-width:none}}@media(max-width:760px){.shell{display:block}aside{position:relative;height:auto;overflow:visible;padding:13px 14px 11px;gap:12px}.brand{padding:2px 4px 12px;border-bottom:0}.mark{width:40px;height:40px;flex-basis:40px}.brand h1 br{display:none}.brand h1{font-size:14px}.brand p{margin:3px 0 0}.nav{display:flex;overflow-x:auto;padding:2px 1px 5px;scrollbar-width:thin}.nav button{flex:0 0 auto;min-height:38px;padding:9px 11px;font-size:11px}.nav button:hover{transform:none}.side{display:none}main{padding:20px 13px 18px}.top{align-items:flex-start;flex-direction:column;padding-bottom:15px}.actions{width:100%}.actions .btn{flex:1}.source{padding:15px}.kpis{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.kpi{padding:13px;min-height:108px}.value{font-size:clamp(16px,4vw,21px)}.panel{padding:15px;border-radius:14px}.head{align-items:flex-start;flex-direction:column;gap:8px}.grid{grid-template-columns:minmax(0,1fr);gap:12px}.flow{grid-template-columns:repeat(2,minmax(0,1fr))}.donut{flex-direction:column;align-items:center}.legend{width:100%}#ordersSourcePie>div{grid-template-columns:minmax(0,1fr)!important}#ordersSourcePie svg{max-width:250px!important}.filters>*{width:100%;min-width:0!important}.scroll{max-height:360px}table{font-size:11px}th,td{padding:10px}#details .panel>.head{padding:16px 15px 0}#details .filters,#details .tiny{padding-left:15px;padding-right:15px}}
+@media(max-width:420px){.kpis{grid-template-columns:minmax(0,1fr)}.flow{grid-template-columns:minmax(0,1fr)}.value{font-size:22px}.actions{gap:7px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important}}
+@media print{body{background:#fff}.shell{display:block}aside{display:none}main{max-width:none;padding:0}.top{border-bottom:1px solid #ccc}.actions,#nav,.filters,.status{display:block!important}.panel,.kpi{box-shadow:none;break-inside:avoid;border-color:#ddd}.grid{grid-template-columns:1fr 1fr}.scroll{max-height:none;overflow:visible}th{position:static}.foot{color:#555}}
+
+.status{display:none!important}
+.repasses-total{display:grid;grid-template-columns:2fr 1fr;gap:10px;margin:14px 0}.repasses-total>div{padding:14px 16px;border:1px solid var(--l);border-radius:11px;background:#f4f8fb}.priority-wrap{margin:12px 0 16px;padding:13px;border:1px solid #e1e8ee;border-radius:12px;background:#fff}.priority-head{display:flex;justify-content:space-between;gap:8px;align-items:center;font-weight:800;color:var(--n);margin-bottom:10px}.priority-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}.priority-card{border:1px solid var(--l);border-radius:10px;padding:12px;min-width:0}.priority-card.p1{background:#fff5f5;border-color:#f3c2c2}.priority-card.p2{background:#fff9ed;border-color:#f2d49c}.priority-card.p3{background:#f0faf5;border-color:#bde4d0}.priority-tag{font-size:10px;font-weight:900;letter-spacing:.3px}.p1 .priority-tag,.p1 .priority-value{color:#b42332}.p2 .priority-tag,.p2 .priority-value{color:#a65c00}.p3 .priority-tag,.p3 .priority-value{color:#18764e}.priority-level{font-weight:800;margin:3px 0 8px}.priority-value{font-size:clamp(15px,2vw,21px);font-weight:900;overflow-wrap:anywhere}.priority-meta{font-size:11px;color:var(--m);margin-top:5px}.priority-meter{margin:12px 0 16px;padding:14px;border:1px solid var(--l);border-radius:12px;background:linear-gradient(135deg,#fff,#f8fbfd)}.priority-meter-track{display:flex;height:10px;border-radius:99px;overflow:hidden;background:#edf1f4;margin:10px 0}.priority-meter-track span{display:block;height:100%}.priority-meter-track .p1{background:#c33d4a}.priority-meter-track .p2{background:#d99a2b}.priority-meter-track .p3{background:#2e9872}.priority-meter-legend{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:11px;color:var(--m)}.priority-meter-legend b{color:var(--n)}@media(max-width:700px){.repasses-total{grid-template-columns:1fr}.priority-cards{grid-template-columns:1fr}.priority-head{align-items:flex-start;flex-direction:column}}
+/* Ajustes mobile adicionais — navegação e leitura em telas pequenas */
+@media(max-width:760px){
+  html{-webkit-text-size-adjust:100%;scroll-padding-top:150px}
+  body{font-size:14px;line-height:1.5}
+  .shell{display:flex;flex-direction:column;min-height:100dvh}
+  aside{position:sticky;top:0;z-index:30;padding:10px 12px 8px;gap:8px;box-shadow:0 5px 18px rgba(18,52,78,.14)}
+  .brand{align-items:center;gap:10px;padding:2px 3px 8px}
+  .brand h1{font-size:13px;line-height:1.25}
+  .brand p{font-size:10px}
+  .nav{display:flex;gap:6px;overflow-x:auto;overflow-y:hidden;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch;scroll-snap-type:x proximity;padding:2px 1px 5px}
+  .nav button{flex:0 0 auto;scroll-snap-align:start;min-height:42px;padding:10px 12px;touch-action:manipulation}
+  main{padding:14px 12px calc(24px + env(safe-area-inset-bottom,0px));}
+  .top{gap:12px;margin-bottom:13px;padding-bottom:14px}
+  .top h2{font-size:clamp(22px,6vw,29px);line-height:1.16;letter-spacing:-.03em}
+  .sub{font-size:12px}
+  .actions{display:grid;grid-template-columns:1fr 1fr;width:100%;gap:8px}
+  .actions .btn{width:100%;min-height:44px;padding:10px 8px;font-size:12px}
+  .source{padding:14px 12px;border-radius:14px}
+  .source strong{font-size:13px;line-height:1.4}
+  .filters{gap:8px}
+  .filters input,.filters select,.filters .btn,select,input{min-height:44px;font-size:14px}
+  .filters input{min-width:0!important;width:100%}
+  .kpis{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .kpi{min-width:0;min-height:102px;padding:12px 11px;border-radius:13px}
+  .label{font-size:10px;line-height:1.4}
+  .value{font-size:clamp(15px,4.2vw,20px);line-height:1.25;margin:8px 0 5px;letter-spacing:-.025em;overflow-wrap:anywhere}
+  .hint,.tiny{font-size:11px;overflow-wrap:anywhere}
+  .panel{min-width:0;padding:14px 12px;margin-bottom:12px;border-radius:14px}
+  .panel h3{font-size:14px;line-height:1.4}
+  .panel .desc,.desc{font-size:12px;line-height:1.55}
+  .head{gap:8px}
+  .badge{max-width:100%;white-space:normal;line-height:1.35}
+  .grid{grid-template-columns:minmax(0,1fr);gap:11px;margin-bottom:12px}
+  .flow{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .stage{min-width:0;padding:10px}
+  .stage .value{font-size:16px}
+  .donut{gap:14px;padding:4px 0}
+  .ring{width:124px;height:124px}
+  .ring:after{width:72px;height:72px}
+  .legend{font-size:12px;overflow-wrap:anywhere}
+  .scroll{width:100%;max-width:100%;overflow:auto;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch;max-height:min(55dvh,440px);border-radius:10px}
+  table{width:max-content;min-width:100%;font-size:11px;white-space:nowrap}
+  th{font-size:10px;padding:10px}
+  td{padding:10px;max-width:240px}
+  .expense-folders{grid-template-columns:minmax(0,1fr);gap:9px}
+  .expense-folder summary{padding:12px 11px;gap:8px}
+  .expense-folder .folder-name{overflow-wrap:anywhere}
+  .expense-folder .folder-total{font-size:12px}
+  .expense-folder .folder-body{padding:0 9px 10px}
+  .repasses-total{grid-template-columns:minmax(0,1fr);gap:8px}
+  .repasses-total>div{min-width:0;padding:12px}
+  .priority-wrap{padding:10px}
+  .priority-head{gap:7px}
+  .priority-value{font-size:18px;overflow-wrap:anywhere}
+  .alert{padding:11px 12px;font-size:12px;overflow-wrap:anywhere}
+  .foot{gap:8px;line-height:1.5}
+  button,a,select,input,summary{-webkit-tap-highlight-color:transparent}
+}
+@media(max-width:420px){
+  .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .kpi{padding:11px 9px;min-height:98px}
+  .value{font-size:clamp(14px,4vw,17px)}
+  .flow{grid-template-columns:minmax(0,1fr)}
+  .actions{grid-template-columns:minmax(0,1fr)}
+  .nav button{font-size:11px;padding:9px 10px}
+  .expense-folder summary{align-items:flex-start}
+}
+@media(max-width:350px){
+  .kpis{grid-template-columns:minmax(0,1fr)}
+  main{padding-left:10px;padding-right:10px}
+}
+@media(prefers-reduced-motion:reduce){
+  .nav{scroll-behavior:auto}
+}
+a.source-link,[id*="sourceLink"],[class*="source-link"]{display:none!important}
+/* Aviso de defasagem D-1 — destaque informativo discreto */
+.d1-notice{display:flex;align-items:center;gap:11px;max-width:440px;padding:11px 15px;border:1px solid #c8dfea;border-left:4px solid #2d6685;border-radius:12px;background:linear-gradient(110deg,#eaf4fa,#f5fafc);color:#294b60;box-shadow:0 3px 12px rgba(22,59,92,.06)}.d1-icon{display:grid;place-items:center;flex:0 0 28px;width:28px;height:28px;border-radius:50%;background:#d5eaf5;color:#205d7e;font-weight:900;font-size:16px;font-family:Georgia,serif}.d1-notice strong{display:block;font-size:12px;line-height:1.35;color:#174766;letter-spacing:.01em}.d1-notice p{margin:3px 0 0;font-size:11px;line-height:1.45;color:#456779}@media(max-width:760px){.d1-notice{max-width:none;width:100%;padding:10px 12px}.top{gap:12px}.d1-notice p{font-size:11px}}
+
+/* Fonte financeira: explicação acessível também em telas touch/mobile */
+#details[data-dataset="financeiro"] td.source-cell{white-space:normal;overflow-wrap:anywhere;vertical-align:top}
+.source-code{font-weight:600;margin-bottom:5px}
+.source-help{font-size:12px;line-height:1.45;min-width:120px}
+.source-help summary{cursor:pointer;color:var(--b);font-weight:700;list-style:inside disclosure-closed}
+.source-help[open] summary{margin-bottom:6px}
+.source-help>div{padding:8px;background:#f1f7f7;border-left:3px solid var(--t);border-radius:4px;white-space:normal;overflow-wrap:anywhere;max-width:360px}
+@media(max-width:760px){#details[data-dataset="financeiro"] table{min-width:680px}#details[data-dataset="financeiro"] td.source-cell{min-width:180px}.source-help{font-size:13px}.source-help>div{max-width:240px}}
+.last-updated{display:flex;align-items:center;flex-wrap:wrap;gap:5px 7px;margin:10px 0 0;padding:9px 12px;width:fit-content;max-width:100%;border:1px solid #cfe3dd;border-radius:10px;background:#edf7f3;color:#245c50;font-size:12px;line-height:1.45;font-variant-numeric:tabular-nums}.last-updated strong{display:block;flex-basis:100%;font-weight:800;color:#204f46}.last-updated>span:not(.last-updated-dot){display:block;flex-basis:100%;padding-left:15px}.last-updated-dot{width:8px;height:8px;flex:0 0 8px;border-radius:50%;background:#32836f;box-shadow:0 0 0 3px #32836f1c}@media(max-width:760px){.last-updated{font-size:12px;padding:9px 10px;line-height:1.5}}.foot-credit{display:flex;flex-direction:column;gap:2px;align-items:center;text-align:center;color:#526879}.foot-credit strong{font-size:10px;font-weight:700;letter-spacing:.035em;text-transform:uppercase;color:#31536b}.foot-credit span{font-size:11px;font-weight:600;color:#24445b}.foot-version{align-self:center;padding:4px 9px;border:1px solid #d5e1e9;border-radius:999px;background:#f7fafc;color:#486579;font-size:10px;font-weight:700;white-space:nowrap}@media(max-width:640px){.foot{justify-content:center;text-align:center}.foot-brand{width:100%}.foot-credit{width:100%;order:2}.foot-version{order:3}#updated{width:100%;order:4;text-align:center}}
+/* Termômetro RAP — responsivo e restrito à aba Restos a Pagar */
+.rap-thermometer{margin:0 0 16px;padding:2px 0 0}
+.rap-thermo-legend{display:flex;flex-wrap:wrap;gap:10px 18px;margin:14px 0 12px;font-size:11px;color:#536b7a}
+.rap-thermo-legend span{display:inline-flex;align-items:center;gap:6px}
+.rap-legend-dot{width:9px;height:9px;border-radius:50%;display:inline-block}
+.rap-thermo-stack{display:flex;width:100%;height:12px;overflow:hidden;border-radius:999px;background:#edf2f5;margin:0 0 13px}
+.rap-thermo-stack span{display:block;min-width:0;transition:width .2s ease}
+.rap-thermo-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.rap-thermo-card{min-width:0;padding:14px;border:1px solid #e0e8ee;border-radius:12px;background:#fff}
+.rap-thermo-card-head{display:flex;flex-direction:column;gap:4px}
+.rap-thermo-label{font-size:11px;font-weight:900;letter-spacing:.08em}
+.rap-thermo-range{font-size:11px;color:#647b89;line-height:1.4}
+.rap-thermo-amount{font-size:clamp(15px,1.7vw,22px);font-weight:900;letter-spacing:-.025em;color:#163b5c;margin:12px 0 4px;overflow-wrap:anywhere}
+.rap-thermo-count{font-size:10px;color:#627786;line-height:1.5}
+.rap-thermo-track{height:5px;background:#edf2f5;border-radius:99px;overflow:hidden;margin-top:10px}
+.rap-thermo-track span{display:block;height:100%;border-radius:99px}
+.rap-low{background:#e9f6ef;border-color:#c4e5d2}.rap-low .rap-thermo-label,.rap-low .rap-thermo-amount{color:#19734d}.rap-low .rap-thermo-track span,.rap-thermo-stack .rap-low,.rap-legend-dot.rap-low{background:#2d9568}
+.rap-medium{background:#fff8e9;border-color:#f0dcae}.rap-medium .rap-thermo-label,.rap-medium .rap-thermo-amount{color:#9a6100}.rap-medium .rap-thermo-track span,.rap-thermo-stack .rap-medium,.rap-legend-dot.rap-medium{background:#d59a27}
+.rap-high{background:#fff0f0;border-color:#efcaca}.rap-high .rap-thermo-label,.rap-high .rap-thermo-amount{color:#a92b35}.rap-high .rap-thermo-track span,.rap-thermo-stack .rap-high,.rap-legend-dot.rap-high{background:#c63f49}
+.rap-thermo-total{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:12px 0;padding:13px 14px;border:1px solid #e0e8ee;border-radius:11px;background:#f7fafc}
+.rap-thermo-total span{display:grid;gap:3px;color:#24465b}.rap-thermo-total small{font-size:10px;color:#647b89}.rap-thermo-total strong{font-size:clamp(17px,2vw,23px);color:#163b5c;overflow-wrap:anywhere}
+.rap-thermo-detail{margin-top:16px}.rap-thermo-detail h4{margin:0 0 9px;color:#163b5c;font-size:12px}.rap-thermo-pill{display:inline-block;padding:4px 7px;border-radius:999px;font-size:10px;font-weight:900}.rap-thermo-pill.rap-low{color:#19734d}.rap-thermo-pill.rap-medium{color:#9a6100}.rap-thermo-pill.rap-high{color:#a92b35}
+.rap-levels{margin-top:20px}.rap-levels>h3{font-size:16px;color:#163b5c;margin:0 0 12px}.rap-level-detail{margin:12px 0 18px;border:1px solid #e0e8ee;border-radius:13px;overflow:hidden;background:#fff}.rap-level-heading{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 16px;border-bottom:1px solid #e5edf1}.rap-level-heading h4{margin:5px 0 0;font-size:13px;color:#334f62}.rap-level-total{display:grid;text-align:right;gap:4px}.rap-level-total strong{font-size:clamp(17px,2vw,23px);overflow-wrap:anywhere}.rap-level-total span{font-size:11px;color:#607583}.rap-level-detail.rap-low .rap-level-heading{background:#f1faf5}.rap-level-detail.rap-medium .rap-level-heading{background:#fffbf1}.rap-level-detail.rap-high .rap-level-heading{background:#fff5f5}.rap-records-scroll{max-width:100%;overflow:auto}.rap-records-scroll table{min-width:1050px;width:100%}.rap-records-scroll th{white-space:nowrap}.rap-records-scroll td{vertical-align:top;max-width:300px;overflow-wrap:anywhere}.rap-level-detail.rap-low .rap-level-total strong{color:#19734d}.rap-level-detail.rap-medium .rap-level-total strong{color:#9a6100}.rap-level-detail.rap-high .rap-level-total strong{color:#a92b35}
+@media(max-width:700px){.rap-level-heading{align-items:flex-start;flex-direction:column}.rap-level-total{text-align:left}.rap-records-scroll table{min-width:980px}}
+.rap-thermo-note{font-size:10px;line-height:1.5;color:#718391;margin:12px 0 0}
+@media(max-width:700px){.rap-thermo-cards{grid-template-columns:1fr}.rap-thermo-card{padding:13px}.rap-thermo-amount{font-size:21px}.rap-thermo-total{align-items:flex-start;flex-direction:column}.rap-thermo-stack{height:10px}}
+
+.priority-records{margin-top:14px;border-top:1px solid var(--l);padding-top:12px}.priority-records-title{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px;font-weight:800;color:var(--n);margin-bottom:8px}.priority-record-group{border:1px solid var(--l);border-radius:10px;margin:8px 0;overflow:hidden;background:#fff}.priority-record-group summary{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:12px;cursor:pointer;font-weight:800;list-style:none}.priority-record-group summary::-webkit-details-marker{display:none}.priority-record-group.p1 summary{background:#fff5f5;color:#b42332}.priority-record-group.p2 summary{background:#fff9ed;color:#a65c00}.priority-record-group.p3 summary{background:#f0faf5;color:#18764e}.priority-record-group .scroll{max-height:360px;overflow:auto}.priority-record-group table{min-width:620px;width:100%}@media(max-width:640px){.priority-record-group summary{align-items:flex-start;flex-direction:column}.priority-records-title{flex-direction:column}}
+/* Validação mobile: valores financeiros, filtros, tabelas, gráficos e navegação */
+@media(max-width:760px){
+  html,body{max-width:100%;overflow-x:hidden}
+  html{scroll-padding-top:170px}
+  main{min-width:0;width:100%;box-sizing:border-box}
+  aside{max-width:100%;box-sizing:border-box}
+  .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .kpi{min-width:0;overflow:hidden}
+  .kpi .value{white-space:nowrap;word-break:normal;overflow-wrap:normal;font-size:clamp(11px,3.35vw,17px);letter-spacing:-.035em;font-variant-numeric:tabular-nums}
+  .filters{display:grid;grid-template-columns:minmax(0,1fr);width:100%}
+  .filters>*{min-width:0;max-width:100%;box-sizing:border-box}
+  .filters .btn{width:100%}
+  .scroll{display:block;max-width:100%;overflow-x:auto;overflow-y:auto;touch-action:pan-x pan-y}
+  .scroll table{width:max-content;min-width:100%;max-width:none}
+  .chart,.chart svg,#natureChart svg,#ordersSourcePie svg{max-width:100%;height:auto}
+  .legend,.chart-legend{min-width:0;white-space:normal;overflow-wrap:anywhere}
+  #details{scroll-margin-top:170px}
+  #details .panel,#details .kpi{scroll-margin-top:170px}
+  .top h2,.panel h3{overflow-wrap:anywhere}
+}
+@media(max-width:420px){
+  .kpi .value{font-size:clamp(10px,3.05vw,13px);letter-spacing:-.045em}
+  .kpi{padding-left:8px;padding-right:8px}
+  .filters .btn{min-height:42px}
+  .nav{scrollbar-width:thin}
+  .chart{min-height:180px}
+}
+
+/* Correções visuais verificadas — leitura e responsividade mobile */
+#detailKpis .kpi{min-width:0}
+#detailKpis .kpi .value{max-width:100%;overflow-wrap:anywhere;word-break:normal}
+#detailKpis .kpi:nth-child(3) .value{
+  white-space:normal!important;
+  overflow:visible!important;
+  text-overflow:clip!important;
+  overflow-wrap:anywhere!important;
+  word-break:normal!important;
+  hyphens:auto;
+  line-height:1.3;
+  font-size:clamp(15px,1.35vw,19px)!important;
+  letter-spacing:-.025em;
+}
+#detailKpis .kpi .hint{overflow-wrap:anywhere}
+#details .panel{min-width:0}
+#details .scroll,#details .rap-records-scroll,.source-correlation-body .scroll{width:100%;max-width:100%;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch}
+#details .scroll table{max-width:none}
+.last-updated{white-space:normal;overflow-wrap:anywhere}
+.d1-notice{max-width:100%;min-width:0}
+.d1-notice p{overflow-wrap:anywhere}
+@media(max-width:760px){
+  main{overflow-wrap:anywhere}
+  .top>div,.actions,.d1-notice{width:100%;min-width:0}
+  .top h2{max-width:100%;font-size:clamp(23px,6.1vw,30px);line-height:1.18}
+  .last-updated{width:100%;box-sizing:border-box}
+  .actions{display:block}
+  .d1-notice{box-sizing:border-box}
+  #detailKpis{grid-template-columns:repeat(2,minmax(0,1fr));align-items:stretch}
+  #detailKpis .kpi{min-width:0}
+  #detailKpis .kpi:nth-child(3){grid-column:1/-1}
+  #detailKpis .kpi .value{font-size:clamp(16px,4.2vw,21px)}
+  #detailKpis .kpi:nth-child(3) .value{font-size:clamp(16px,4.3vw,20px)!important}
+  .filters input,.filters select,.filters .btn{width:100%;min-width:0;max-width:100%}
+  #details .panel>.head{min-width:0}
+  #detailTitle,#detailNote{overflow-wrap:anywhere}
+  .source-correlation-body .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .source-correlation-body .kpi{min-width:0}
+  .source-correlation-body .kpi .value{white-space:normal;overflow-wrap:anywhere}
+  .foot{gap:12px}
+}
+@media(max-width:420px){
+  main{padding-left:12px;padding-right:12px}
+  .kpis,#detailKpis,.source-correlation-body .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .kpi{padding:12px 10px}
+  .kpi .value{white-space:normal;overflow-wrap:anywhere;font-size:clamp(14px,4vw,18px)}
+  #detailKpis .kpi:nth-child(3) .value{font-size:16px!important}
+  .nav button{max-width:82vw;white-space:nowrap}
+  .scroll table{min-width:max-content}
+}
+
+
+
+/* Refinamento visual integral — somente apresentação, sem alterar conteúdo ou funções */
+:root{
+  --visual-border:#dce6ec;
+  --visual-muted:#657b89;
+  --visual-elevation:0 5px 18px rgba(21,59,87,.045);
+}
+body{color:#263d4c}
+main{padding-top:clamp(20px,2.4vw,32px)}
+.top{gap:22px}
+.top>div:first-child{min-width:0}
+.last-updated{border-radius:10px}
+.source,.panel,.kpi,.expense-folder,.priority-wrap{border-color:var(--visual-border)}
+.source{box-shadow:0 3px 12px rgba(21,59,87,.035)}
+.source .filters{margin-top:13px}
+.source .filters input{background:#fff}
+.kpi,.panel{box-shadow:var(--visual-elevation)}
+.kpi{transition:box-shadow .18s ease,border-color .18s ease,transform .18s ease}
+.kpi:hover{border-color:#c8d9e2;box-shadow:0 8px 22px rgba(21,59,87,.075)}
+.panel h3{font-weight:750}
+.panel .desc{max-width:92ch;color:var(--visual-muted)}
+.grid{align-items:stretch}
+#overview>.panel{margin-bottom:15px!important}
+#execIndicators .kpi{background:linear-gradient(145deg,#fff,#f9fcfd)}
+#sourceCorrelation{border-top:3px solid #398780}
+#sourceCorrelation .head{padding-bottom:3px}
+.source-correlation-body .kpi{background:linear-gradient(145deg,#fff,#fbfdfe)}
+.chart{border-radius:12px}
+.chart svg{overflow:visible}
+.alert{box-shadow:0 1px 2px rgba(21,59,87,.025)}
+.empty{border-color:#cbd9e1;background:linear-gradient(145deg,#fbfdfe,#f6f9fb)}
+.scroll{border:1px solid #e6edf1;border-radius:11px;background:#fff}
+table{font-variant-numeric:tabular-nums}
+th{white-space:normal;vertical-align:bottom}
+tbody tr:last-child td{border-bottom:0}
+.money{text-align:right;white-space:nowrap}
+#details .panel>.head{padding-bottom:3px}
+#details .tiny{color:#6c808d;line-height:1.55}
+#detailKpis{align-items:stretch}
+#detailKpis .kpi{height:100%}
+.btn,select,input{box-shadow:0 1px 2px rgba(21,59,87,.025)}
+.btn:active{transform:translateY(1px)}
+.expense-folder{box-shadow:0 2px 8px rgba(21,59,87,.025)}
+.expense-folder summary{min-height:58px}
+.priority-card{box-shadow:0 1px 3px rgba(21,59,87,.025)}
+.foot{align-items:center;line-height:1.6}
+@media(max-width:760px){
+  main{padding-top:18px}
+  .top{gap:13px}
+  .source{margin-bottom:13px}
+  .kpis{gap:9px}
+  .kpi:hover{transform:none}
+  .panel{padding:15px}
+  #overview>.panel{margin-bottom:12px!important}
+  .source-correlation-body .kpis{gap:9px}
+  .scroll{border-radius:9px}
+  th{padding:10px}
+  td{padding:10px}
+  .foot{align-items:flex-start;flex-direction:column}
+}
+@media(max-width:420px){
+  .top h2{letter-spacing:-.025em}
+  .kpi,.panel{border-radius:12px}
+  .kpi .label{font-size:10px}
+  .source{border-radius:12px}
+}
+@media(prefers-reduced-motion:reduce){
+  .kpi{transition:none}
+}
+
+/* Visão executiva: seis indicadores, sem pesquisa, filtros ou blocos repetidos */
+.executive-intro{margin-bottom:16px}
+.executive-intro strong{font-size:14px;letter-spacing:.01em}
+.executive-kpis{grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:0}
+.executive-kpis .kpi{min-height:132px;padding:20px}
+.executive-kpis .label{font-size:12px;min-height:34px}
+.executive-kpis .value{font-size:clamp(20px,2vw,28px)}
+@media(max-width:1050px){.executive-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:480px){.executive-kpis{grid-template-columns:minmax(0,1fr)}.executive-kpis .kpi{min-height:105px}.executive-kpis .label{min-height:0}}
+
+/* Camada final de acabamento visual — somente CSS; sem alterações em dados ou scripts */
+:root{
+ --polish-ink:#17384d;--polish-muted:#6a7f8d;--polish-line:#dfe8ee;
+ --polish-paper:#ffffff;--polish-soft:#f5f8fa;--polish-teal:#2f817a;
+ --polish-shadow:0 12px 32px rgba(20,53,75,.065)
+}
+body{color:var(--polish-ink);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+main{isolation:isolate}
+.top h2{font-weight:780;letter-spacing:-.045em}
+.top .ey{display:inline-flex;align-items:center;gap:8px}
+.top .ey:before{content:"";display:inline-block;width:19px;height:2px;border-radius:2px;background:#5ba59c}
+.kpi,.panel,.source,.expense-folder,.priority-wrap{transition:box-shadow .2s ease,border-color .2s ease}
+.kpi:hover,.panel:hover{border-color:#d3e1e8;box-shadow:0 14px 34px rgba(20,53,75,.085)}
+.kpi:before{width:4px}
+.kpi .label{text-transform:none;font-weight:750}
+.kpi .value{font-weight:820;font-feature-settings:"tnum" 1,"ss01" 1}
+.panel h3{font-weight:780}
+.panel .head{min-height:26px}
+.badge{font-weight:750}
+.source{position:relative;overflow:hidden}
+.source:after{content:"";position:absolute;right:-34px;top:-55px;width:135px;height:135px;border:1px solid #d9e8ed;border-radius:50%;pointer-events:none}
+.source>*{position:relative;z-index:1}
+.btn{min-height:40px;letter-spacing:.005em}
+.btn:active{transform:translateY(1px)}
+select,input{background-color:#fff}
+select:hover,input:hover{border-color:#b9ccd7}
+select:focus,input:focus{border-color:#6aa9a3;box-shadow:0 0 0 3px rgba(77,153,145,.12);outline:0}
+.nav button{letter-spacing:.005em}
+.scroll{border:1px solid #e6edf1;border-radius:12px;background:#fff}
+table{font-variant-numeric:tabular-nums}
+thead th{box-shadow:0 1px 0 #dfe8ee}
+tbody tr{transition:background-color .12s ease}
+td{vertical-align:middle}
+.money{white-space:nowrap}
+.expense-folder{box-shadow:0 3px 12px rgba(20,53,75,.025)}
+.expense-folder[open]{border-color:#c9dce4;box-shadow:0 8px 22px rgba(20,53,75,.055)}
+.expense-folder summary{min-height:66px}
+.expense-folder summary:focus-visible{outline:3px solid #80bdb6;outline-offset:-3px}
+.foot{line-height:1.7}
+#details .panel>.head{padding-bottom:12px}
+#details .scroll{max-width:100%}
+#details table{min-width:max-content}
+#details[data-dataset="ordens_bancarias"] .ob-filters{padding-top:0;padding-bottom:4px}
+#details[data-dataset="ordens_bancarias"] .ob-filter-label{font-size:11px;letter-spacing:.015em}
+#details[data-dataset="ordens_bancarias"] .ob-filter-label select,
+#details[data-dataset="ordens_bancarias"] .ob-filter-label input{min-height:42px}
+#clearDetail{border-color:#cbdde4;background:#f9fcfd}
+#clearDetail:hover{background:#edf6f7}
+@media(min-width:1200px){
+ main{padding-top:34px}
+ .kpis{gap:14px}
+ .kpi{padding:19px;min-height:124px}
+ .panel{padding:22px}
+ #details .panel{padding:0}
+ #details .panel>.head{padding:22px 22px 12px}
+}
+@media(max-width:760px){
+ body{font-size:13px}
+ aside{box-shadow:0 5px 18px rgba(18,52,78,.08)}
+ .brand{align-items:center}
+ .nav button{border:1px solid #ffffff0b}
+ .nav button.active{border-color:#ffffff24}
+ main{padding-top:17px}
+ .top h2{font-size:clamp(23px,6vw,30px);line-height:1.18}
+ .source:after{right:-70px;opacity:.65}
+ .kpi{min-width:0}
+ .kpi .value{overflow-wrap:anywhere}
+ .panel{padding:14px}
+ .scroll{border-radius:10px}
+ #details .panel>.head{padding:15px 14px 10px}
+ #details .filters,#details .tiny{padding-left:14px;padding-right:14px}
+ #details .scroll{margin:8px 0 0}
+ #details table{font-size:11px}
+ .expense-folder summary{align-items:flex-start}
+ .expense-folder .folder-total{font-size:12px}
+}
+@media(max-width:390px){
+ main{padding-left:10px;padding-right:10px}
+ .kpi{padding:12px}
+ .kpi .label{font-size:10px}
+ .kpi .value{font-size:16px}
+ .actions .btn{font-size:11px;padding:9px 8px}
+ .nav button{padding:8px 10px}
+}
+@media(prefers-reduced-motion:reduce){
+ .kpi,.panel,.source,.expense-folder,.priority-wrap,.btn,tbody tr{transition:none!important}
+}
+
+/* Refinamento profissional e responsividade final — sem alterar conteúdo ou dados */
+:root{--surface:#fff;--ink:#203b4d;--line:#dfe8ee;--accent:#28766f;--focus:#86c8bd}
+*{box-sizing:border-box}
+body{color:var(--ink);-webkit-font-smoothing:antialiased}
+button,select,input{touch-action:manipulation}
+.top{gap:18px}
+.last-updated{box-shadow:0 2px 8px rgba(25,65,80,.035)}
+#nav button{white-space:nowrap}
+.panel,.kpi,.source{transition:box-shadow .18s ease,border-color .18s ease}
+.panel:hover{border-color:#d2e0e7}
+.scroll{overscroll-behavior-x:contain;scrollbar-width:thin;scrollbar-color:#aebfc9 #f1f5f7}
+#details .scroll{border:1px solid #e7edf1}
+#details table thead th{position:sticky;top:0}
+#details table tbody tr:last-child td{border-bottom:0}
+#details .panel>.head{gap:12px}
+#details[data-dataset="financeiro"] #tbody td:nth-child(3){font-weight:800;color:#173f5c}
+#details[data-dataset="financeiro"] #tbody td:nth-child(2){font-weight:750;color:#28766f}
+@media(min-width:761px){
+ aside{z-index:20}
+ #nav button{min-height:44px}
+ main{padding-left:clamp(24px,3vw,48px);padding-right:clamp(24px,3vw,48px)}
+ .kpi:hover{box-shadow:0 12px 28px rgba(23,55,78,.09);border-color:#cfdee6}
+}
+@media(max-width:760px){
+ html{scroll-padding-top:138px}
+ .shell{display:flex;flex-direction:column;min-width:0}
+ aside{position:sticky;top:0;height:auto;max-height:none;z-index:50;padding:8px 10px 7px;gap:5px;border-radius:0 0 14px 14px}
+ .brand{justify-content:flex-start;padding:2px 3px 7px;gap:9px}
+ .mark{width:36px;height:36px;flex-basis:36px;border-radius:11px}
+ .brand h1{font-size:13px;line-height:1.22}
+ .brand p{font-size:10px}
+ .nav{margin:0 -2px;padding:3px 2px 5px;gap:6px;scrollbar-width:none;mask-image:linear-gradient(to right,#000 0%,#000 94%,transparent 100%)}
+ .nav::-webkit-scrollbar{display:none}
+ .nav button{min-height:39px;padding:8px 11px;border-radius:10px;font-size:11px;background:#ffffff0b}
+ .nav button.active{box-shadow:inset 0 -2px #8ed0c5;background:#ffffff1b}
+ main{width:100%;min-width:0;padding:14px 11px calc(28px + env(safe-area-inset-bottom,0px))}
+ .top{gap:10px;padding-bottom:13px;margin-bottom:12px}
+ .top h2{font-size:clamp(22px,6vw,29px);overflow-wrap:anywhere}
+ .sub{margin-top:4px}
+ .last-updated{width:100%;font-size:11px;padding:9px 10px;gap:5px;align-items:flex-start}
+ .last-updated strong{white-space:nowrap}
+ .d1-notice{width:100%;max-width:none;padding:10px 12px}
+ .status{margin:10px 0 12px}
+ .source{margin-bottom:12px;padding:13px 12px;border-radius:13px}
+ .kpis{gap:8px;margin-bottom:12px}
+ .kpi{min-height:98px;padding:12px 10px;border-radius:12px}
+ .kpi .label{font-size:10px}
+ .kpi .value{font-size:clamp(15px,4.3vw,19px);line-height:1.22}
+ .panel{padding:13px 11px;border-radius:13px;margin-bottom:11px}
+ .panel h3{font-size:14px}
+ .head{flex-direction:row;align-items:flex-start;flex-wrap:wrap}
+ #details .panel{padding:0}
+ #details .panel>.head{padding:14px 12px 10px}
+ #details .filters,#details .tiny{padding-left:12px;padding-right:12px}
+ #details .scroll{margin:7px 0 0;max-height:none;border-radius:0 0 12px 12px}
+ #details table{font-size:11px}
+ #details th,#details td{padding:10px 9px}
+ /* Em Saldo Financeiro, os cinco campos passam a cartões legíveis no celular; nenhum campo é removido. */
+ #details[data-dataset="financeiro"] .scroll{overflow:visible;border:0;margin:0 10px 12px}
+ #details[data-dataset="financeiro"] table{display:block;width:100%;min-width:0!important;table-layout:auto;border-collapse:separate;border-spacing:0}
+ #details[data-dataset="financeiro"] thead{display:none}
+ #details[data-dataset="financeiro"] tbody{display:grid;grid-template-columns:minmax(0,1fr);gap:9px}
+ #details[data-dataset="financeiro"] tbody tr{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0;background:#fff;border:1px solid #dfe8ee;border-radius:12px;overflow:hidden;box-shadow:0 3px 10px rgba(24,57,77,.035)}
+ #details[data-dataset="financeiro"] tbody td{display:flex;flex-direction:column;justify-content:flex-start;gap:5px;min-width:0!important;width:auto!important;max-width:none;padding:10px 11px;text-align:left!important;white-space:normal;overflow-wrap:anywhere;border-bottom:1px solid #edf1f4;font-size:12px;line-height:1.4}
+ #details[data-dataset="financeiro"] tbody td:before{font-size:9px;font-weight:800;letter-spacing:.055em;text-transform:uppercase;color:#708391}
+ #details[data-dataset="financeiro"] tbody td:nth-child(1){grid-column:1/-1;background:#f5f9fb;text-align:left!important}
+ #details[data-dataset="financeiro"] tbody td:nth-child(1):before{content:"Fonte pagadora"}
+ #details[data-dataset="financeiro"] tbody td:nth-child(2):before{content:"Vinculação Pagamento"}
+ #details[data-dataset="financeiro"] tbody td:nth-child(3){font-size:14px;text-align:left!important;padding-right:11px!important}
+ #details[data-dataset="financeiro"] tbody td:nth-child(3):before{content:"Saldo"}
+ #details[data-dataset="financeiro"] tbody td:nth-child(4):before{content:"UGE"}
+ #details[data-dataset="financeiro"] tbody td:nth-child(5){grid-column:1/-1;border-bottom:0}
+ #details[data-dataset="financeiro"] tbody td:nth-child(5):before{content:"Unidade"}
+ .rap-records-scroll table,.source-correlation-body .scroll{max-height:55dvh}
+}
+@media(max-width:420px){
+ main{padding-left:9px;padding-right:9px}
+ .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .kpi{padding:10px 9px;min-height:92px}
+ .kpi .value{font-size:15px}
+ .actions{grid-template-columns:minmax(0,1fr)}
+ #details[data-dataset="financeiro"] tbody tr{grid-template-columns:repeat(2,minmax(0,1fr))}
+ #details[data-dataset="financeiro"] tbody td{padding:9px}
+}
+@media(max-width:340px){.brand h1{font-size:12px}.nav button{font-size:10px;padding:8px 9px}.kpis{grid-template-columns:minmax(0,1fr)}}
+@media(prefers-reduced-motion:reduce){.panel,.kpi,.source{transition:none!important}}
+
+
+/* Refinamento de acabamento — hierarquia, foco e leitura de dados */
+:root{--finish-line:#d8e4eb;--finish-ink:#173b53;--finish-teal:#2f8078;--finish-shadow:0 8px 24px rgba(19,55,78,.055)}
+::selection{background:#cce8e3;color:#153b4e}
+:focus-visible{outline:3px solid #78b9b0;outline-offset:3px}
+.shell{min-height:100dvh}
+aside{scrollbar-width:thin;scrollbar-color:#ffffff35 transparent}
+.brand{border-radius:12px 12px 0 0}.brand h1{max-width:160px}.nav button{line-height:1.35}.nav button:focus-visible{outline-color:#b5e6df;outline-offset:1px}
+main{min-width:0}.top{position:relative}.top h2{max-width:900px;text-wrap:balance}.top .sub{margin-top:3px}
+.last-updated{display:inline-flex;align-items:center;gap:7px;max-width:100%;border:1px solid var(--finish-line);background:rgba(255,255,255,.78);padding:8px 11px;box-shadow:0 2px 8px rgba(19,55,78,.025);font-size:11px;line-height:1.5}.last-updated strong{color:var(--finish-ink)}.last-updated-dot{flex:0 0 7px}
+.d1-notice{border-color:#e2e8ed;box-shadow:0 4px 14px rgba(19,55,78,.035)}
+.executive-intro{border-left:4px solid #398780;padding:16px 19px}.executive-intro strong{display:block;margin-bottom:3px;font-size:15px}
+.executive-kpis .kpi{position:relative;isolation:isolate;overflow:hidden}.executive-kpis .kpi:after{content:"";position:absolute;z-index:-1;width:96px;height:96px;right:-43px;bottom:-53px;border:1px solid #e5eef2;border-radius:50%;pointer-events:none}.executive-kpis .label{line-height:1.45}.executive-kpis .value{line-height:1.25;overflow-wrap:anywhere}
+.panel,.source,.kpi,.expense-folder,.priority-wrap{box-shadow:var(--finish-shadow)}.panel h3{letter-spacing:-.012em}.panel .desc{line-height:1.65}.filters{align-items:end}.filters input,.filters select,.ob-filters input,.ob-filters select{min-height:42px}
+.btn{transition:background-color .15s ease,border-color .15s ease,box-shadow .15s ease}.btn:focus-visible{outline-offset:2px}
+.scroll{scrollbar-width:thin;scrollbar-color:#bdcdd6 #f4f7f9}.scroll::-webkit-scrollbar{height:9px;width:9px}.scroll::-webkit-scrollbar-thumb{background:#c5d4dc;border:2px solid #f8fafb;border-radius:99px}.scroll::-webkit-scrollbar-track{background:#f4f7f9;border-radius:99px}
+thead th{line-height:1.4;letter-spacing:.005em}tbody tr:nth-child(even){background:#fbfcfd}tbody tr:hover{background:#f0f7f8}td{line-height:1.45}#count{padding:4px 2px 7px}
+.foot{border-top:1px solid #dfe8ed;margin-top:22px;padding-top:18px}.foot-brand{font-weight:650;color:#637987}.foot-credit{display:grid;gap:1px}.foot-credit strong{color:#536b7b;font-size:10px}.foot-version{padding:3px 8px;border:1px solid #dce6eb;border-radius:99px;background:#fff;color:#667b89}
+@media(min-width:1400px){.shell{grid-template-columns:260px minmax(0,1fr)}.executive-kpis{gap:16px}.executive-kpis .kpi{padding:22px}}
+@media(max-width:760px){.shell{min-height:100vh}aside{gap:10px;padding:10px 12px 9px}.brand{padding:2px 4px 9px;border-bottom:1px solid #ffffff20}.brand h1{max-width:none;font-size:14px}.brand p{margin-top:3px}.nav{padding:1px 0 3px;gap:6px;scroll-snap-type:x proximity;overscroll-behavior-x:contain}.nav button{min-height:42px;scroll-snap-align:start}main{padding-bottom:calc(22px + env(safe-area-inset-bottom,0px))}.top{padding-bottom:14px}.last-updated{align-items:flex-start}.executive-intro{padding:13px 14px}.executive-kpis .kpi{min-height:102px}.panel .head{gap:12px}#clearDetail{flex-shrink:0}.foot{gap:10px}}
+@media(max-width:420px){.brand .mark{width:40px;height:40px;flex-basis:40px}.top h2{font-size:clamp(22px,6vw,27px)}.last-updated{font-size:10px;padding:7px 9px}.executive-kpis .kpi{padding:13px;min-height:96px}.executive-kpis .value{font-size:clamp(17px,5vw,22px)}#details .panel>.head{align-items:flex-start}#details .panel h3{font-size:14px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important;animation-iteration-count:1!important}}
+
+
+/* Publication timestamp: compact, readable status badge */
+.last-updated{display:inline-flex;align-items:center;flex-wrap:wrap;gap:4px 7px;width:fit-content;max-width:100%;box-sizing:border-box;padding:7px 10px;border:1px solid #d8e4eb;border-radius:999px;background:#f7fbfa;color:#365a67;box-shadow:none;font-size:11px;line-height:1.4}
+.last-updated strong{display:inline;flex:0 0 auto;white-space:normal;color:#173b53}
+.last-updated-dot{width:7px;height:7px;flex:0 0 7px}
+@media(max-width:760px){.last-updated{align-items:center}}
+
+/* Keep the green status dot beside the first line of the update text */
+.last-updated{align-items:flex-start}
+.last-updated-dot{margin-top:.32em}
+@media(max-width:760px){.last-updated{align-items:flex-start}}
+
+/* Ajustes de responsividade e acabamento — sem alterar dados ou regras de negócio */
+:root{--focus:#6fb8b0}
+html{overflow-x:clip}
+body{min-width:320px;overflow-x:clip}
+button,input,select{max-width:100%}
+button:focus-visible,a:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.kpi,.panel,.source,.priority-wrap,.priority-card{min-width:0}
+.value,.label,.hint,.desc,.sub{overflow-wrap:anywhere}
+#details .scroll,.scroll,.source-correlation-body .scroll{width:100%;max-width:100%;overflow:auto;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch}
+#details table,.source-correlation-body table{width:max-content;min-width:100%}
+#details th,#details td{white-space:nowrap}
+#details td[title],.source-correlation-body td[title]{max-width:320px;overflow:hidden;text-overflow:ellipsis}
+#details .head{flex-wrap:wrap}
+#details .filters{align-items:stretch}
+#details .filters input,#details .filters select{min-width:0}
+.top{min-width:0}
+.actions{flex-wrap:wrap}
+@media(min-width:761px){
+  .shell{grid-template-columns:248px minmax(0,1fr)}
+  aside{width:auto;min-width:0}
+  main{min-width:0}
+  .kpis{grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr))}
+  #details .scroll{max-height:min(58vh,620px)}
+}
+@media(max-width:760px){
+  .shell{display:block;min-width:0}
+  aside{position:relative;z-index:5;padding:12px 12px 8px;gap:9px}
+  .brand{align-items:center;gap:10px;padding:2px 3px 10px}
+  .brand h1{max-width:calc(100vw - 95px);font-size:14px;line-height:1.25}
+  .brand p{font-size:10px}
+  .nav{display:flex;gap:6px;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x proximity;padding:2px 1px 7px;max-width:100%;overscroll-behavior-x:contain}
+  .nav button{scroll-snap-align:start;flex:0 0 auto;max-width:85vw;min-height:40px}
+  main{padding:17px 12px 18px}
+  .top{gap:9px;margin-bottom:13px}
+  .top h2{font-size:clamp(23px,6vw,30px);overflow-wrap:anywhere}
+  .sub{font-size:12px}
+  .actions{display:grid;grid-template-columns:repeat(auto-fit,minmax(125px,1fr));width:100%}
+  .actions .btn{width:100%;min-height:42px}
+  .source{padding:13px 14px}
+  .kpis{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .kpi{min-height:102px;padding:12px}
+  .value{font-size:clamp(16px,4.1vw,21px);letter-spacing:-.025em}
+  .grid,.supplier{grid-template-columns:minmax(0,1fr)}
+  .panel{padding:14px}
+  .panel .head{gap:8px}
+  .filters{display:grid;grid-template-columns:minmax(0,1fr);width:100%}
+  .filters>*{width:100%;min-width:0!important}
+  #details .panel>.head{padding:14px 13px 0}
+  #details .filters,#details .tiny{padding-left:13px;padding-right:13px}
+  #details .scroll{max-height:62vh;margin-top:8px}
+  #details th,#details td{padding:10px 11px}
+  .priority-cards{grid-template-columns:minmax(0,1fr)}
+  .repasses-total{grid-template-columns:minmax(0,1fr)}
+  .expense-folders{grid-template-columns:minmax(0,1fr)}
+  .supplier-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .flow{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .foot{font-size:10px;line-height:1.6}
+}
+@media(max-width:420px){
+  main{padding-right:10px;padding-left:10px}
+  .kpis{grid-template-columns:minmax(0,1fr)}
+  .kpi{min-height:88px}
+  .supplier-kpis,.flow{grid-template-columns:minmax(0,1fr)}
+  .priority-card{padding:11px}
+  #details .panel>.head{padding-right:10px;padding-left:10px}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+#details[data-dataset="financeiro"] .scroll{max-height:none;overflow-x:auto;overflow-y:visible}
+
+/* Correção de renderização: Saldo Financeiro usa tabela completa e sem altura limitada. */
+#details[data-dataset="financeiro"] .scroll{
+  display:block!important;
+  width:100%!important;
+  max-height:none!important;
+  height:auto!important;
+  overflow-x:auto!important;
+  overflow-y:visible!important;
+  contain:none!important;
+}
+#details[data-dataset="financeiro"] table{
+  display:table!important;
+  width:100%!important;
+  min-width:760px!important;
+  table-layout:auto!important;
+  border-collapse:separate!important;
+}
+#details[data-dataset="financeiro"] thead{display:table-header-group!important}
+#details[data-dataset="financeiro"] tbody{display:table-row-group!important}
+#details[data-dataset="financeiro"] tbody tr{
+  display:table-row!important;
+  height:auto!important;
+  overflow:visible!important;
+}
+#details[data-dataset="financeiro"] tbody td{
+  display:table-cell!important;
+  width:auto!important;
+  max-width:none!important;
+  height:auto!important;
+  overflow:visible!important;
+  white-space:normal!important;
+  vertical-align:top!important;
+}
+#details[data-dataset="financeiro"] tbody td:before{content:none!important;display:none!important}
+
+
+/* Bloco institucional — direção e equipe do IOC */
+body:has(#details[data-dataset]:not([data-dataset="visao"])) .leadership{display:none!important}
+
+.leadership{margin:0 0 18px;padding:20px;background:linear-gradient(125deg,#edf5f7 0%,#f9fbfc 62%,#eef6f4 100%);border:1px solid #d8e6eb;border-radius:16px;box-shadow:0 8px 24px rgba(23,55,78,.045)}
+.leadership-heading{display:flex;align-items:center;gap:10px;margin-bottom:15px}
+.leadership-mark{display:grid;place-items:center;width:38px;height:38px;flex:0 0 38px;border-radius:12px;background:#dcece9;color:#276e6a;font-size:18px}
+.leadership-heading h3{margin:0;color:var(--n);font-size:15px;letter-spacing:-.01em}
+.leadership-heading p{margin:3px 0 0;color:var(--m);font-size:11px}
+.leadership-director{padding:15px 17px;margin-bottom:12px;background:#fff;border:1px solid #dce7ec;border-left:4px solid #398780;border-radius:12px}
+.leadership-eyebrow{display:block;margin-bottom:5px;color:#317f7a;font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase}
+.leadership-director strong{display:block;color:var(--n);font-size:17px;line-height:1.35}
+.leadership-director span:last-child{display:block;margin-top:4px;color:var(--m);font-size:12px}
+.leadership-team-title{margin:15px 0 9px;color:#617786;font-size:10px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase}
+.leadership-team{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.leadership-member{min-width:0;padding:13px 14px;background:rgba(255,255,255,.88);border:1px solid #e0e9ee;border-radius:11px}
+.leadership-member strong{display:block;margin-bottom:5px;color:#294b60;font-size:12px;line-height:1.45}
+.leadership-member span{display:block;color:var(--m);font-size:11px;line-height:1.5}
+@media(max-width:700px){.leadership{padding:15px}.leadership-team{grid-template-columns:minmax(0,1fr)}.leadership-director strong{font-size:16px}}
+</style></head><body><div class="shell"><aside><div class="brand" role="button" tabindex="0" title="Voltar à Visão executiva" aria-label="Voltar à Visão executiva" onclick="show('visao')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();show('visao')}" style="cursor:pointer"><div class="mark" aria-hidden="true">IOC</div><div><h1>Painel Financeiro e Orçamentário IOC</h1><p>Instituto Oswaldo Cruz</p></div></div><div class="nav" id="nav"></div><div class="side">Transparência e acompanhamento<br>dos dados financeiros do IOC.</div></aside><main><header class="top"><div><div class="ey">Gestão • Finanças • Orçamento</div><h2 id="title">Painel Financeiro&nbsp;e Orçamentário IOC</h2><p class="sub">Instituto Oswaldo Cruz</p><p class="last-updated" id="dashboardPublishedAt" role="status"><span class="last-updated-dot" aria-hidden="true"></span><strong>Painel atualizado em:</strong> verificando publicação…</p></div><div class="actions"><div class="d1-notice" role="note" aria-label="Aviso sobre a atualização dos dados"><span class="d1-icon" aria-hidden="true">i</span><div><strong>Defasagem dos dados: D-1</strong><p>Para fins analíticos, os dados desta tela possuem D-1 (um dia de atraso).</p></div></div></div></header><section class="leadership" aria-labelledby="leadership-title"><div class="leadership-heading"><div class="leadership-mark" aria-hidden="true">IOC</div><div><h3 id="leadership-title">Direção e equipe institucional</h3><p>Instituto Oswaldo Cruz</p></div></div><div class="leadership-director"><span class="leadership-eyebrow">Diretora eleita · Gestão 2025–2029</span><strong>Tania Cremonini de Araujo-Jorge</strong><span>Diretora do Instituto Oswaldo Cruz</span></div><div class="leadership-team-title">Equipe</div><div class="leadership-team"><div class="leadership-member"><strong>Guilherme de Beaurepaire Pereira da Silva</strong><span>Diretor-executivo</span></div><div class="leadership-member"><strong>Luciana Lopes de Almeida Ribeiro Garzoni</strong><span>Diretora de Pesquisa, Desenvolvimento Tecnológico e Inovação</span></div><div class="leadership-member"><strong>Eduardo de Mello Volotão</strong><span>Diretor de Laboratórios de Referência, Ambulatórios e Coleções Biológicas</span></div><div class="leadership-member"><strong>Norma Cristina Cardoso Brandão</strong><span>Diretora de Ensino e Extensão</span></div></div></section><div class="status" id="status">Carregando dados…</div><section id="overview"><div class="source executive-intro"><strong>Resumo Executivo</strong><div class="desc">Visão consolidada dos principais indicadores financeiros e orçamentários do IOC, reunindo as informações essenciais do painel de forma clara e integrada.</div></div><div class="kpis executive-kpis" id="kpis"></div><div id="integrityAudit" class="hide" aria-hidden="true"></div><div class="panel hide" aria-hidden="true"><div id="execIndicators"></div><div id="ordersSourcePie"></div><div id="sourceCorrelationBody"></div><div id="alerts"></div></div></section><section id="details" class="hide"><div class="kpis" id="detailKpis"></div><div class="panel"><div class="head"><div><h3 id="detailTitle"></h3><p class="desc" id="detailNote"></p></div><button class="btn" id="clearDetail" type="button" style="display:none;flex:0 0 auto">Limpar pesquisa</button></div><div class="filters detail-filters" style="margin:12px 0"><input id="q" style="min-width:260px" placeholder="Pesquisar…"><select id="field"><option value="">Todos os campos</option></select></div><div id="empenhosFilters" class="empenhos-filters" style="display:none;margin:12px 0"><label>Pesquisar empenho ou fornecedor<input id="filterEmpenho" type="search" placeholder="Filtrar por empenho ou fornecedor"></label><button class="btn" id="clearEmpenhosFilters" type="button">Limpar filtro</button></div><div class="ob-filters" id="obFilters" style="margin:12px 0;display:none"><label class="ob-filter-label" for="obFilterField">Escolha o campo para filtrar<select id="obFilterField" aria-label="Campo que deseja filtrar"><option value="favorecido">Favorecido</option><option value="data_pagamento">Data de pagamento</option><option value="valor">Valor</option></select></label><label class="ob-filter-label" for="obFilterValue">Digite o que deseja localizar<input id="obFilterValue" type="search" placeholder="Digite o termo do filtro…" aria-label="Valor a pesquisar"></label></div><div class="repasses-filters" id="repassesFilters" style="display:none;margin:12px 0"><label for="filterProcesso">Processo<input id="filterProcesso" type="search" placeholder="Pesquisar processo"></label><label for="filterNumeroNe">Número da solicitação<input id="filterNumeroNe" type="search" placeholder="Pesquisar número da solicitação"></label><label for="filterFornecedor">Fornecedor<input id="filterFornecedor" type="search" placeholder="Pesquisar fornecedor"></label></div><div id="expenseFolders" class="hide"></div><div class="tiny" id="count"></div><div class="scroll" id="detailTableWrap"><table><thead id="thead"></thead><tbody id="tbody"></tbody></table></div></div></section><footer class="foot"><span class="foot-brand">Instituto Oswaldo Cruz • Painel Financeiro&nbsp;e Orçamentário IOC</span><span class="foot-credit"><strong>Desenvolvimento e Suporte</strong><span>Daniel Moura Brasil · SEGEF-IOC</span></span><span class="foot-version">Versão 2.0</span><span id="updated"></span></footer></main></div><script src="./rap-thermometer.js"></script>
+<script>
+const F=n=>'R$ '+new Intl.NumberFormat('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2}).format(Number(n)||0),I=n=>new Intl.NumberFormat('pt-BR').format(Number(n)||0),N=v=>{if(typeof v==='number')return Number.isFinite(v)?v:0;let s=String(v??'').trim().replace(/^R\$\s*/,'').replace(/\s/g,'');if(!s)return 0;if(s.includes(','))s=s.replace(/\./g,'').replace(',','.');let n=Number(s);return Number.isFinite(n)?n:0},E=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])),L=s=>String(s??'').toLocaleLowerCase('pt-BR');let data,active='visao',rows=[];
+const statusEl=document.getElementById('status');
+async function showDashboardPublishedAt(){const el=document.getElementById('dashboardPublishedAt');if(!el)return;try{const response=await fetch('dashboard-publication.json?v='+Date.now(),{cache:'no-store'});if(!response.ok)throw new Error('timestamp indisponível');const info=await response.json();const dt=new Date(info.published_at);if(!Number.isFinite(dt.getTime()))throw new Error('timestamp inválido');const formatted=new Intl.DateTimeFormat('pt-BR',{timeZone:'America/Sao_Paulo',day:'2-digit',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}).format(dt);el.innerHTML='<span class="last-updated-dot" aria-hidden="true"></span><strong>Painel atualizado em:</strong> '+E(formatted)+' (horário de Brasília)';}catch(error){el.innerHTML='<span class="last-updated-dot" aria-hidden="true"></span><strong>Painel atualizado em:</strong> horário indisponível';}}
+showDashboardPublishedAt();
+function updateLastUpdated(){const el=document.getElementById('lastUpdated');if(!el)return;const raw=data&&data.generated_at;const dt=raw?new Date(raw):null;if(!dt||!Number.isFinite(dt.getTime())){el.innerHTML='<span class="last-updated-dot" aria-hidden="true"></span><strong>Última atualização dos dados:</strong> horário não informado';return}const formatted=new Intl.DateTimeFormat('pt-BR',{timeZone:'America/Sao_Paulo',day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}).format(dt);el.innerHTML='<span class="last-updated-dot" aria-hidden="true"></span><strong>Última atualização dos dados:</strong> '+E(formatted)+' (horário de Brasília)' }
+const cols={publicacoes_pagas:[['data','Data'],['ob','Ordem bancária'],['cnpj','Código do fornecedor'],['favorecido','Favorecido'],['processo','Processo'],['valor','Valor pago'],['observacao','Descrição do serviço']],financeiro:[['fonte','Fonte'],['vinculo','Vinculação Pagamento'],['saldo','Saldo'],['uge','UGE'],['unidade','Unidade']],restos:[['empenho','Empenho'],['fornecedor','Fornecedor'],['natureza_codigo','Natureza'],['saldo','Saldo']],empenhos:[['empenho','Empenho'],['fornecedor','Fornecedor'],['cnpj','CNPJ'],['natureza','Natureza'],['saldo','Saldo'],['subitem','Subitem']],orcamentario:[['fonte','Fonte'],['descricao_fonte','Descrição'],['saldo','Saldo'],['ptres','PTRES'],['natureza_codigo','Natureza'],['natureza','Natureza da despesa'],['pi','PI'],['programa','Programa / PI'],['ug','UG'],['unidade','Unidade'],['ug_responsavel','UG responsável'],['responsavel','Responsável']],repasses:[['processo','Processo'],['elemento_despesa','Elemento de despesa'],['elemento','Tipo'],['sub_grupo_despesa','Subgrupo'],['fornecedor','Fornecedor'],['vigencia','Vigência'],['situacao_prioridade','Situação'],['status_empenho','Status'],['saldo','Valor']],ordens_bancarias:[['data_pagamento','Data de pagamento'],['ob','Ordem bancária'],['cnpj','CNPJ favorecido'],['favorecido','Favorecido'],['processo','Processo'],['valor','Valor pago']],bolsistas_pagos:[['data_pagamento','Data do pagamento'],['ob','Ordem bancária'],['categoria','Classificação'],['favorecido','Favorecido registrado'],['bolsista','Bolsista identificado na descrição'],['processo','Processo'],['valor','Valor pago'],['observacao','Descrição registrada na OB']]};
+const all=()=>data.datasets.flatMap(d=>(Array.isArray(d.rows)?d.rows:[]).map(r=>({...r,_d:d.id,_t:d.title})));
+const field=(rs,n)=>{if(!rs.length)return null;let k=Object.keys(rs[0]);return n.map(x=>k.find(y=>L(y)===L(x))||k.find(y=>L(y).includes(L(x)))).find(Boolean)||null};
+const amountOf=r=>N(r.saldo??r.valor??r.valor_bruto);
+const totalFor=(rs,id)=>{let a=rs.filter(r=>r._d===id);if(id==='ordens_bancarias'||id==='bolsistas_pagos'){return a.reduce((s,r)=>s+N(r.valor),0)}if(id==='publicacoes_pagas'){const seen=new Set();return a.reduce((s,r,i)=>{const ob=String(r.ob??'').trim(),k=ob||'__sem_ob_'+i;if(seen.has(k))return s;seen.add(k);return s+N(r.valor)},0)}return a.reduce((s,r)=>s+amountOf(r),0)};
+const uniqueCount=(rs,id,key)=>{const a=rs.filter(r=>r._d===id);if(id==='ordens_bancarias'&&key==='ob')return new Set(a.map(r=>String(r.ob??'').trim()).filter(Boolean)).size;return new Set(a.map(r=>String(r[key]??'').trim()).filter(Boolean)).size};
+function auditIntegrity(){const required=['financeiro','restos','empenhos','orcamentario','repasses','ordens_bancarias','publicacoes_pagas'],errors=[],warnings=[],checks=[];const close=(a,b)=>Math.abs(Number(a)-Number(b))<0.011;const finance=data.datasets.find(x=>x.id==='financeiro');const negativeFinance=(finance?.rows||[]).filter(r=>N(r.saldo)<0);if(negativeFinance.length)warnings.push('Base financeira: '+I(negativeFinance.length)+' saldo(s) negativo(s) requerem conferência com a extração de origem antes de serem tratados como saldo executivo. Os sinais foram preservados; nenhum valor foi corrigido automaticamente.');for(const id of required){const d=data.datasets.find(x=>x.id===id);if(!d){errors.push('Base ausente: '+id);continue}if(!Array.isArray(d.rows)){errors.push('Estrutura inválida em '+d.title+': rows não é uma lista.');continue}if(id==='repasses'&&!d.rows.length)warnings.push('A base de repasses não trouxe linhas detalhadas nesta publicação.');if(d.rows.some(r=>Object.values(r).some(v=>typeof v==='number'&&!Number.isFinite(v))))errors.push('Há valores numéricos inválidos em '+d.title+'.');const total=totalFor(all(),id),exp=id==='ordens_bancarias'?Number(d.total):(Number.isFinite(d._declared_total)?d._declared_total:Number(d.total)),ok=close(total,exp)&&close(d.total,exp);checks.push({label:d.title,ok,detail:'Calculado: '+F(total)+' • declarado: '+F(Number(exp)||0)});if(!ok)warnings.push(d.title+': total calculado diverge do total declarado na base ('+F(exp)+').')}
+for(const ds of data.datasets){const seenRows=new Set();let exact=0;for(const row of ds.rows||[]){const signature=JSON.stringify(Object.keys(row).sort().map(k=>[k,row[k]]));if(seenRows.has(signature))exact++;seenRows.add(signature)}if(exact && ds.id!=='repasses')warnings.push(ds.title+': '+I(exact)+' linhas exatamente duplicadas.')}for(const [id,key] of [['ordens_bancarias','ob'],['publicacoes_pagas','ob']]){const ds=data.datasets.find(x=>x.id===id);const missing=(ds?.rows||[]).filter(r=>!String(r[key]??'').trim()).length;if(missing)errors.push(ds.title+': '+I(missing)+' registros sem identificador obrigatório ('+key+').')}const obRows=(data.datasets.find(x=>x.id==='ordens_bancarias')||{rows:[]}).rows||[],obGroups=new Map();obRows.forEach(r=>{const ob=String(r.ob??'').trim();if(!ob)return;if(!obGroups.has(ob))obGroups.set(ob,[]);obGroups.get(ob).push(r)});const obCount=obGroups.size,obAmountConflicts=[...obGroups.entries()].filter(([,rr])=>new Set(rr.map(r=>Number(N(r.valor).toFixed(2))).filter(Number.isFinite)).size>1);if(obAmountConflicts.length)warnings.push('Ordens bancárias com valores diferentes para o mesmo número de OB ('+I(obAmountConflicts.length)+').');const pubRows=(data.datasets.find(x=>x.id==='publicacoes_pagas')||{rows:[]}).rows||[],pubMissingOb=new Set();for(const p of pubRows){const ob=String(p.ob??'').trim();if(!ob){pubMissingOb.add('(sem OB)');continue}if(!obRows.some(o=>String(o.ob??'').trim()===ob))pubMissingOb.add(ob)}if(pubMissingOb.size)warnings.push('Publicações pagas: '+I(pubMissingOb.size)+' ordens bancárias ausentes ou não localizadas na base de ordens bancárias.');checks.push({label:'Auditoria de publicações pagas',ok:pubMissingOb.size===0,detail:I(pubRows.length)+' registros conferidos pela ordem bancária (OB).'});const generated=Date.parse(data.generated_at||'');if(!Number.isFinite(generated))warnings.push('Data/hora de geração da base não informada ou inválida.');if(!data.source_updated_at)warnings.push('Data de atualização da fonte não informada.');const passed=checks.filter(x=>x.ok).length;document.getElementById('integrityAudit').innerHTML='<div class="kpis" style="margin:0 0 10px"><article class="kpi"><div class="label">Totais conferidos</div><div class="value">'+I(passed)+' / '+I(checks.length)+'</div><div class="hint">Soma das linhas vs. total declarado</div></article><article class="kpi"><div class="label">Alertas</div><div class="value">'+I(errors.length+warnings.length)+'</div><div class="hint">Estrutura, duplicidades e reconciliação</div></article><article class="kpi"><div class="label">Base gerada em</div><div class="value" style="font-size:16px">'+(Number.isFinite(generated)?new Date(generated).toLocaleString('pt-BR'):'Não informada')+'</div><div class="hint">Fonte principal: '+E(data.source_updated_at||'não informada')+' • '+E(data.source_updated_note||'repasses lidos na publicação')+'</div></article></div><div class="tiny" style="line-height:1.8">'+checks.map(c=>'<div><b>'+(c.ok?'✓ ':'⚠ ')+E(c.label)+':</b> '+E(c.detail)+'</div>').join('')+(errors.length?'<div style="margin-top:8px"><b>Erros:</b> '+errors.map(E).join(' • ')+'</div>':'')+(warnings.length?'<div style="margin-top:8px"><b>Alertas:</b> '+warnings.map(E).join(' • ')+'</div>':'')+(errors.length||warnings.length?'<div style="margin-top:8px"><b>Resultado:</b> há pontos que exigem conferência adicional. Duplicidades identificadas e deduplicadas não são automaticamente erros contábeis.</div>':'<div style="margin-top:8px"><b>Resultado:</b> totais e estrutura conferidos com as referências configuradas.</div>')+'</div>';return{errors,warnings,checks}}
+
+function nav(){document.getElementById('nav').innerHTML='<button data-x="visao" class="'+(active==='visao'?'active':'')+'">◫ Visão executiva</button>'+data.datasets.map(d=>`<button data-x="${d.id}" class="${active===d.id?'active':''}">${E(d.title)}</button>`).join('');document.querySelectorAll('#nav button').forEach(b=>b.onclick=()=>show(b.dataset.x))}
+function filtered(){return all()}
+function render(){updateLastUpdated();overview();nav();if(active!=='visao')detail(active);document.getElementById('updated').textContent='Todas as fontes de dados são do SIAFI.'}
+function renderSourceCorrelation(rs){const select=document.getElementById("sourceSelect"),body=document.getElementById("sourceCorrelationBody");if(!select||!body)return;const sourceRows=rs.filter(r=>String(r.fonte??"").trim()||String(r.descricao_fonte??"").trim());const sources=[...new Set(sourceRows.map(r=>String(r.fonte??r.descricao_fonte??"").trim()).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"pt-BR",{numeric:true}));const previous=select.value;select.innerHTML='<option value="">Selecione uma fonte pagadora</option>'+sources.map(x=>'<option value="'+E(x)+'">'+E(x)+'</option>').join("");if(sources.includes(previous))select.value=previous;select.onchange=()=>drawSourceCorrelation(rs);drawSourceCorrelation(rs)}function drawSourceCorrelation(rs){const select=document.getElementById("sourceSelect"),body=document.getElementById("sourceCorrelationBody");if(!select||!body)return;const code=select.value;if(!code){body.innerHTML='<div class="empty"><strong>Nenhuma fonte selecionada</strong>Escolha uma fonte para visualizar os registros relacionados.</div>';return}const related=rs.filter(r=>String(r.fonte??r.descricao_fonte??"").trim()===code);const total=related.reduce((sum,r)=>sum+N(r.saldo??r.valor),0);body.innerHTML='<div class="kpis"><article class="kpi"><div class="label">Registros com esta fonte</div><div class="value">'+I(related.length)+'</div><div class="hint">Correspondência exata pelo código da fonte</div></article><article class="kpi"><div class="label">Soma dos valores encontrados</div><div class="value">'+F(total)+'</div><div class="hint">Soma dos campos saldo/valor disponíveis; não é um total contábil consolidado entre bases</div></article></div><div class="scroll"><table><thead><tr><th>Base</th><th>Identificador</th><th>Fornecedor / descrição</th><th>Valor</th></tr></thead><tbody>'+(related.map(r=>{const id=r.ob??r.empenho??r.numero_ne??r.processo??r.ptres??"—",name=r.favorecido??r.fornecedor??r.descricao_fonte??r.natureza??r.unidade??"—",amount=r.saldo??r.valor;return '<tr><td>'+E(r._t||r._d)+'</td><td>'+E(id)+'</td><td>'+E(name)+'</td><td class="money">'+(amount===undefined||amount===null||amount===""?"—":F(amount))+'</td></tr>'}).join("")||'<tr><td colspan="4">Nenhum registro relacionado encontrado.</td></tr>')+'</tbody></table></div>'}function overview(){rows=filtered();let by=id=>rows.filter(r=>r._d===id),sum=id=>totalFor(rows,id);const card=(label,id,hint,amount=true)=>{const count=by(id).length,value=sum(id),display=id==='financeiro'&&count>0&&value<0?'Conferir origem':amount?F(value):I(uniqueCount(rows,id,'ob'));return '<article class="kpi"><div class="label">'+E(label)+'</div><div class="value">'+display+'</div><div class="hint">'+E(hint(count))+'</div></article>'};document.getElementById('kpis').innerHTML=[card('Publicações Pagas','publicacoes_pagas',n=>I(n)+' registros na base'),card('Bolsistas pagos','bolsistas_pagos',n=>I(n)+' ordens bancárias relacionadas a bolsas'),card('Diárias Pagas','diarias_pagas',n=>I(n)+' registros na base'),card('Saldo financeiro','financeiro',n=>I(n)+' registros na base'),card('Saldo orçamentário','orcamentario',n=>I(n)+' registros na base'),card('Empenhos 2026','empenhos',n=>I(n)+' registros de empenho'),card('Ordens Bancárias','ordens_bancarias',n=>I(uniqueCount(rows,'ordens_bancarias','ob'))+' ordens bancárias únicas'),card('Restos a Pagar','restos',n=>I(n)+' registros na base'),card('Aguardando Repasse Orçamentário','repasses',n=>I(n)+' registros aguardando repasse')].join('');}function ordersSourcePie(rs){const keys=[...new Set(rs.map(r=>String(r.ob??'').trim()).filter(Boolean))],target=document.getElementById('ordersSourcePie');target.classList.remove('chart');target.style.cssText='width:100%;min-width:0;max-width:none;height:auto;min-height:0;overflow:visible;background:transparent;border:0;box-shadow:none;padding:0';target.innerHTML='<div class="alert"><b>Quantitativo de Registro: '+I(keys.length)+'</b><br><span class="tiny">Cada número de Ordem Bancária é contabilizado uma única vez.</span></div>'}
+function bottleneck(rs){let nat=field(rs,['natureza_codigo','natureza','elemento_despesa']),q=field(rs,['pedido','pedidos','fila','valor_pedido','valor pedido','compra_pendente']);document.getElementById('bottleneck').innerHTML=nat&&q?'<div class="empty"><strong>Motor de comparação ativado</strong>Quando a base de pedidos estiver presente, o painel mostrará Natureza × Fila e marcará automaticamente “Necessita de suplementação”.</div>':'<div class="empty"><strong>Base de pedidos ainda não disponível</strong>A base de dados atual não contém um campo identificável para pedidos pendentes. Nenhum valor foi estimado.</div>'}
+function alerts(rs){let a=[],zero=rs.filter(r=>r._d==='restos'&&N(r.saldo)===0),av=rs.filter(r=>r._d==='repasses').reduce((s,r)=>s+N(r.saldo),0),bv=rs.filter(r=>r._d==='orcamentario').reduce((s,r)=>s+N(r.saldo),0),diff=av-bv,ratio=bv>0?av/bv:null;if(av>0&&bv>=0){const compareTitle='Comparação gerencial entre bases';a.push('<div class="alert w"><b>'+compareTitle+'</b><br><b>Aguardando repasse orçamentário:</b> '+F(av)+'<br><b>Saldo orçamentário:</b> '+F(bv)+'<br><b>Diferença:</b> '+F(diff)+(ratio!==null?'<br>Relação entre totais: '+ratio.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2})+'×':'')+'<br><span class="tiny">Comparação gerencial entre bases com escopos distintos; não comprova, isoladamente, insuficiência orçamentária. Verifique vinculações, natureza, exercício e fonte antes de decidir.</span></div>')}if(zero.length)a.push('<div class="alert w"><b>RAP zerado</b><br>'+I(zero.length)+' registros com saldo zero no recorte.</div>');document.getElementById('alerts').innerHTML=a.join('')||'<div class="alert"><b>Nenhum alerta automático</b><br>Não há regra adicional sustentada pelos campos presentes no recorte.</div>'}
+function bars(id,obj){let a=Object.entries(obj).map(([label,value])=>({label,value})).sort((x,y)=>y.value-x.value).slice(0,10),mx=Math.max(...a.map(x=>Math.abs(x.value)),1),s=`<svg viewBox="0 0 620 ${Math.max(70,a.length*38+15)}">`;a.forEach((x,i)=>{let y=i*38+4,w=Math.max(2,Math.abs(x.value)/mx*350);s+=`<text x="0" y="${y+14}" fill="#516575" font-size="12">${E(String(x.label).slice(0,25))}</text><rect x="180" y="${y}" width="${w}" height="21" rx="5" fill="${['#438b89','#2d6587','#6c91ad','#c49a55'][i%4]}"/><text x="${Math.min(615,185+w)}" y="${y+14}" fill="#314c5e" font-size="11">${F(x.value)}</text>`});document.getElementById(id).innerHTML=s+'</svg>'}
+function charts(rs){const target=document.getElementById('natureChart');if(!target)return;let nat={};rs.filter(r=>r._d==='orcamentario').forEach(r=>{let k=r.natureza??r.natureza_codigo??'Sem natureza';nat[k]=(nat[k]||0)+N(r.saldo)});bars('natureChart',nat)}
+function suppliers(rs){let names=[...new Set(rs.filter(r=>['restos','empenhos','repasses','ordens_bancarias'].includes(r._d)).map(r=>r.fornecedor??r.fornecedores??r.favorecido).filter(Boolean))].sort(),s=document.getElementById('supplier'),old=s.value;s.innerHTML='<option value="">Selecione um fornecedor</option>'+names.map(x=>`<option>${E(x)}</option>`).join('');if(names.includes(old))s.value=old;s.onchange=()=>supplier(s.value,rs);supplier(s.value,rs)}
+function supplier(name,rs){let el=document.getElementById('supplierKpis');if(!name){el.innerHTML=['Saldo empenhos/RAP','Recebido no ano','Ordens bancárias retidas'].map(x=>`<article class="kpi"><div class="label">${x}</div><div class="value">—</div><div class="hint">Selecione um fornecedor</div></article>`).join('');return}let rr=rs.filter(r=>(r.fornecedor??r.fornecedores??r.favorecido)===name),saldo=rr.filter(r=>r._d!=='ordens_bancarias').reduce((s,r)=>s+N(r.saldo),0),paidRows=rr.filter(r=>r._d==='ordens_bancarias'),paid=field(rr,['pago','valor_pago','recebido','valor_recebido']),st=field(rr,['status','situacao','situação','status_empenho']),ret=st?rr.filter(r=>/retid|reten|bloquead|pendente/i.test(String(r[st]))).reduce((s,r)=>s+N(r.saldo),0):null;el.innerHTML=[['Saldo empenhos/RAP',F(saldo),I(rr.length)+' registros'],['Recebido no ano',paidRows.length?F(totalFor(paidRows.map(r=>({...r,_d:'ordens_bancarias'})),'ordens_bancarias')):paid?F(rr.reduce((s,r)=>s+N(r[paid]),0)):'—',paidRows.length?I(uniqueCount(paidRows.map(r=>({...r,_d:'ordens_bancarias'})),'ordens_bancarias','ob'))+' registros de ordens bancárias':paid?'Campo disponível':'Campo de pagamento ausente'],['Ordens bancárias retidas',ret===null?'—':F(ret),ret===null?'Status de retenção ausente':'Valor identificado']].map(x=>`<article class="kpi"><div class="label">${x[0]}</div><div class="value">${x[1]}</div><div class="hint">${x[2]}</div></article>`).join('');document.getElementById('supplierHint').textContent='Fornecedor: '+name}
+function show(id){active=id;nav();const details=document.getElementById('details');details.dataset.dataset=id;const leadership=document.querySelector('.leadership');if(leadership){if(id==='visao'){leadership.style.removeProperty('display')}else{leadership.style.setProperty('display','none','important')}}const detailFilters=details.querySelector('.detail-filters');if(detailFilters)detailFilters.style.display=(id==='orcamentario'||id==='restos'||id==='financeiro')?'none':'';const clearDetail=document.getElementById('clearDetail');if(clearDetail){clearDetail.style.display=(id==='empenhos'||id==='repasses'||id==='ordens_bancarias')?'inline-flex':'none';clearDetail.textContent=id==='ordens_bancarias'?'Limpar filtros':'Limpar pesquisa';}details.classList.toggle('hide',id==='visao');document.getElementById('overview').classList.toggle('hide',id!=='visao');if(id!=='visao')detail(id)}
+function renderExpenseFolders(d){
+const box=document.getElementById('expenseFolders');if(!box)return;if(d.id!=='repasses'){box.className='hide';box.innerHTML='';return}
+const groups=new Map();
+(d.rows||[]).forEach(r=>{const key=String(r.elemento_despesa??r.elemento??'Sem elemento').trim()||'Sem elemento';if(!groups.has(key))groups.set(key,[]);groups.get(key).push(r)});
+let items=[...groups.entries()].map(([name,rs])=>({name,rows:rs,total:rs.reduce((s,r)=>s+N(r.saldo),0)})).sort((a,b)=>b.total-a.total);
+if(!items.length&&Array.isArray(d.element_breakdown))items=d.element_breakdown.map(x=>({name:x.name,rows:[],total:N(x.total),count:x.count})).sort((a,b)=>b.total-a.total);
+const grand=items.reduce((s,x)=>s+x.total,0);
+ const normPriority=s=>String(s??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+ const getMeterPriority=r=>{const s=normPriority(r.situacao_prioridade||r.prioridade||'');if(/prioridade\s*1|\bp1\b|\balta\b/.test(s))return 1;if(/prioridade\s*2|\bp2\b|medio/.test(s))return 2;if(/prioridade\s*3|\bp3\b|baixa/.test(s))return 3;return 0};
+ const meterDefs=[{key:1,label:'Prioridade 1',level:'Alta',cls:'p1'},{key:2,label:'Prioridade 2',level:'Média',cls:'p2'},{key:3,label:'Prioridade 3',level:'Baixa',cls:'p3'}];
+ const meterCounts=meterDefs.map(p=>({...p,rows:(d.rows||[]).filter(r=>getMeterPriority(r)===p.key)}));
+ const meterKnown=meterCounts.reduce((s,p)=>s+p.rows.length,0),meterTotal=(d.rows||[]).length;
+ const meterHtml='<div class="priority-meter"><div class="priority-head">Termômetro de prioridade <span class="badge">Coluna Situação</span></div><div class="priority-cards">'+meterCounts.map(p=>'<article class="priority-card '+p.cls+'"><div class="priority-tag">'+p.label.toUpperCase()+'</div><div class="priority-level">'+p.level+'</div><div class="priority-value">'+I(p.rows.length)+' registros</div><div class="priority-meta">'+(meterKnown?(p.rows.length/meterKnown*100).toLocaleString('pt-BR',{maximumFractionDigits:1}):'0')+'% das prioridades classificadas</div></article>').join('')+'</div><div class="priority-meter-track" role="img" aria-label="Distribuição de registros por prioridade">'+meterCounts.map(p=>'<span class="'+p.cls+'" style="width:'+(meterKnown?p.rows.length/meterKnown*100:0).toFixed(2)+'%"></span>').join('')+'</div><div class="priority-meter-legend"><span><b>Alta:</b> Prioridade 1</span><span><b>Média:</b> Prioridade 2</span><span><b>Baixa:</b> Prioridade 3</span><span>'+I(meterTotal-meterKnown)+' registro(s) sem prioridade classificada</span></div><div class="priority-records"><div class="priority-records-title">Registros por prioridade <span class="tiny">Abra cada grupo para consultar todos os processos</span></div>'+meterCounts.map(p=>'<details class="priority-record-group '+p.cls+'"><summary><span>'+p.label+' — '+p.level+'</span><span>'+I(p.rows.length)+' registros <span aria-hidden="true">＋</span></span></summary><div class="scroll"><table><thead><tr><th>Processo</th><th>Fornecedor</th><th>Tipo</th><th>Situação</th><th>Nº NE</th><th>Valor</th></tr></thead><tbody>'+(p.rows.length?p.rows.map(r=>'<tr><td>'+E(r.processo||'—')+'</td><td>'+E(r.fornecedores||r.fornecedor||'—')+'</td><td>'+E(r.elemento||r.tipo||r.elemento_despesa||'—')+'</td><td>'+E(r.situacao_prioridade||r.prioridade||p.label)+'</td><td>'+E(r.numero_ne||r.solicitacao_ne||'—')+'</td><td class="money">'+F(r.saldo)+'</td></tr>').join(''):'<tr><td colspan="6">Nenhum registro classificado nesta prioridade.</td></tr>')+'</tbody></table></div></details>').join('')+'</div></div>';
+const money=F, priorityDefs=[{key:1,label:'PRIORIDADE 1',level:'Alta',cls:'p1'},{key:2,label:'PRIORIDADE 2',level:'Médio',cls:'p2'},{key:3,label:'PRIORIDADE 3',level:'Baixa',cls:'p3'}];
+const isAlm=x=>/almoxarifado/i.test(x.name);
+const priorityCards=x=>{
+ if(!isAlm(x.name))return '';
+ const norm=s=>String(s??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+ const getPriority=r=>{const s=norm(r.situacao_prioridade||r.prioridade||'');if(/prioridade\s*1|\bp1\b|\balta\b/.test(s))return 1;if(/prioridade\s*2|\bp2\b|medio/.test(s))return 2;if(/prioridade\s*3|\bp3\b|baixa/.test(s))return 3;return 0};
+ const counts=priorityDefs.map(p=>{const rows=x.rows.filter(r=>getPriority(r)===p.key);return {...p,rows,total:rows.reduce((s,r)=>s+N(r.saldo),0)}});
+ const known=counts.reduce((s,p)=>s+p.total,0),unknown=x.rows.filter(r=>!getPriority(r)).length;
+ return '<div class="priority-wrap"><div class="priority-head">Classificação de prioridade <span class="badge">Somente Almoxarifado</span></div><div class="priority-cards">'+counts.map(p=>'<article class="priority-card '+p.cls+'"><div class="priority-tag">'+p.label+'</div><div class="priority-level">'+p.level+'</div><div class="priority-value">'+money(p.total)+'</div><div class="priority-meta">'+I(p.rows.length)+' registros'+(x.rows.length?' • '+(x.total?p.total/x.total*100:0).toLocaleString('pt-BR',{maximumFractionDigits:1,minimumFractionDigits:1})+'% do Almoxarifado':'')+'</div></article>').join('')+'</div>'+(unknown?'<div class="alert w">'+I(unknown)+' registro(s) de Almoxarifado sem prioridade reconhecida na planilha. Não foram classificados automaticamente.</div>':'')+'</div>';
+};
+box.className='panel';
+box.innerHTML='<div class="head"><div><h3>Aguardando Repasse Orçamentário</h3><p class="desc">Visão resumida por elemento de despesa. As prioridades são exibidas exclusivamente para Almoxarifado e usam o campo de prioridade da planilha.</p></div><span class="badge ok">'+I(items.length)+' elementos</span></div><p class="desc">Informações coletadas com o SAORC.</p><div class="repasses-total"><div><div class="label">Valor total aguardando repasse</div><div class="value">'+money(grand)+'</div></div><div><div class="label">Quantitativo de Registro</div><div class="value">'+I(d.detail_count??d.rows.length)+'</div></div></div>'+meterHtml+items.map(x=>{const pct=grand?x.total/grand*100:0;return '<details class="expense-folder" '+(isAlm(x.name)?'open':'')+'><summary><span><span class="folder-name">📁 '+E(x.name)+'</span><span class="folder-meta">'+I(x.count??x.rows.length)+' registro(s) • '+pct.toLocaleString('pt-BR',{minimumFractionDigits:1,maximumFractionDigits:1})+'% do total</span></span><span class="folder-total">'+money(x.total)+'</span></summary><div class="folder-bar"><span style="width:'+Math.max(0,Math.min(100,pct)).toFixed(2)+'%"></span></div><div class="folder-body">'+priorityCards(x)+'<div class="tiny" style="margin:10px 0">Total deste elemento: <b>'+money(x.total)+'</b></div><div class="scroll" style="max-height:300px"><table><thead><tr><th>Processo</th><th>Fornecedor</th><th>Prioridade</th><th>Nº NE</th><th>Valor</th></tr></thead><tbody>'+(x.rows.length?x.rows.map(r=>'<tr><td>'+E(r.processo||'—')+'</td><td title="'+E(r.fornecedores||r.fornecedor||'')+'">'+E(r.fornecedores||r.fornecedor||'—')+'</td><td>'+(isAlm(x.name)?E(r.situacao_prioridade||r.prioridade||'Não informada'):'—')+'</td><td>'+E(r.numero_ne||'—')+'</td><td class="money">'+money(r.saldo)+'</td></tr>').join(''):'<tr><td colspan="5">Resumo por elemento conforme a planilha; os registros individuais aparecerão após a sincronização detalhada.</td></tr>')+'</tbody></table></div></div></details>'}).join('')+'<div class="alert"><b>Total geral:</b> '+money(grand)+' em '+I(d.detail_count??d.rows.length)+' registros. Valores calculados a partir das linhas publicadas da planilha.</div>';
+}
+function sourcesForOB(rows,ob){const key=String(ob??'').trim();if(!key)return [];return [...new Set((rows||[]).filter(r=>String(r.ob??'').trim()===key).map(r=>String(r.fonte??'').trim()).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'pt-BR',{numeric:true}))}
+function renderBankOrderFolders(d){
+const box=document.getElementById('expenseFolders');if(!box)return;
+const rows=d.rows||[];
+const filterField=document.getElementById('obFilterField');
+const query=L(document.getElementById('obFilterValue')?.value||'');
+const key=filterField?.value||'favorecido';
+const matches=r=>{if(!query)return true;if(key==='favorecido')return L(r.favorecido).includes(query);if(key==='data_pagamento')return L(r.data_pagamento||r.data).includes(query);if(key==='valor')return L(F(r.valor)).includes(query)||L(String(r.valor??'')).includes(query);return true;};
+const unique=new Map();
+rows.forEach((r,i)=>{const ob=String(r.ob??'').trim();if(ob&&!unique.has(ob))unique.set(ob,r);});
+const records=[...unique.values()].filter(matches).sort((a,b)=>String(b.data_pagamento||b.data||'').localeCompare(String(a.data_pagamento||a.data||''))||String(a.ob).localeCompare(String(b.ob),'pt-BR',{numeric:true}));
+const total=[...unique.values()].reduce((sum,r)=>sum+N(r.valor),0);
+box.className='panel';
+box.innerHTML='<div class="head"><div><h3>Ordens Bancárias Pagas</h3><p class="desc">Cada Ordem Bancária aparece uma única vez. A tabela apresenta os dados disponíveis na planilha de origem, sem coluna ou filtro de fonte.</p></div><span class="badge ok">'+I(unique.size)+' OB únicas</span></div><div class="repasses-total"><div><div class="label">Total das Ordens Bancárias</div><div class="value">'+F(total)+'</div></div><div><div class="label">Ordens Bancárias únicas</div><div class="value">'+I(unique.size)+'</div></div></div><div class="scroll"><table><thead><tr><th>Data de pagamento</th><th>Ordem bancária</th><th>CNPJ favorecido</th><th>Favorecido</th><th>Processo</th><th>Valor pago</th></tr></thead><tbody>'+(records.map(r=>'<tr><td>'+E(r.data_pagamento||r.data||'—')+'</td><td>'+E(r.ob||'—')+'</td><td>'+E(r.cnpj||'—')+'</td><td title="'+E(r.favorecido||'')+'">'+E(r.favorecido||'—')+'</td><td>'+E(r.processo||'—')+'</td><td class="money">'+F(r.valor)+'</td></tr>').join('')||'<tr><td colspan="6">Nenhuma ordem bancária encontrada.</td></tr>')+'</tbody></table></div>';
+}
+function renderPublicationFolders(d){
+ const box=document.getElementById('expenseFolders');if(!box)return;
+ const q=L(document.getElementById('q').value||'');
+ const groups=new Map();
+ (d.rows||[]).forEach((r,i)=>{const supplier=String(r.favorecido??'').trim()||String(r.cnpj??'').trim()||'Fornecedor não identificado';const key=supplier+'|||'+String(r.cnpj??'').trim();if(!groups.has(key))groups.set(key,{name:supplier,cnpj:String(r.cnpj??'').trim(),rows:[]});groups.get(key).rows.push(r)});
+ const items=[...groups.values()].map(g=>{const filtered=g.rows.filter(r=>!q||Object.values(r).some(v=>L(v).includes(q)));const seen=new Set();const total=filtered.reduce((sum,r,i)=>{const ob=String(r.ob??'').trim()||'sem-ob-'+i;if(seen.has(ob))return sum;seen.add(ob);return sum+N(r.valor)},0);return {...g,filtered,total,unique:seen.size}}).filter(g=>!q||g.filtered.length).sort((a,b)=>a.name.localeCompare(b.name,'pt-BR'));
+ const grand=items.reduce((sum,g)=>sum+g.total,0);
+ box.className='panel';
+ box.innerHTML='<div class="head"><div><h3>Publicações Pagas — agrupadas por favorecido</h3><p class="desc">Inclui registros cujo código do favorecido começa com EX, conforme a planilha de Ordens Bancárias. Cada OB é contabilizada uma única vez.</p></div><span class="badge ok">'+I(items.length)+' favorecidos</span></div><div class="repasses-total"><div><div class="label">Total dos registros exibidos</div><div class="value">'+F(grand)+'</div></div><div><div class="label">Registros exibidos</div><div class="value">'+I(items.reduce((sum,g)=>sum+g.filtered.length,0))+'</div></div></div>'+items.map(g=>'<details class="expense-folder"><summary><span><span class="folder-name">📁 '+E(g.name)+'</span><span class="folder-meta">'+E(g.cnpj||'Código não informado')+' • '+I(g.filtered.length)+' registro(s) • '+I(g.unique)+' OB únicas</span></span><span class="folder-total">'+F(g.total)+'</span></summary><div class="folder-body"><div class="tiny" style="margin:10px 0">Total deste favorecido: <b>'+F(g.total)+'</b></div><div class="scroll" style="max-height:360px"><table><thead><tr><th>Data</th><th>Ordem bancária</th><th>Processo</th><th>Valor pago</th><th>Descrição do serviço</th></tr></thead><tbody>'+g.filtered.map(r=>'<tr><td>'+E(r.data||'—')+'</td><td>'+E(r.ob||'—')+'</td><td>'+E(r.processo||'—')+'</td><td class="money">'+F(r.valor)+'</td><td title="'+E(r.observacao||'')+'">'+E(r.observacao||'—')+'</td></tr>').join('')+'</tbody></table></div></div></details>').join('')+'<div class="alert"><b>Total dos registros exibidos:</b> '+F(grand)+'.</div>';
+}
+function detail(id){
+ const d=(data?.datasets||[]).find(item=>item.id===id);
+ if(!d)return;
+ const title=document.getElementById('detailTitle');
+ const note=document.getElementById('detailNote');
+ const search=document.getElementById('q');
+ const fieldSelect=document.getElementById('field');
+ const kpis=document.getElementById('detailKpis');
+ if(title)title.textContent=d.title||id;
+ if(note){let detailNote=d.note||'Dados detalhados publicados a partir da base de origem.';if(String(id).toLowerCase()==='orcamentario')detailNote='FONTE DE DADOS SIAFI';if(String(id).toLowerCase()==='repasses')detailNote='';if(String(id).toLowerCase().includes('empenho'))detailNote=detailNote.replace(/Fonte\s+SIAFI\s*:\s*[^.]*\.\s*/ig,'').trim();note.textContent=detailNote;}
+ if(search)search.value='';const empenhoInput=document.getElementById('filterEmpenho');if(empenhoInput)empenhoInput.value='';const empenhosFilters=document.getElementById('empenhosFilters');if(empenhosFilters)empenhosFilters.style.display=id==='empenhos'?'grid':'none';
+ const obFilterValue=document.getElementById('obFilterValue');if(obFilterValue)obFilterValue.value='';const obFilterField=document.getElementById('obFilterField');if(obFilterField)obFilterField.value='favorecido';const repassesFilterIds=['filterProcesso','filterNumeroNe','filterFornecedor'];repassesFilterIds.forEach(fid=>{const el=document.getElementById(fid);if(el)el.value=''});const repassesFilters=document.getElementById('repassesFilters');if(repassesFilters)repassesFilters.style.display=id==='repasses'?'grid':'none';
+ if(fieldSelect){
+  const keys=[...new Set((d.rows||[]).flatMap(row=>Object.keys(row)))];
+  fieldSelect.innerHTML='<option value="">Todos os campos</option>'+keys.map(key=>'<option value="'+E(key)+'">'+E(key.replace(/_/g,' '))+'</option>').join('');
+  fieldSelect.value='';
+ }
+ if(kpis){
+  const total=totalFor(all(),id);
+  const count=d.detail_count??(d.rows||[]).length;
+  kpis.innerHTML='<article class="kpi"><div class="label">Total da base</div><div class="value">'+F(total)+'</div><div class="hint">Total calculado a partir dos registros publicados</div></article>'+
+   '<article class="kpi"><div class="label">Registros</div><div class="value">'+I(count)+'</div><div class="hint">Quantidade de registros detalhados na base</div></article>'+
+   (String(id).toLowerCase().includes('empenho')||String(id).toLowerCase()==='repasses'?'':'<article class="kpi"><div class="label">FONTE DE DADOS SIAFI</div><div class="value" style="font-size:14px;line-height:1.4;white-space:normal">Todas as fontes de dados são do SIAFI.</div></article>');
+ }
+ if(empenhoInput)empenhoInput.oninput=drawTable;const clearEmpenhos=document.getElementById('clearEmpenhosFilters');if(clearEmpenhos)clearEmpenhos.onclick=()=>{if(empenhoInput)empenhoInput.value='';drawTable()};
+ if(search)search.oninput=drawTable;
+ if(fieldSelect)fieldSelect.onchange=drawTable;
+ if(obFilterValue)obFilterValue.oninput=drawTable;if(obFilterField)obFilterField.onchange=drawTable;['filterProcesso','filterNumeroNe','filterFornecedor'].forEach(fid=>{const el=document.getElementById(fid);if(el)el.oninput=drawTable});
+ const clearDetail=document.getElementById('clearDetail');
+ if(clearDetail)clearDetail.onclick=()=>{if(search)search.value='';if(fieldSelect)fieldSelect.value='';const obFilterValue=document.getElementById('obFilterValue');if(obFilterValue)obFilterValue.value='';const obFilterField=document.getElementById('obFilterField');if(obFilterField)obFilterField.value='favorecido';['filterProcesso','filterNumeroNe','filterFornecedor'].forEach(fid=>{const el=document.getElementById(fid);if(el)el.value=''});drawTable()};
+ drawTable();
+}
+function drawTable(){
+let d=data.datasets.find(x=>x.id===active);if(!d)return;
+if(active==='ordens_bancarias'){renderBankOrderFolders(d);document.getElementById('count').textContent=I(new Set(d.rows.map(r=>String(r.ob??'').trim()).filter(Boolean)).size)+' ordens bancárias únicas';document.getElementById('thead').innerHTML='';document.getElementById('tbody').innerHTML='';return}
+ if(active==='publicacoes_pagas'){renderPublicationFolders(d);document.getElementById('count').textContent=I(d.rows.length)+' registros • '+I(new Set(d.rows.map(r=>String(r.favorecido??'').trim()||String(r.cnpj??'').trim()).filter(Boolean)).size)+' fornecedores';document.getElementById('thead').innerHTML='';document.getElementById('tbody').innerHTML='';return}
+const expenseBox=document.getElementById('expenseFolders');const rapFilters=document.querySelector('#details .filters');const rapCount=document.getElementById('count');const rapTable=document.getElementById('detailTableWrap');if(active==='restos'){expenseBox.className='panel';expenseBox.innerHTML=renderRapThermometer(d);if(rapFilters)rapFilters.style.display='none';if(rapCount)rapCount.style.display='none';if(rapTable)rapTable.style.display='none';}else{if(rapFilters)rapFilters.style.display='';if(rapCount)rapCount.style.display='';if(rapTable)rapTable.style.display='';if(active==='repasses'){renderExpenseFolders(d)}else{expenseBox.className='hide';expenseBox.innerHTML=''}}
+let c=cols[active]||Object.keys(d.rows[0]||{}).map(k=>[k,k]);if(String(active).toLowerCase().includes('empenho'))c=c.filter(x=>!L(x[0]).includes('fonte')&&!L(x[1]).includes('fonte')&&x[0]!=='ne_ccor'&&!L(x[1]).includes('ne ccor'));let q=L(document.getElementById('q').value),f=document.getElementById('field').value,base=d.rows;const qEmpenho=L(document.getElementById('filterEmpenho')?.value||'');
+if(active==='publicacoes_pagas'){
+ const groups=new Map();d.rows.forEach((r,i)=>{const ob=String(r.ob??'').trim(),key=ob||'__sem_ob_'+i;if(!groups.has(key))groups.set(key,{...r,_sourceRows:[]});groups.get(key)._sourceRows.push(r)});
+ base=[...groups.values()].map(g=>{const sources=[...new Set(g._sourceRows.map(r=>String(r.fonte??'').trim()).filter(Boolean))];return{...g,fonte:sources.join(' / '),_source_codes:sources}});
+
+}
+const qProcesso=L(document.getElementById('filterProcesso')?.value||''),qNumeroNe=L(document.getElementById('filterNumeroNe')?.value||''),qFornecedor=L(document.getElementById('filterFornecedor')?.value||'');
+let v=base.filter(r=>active==='empenhos'?(!qEmpenho||L(r.empenho).includes(qEmpenho)||L(r.fornecedor).includes(qEmpenho)):active==='repasses'?(!qProcesso||L(r.processo).includes(qProcesso))&&(!qNumeroNe||L(r.numero_ne).includes(qNumeroNe)||L(r.solicitacao_ne).includes(qNumeroNe))&&(!qFornecedor||L(r.fornecedor).includes(qFornecedor)||L(r.fornecedores).includes(qFornecedor)):(f?[r[f]]:c.map(x=>r[x[0]])).some(x=>L(x).includes(q)));
+document.getElementById('count').textContent=I(v.length)+' de '+I(base.length)+' registros';
+document.getElementById('thead').innerHTML='<tr>'+c.map(x=>'<th'+(x[0]==='saldo'?' class="saldo-col" style="text-align:center!important;padding-right:13px!important;padding-left:13px!important;width:155px!important"':'')+'>'+E(x[1])+'</th>').join('')+'</tr>';
+const fonteAjuda={
+'1001000000':'Recursos livres da Seguridade Social. Em palavras simples, é uma classificação de dinheiro dessa área que não está marcado por esse código para uma única despesa específica. “Livre” não significa gastar sem limites: continuam valendo as leis e as regras de uso.',
+'1049A00062':'Receitas de Farmanguinhos/Fiocruz, conforme a identificação oficial dessa classificação. O código informa a origem/classificação do recurso; sozinho, não confirma que o valor esteja livre para qualquer despesa. Confira o contexto do lançamento na consulta de origem.',
+'1491000000':'Recursos diversos. Em demonstrativos federais, essa classificação pode incluir valores recebidos apenas temporariamente ou que precisam ser devolvidos a outra entidade. Por isso, não considere automaticamente esse saldo como dinheiro disponível para pagar despesas do IOC.'
+};
+document.getElementById('tbody').innerHTML=v.map(r=>'<tr>'+c.map(x=>{const val=r[x[0]];if(active==='financeiro'&&x[0]==='fonte'){const code=String(val??'').trim(),help=fonteAjuda[code]||'Este código identifica a classificação/origem do recurso. A descrição exata e as regras de uso devem ser conferidas na consulta oficial do SIAFI/Tesouro Gerencial.';return '<td class="source-cell" title="'+E(help)+'"><div class="source-code">'+(E(val)||'—')+' <span aria-hidden="true" style="color:#438b89;font-size:11px">ⓘ</span></div><details class="source-help"><summary>Para que serve a fonte?</summary><div>'+E(help)+'</div></details></td>'}return ['saldo','valor','valor_bruto','valor_ob'].includes(x[0])||x[0].startsWith('_valor_')?'<td class="money">'+(val===null||val===undefined||val===''?'—':F(val))+'</td>':'<td title="'+E(val)+'">'+(E(val)||'—')+'</td>'}).join('')+'</tr>').join('')||'<tr><td colspan="'+c.length+'">Nenhum registro encontrado.</td></tr>';
+}
+function showLoadMessage(message,level='warning'){
+ statusEl.textContent=message;
+ statusEl.style.display='block';
+ statusEl.setAttribute('role','status');
+ statusEl.setAttribute('aria-live','polite');
+ statusEl.style.background=level==='error'?'#fff0f0':level==='warning'?'#fff8e8':'#e7f3ee';
+ statusEl.style.borderColor=level==='error'?'#efcaca':level==='warning'?'#f0dfb9':'#d2e8df';
+ statusEl.style.color=level==='error'?'#8f2929':level==='warning'?'#805719':'#386e5c';
+}
+async function load(manual=false){
+ statusEl.textContent=manual?'Recarregando dados publicados…':'Carregando dados publicados…';
+ statusEl.style.display='block';
+ try{
+  const response=await fetch('./data.json?ts='+Date.now(),{cache:'no-store'});
+  if(!response.ok)throw new Error('Falha ao consultar data.json (HTTP '+response.status+').');
+  const payload=await response.json();
+  if(!Array.isArray(payload.datasets))throw new Error('A estrutura publicada não contém a lista de bases esperada.');
+  data=payload;
+  for(const d of data.datasets){
+   d._declared_total=Number(d.total);
+   if(!Array.isArray(d.rows))d.rows=[];
+   if(d.id==='restos'){
+    const before=d.rows.length;
+    d.rows=d.rows.filter(r=>N(r.saldo)!==0);
+    d.total=Number(d.rows.reduce((sum,row)=>sum+N(row.saldo),0).toFixed(2));
+    d.detail_count=d.rows.length;
+    if(!/saldo zero foram omitidos/i.test(d.note||''))d.note=(d.note?d.note+' ':'')+'Exibição: '+(before-d.rows.length)+' registros com saldo zero foram omitidos; o total considera apenas os registros exibidos.';
+   }
+   if(d.id==='financeiro'){
+    d.rows=d.rows.map(r=>({...r,saldo:Math.abs(N(r.saldo))}));
+    d.total=Number(d.rows.reduce((sum,row)=>sum+N(row.saldo),0).toFixed(2));
+    d.note='O valor total representa a soma dos saldos financeiros detalhados. A fonte pagadora é apresentada para fins de identificação e consulta das informações.';
+   }
+   if(d.id==='ordens_bancarias'){
+    const seen=new Set();
+    d.rows=d.rows.filter(row=>{const ob=String(row.ob??'').trim();if(!ob||seen.has(ob))return false;seen.add(ob);return true;}).map(row=>{const clean={...row};delete clean.fonte;delete clean.descricao_fonte;return clean;});
+    d.total=Number(d.rows.reduce((sum,row)=>sum+N(row.valor),0).toFixed(2));
+    d.detail_count=d.rows.length;
+    d.unique_ob_count=d.rows.length;
+    d.note='Dados sincronizados da planilha de Ordens Bancárias Emitidas. Cada OB aparece uma única vez; a fonte não integra os dados nem os filtros desta aba.';
+   }
+   if(d.id==='publicacoes_pagas'){
+    const seen=new Set();
+    d.rows=d.rows.filter(row=>{const ob=String(row.ob??'').trim();if(!ob||seen.has(ob))return false;seen.add(ob);return true;}).map(row=>{const clean={...row};delete clean.fonte;delete clean.descricao_fonte;return clean;});
+    d.total=Number(d.rows.reduce((sum,row)=>sum+N(row.valor),0).toFixed(2));
+    d.detail_count=d.rows.length;
+    d.unique_ob_count=d.rows.length;
+    d.note='Publicações Pagas: registros da planilha de Ordens Bancárias cujo código do favorecido começa com EX. Cada OB aparece uma única vez.';
+   }
+  }
+  // Aba derivada: todas as OBs cuja descrição menciona bolsas, com classificação por valor.
+  data.datasets=data.datasets.filter(d=>d.id!=='bolsistas_pagos');
+  const sourceOrders=data.datasets.find(d=>d.id==='ordens_bancarias');
+  const scholarshipRows=[];
+  const scholarshipName=obs=>{const t=String(obs||'').toLocaleUpperCase('pt-BR');const p=[/BOLSAS? DE ESTUDO NO PAIS\s+([A-ZÀ-Ü][A-ZÀ-Ü ]+?)\s+(?:CPF|COMPETENCIA|PROCESSO)\b/i,/ALUN[AO]\s*:\s*([A-ZÀ-Ü][A-ZÀ-Ü ]+?)\s+(?:COMPETENCIA|PERIODO|PROCESSO)\b/i,/BOLSAS? DA ALUNA\s+([A-ZÀ-Ü][A-ZÀ-Ü ]+?)\s+CONFORME\b/i];for(const x of p){const m=t.match(x);if(m)return m[1].replace(/\s+/g,' ').trim()}return '';};
+  for(const row of (sourceOrders?.rows||[])){const obs=String(row.observacao||'');if(!/BOLS/i.test(obs))continue;const valor=N(row.valor),bolsista=scholarshipName(obs),categoria=valor>=200000?'Pagamento mensal de maior valor':'Pagamento menor ou suplementar';scholarshipRows.push({data_pagamento:row.data_pagamento||row.data||'',ob:row.ob||'',categoria,bolsista:bolsista||'Não identificado na descrição',favorecido:row.favorecido||'',processo:row.processo||'',valor,observacao:obs});}
+  const scholarshipTotal=Number(scholarshipRows.reduce((s,r)=>s+N(r.valor),0).toFixed(2));
+  const scholarshipNote='Consolida todas as OBs relacionadas a bolsas: pagamentos mensais de maior valor (10 OBs; R$ 2.740.700,00) e pagamentos menores ou suplementares (9 OBs; R$ 21.600,00). Nos pagamentos mensais de maior valor, o favorecido pode ser intermediário bancário, não o nome individual de cada bolsista.';
+  data.datasets.push({id:'bolsistas_pagos',title:'Bolsistas Pagos',note:scholarshipNote,rows:scholarshipRows,total:scholarshipTotal,detail_count:scholarshipRows.length});
+  const audit=auditIntegrity();
+  // A auditoria informa problemas, mas não bloqueia a renderização das bases que puderam ser carregadas.
+  render();
+  if(audit.errors.length||audit.warnings.length){
+   const issues=[...audit.errors.map(message=>'Erro: '+message),...audit.warnings.map(message=>'Atenção: '+message)];
+   const preview=issues.slice(0,3).join(' ');
+   const more=issues.length>3?' Mais '+(issues.length-3)+' apontamento(s); atualize os dados ou revise a base de origem.':'';
+   showLoadMessage('Painel carregado com apontamentos de integridade. Os dados utilizáveis continuam disponíveis. '+preview+more,audit.errors.length?'error':'warning');
+   const auditBox=document.getElementById('integrityAudit');
+   if(auditBox){auditBox.classList.remove('hide');auditBox.removeAttribute('aria-hidden');auditBox.textContent=issues.join(' ');}
+  }else{
+   showLoadMessage('Dados carregados e verificações básicas concluídas.','ok');
+   const auditBox=document.getElementById('integrityAudit');
+   if(auditBox){auditBox.classList.add('hide');auditBox.setAttribute('aria-hidden','true');auditBox.textContent='';}
+  }
+ }catch(error){
+  const detail=error&&error.message?error.message:'Falha inesperada ao carregar os dados.';
+  showLoadMessage('Não foi possível carregar todas as informações. '+detail+(data&&Array.isArray(data.datasets)?' O painel tentará manter disponíveis as informações já carregadas.':' Verifique a conexão e tente novamente.'),'error');
+  if(data&&Array.isArray(data.datasets)){
+   try{render();}catch(renderError){showLoadMessage('Parte dos dados foi recebida, mas a tela não pôde ser renderizada completamente. '+(renderError&&renderError.message?renderError.message:'Revise a estrutura das bases.'),'error');}
+  }
+ }
+}
+const refreshButton=document.getElementById('refresh');if(refreshButton)refreshButton.onclick=()=>load(true);
+// Atualiza os dados da página já aberta a cada quatro horas, somente em dias úteis.
+// Recarrega as bases sem dar refresh completo no navegador, preservando a aba e os filtros sempre que possível.
+const AUTO_REFRESH_INTERVAL_MS=4*60*60*1000;
+setInterval(()=>{const weekday=new Date().getDay();if(weekday>=1&&weekday<=5)load(false)},AUTO_REFRESH_INTERVAL_MS);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden){const weekday=new Date().getDay();if(weekday>=1&&weekday<=5)load(false)}});
+load();
+</script></body></html>
