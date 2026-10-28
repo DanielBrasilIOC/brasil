@@ -812,9 +812,11 @@ load();
   wrap.innerHTML='<article class="kpi"><div class="label">Publicações Pagas</div><div class="value">'+money(total(pub))+'</div><div class="hint">'+count(pub)+' registros da base de ordens bancárias</div></article><article class="kpi"><div class="label">Diárias Pagas</div><div class="value">'+money(total(dia))+'</div><div class="hint">'+count(dia)+' registros da base de diárias</div></article>';
  }
  function ensurePanel(){
-  let p=$('#extraDiariasPanel');if(p)return p;
-  p=document.createElement('section');p.id='extraDiariasPanel';p.className='extra-detail-panel hide';
-  const details=$('#details');if(details&&details.parentNode)details.insertAdjacentElement('afterend',p);else document.body.appendChild(p);
+  let p=$('#extraDiariasPanel');
+  if(!p){
+   p=document.createElement('section');p.id='extraDiariasPanel';p.className='extra-detail-panel hide';
+   const details=$('#details');if(details&&details.parentNode)details.insertAdjacentElement('afterend',p);else document.body.appendChild(p);
+  }
   p.innerHTML='<div class="head"><div><h3>Diárias Pagas</h3><p class="desc">Dados da planilha de diárias pagas.</p></div></div><div class="diarias-filters" style="display:flex;flex-wrap:wrap;gap:12px;align-items:end;margin:14px 0"><label style="display:grid;gap:5px;flex:1;min-width:220px;font-size:12px;font-weight:700">Favorecido<input id="diariasFilterFavorecido" type="search" placeholder="Pesquisar favorecido"></label><label style="display:grid;gap:5px;min-width:190px;font-size:12px;font-weight:700">Data de pagamento<input id="diariasFilterData" type="date"></label><button id="diariasClearFilters" class="btn" type="button">Limpar</button></div><div id="diariasCount" class="tiny" style="margin:8px 0"></div><div class="scroll"><table><thead><tr><th>Favorecido</th><th>Data de pagamento</th><th>Classificação Orçamentária</th><th>Valor</th><th>Documento</th><th>Observação</th></tr></thead><tbody id="diariasRows"></tbody></table></div>';
   const render=()=>{
    const fav=norm($('#diariasFilterFavorecido')?.value),date=$('#diariasFilterData')?.value||'';
