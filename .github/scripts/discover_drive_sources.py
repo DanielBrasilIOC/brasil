@@ -27,6 +27,8 @@ EXPECTED_NAMES = {
     "restos": ("Restos a Pagar.csv",),
 }
 
+EXTRA_EXPECTED_NAMES = ("DIARIAS PAGAS.csv",)
+
 # IDs do estado anterior são mantidos apenas para histórico/debug; nunca são
 # utilizados automaticamente para substituir uma descoberta por nome.
 OLD_IDS = {
@@ -116,6 +118,7 @@ def fetch_folder_page(folder_id):
 def extract_folder_files(page, folder_id):
     """Extrai os IDs dos CSVs da listagem pública simplificada do Drive."""
     files = []
+    all_expected_names = [name for values in EXPECTED_NAMES.values() for name in values] + list(EXTRA_EXPECTED_NAMES)
     # A visualização embeddedfolderview agrupa cada arquivo em um bloco flip-entry.
     starts = [m.start() for m in re.finditer(r"""<div\b[^>]*class=["']flip-entry["']""", page, re.I)]
     if starts:
@@ -128,7 +131,7 @@ def extract_folder_files(page, folder_id):
             if not title_match:
                 continue
             name = html.unescape(re.sub(r"<[^>]+>", "", title_match.group(1))).strip()
-            if normalize(name) not in {normalize(n) for values in EXPECTED_NAMES.values() for n in values}:
+            if normalize(name) not in {normalize(n) for n in all_expected_names}:
                 continue
             # O HTML público atual do Drive identifica cada linha como id="entry-<FILE_ID>".
             # As variantes antigas usavam /file/d/<ID> ou ?id=<ID>.
@@ -152,17 +155,16 @@ def extract_folder_files(page, folder_id):
     # e mantém candidatos múltiplos para que a validação bloqueie ambiguidades.
     decoded = page.replace(r"\u0026", "&").replace(r"\u003d", "=").replace(r"\"", '"')
     id_pattern = re.compile(r"[A-Za-z0-9_-]{20,80}")
-    for expected_values in EXPECTED_NAMES.values():
-        for expected in expected_values:
-            positions = [m.start() for m in re.finditer(re.escape(expected), decoded, re.I)]
-            candidates = []
-            for pos in positions:
-                window = decoded[max(0, pos - 300):pos + 300]
-                for candidate in id_pattern.findall(window):
-                    if candidate != folder_id and candidate not in candidates:
-                        candidates.append(candidate)
-            for candidate in candidates:
-                files.append({"id": candidate, "name": expected, "mimeType": "text/csv", "parents": [folder_id]})
+    for expected in all_expected_names:
+        positions = [m.start() for m in re.finditer(re.escape(expected), decoded, re.I)]
+        candidates = []
+        for pos in positions:
+            window = decoded[max(0, pos - 300):pos + 300]
+            for candidate in id_pattern.findall(window):
+                if candidate != folder_id and candidate not in candidates:
+                    candidates.append(candidate)
+        for candidate in candidates:
+            files.append({"id": candidate, "name": expected, "mimeType": "text/csv", "parents": [folder_id]})
     return files
 
 def discover_source_ids():
@@ -173,6 +175,15 @@ def discover_source_ids():
     files = extract_folder_files(page, folder_id)
     try:
         ids = select_sources(files, folder_id)
+        diarias = [item for item in files
+                   if normalize(item.get("name")) == normalize("DIARIAS PAGAS.csv")
+                   and folder_id in (item.get("parents") or [])]
+        if len(diarias) != 1:
+            raise ValueError(f"DIARIAS PAGAS.csv: encontrados {len(diarias)}, esperado exatamente 1.")
+        diarias_id = str(diarias[0].get("id") or "").strip()
+        if not diarias_id:
+            raise ValueError("DIARIAS PAGAS.csv: ID vazio.")
+        (ROOT / ".diarias_source_id").write_text(diarias_id + "\\n", encoding="utf-8")
     except ValueError as exc:
         # Diagnóstico seguro para descobrir qual variante de página o Drive está servindo.
         expected_names = [name for values in EXPECTED_NAMES.values() for name in values]
