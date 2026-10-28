@@ -875,7 +875,7 @@ async function load(manual=false){
     d.total=Number(d.rows.reduce((sum,row)=>sum+N(row.valor),0).toFixed(2));
     d.detail_count=d.rows.length;
     d.unique_ob_count=d.rows.length;
-    d.note='Dados sincronizados da planilha de Ordens Bancárias Emitidas. Cada OB aparece uma única vez; a fonte não integra os dados nem os filtros desta aba.';
+    d.note='Base sincronizada com o Siafi, com apresentação única por ordem bancária e sem segmentação por fonte pagadora.';
    }
    if(d.id==='publicacoes_pagas'){
     const seen=new Set();
