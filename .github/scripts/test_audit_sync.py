@@ -34,7 +34,7 @@ class CsvDecodeTests(unittest.TestCase):
 
     def test_codificacao_invalida_nao_substitui_silenciosamente(self):
         with self.assertRaises(UnicodeDecodeError):
-            sync.decode_csv_bytes(b"\\xff\\xfe\\x00")
+            sync.decode_csv_bytes(b"\xff\xfe\x00")
 
 class RowDiffTests(unittest.TestCase):
     def test_inclusao_de_registro(self):
