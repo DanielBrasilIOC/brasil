@@ -24,38 +24,21 @@ jobs:
           GOOGLE_DRIVE_FOLDER_ID: 1Ae3_31uGRNvfvnN5EuhiNHbk_mdkVg0L
         run: python .github/scripts/discover_diarias_source.py
 
-      - name: Baixar e integrar Diárias Pagas
+      - name: Baixar, validar e integrar Diárias Pagas
         env:
           DRIVE_FILE_ID: "${{ steps.source.outputs.file_id }}"
         run: python .github/scripts/sync_diarias_pagas.py
-      - name: Publicar com proteção contra concorrência
-        run: |
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add data.json
-          if git diff --cached --quiet; then echo 'Nenhuma alteração na base de Diárias Pagas.'; exit 0; fi
-          git commit -m 'Atualiza Diárias Pagas a partir do Drive'
-          git pull --rebase origin main
-          git push origin HEAD:main
-,'').replace('.','').replace(',','.').strip())
-              except Exception as exc: raise SystemExit(f'Valor inválido em DIARIAS PAGAS: {r!r}') from exc
-              rows.append({'favorecido':r[0].strip(),'data_pagamento':r[1].strip(),'classificacao_orcamentaria':r[2].strip(),'valor':valor,'documento':r[4].strip(),'observacao':r[5].strip()})
-          if not rows: raise SystemExit('DIARIAS PAGAS foi baixada, mas nenhum registro válido foi encontrado.')
-          total=round(sum(x['valor'] for x in rows),2)
-          dataset={'id':'diarias_pagas','title':'Diárias Pagas','short':'Diárias Pagas','source_name':'DIARIAS PAGAS.csv','source_url':f'https://drive.google.com/file/d/{fid}/view?usp=drivesdk','source_modified_at':datetime.now(timezone.utc).isoformat(),'total':total,'detail_count':len(rows),'rows':rows}
-          with open('data.json',encoding='utf-8') as f: data=json.load(f)
-          data['datasets']=[d for d in data.get('datasets',[]) if d.get('id')!='diarias_pagas']+[dataset]
-          data['generated_at']=datetime.now(timezone.utc).isoformat().replace('+00:00','Z')
-          with open('data.json','w',encoding='utf-8') as f: json.dump(data,f,ensure_ascii=False,separators=(',',':'))
-          print(f'Diárias Pagas: {len(rows)} registros; total R$ {total:,.2f}'.replace(',','X').replace('.',',').replace('X','.'))
-          PY
 
-      - name: Publicar com proteção contra concorrência
+      - name: Persistir dados alterados
         run: |
+          set -euo pipefail
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add data.json
-          if git diff --cached --quiet; then echo 'Nenhuma alteração na base de Diárias Pagas.'; exit 0; fi
+          if git diff --cached --quiet; then
+            echo 'Nenhuma alteração na base de Diárias Pagas.'
+            exit 0
+          fi
           git commit -m 'Atualiza Diárias Pagas a partir do Drive'
           git pull --rebase origin main
           git push origin HEAD:main
