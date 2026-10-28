@@ -191,7 +191,7 @@ def main():
     dhi=next((i for i,line in enumerate(dl) if "Favorecido Doc." in line and "OB - Valor Linha" in line),None)
     check(dhi is not None,"Cabeçalho oficial de DIARIAS PAGAS.csv não encontrado.")
     diarias=[]
-    for r in csv.reader(dl[dhi+1:],delimiter="\\t"):
+    for r in csv.reader(dl[dhi+1:],delimiter="\t"):
         if not r or not any(clean(x) for x in r): continue
         if clean(r[0]).upper()=="TOTAL": continue
         check(len(r)>=6, f"Registro incompleto em DIARIAS PAGAS.csv: {r!r}")
