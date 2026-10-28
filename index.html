@@ -7,7 +7,7 @@
 <style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#f3f6f9}iframe{display:block;width:100%;height:100%;border:0}</style>
 </head>
 <body>
-<iframe id="dashboard" src="dashboard-v2.html?v=202610272045-repasses" title="Painel Financeiro e Orçamentário IOC"></iframe>
+<iframe id="dashboard" src="dashboard-v2.html?v=202610281430-diarias" title="Painel Financeiro e Orçamentário IOC"></iframe>
 <script>
 const frame=document.getElementById('dashboard');
 frame.addEventListener('load',()=>{try{
@@ -26,7 +26,15 @@ frame.addEventListener('load',()=>{try{
     .empenhos-custom-filters label{display:grid;gap:5px;min-width:190px;flex:1;font-size:11px;font-weight:700;color:#153b57}
     .empenhos-custom-filters input{width:100%;min-height:38px;box-sizing:border-box}
     .empenhos-custom-filters button{min-height:38px;border:1px solid #d7e2e9;border-radius:10px;background:#fff;color:#26495e;padding:9px 13px;font-weight:700;cursor:pointer}
-    @media(max-width:700px){.empenhos-custom-filters{display:grid;grid-template-columns:1fr}.empenhos-custom-filters label{min-width:0}.empenhos-custom-filters button{width:100%}}
+    .executive-extra-kpis{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:14px}
+    .executive-extra-kpis .kpi{min-height:132px;padding:20px;background:linear-gradient(145deg,#fff,#f9fcfd);border:1px solid #e0e8ed;border-radius:16px;box-shadow:0 8px 24px rgba(19,55,78,.055)}
+    .executive-extra-kpis .label{font-size:12px;font-weight:750;color:#687d8b}
+    .executive-extra-kpis .value{font-size:clamp(20px,2vw,28px);font-weight:820;color:#173b53;margin:9px 0 6px}
+    .executive-extra-kpis .hint{color:#6a7f8d;font-size:12px}
+    .extra-detail-panel{margin-top:14px;padding:20px;background:#fff;border:1px solid #e0e8ed;border-radius:16px;box-shadow:0 8px 24px rgba(19,55,78,.055)}
+    .extra-detail-panel h3{margin:0;color:#153b57;font-size:15px}
+    .extra-detail-panel p{color:#667b89;font-size:12px;line-height:1.55}
+    @media(max-width:700px){.empenhos-custom-filters{display:grid;grid-template-columns:1fr}.empenhos-custom-filters label{min-width:0}.empenhos-custom-filters button{width:100%}.executive-extra-kpis{grid-template-columns:1fr}.executive-extra-kpis .kpi{min-height:105px;padding:14px}.extra-detail-panel{padding:14px}}
   `;
   doc.head.appendChild(style);
 
@@ -37,12 +45,8 @@ frame.addEventListener('load',()=>{try{
   const applyEmpenhos=()=>{
     const details=doc.querySelector('#details[data-dataset="empenhos"]');
     if(!details)return;
-
-    // Manter visível o filtro nativo único: pesquisa empenho OU fornecedor e tem botão Limpar filtro.
     const nativeEmpenhosFilters=details.querySelector('#empenhosFilters');
     if(nativeEmpenhosFilters){nativeEmpenhosFilters.style.removeProperty('display');nativeEmpenhosFilters.removeAttribute('aria-hidden');}
-
-    // Remove NE CCOR somente da apresentação, preservando integralmente os dados.
     details.querySelectorAll('table').forEach(table=>{
       const headers=Array.from(table.querySelectorAll('thead th'));
       headers.forEach((th,i)=>{
@@ -52,8 +56,6 @@ frame.addEventListener('load',()=>{try{
         }
       });
     });
-
-    // Na aba Empenhos 2026, deixar visíveis somente os filtros Empenho e Fornecedor.
     details.querySelectorAll('.detail-filters,.filters').forEach(box=>{
       if(box.classList.contains('empenhos-custom-filters'))return;
       box.querySelectorAll('label,select,input,button,.filter,.filter-group').forEach(el=>{
@@ -61,12 +63,39 @@ frame.addEventListener('load',()=>{try{
         if(!isEmpenho(text)&&!isFornecedor(text))el.style.display='none';
       });
     });
-
-    // Usar somente o filtro nativo #empenhosFilters, que já pesquisa empenho OU fornecedor.
   };
+
+  const addExecutiveExtras=async()=>{
+    const kpis=doc.getElementById('kpis');
+    if(!kpis)return;
+    let payload;
+    try{const r=await fetch('./data.json?ts='+Date.now(),{cache:'no-store'});if(!r.ok)return;payload=await r.json()}catch(e){return}
+    const datasets=Array.isArray(payload.datasets)?payload.datasets:[];
+    const pub=datasets.find(d=>d.id==='publicacoes_pagas');
+    const diarias=datasets.find(d=>d.id==='diarias_pagas');
+    const money=n=>'R$ '+new Intl.NumberFormat('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2}).format(Number(n)||0);
+    const total=d=>{if(!d||!Array.isArray(d.rows))return 0;const seen=new Set();return d.rows.reduce((s,r,i)=>{const ob=String(r.ob??'').trim()||'__'+i;if(seen.has(ob))return s;seen.add(ob);return s+(Number(String(r.valor??0).replace(/\./g,'').replace(',','.'))||0)},0)};
+    const count=d=>Array.isArray(d?.rows)?d.rows.length:0;
+    let wrap=doc.getElementById('executiveExtraKpis');
+    if(!wrap){wrap=doc.createElement('div');wrap.id='executiveExtraKpis';wrap.className='executive-extra-kpis';kpis.parentNode.insertBefore(wrap,kpis.nextSibling)}
+    wrap.innerHTML=`<article class="kpi"><div class="label">Publicações Pagas</div><div class="value">${pub?money(total(pub)):'Base não publicada'}</div><div class="hint">${pub?count(pub)+' registros da base de ordens bancárias':'A base de Publicações Pagas não está disponível nesta publicação.'}</div></article><article class="kpi"><div class="label">Diárias Pagas</div><div class="value">${diarias?money(total(diarias)):'Base não publicada'}</div><div class="hint">${diarias?count(diarias)+' registros da base de diárias':'A base de Diárias Pagas ainda não está publicada no data.json.'}</div></article>`;
+
+    let nav=doc.getElementById('nav');
+    if(nav&&!nav.querySelector('[data-x="diarias_pagas"]')){
+      const b=doc.createElement('button');b.dataset.x='diarias_pagas';b.textContent='▣ Diárias Pagas';b.onclick=()=>showExtraDiarias();nav.appendChild(b);
+    }
+    if(!doc.getElementById('extraDiariasPanel')){const panel=doc.createElement('section');panel.id='extraDiariasPanel';panel.className='extra-detail-panel hide';panel.innerHTML='<h3>Diárias Pagas</h3><p>Esta aba foi criada para a base de Diárias Pagas. Nenhum dado foi inventado: enquanto a planilha/base correspondente não estiver publicada no data.json, o painel informa a indisponibilidade da base.</p>';doc.getElementById('details').parentNode.appendChild(panel)}
+  };
+  const showExtraDiarias=()=>{
+    const overview=doc.getElementById('overview'),details=doc.getElementById('details'),panel=doc.getElementById('extraDiariasPanel');
+    if(overview)overview.classList.add('hide');if(details)details.classList.add('hide');if(panel)panel.classList.remove('hide');
+    doc.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('active',b.dataset.x==='diarias_pagas'));
+  };
+  window.showExtraDiarias=showExtraDiarias;
 
   applyEmpenhos();
   new MutationObserver(()=>applyEmpenhos()).observe(doc.body,{subtree:true,childList:true});
+  setTimeout(addExecutiveExtras,300);
 }catch(e){console.error('Ajuste do painel não aplicado',e)}});
 </script>
 </body>
