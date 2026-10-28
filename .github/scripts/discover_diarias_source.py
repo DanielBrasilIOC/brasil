@@ -24,7 +24,7 @@ def main():
     output = os.environ.get("GITHUB_OUTPUT")
     if output:
         with open(output, "a", encoding="utf-8") as f:
-            f.write(f"file_id={file_id}\\n")
+            f.write(f"file_id={file_id}\n")
     print(json.dumps({"status":"FONTE_LOCALIZADA_POR_NOME","arquivo":EXPECTED,"quantidade":1}, ensure_ascii=False))
 
 if __name__ == "__main__":
