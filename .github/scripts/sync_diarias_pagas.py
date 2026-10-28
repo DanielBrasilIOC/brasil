@@ -8,19 +8,19 @@ ROOT = Path(__file__).resolve().parents[2]
 DATA_PATH = ROOT / "data.json"
 
 def decode_csv(raw):
-    if raw.startswith((b"\\xff\\xfe", b"\\xfe\\xff")):
+    if raw.startswith((b"\xff\xfe", b"\xfe\xff")):
         text = raw.decode("utf-16")
-    elif raw.startswith(b"\\xef\\xbb\\xbf"):
+    elif raw.startswith(b"\xef\xbb\xbf"):
         text = raw.decode("utf-8-sig")
     else:
         try:
             text = raw.decode("utf-8")
         except UnicodeDecodeError:
             text = raw.decode("cp1252")
-    text = text.replace("\\r\\n", "\\n").replace("\\r", "\\n")
-    if "\\x00" in text:
+    text = text.replace("\r\n", "\n").replace("\r", "\n")
+    if "\x00" in text:
         raise ValueError("CSV de diárias contém bytes NUL após a decodificação.")
-    if re.search(r"<(?:!doctype|html|head|body|script|meta)\\b", text[:2000], re.I):
+    if re.search(r"<(?:!doctype|html|head|body|script|meta)\b", text[:2000], re.I):
         raise ValueError("O Drive retornou HTML em vez do CSV de diárias.")
     return text
 
@@ -52,7 +52,7 @@ def main():
     if hi is None:
         raise RuntimeError("Cabeçalho oficial de DIARIAS PAGAS não encontrado; publicação bloqueada.")
     rows = []
-    for row in csv.reader(lines[hi + 1:], delimiter="\\t"):
+    for row in csv.reader(lines[hi + 1:], delimiter="\t"):
         if not row or not any(str(value).strip() for value in row):
             continue
         if row[0].strip().upper() == "TOTAL":
