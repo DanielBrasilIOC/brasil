@@ -928,3 +928,4 @@
 2026-10-28T07:51:15Z;40652741917;schedule;SEM_ALTERACOES;Orçamentário;1gQYnGiF2zLdCOR-iiW5ptNc-3fXdNuMy;NÃO;23;9892.63;0;0;0;NÃO;NÃO;NÃO NECESSÁRIA;"Hash fonte: inalterado; registros: +0 / -0 / alterados=0; valor total: inalterado."
 2026-10-28T07:51:15Z;40652741917;schedule;SEM_ALTERACOES;RESUMO DA EXECUÇÃO;;NÃO;1172;;0;0;0;NÃO;NÃO;NÃO NECESSÁRIA;Fontes com hash alterado: nenhuma. Contagem alterada: nenhuma. Total alterado: nenhum.
 2026-10-28T07:51:36Z;40652741917;schedule;FINALIZAÇÃO;RESUMO DA PUBLICAÇÃO;;;;;;;;;NÃO;"VERIFICADO — SEM ALTERAÇÕES; PUBLICAÇÃO NÃO NECESSÁRIA";Resultado final da publicação da execução.
+2026-10-28T11:34:59Z;40681018076;schedule;FALHA;REGISTRO DE FALHA DO WORKFLOW;;NÃO;;;;;;;NÃO;FALHA REGISTRADA — verificar execução no GitHub Actions;"build=failure; deploy=skipped; persistência=skipped; detalhes: https://github.com/DanielBrasilIOC/brasil/actions/runs/40681018076"
