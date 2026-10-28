@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Descobre DIARIAS PAGAS.csv pelo nome exato normalizado na pasta oficial do Drive."""
-import json, os, sys
+import json, os, sys, time
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -12,7 +12,18 @@ EXPECTED = "DIARIAS PAGAS.csv"
 
 def main():
     drive.EXPECTED_NAMES["diarias"] = (EXPECTED,)
-    page = drive.fetch_folder_page(FOLDER_ID)
+    page = None
+    last_error = None
+    for attempt in range(3):
+        try:
+            page = drive.fetch_folder_page(FOLDER_ID)
+            break
+        except Exception as exc:
+            last_error = exc
+            if attempt < 2:
+                time.sleep(2 * (attempt + 1))
+    if page is None:
+        raise RuntimeError(f"Não foi possível consultar a pasta oficial após 3 tentativas: {last_error}")
     files = drive.extract_folder_files(page, FOLDER_ID)
     target = drive.normalize(EXPECTED)
     matches = [f for f in files if drive.normalize(f.get("name")) == target and FOLDER_ID in (f.get("parents") or [])]
