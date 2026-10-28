@@ -9,6 +9,33 @@ SPEC = importlib.util.spec_from_file_location("audit_sync", SCRIPT)
 audit = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(audit)
 
+SYNC_SCRIPT = Path(__file__).with_name("sync_sources.py")
+SYNC_SPEC = importlib.util.spec_from_file_location("sync_sources", SYNC_SCRIPT)
+sync = importlib.util.module_from_spec(SYNC_SPEC)
+SYNC_SPEC.loader.exec_module(sync)
+
+class CsvDecodeTests(unittest.TestCase):
+    def test_utf16_le_com_bom(self):
+        raw = "Favorecido;Valor\r\nFundação;1.234,56\r\n".encode("utf-16")
+        decoded = sync.decode_csv_bytes(raw)
+        self.assertIn("Fundação", decoded)
+        self.assertIn("1.234,56", decoded)
+        self.assertNotIn("\\x00", decoded)
+
+    def test_utf8_com_bom(self):
+        raw = "\\ufeffFavorecido;Valor\\nFundação;12,34".encode("utf-8")
+        decoded = sync.decode_csv_bytes(raw)
+        self.assertIn("Favorecido", decoded)
+        self.assertIn("Fundação", decoded)
+
+    def test_valor_monetario_brasileiro(self):
+        self.assertEqual(sync.money("R$ 1.234,56"), 1234.56)
+        self.assertEqual(sync.money("-1.234,56"), -1234.56)
+
+    def test_codificacao_invalida_nao_substitui_silenciosamente(self):
+        with self.assertRaises(UnicodeDecodeError):
+            sync.decode_csv_bytes(b"\\xff\\xfe")
+
 class RowDiffTests(unittest.TestCase):
     def test_inclusao_de_registro(self):
         before = {"orcamentario": ["a", "b"]}
