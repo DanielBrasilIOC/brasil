@@ -56,7 +56,7 @@ jobs:
           lines = raw.splitlines()
           while lines and not lines[0].strip(): lines.pop(0)
           if lines and 'DIARIAS PAGAS' in lines[0].upper(): lines.pop(0)
-          reader = csv.DictReader(lines, delimiter='\\t')
+          reader = csv.DictReader(lines, delimiter=chr(9))
           rows=[]
           for r in reader:
               if not any(str(v or '').strip() for v in r.values()): continue
