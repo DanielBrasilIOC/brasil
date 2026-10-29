@@ -63,3 +63,5 @@ jobs:
             git commit -m "Registra resultado da auditoria de um milhão de perguntas" || true
             git push origin HEAD:agente-teste
           fi
+
+# Inicia a execução da bateria completa no branch isolado.
