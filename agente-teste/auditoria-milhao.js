@@ -1,9 +1,9 @@
-const fs = require("node:fs");
-const path = require("node:path");
-const vm = require("node:vm");
-const zlib = require("node:zlib");
-const { once } = require("node:events");
-const { finished } = require("node:stream/promises");
+import fs from "node:fs";
+import path from "node:path";
+import vm from "node:vm";
+import zlib from "node:zlib";
+import { once } from "node:events";
+import { finished } from "node:stream/promises";
 
 const root = process.cwd();
 const base = JSON.parse(fs.readFileSync(path.join(root, "data.json"), "utf8"));
