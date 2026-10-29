@@ -14,7 +14,7 @@ const dateFromText=q=>{const m=q.match(/(?:em|no|na|de)\s+(janeiro|fevereiro|mar
 const threshold=q=>{const m=q.match(/(?:acima|maior|superior)\s*(?:de|a)?\s*r?\$?\s*([\d\.]+(?:,\d{1,2})?|\d+(?:\.\d{1,2})?)\s*(mil|milhao|milhoes)?/);if(!m)return null;let n=Number(m[1].replace(/\./g,'').replace(',','.'));if(m[2]==='mil')n*=1000;if(m[2]&&m[2].startsWith('milhao'))n*=1000000;return n;};
 const datasetName=q=>{if(q.includes('saldo orcamentario')||q.includes('orcamentario'))return ['saldo orcamentario','orcamentario'];if(q.includes('diaria'))return ['diarias pagas','diarias'];if(q.includes('publicac'))return ['publicacoes pagas','publicacoes'];if(q.includes('restos'))return ['restos a pagar','restos'];if(q.includes('empenho'))return ['empenhos 2026','empenhos'];if(q.includes('saldo financeiro')||q.includes('saldo'))return ['saldo financeiro','financeiro'];if(q.includes('ob')||q.includes('ordens bancarias')||q.includes('pagamento'))return ['ordens bancarias pagas','ob pagas','ordens pagas'];return null;};
 function paymentRows(q){const terms=datasetName(q)||['ordens bancarias pagas'];const d=findDs(terms);return {d,rows:rows(d)}}
-const STOP_PERSON_WORDS=new Set(['quanto','qual','quais','foi','foram','pago','paga','pagos','pagas','pagamento','pagamentos','valor','total','de','do','da','dos','das','ao','aos','as','o','os','a','um','uma','no','na','em','por','para','sobre','temos','tem','houve','recebeu','recebido','recebida','ob','obs','ordem','bancaria','bancarias','ultima','ultimo','maior','menor','top','listar','liste','mostre','me','diga','favorecido']);
+const STOP_PERSON_WORDS=new Set(['quanto','qual','quais','foi','foram','pago','paga','pagos','pagas','pagamento','pagamentos','valor','total','de','do','da','dos','das','ao','aos','as','o','os','a','um','uma','no','na','em','por','para','sobre','temos','tem','houve','recebeu','recebido','recebida','ob','obs','ordem','bancaria','bancarias','ultima','ultimo','maior','menor','top','listar','liste','mostre','me','diga','favorecido','dados','atual','atuais','base','painel','diretoria','consulta','consultar','registros','registro','planilha','fonte','precisao','preciso','saber','favor','gentileza','conforme','informacao','informacoes','apresente','informe','informe','apurar','apure','calcule','calcular','me','pode','consegue','verificar','considerando','disponiveis','publicados','publicada','atualizada','exatos','exato','resultado','traga','quero','gostaria','reuniao','institucional','levantamento','relacao','lista','todos','todas','nomes','servidor','servidores','beneficiario','beneficiarios','pessoa','pessoas','maiores','maior','dez','cinco','tres','tres','dois','quatro']);
 function answerFavorecido(original){
  const q=norm(original);
  const n=norm(q);
@@ -56,7 +56,7 @@ function answerFavorecido(original){
 }
 function answerTravel(original){
  const q=norm(original);
- if(!/(viaj|viagem|diaria|diarias)/.test(q))return null;
+ if(!/(viaj|viag|diaria|diarias)/.test(q))return null;
  const d=findDs(['diarias_pagas','diarias pagas']),data=rows(d);
  if(!data.length)return 'Não encontrei registros de diárias pagas na base consultada.';
  const fk=key(data[0],['favorecido','beneficiario','nome']),vk=key(data[0],['valor']);
@@ -77,7 +77,7 @@ function answerTravel(original){
   list.sort((a,b)=>b.total-a.total||a.name.localeCompare(b.name,'pt-BR'));
   return 'Maiores totais recebidos em diárias (por favorecido):\n'+list.slice(0,limit).map((x,i)=>(i+1)+'. '+x.name+' — '+money(x.total)+' ('+x.count+' registro(s))').join('\n')+meta;
  }
- if(/quantas pessoas|numero de pessoas|nomes de quem|listar nomes|liste os nomes|quem viajou/.test(q)){
+ if(/quantas pessoas|quais pessoas|pessoas receberam|numero de pessoas|nomes de quem|nomes dos favorecidos|nomes de todos|listar nomes|liste os nomes|quem viajou|quem teve viagem|relacao de pessoas|lista de pessoas|todos os nomes|favorecidos de diarias|beneficiarios de diarias|beneficiarios de viagens|viajantes registrados|quem recebeu pagamento de diaria/.test(q)){
   const sorted=list.slice().sort((a,b)=>a.name.localeCompare(b.name,'pt-BR'));
   const selected=/top\s+\d+|\d+\s+(?:maiores|pessoas|nomes)/.test(q)?sorted.slice(0,limit):sorted;
   return 'Pessoas com registros de diárias pagas ('+selected.length+(selected.length<list.length?' de '+list.length:'')+'):\n'+selected.map((x,i)=>(i+1)+'. '+x.name+' — '+x.count+' registro(s), '+money(x.total)).join('\n')+meta;
