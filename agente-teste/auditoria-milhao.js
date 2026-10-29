@@ -19,7 +19,7 @@ const prefixes = [
 ];
 const prefixContexts = [
   "com base na base publicada, ", "no Painel IOC, ", "para uma conferência, ",
-  "na consulta atual, ", "para um relatório, ", em relação ao painel, ,
+  "na consulta atual, ", "para um relatório, ", "em relação ao painel, ",
   "para acompanhamento, ", "considerando os registros, ", "no levantamento, ",
   "com os dados disponíveis, "
 ];
