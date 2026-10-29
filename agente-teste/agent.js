@@ -67,10 +67,11 @@ function answerTravel(original){
  const limitMatch=q.match(/top\\s+(\\d+)|(\\d+)\\s+(?:maiores|pessoas|nomes)/);
  const limit=Math.min(50,Math.max(1,Number(limitMatch&&(limitMatch[1]||limitMatch[2])||10)));
  const meta='\\n\\nBase: '+data.length+' registros de diárias; '+list.length+' favorecidos distintos.\\nFonte: '+(d.source_name||d.title)+'\\nData da base: '+(base.source_updated_at||'não informada')+'.';
- if(/mais viajou|mais viagens|viajou mais vezes|maior numero de viagens|mais vezes/.test(q)){
+ if(/mais viaj|mais viagens|viajou mais vezes|maior numero de viagens|mais vezes/.test(q)){
   list.sort((a,b)=>b.count-a.count||a.name.localeCompare(b.name,'pt-BR'));
-  const max=list[0].count,leaders=list.filter(x=>x.count===max);
-  return 'Quem mais viajou, considerando a quantidade de registros de diárias pagas: '+leaders.map(x=>x.name+' ('+x.count+' registros; '+money(x.total)+')').join('; ')+'.\\nForam considerados registros de diárias, não destinos ou viagens únicas.'+meta;
+  const explicitTop=/top\\s+\\d+|\\d+\\s+(?:maiores|pessoas|nomes)/.test(q);
+  const max=list[0].count,leaders=explicitTop?list.slice(0,limit):list.filter(x=>x.count===max);
+  return (explicitTop?'Ranking das pessoas com mais registros de diárias pagas: ':'Quem mais viajou, considerando a quantidade de registros de diárias pagas: ')+leaders.map((x,i)=>(explicitTop?(i+1)+'. ':'')+x.name+' ('+x.count+' registros; '+money(x.total)+')').join('; ')+'.\\nForam considerados registros de diárias, não destinos ou viagens únicas.'+meta;
  }
  if(/mais recebeu|maior valor|maiores valores|maior soma|total recebido|recebeu mais/.test(q)){
   list.sort((a,b)=>b.total-a.total||a.name.localeCompare(b.name,'pt-BR'));
