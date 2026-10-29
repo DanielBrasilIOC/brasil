@@ -1,27 +1,21 @@
 let base=null;
 const $=id=>document.getElementById(id);
+const norm=s=>String(s??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
 const money=v=>Number(v||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
-const dateValue=(r)=>{for(const k of Object.keys(r||{})){const n=k.toLowerCase();if(n.includes('data')||n.includes('pagamento')||n.includes('emissão')||n.includes('emissao')){const v=r[k];if(v&&/^\d{4}-\d{2}-\d{2}/.test(String(v)))return String(v).slice(0,10);if(v&&/^\d{2}\/\d{2}\/\d{4}/.test(String(v))){const [d,m,y]=String(v).slice(0,10).split('/');return `${y}-${m}-${d}`}}}return null};
-const findDs=(terms)=>{const ds=base?.datasets||[];return ds.find(d=>terms.some(t=>`${d.id} ${d.title} ${d.short} ${d.source_name}`.toLowerCase().includes(t)))||null};
-function rowsOf(d){return Array.isArray(d?.rows)?d.rows:[]}
-function answer(q){
- q=q.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
- if(q.includes('ultima')&&q.includes('ob')&&(q.includes('paga')||q.includes('pagamento'))){
-   const d=findDs(['ordens bancarias pagas','ob pagas','pagamentos','ordens pagas']);
-   if(!d)return 'Não encontrei uma base de Ordens Bancárias Pagas identificável no data.json atual.\n\nNão vou inventar uma resposta.';
-   const rows=rowsOf(d).map(r=>({r,date:dateValue(r)})).filter(x=>x.date).sort((a,b)=>b.date.localeCompare(a.date));
-   if(!rows.length)return 'A base foi encontrada, mas não há uma data de pagamento reconhecível nos registros.\n\nNão vou inferir a última OB.';
-   const x=rows[0].r;const ob=Object.entries(x).find(([k])=>/\bob\b|ordem/.test(k.toLowerCase()));const val=Object.entries(x).find(([k])=>/valor/.test(k.toLowerCase()));const fav=Object.entries(x).find(([k])=>/favorecido/.test(k.toLowerCase()));
-   return `A última OB paga registrada na base é de ${new Date(rows[0].date+'T12:00:00').toLocaleDateString('pt-BR')}.\n${ob?`OB: ${ob[1]}\n`:''}${val?`Valor: ${money(val[1])}\n`:''}${fav?`Favorecido: ${fav[1]}\n`:''}\nFonte: ${d.source_name||d.title}`;
- }
- let d=null;
- if(q.includes('saldo financeiro'))d=findDs(['saldo financeiro','financeiro']);
- else if(q.includes('restos a pagar'))d=findDs(['restos a pagar','restos']);
- else if(q.includes('empenhos 2026')||q.includes('empenhos'))d=findDs(['empenhos 2026','empenhos']);
- else if(q.includes('maior pagamento'))d=findDs(['ordens bancarias pagas','ob pagas','pagamentos']);
- if(d){if(q.includes('maior pagamento')){const rows=rowsOf(d);const valKey=r=>Object.keys(r).find(k=>/valor|saldo/.test(k.toLowerCase()));const x=rows.filter(r=>valKey(r)).sort((a,b)=>Number(b[valKey(b)])-Number(a[valKey(a)]))[0];return x?`Maior registro encontrado: ${money(x[valKey(x)])}.\nFonte: ${d.source_name||d.title}`:'Não há valores numéricos suficientes para calcular.'}return `${d.title}: ${money(d.total)}\nRegistros detalhados: ${d.detail_count ?? rowsOf(d).length}\nFonte: ${d.source_name||d.title}`}
- return 'Ainda não reconheço essa pergunta neste protótipo.\n\nNo ambiente de teste, estou priorizando consultas determinísticas às bases do painel. Tente perguntar sobre saldo financeiro, restos a pagar, empenhos 2026, maior pagamento ou última OB paga.';
+const rows=d=>Array.isArray(d?.rows)?d.rows:[];
+const findDs=terms=>(base?.datasets||[]).find(d=>terms.some(t=>norm(`${d.id} ${d.title} ${d.short} ${d.source_name}`).includes(norm(t))));
+const key=(r,terms)=>Object.keys(r||{}).find(k=>terms.some(t=>norm(k).includes(t)));
+const parseMoney=v=>typeof v==='number'?v:Number(String(v??'').replace(/[^0-9,.-]/g,'').replace(/\.(?=\d{3}(?:\D|$))/g,'').replace(',','.'))||0;
+const dateValue=r=>{for(const [k,v] of Object.entries(r||{})){const n=norm(k);if(n.includes('data')||n.includes('pagamento')||n.includes('emissao')){if(/^\d{4}-\d{2}-\d{2}/.test(String(v)))return String(v).slice(0,10);if(/^\d{2}\/\d{2}\/\d{4}/.test(String(v))){const [d,m,y]=String(v).slice(0,10).split('/');return `${y}-${m}-${d}`}}}return null};
+const fmtDate=s=>s?new Date(s+'T12:00:00').toLocaleDateString('pt-BR'):'';
+function payments(){const d=findDs(['ordens bancarias pagas','ob pagas','ordens pagas']);return {d,rows:rows(d)}}
+function answer(original){const q=norm(original);
+ if(q.includes('ultima')&&q.includes('ob')&&(q.includes('paga')||q.includes('pagamento'))){const {d,rows}=payments();if(!d)return 'Não encontrei a base de Ordens Bancárias Pagas. Não vou inventar uma resposta.';const a=rows.map(r=>({r,date:dateValue(r)})).filter(x=>x.date).sort((a,b)=>b.date.localeCompare(a.date));if(!a.length)return 'A base foi encontrada, mas não há data de pagamento reconhecível. Não vou inferir a última OB.';const r=a[0].r,ob=key(r,['ob','ordem']),val=key(r,['valor']),fav=key(r,['favorecido']);return `A última OB paga registrada é de ${fmtDate(a[0].date)}.\n${ob?`OB: ${r[ob]}\n`:''}${val?`Valor: ${money(parseMoney(r[val]))}\n`:''}${fav?`Favorecido: ${r[fav]}\n`:''}\nFonte: ${d.source_name||d.title}`;}
+ if(q.includes('maior')&&q.includes('pagamento')){const {d,rows}=payments();if(!d)return 'Não encontrei a base de Ordens Bancárias Pagas.';const a=rows.map(r=>({r,v:parseMoney(r[key(r,['valor'])])})).filter(x=>Number.isFinite(x.v)).sort((a,b)=>b.v-a.v);if(!a.length)return 'Não há valores reconhecíveis para calcular o maior pagamento.';const r=a[0].r,ob=key(r,['ob','ordem']),fav=key(r,['favorecido']);return `O maior pagamento registrado é ${money(a[0].v)}.${ob?`\nOB: ${r[ob]}`:''}${fav?`\nFavorecido: ${r[fav]}`:''}\nFonte: ${d.source_name||d.title}`;}
+ const map=[['saldo financeiro',['saldo financeiro','financeiro'],'Saldo financeiro'],['restos a pagar',['restos a pagar','restos'],'Restos a Pagar'],['empenhos 2026',['empenhos 2026','empenhos'],'Empenhos 2026'],['diaria',['diarias pagas','diarias'],'Diárias Pagas'],['publicac',['publicacoes pagas','publicacoes'],'Publicações Pagas']];
+ for(const [needle,terms,label] of map)if(q.includes(needle)){const d=findDs(terms);return d?`${label}: ${money(d.total)}\nRegistros: ${d.detail_count??rows(d).length}\nFonte: ${d.source_name||d.title}`:`Não encontrei a base de ${label}.`;}
+ return `Ainda não reconheço essa pergunta no protótipo.\n\nPergunta recebida: “${original}”\n\nConsultas disponíveis: última OB paga; maior pagamento; saldo financeiro; restos a pagar; empenhos 2026; diárias pagas; publicações pagas.`;
 }
-async function load(){try{const r=await fetch('../data.json?ts='+Date.now(),{cache:'no-store'});if(!r.ok)throw new Error('HTTP '+r.status);const raw=await r.json();base=typeof raw.content==='string'?JSON.parse(raw.content):raw;$('status').textContent=`Base carregada: ${base.source_updated_at||'data não informada'} · ${base.datasets?.length||0} conjuntos de dados.`;$('status').className='status ok';}catch(e){$('status').textContent='Não foi possível carregar data.json: '+e.message;$('status').className='status err'}}
-function ask(q){if(!base){$('answer').hidden=false;$('answer').textContent='Aguarde o carregamento da base.';return}$('answer').hidden=false;$('answer').textContent=answer(q);}
+async function load(){try{const r=await fetch('../data.json?ts='+Date.now(),{cache:'no-store'});if(!r.ok)throw Error('HTTP '+r.status);const raw=await r.json();base=typeof raw.content==='string'?JSON.parse(raw.content):raw;$('status').textContent=`Base carregada: ${base.source_updated_at||'data não informada'} · ${base.datasets?.length||0} conjuntos de dados.`;$('status').className='status ok';}catch(e){$('status').textContent='Não foi possível carregar data.json: '+e.message;$('status').className='status err';}}
+function ask(q){$('answer').hidden=false;$('answer').textContent=base?answer(q):'Aguarde o carregamento da base.';}
 $('ask').onclick=()=>ask($('q').value);$('q').onkeydown=e=>{if(e.key==='Enter')ask($('q').value)};document.querySelectorAll('.examples button').forEach(b=>b.onclick=()=>{$('q').value=b.dataset.q;ask(b.dataset.q)});load();
