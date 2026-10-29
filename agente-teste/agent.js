@@ -19,7 +19,7 @@ const STOP_PERSON_WORDS=new Set(['quanto','qual','quais','foi','foram','pago','p
 function answerFavorecido(original){
  const q=norm(original);
  const n=norm(q);
- const wantsPerson=/(pago|paga|pagamento|pagamentos|valor|total|recebeu|recebido|ob|quanto|maior|ultima|ultimo|top)/.test(n);
+ const wantsPerson=/(pago|paga|pagamento|pagamentos|valor|total|soma|montante|acumulado|recebeu|recebido|ob|quanto|maior|ultima|ultimo|top)/.test(n);
  if(!wantsPerson)return null;
  let d=null;
  if(n.includes('diaria'))d=findDs(['diarias_pagas','diarias pagas']);
