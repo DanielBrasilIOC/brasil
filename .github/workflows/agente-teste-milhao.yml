@@ -1,6 +1,13 @@
 name: Auditoria de um milhão de perguntas — agente IOC (teste)
 
 on:
+  pull_request:
+    branches:
+      - agente-teste
+    paths:
+      - 'agente-teste/agent.js'
+      - 'agente-teste/auditoria-milhao.js'
+      - '.github/workflows/agente-teste-milhao.yml'
   push:
     branches:
       - agente-teste
