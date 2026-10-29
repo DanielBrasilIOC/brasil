@@ -64,23 +64,23 @@ function answerTravel(original){
  const people=new Map();
  for(const r of data){const name=String(r[fk]||'').trim();if(!name)continue;const x=people.get(name)||{name,count:0,total:0};x.count++;x.total+=parseMoney(r[vk]);people.set(name,x);}
  const list=[...people.values()];
- const limitMatch=q.match(/top\\s+(\\d+)|(\\d+)\\s+(?:maiores|pessoas|nomes)/);
+ const limitMatch=q.match(/top\s+(\d+)|(\d+)\s+(?:maiores|pessoas|nomes)/);
  const limit=Math.min(50,Math.max(1,Number(limitMatch&&(limitMatch[1]||limitMatch[2])||10)));
- const meta='\\n\\nBase: '+data.length+' registros de diárias; '+list.length+' favorecidos distintos.\\nFonte: '+(d.source_name||d.title)+'\\nData da base: '+(base.source_updated_at||'não informada')+'.';
+ const meta='\n\nBase: '+data.length+' registros de diárias; '+list.length+' favorecidos distintos.\nFonte: '+(d.source_name||d.title)+'\nData da base: '+(base.source_updated_at||'não informada')+'.';
  if(/mais viaj|mais viagens|viajou mais vezes|maior numero de viagens|mais vezes/.test(q)){
   list.sort((a,b)=>b.count-a.count||a.name.localeCompare(b.name,'pt-BR'));
-  const explicitTop=/top\\s+\\d+|\\d+\\s+(?:maiores|pessoas|nomes)/.test(q);
+  const explicitTop=/top\s+\d+|\d+\s+(?:maiores|pessoas|nomes)/.test(q);
   const max=list[0].count,leaders=explicitTop?list.slice(0,limit):list.filter(x=>x.count===max);
-  return (explicitTop?'Ranking das pessoas com mais registros de diárias pagas: ':'Quem mais viajou, considerando a quantidade de registros de diárias pagas: ')+leaders.map((x,i)=>(explicitTop?(i+1)+'. ':'')+x.name+' ('+x.count+' registros; '+money(x.total)+')').join('; ')+'.\\nForam considerados registros de diárias, não destinos ou viagens únicas.'+meta;
+  return (explicitTop?'Ranking das pessoas com mais registros de diárias pagas: ':'Quem mais viajou, considerando a quantidade de registros de diárias pagas: ')+leaders.map((x,i)=>(explicitTop?(i+1)+'. ':'')+x.name+' ('+x.count+' registros; '+money(x.total)+')').join('; ')+'.\nForam considerados registros de diárias, não destinos ou viagens únicas.'+meta;
  }
  if(/mais recebeu|maior valor|maiores valores|maior soma|total recebido|recebeu mais/.test(q)){
   list.sort((a,b)=>b.total-a.total||a.name.localeCompare(b.name,'pt-BR'));
-  return 'Maiores totais recebidos em diárias (por favorecido):\\n'+list.slice(0,limit).map((x,i)=>(i+1)+'. '+x.name+' — '+money(x.total)+' ('+x.count+' registro(s))').join('\\n')+meta;
+  return 'Maiores totais recebidos em diárias (por favorecido):\n'+list.slice(0,limit).map((x,i)=>(i+1)+'. '+x.name+' — '+money(x.total)+' ('+x.count+' registro(s))').join('\n')+meta;
  }
  if(/quantas pessoas|numero de pessoas|nomes de quem|listar nomes|liste os nomes|quem viajou/.test(q)){
   const sorted=list.slice().sort((a,b)=>a.name.localeCompare(b.name,'pt-BR'));
-  const selected=/top\\s+\\d+|\\d+\\s+(?:maiores|pessoas|nomes)/.test(q)?sorted.slice(0,limit):sorted;
-  return 'Pessoas com registros de diárias pagas ('+selected.length+(selected.length<list.length?' de '+list.length:'')+'):\\n'+selected.map((x,i)=>(i+1)+'. '+x.name+' — '+x.count+' registro(s), '+money(x.total)).join('\\n')+meta;
+  const selected=/top\s+\d+|\d+\s+(?:maiores|pessoas|nomes)/.test(q)?sorted.slice(0,limit):sorted;
+  return 'Pessoas com registros de diárias pagas ('+selected.length+(selected.length<list.length?' de '+list.length:'')+'):\n'+selected.map((x,i)=>(i+1)+'. '+x.name+' — '+x.count+' registro(s), '+money(x.total)).join('\n')+meta;
  }
  if(/quantas viagens|numero de viagens|total de viagens/.test(q))return 'Foram encontrados '+data.length+' registros de diárias pagas, associados a '+list.length+' favorecidos distintos.'+meta;
  return null;
