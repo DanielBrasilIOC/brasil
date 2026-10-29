@@ -7,7 +7,7 @@ const { finished } = require("node:stream/promises");
 
 const root = process.cwd();
 const base = JSON.parse(fs.readFileSync(path.join(root, "data.json"), "utf8"));
-const source = fs.readFileSync(path.join(root, "agent.js"), "utf8").split("async function load()")[0];
+const source = fs.readFileSync(path.join(root, "agente-teste", "agent.js"), "utf8").split("async function load()")[0];
 const sandbox = {};
 vm.runInNewContext(source + "\nglobalThis.__setBase=(v)=>{base=v}; globalThis.__answer=(q)=>answer(q);", sandbox);
 sandbox.__setBase(base);
@@ -147,7 +147,9 @@ const report = {
   failure_samples: [],
   run_url: process.env.GITHUB_RUN_ID ? "https://github.com/DanielBrasilIOC/brasil/actions/runs/" + process.env.GITHUB_RUN_ID : null
 };
-const outputPath = path.join(root, "respostas-1-milhao.jsonl.gz");
+const reportsDir = path.join(root, "agente-teste", "reports");
+fs.mkdirSync(reportsDir, { recursive: true });
+const outputPath = path.join(reportsDir, "respostas-1-milhao.jsonl.gz");
 const output = fs.createWriteStream(outputPath);
 const gzip = zlib.createGzip({ level: zlib.constants.Z_BEST_SPEED });
 gzip.pipe(output);
@@ -191,5 +193,5 @@ await finished(output);
 report.finished_at = new Date().toISOString();
 report.accuracy = Number((report.passed / report.total_questions * 100).toFixed(6));
 report.answers_archive = "respostas-1-milhao.jsonl.gz";
-fs.writeFileSync(path.join(root, "auditoria-milhao.json"), JSON.stringify(report, null, 2));
+fs.writeFileSync(path.join(reportsDir, "auditoria-milhao.json"), JSON.stringify(report, null, 2));
 console.log(JSON.stringify(report, null, 2));
