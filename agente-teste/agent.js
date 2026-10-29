@@ -8,9 +8,9 @@ const key=(r,terms)=>Object.keys(r||{}).find(k=>terms.some(t=>norm(k).includes(t
 const parseMoney=v=>typeof v==='number'?v:Number(String(v??'').replace(/[^0-9,.-]/g,'').replace(/\.(?=\d{3}(?:\D|$))/g,'').replace(',','.'))||0;
 const dateValue=r=>{for(const [k,v] of Object.entries(r||{})){const n=norm(k);if(n.includes('data')||n.includes('pagamento')||n.includes('emissao')){if(/^\d{4}-\d{2}-\d{2}/.test(String(v)))return String(v).slice(0,10);if(/^\d{2}\/\d{2}\/\d{4}/.test(String(v))){const [d,m,y]=String(v).slice(0,10).split('/');return `${y}-${m}-${d}`}}}return null};
 const fmtDate=s=>s?new Date(s+'T12:00:00').toLocaleDateString('pt-BR'):'';
-const valueKey=r=>key(r,['valor','saldo','total','pagamento','liquido','bruto']);
+const valueKey=r=>key(r,['valor'])||key(r,['saldo'])||key(r,['total'])||key(r,['liquido'])||key(r,['bruto'])||key(r,['pagamento']);
 const payments=()=>{const d=findDs(['ordens bancarias pagas','ob pagas','ordens pagas']);return {d,rows:rows(d)}};
-const dateFromText=q=>{const m=q.match(/(?:em|no|na|de)\s+(janeiro|fevereiro|marco|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)(?:\s+de\s+)?(20\d{2})?/);if(!m)return null;const months=['janeiro','fevereiro','marco','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];const idx=months.indexOf(m[1]);const y=Number(m[2]||base?.source_updated_at?.slice(0,4)||new Date().getFullYear());const start=`${y}-${String(idx+1).padStart(2,'0')}-01`;const next=new Date(Date.UTC(y,idx+1,1));const end=`${next.getUTCFullYear()}-${String(next.getUTCMonth()+1).padStart(2,'0')}-${String(next.getUTCDate()).padStart(2,'0')}`;return {start,end};};
+const dateFromText=q=>{const m=q.match(/(?:em|no|na|de)\s+(janeiro|fevereiro|marco|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)(?:\s+de\s+)?(20\d{2})?/);if(!m)return null;const months=['janeiro','fevereiro','marco','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];const idx=months.indexOf(m[1]);const y=Number(m[2]||base?.source_updated_at?.slice(0,4)||new Date().getFullYear());const start=`${y}-${String(idx+1).padStart(2,'0')}-01`;const next=new Date(Date.UTC(y,idx+1,1));const end=`${next.getUTCFullYear()}-${String(next.getUTCMonth()+1).padStart(2,'0')}-${String(next.getUTCDate()).padStart(2,'0')}`;return {start,end,label:`${m[1]} de ${y}`};};
 const threshold=q=>{const m=q.match(/(?:acima|maior|superior)\s*(?:de|a)?\s*r?\$?\s*([\d\.]+(?:,\d{1,2})?|\d+(?:\.\d{1,2})?)\s*(mil|milhao|milhoes)?/);if(!m)return null;let n=Number(m[1].replace(/\./g,'').replace(',','.'));if(m[2]==='mil')n*=1000;if(m[2]&&m[2].startsWith('milhao'))n*=1000000;return n;};
 const datasetName=q=>{if(q.includes('saldo orcamentario')||q.includes('orcamentario'))return ['saldo orcamentario','orcamentario'];if(q.includes('diaria'))return ['diarias pagas','diarias'];if(q.includes('publicac'))return ['publicacoes pagas','publicacoes'];if(q.includes('restos'))return ['restos a pagar','restos'];if(q.includes('empenho'))return ['empenhos 2026','empenhos'];if(q.includes('saldo financeiro')||q.includes('saldo'))return ['saldo financeiro','financeiro'];if(q.includes('ob')||q.includes('ordens bancarias')||q.includes('pagamento'))return ['ordens bancarias pagas','ob pagas','ordens pagas'];return null;};
 function paymentRows(q){const terms=datasetName(q)||['ordens bancarias pagas'];const d=findDs(terms);return {d,rows:rows(d)}}
@@ -41,7 +41,7 @@ function answerFavorecido(original){
  if(n.includes('ultima')||n.includes('ultimo')){
   const dated=found.map(r=>({r,d:dateValue(r)})).filter(x=>x.d).sort((a,b)=>b.d.localeCompare(a.d));
   if(!dated.length)return 'Encontrei registros de '+name+', mas não há datas válidas para confirmar o último pagamento.';
-  const r=dated[0].r;const ok=key(r,['ob','ordem','documento']);const vk=key(r,['valor','pagamento','total']);
+  const r=dated[0].r;const ok=key(r,['ob','ordem','documento']);const vk=valueKey(r);
   return 'Último registro de pagamento de '+name+': '+fmtDate(dated[0].d)+(ok?'\\nOB/documento: '+r[ok]:'')+(vk?'\\nValor: '+money(parseMoney(r[vk])):'')+'\\n\\nFonte: '+(d.source_name||d.title)+'\\nData da base: '+(base.source_updated_at||'não informada')+'.';
  }
  if(n.includes('maior')||n.includes('top ')){
@@ -49,7 +49,7 @@ function answerFavorecido(original){
   const m=n.match(/top\\s+(\\d+)/);const limit=Math.min(10,Math.max(1,Number(m&&m[1]||1)));
   return 'Maiores pagamentos encontrados para '+name+':\\n'+found.slice(0,limit).map((r,i)=>{const vk=key(r,['valor','pagamento','total']);const ok=key(r,['ob','ordem','documento']);const dt=dateValue(r);return (i+1)+'. '+money(parseMoney(r[vk]))+(dt?' · '+fmtDate(dt):'')+(ok?' · OB/documento '+r[ok]:'');}).join('\\n')+'\\n\\nRegistros considerados: '+found.length+'\\nFonte: '+(d.source_name||d.title)+'\\nData da base: '+(base.source_updated_at||'não informada')+'.';
  }
- const vk=key(found[0],['valor','pagamento','total']);
+ const vk=valueKey(found[0]);
  if(!vk)return 'Encontrei registros de '+name+', mas não identifiquei uma coluna de valor; não vou calcular um total sem esse campo.';
  const total=Math.round(found.reduce((s,r)=>s+parseMoney(r[vk]),0)*100)/100;
  return 'Total pago a '+name+(range?' em '+range.label:'')+': '+money(total)+'\\nRegistros considerados: '+found.length+'\\n\\nCritério: soma dos valores dos registros desse favorecido na base consultada.\\nFonte: '+(d.source_name||d.title)+'\\nData da base: '+(base.source_updated_at||'não informada')+'.';
