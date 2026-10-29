@@ -925,4 +925,24 @@ const AUTO_REFRESH_INTERVAL_MS=4*60*60*1000;
 setInterval(()=>{const weekday=new Date().getDay();if(weekday>=1&&weekday<=5)load(false)},AUTO_REFRESH_INTERVAL_MS);
 document.addEventListener('visibilitychange',()=>{if(!document.hidden){const weekday=new Date().getDay();if(weekday>=1&&weekday<=5)load(false)}});
 load();
-</script></body></html>
+</script>
+<script src="./agente-qa.js"></script>
+<script>
+(function(){
+ 'use strict';
+ const css='.ioc-agent-launch{position:fixed;right:22px;bottom:20px;z-index:9998;border:0;border-radius:999px;background:#173f5d;color:#fff;padding:13px 18px;font-weight:800;box-shadow:0 8px 28px #102f4638;cursor:pointer}.ioc-agent-panel{position:fixed;right:22px;bottom:78px;z-index:9999;width:min(430px,calc(100vw - 28px));height:min(590px,calc(100vh - 110px));background:#fff;border:1px solid #dbe5eb;border-radius:17px;box-shadow:0 18px 55px #102f4640;display:none;overflow:hidden;color:#243746;font:14px/1.45 system-ui,Arial}.ioc-agent-panel.open{display:flex;flex-direction:column}.ioc-agent-head{background:#173f5d;color:#fff;padding:15px 17px;display:flex;justify-content:space-between;align-items:center}.ioc-agent-head strong{font-size:15px}.ioc-agent-head small{display:block;color:#d4e3ec;font-size:11px;margin-top:3px}.ioc-agent-close{background:transparent;border:0;color:#fff;font-size:23px;cursor:pointer}.ioc-agent-messages{padding:14px;overflow:auto;flex:1;background:#f5f8fa}.ioc-agent-msg{white-space:pre-wrap;overflow-wrap:anywhere;max-width:95%;padding:11px 12px;border-radius:12px;margin:0 0 10px;font-size:13px}.ioc-agent-msg.bot{background:#fff;border:1px solid #e0e8ed}.ioc-agent-msg.user{background:#e4f0f5;margin-left:auto;color:#173f5d}.ioc-agent-source{font-size:10px;color:#728592;margin-top:7px}.ioc-agent-form{padding:12px;border-top:1px solid #e2e9ee;display:flex;gap:7px;background:#fff}.ioc-agent-form input{flex:1;min-width:0;font-size:13px}.ioc-agent-form button{border:0;border-radius:9px;background:#1d617f;color:#fff;padding:0 15px;font-weight:750;cursor:pointer}.ioc-agent-examples{display:flex;gap:6px;flex-wrap:wrap;padding:0 12px 10px;background:#fff}.ioc-agent-examples button{border:1px solid #dce6ec;background:#f7fafb;border-radius:20px;padding:6px 9px;font-size:10px;color:#31566e;cursor:pointer}@media(max-width:600px){.ioc-agent-launch{right:13px;bottom:13px}.ioc-agent-panel{right:8px;bottom:68px;width:calc(100vw - 16px);height:min(72vh,620px)}}';
+ const style=document.createElement('style');style.textContent=css;document.head.appendChild(style);
+ const launch=document.createElement('button');launch.className='ioc-agent-launch';launch.type='button';launch.textContent='Assistente IOC';
+ const panel=document.createElement('section');panel.className='ioc-agent-panel';panel.setAttribute('aria-label','Assistente de consulta do Painel Financeiro e Orçamentário IOC');
+ panel.innerHTML='<div class="ioc-agent-head"><div><strong>Assistente do IOC</strong><small>Consultas baseadas nos dados carregados no painel</small></div><button class="ioc-agent-close" type="button" aria-label="Fechar">×</button></div><div class="ioc-agent-messages" aria-live="polite"><div class="ioc-agent-msg bot">Olá! Posso consultar ordens bancárias, viagens e diárias, publicações, empenhos, saldos, restos a pagar e repasses. Faça sua pergunta em linguagem natural.</div></div><div class="ioc-agent-examples"><button type="button">Top 10 ordens bancárias</button><button type="button">Quem mais viajou?</button><button type="button">Qual foi a última OB paga?</button></div><form class="ioc-agent-form"><input type="text" aria-label="Digite sua pergunta" placeholder="Ex.: Quanto foi pago em diárias?" autocomplete="off"><button type="submit">Enviar</button></form>';
+ document.body.append(launch,panel);
+ const messages=panel.querySelector('.ioc-agent-messages'),form=panel.querySelector('form'),input=form.querySelector('input');
+ const add=(text,who,source)=>{const el=document.createElement('div');el.className='ioc-agent-msg '+who;el.textContent=text;if(source){const s=document.createElement('div');s.className='ioc-agent-source';s.textContent='Fonte consultada: '+source;el.appendChild(s)}messages.appendChild(el);messages.scrollTop=messages.scrollHeight};
+ let dataPromise=null;const loadData=()=>{if(!dataPromise)dataPromise=fetch('./data.json?agent='+Date.now(),{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('HTTP '+r.status);return r.json()}).catch(e=>{dataPromise=null;throw e});return dataPromise};
+ const ask=async q=>{add(q,'user');input.value='';try{const data=await loadData();const result=window.IOCAgent.answerQuestion(q,data);add(result.text,'bot',result.source||'Consulta não identificada');}catch(e){add('Não consegui acessar a base do painel agora. Tente novamente em instantes.','bot')}};
+ launch.onclick=()=>panel.classList.toggle('open');panel.querySelector('.ioc-agent-close').onclick=()=>panel.classList.remove('open');
+ form.onsubmit=e=>{e.preventDefault();const q=input.value.trim();if(q)ask(q)};
+ panel.querySelectorAll('.ioc-agent-examples button').forEach(b=>b.onclick=()=>ask(b.textContent));
+})();
+</script>
+</body></html>
