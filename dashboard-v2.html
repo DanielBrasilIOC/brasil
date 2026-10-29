@@ -845,7 +845,10 @@ function showLoadMessage(message,level='warning'){
  statusEl.style.borderColor=level==='error'?'#efcaca':level==='warning'?'#f0dfb9':'#d2e8df';
  statusEl.style.color=level==='error'?'#8f2929':level==='warning'?'#805719':'#386e5c';
 }
+let loadInProgress=false;
 async function load(manual=false){
+ if(loadInProgress)return;
+ loadInProgress=true;
  statusEl.textContent=manual?'Recarregando dados publicados…':'Carregando dados publicados…';
  statusEl.style.display='block';
  try{
@@ -916,6 +919,8 @@ async function load(manual=false){
   if(data&&Array.isArray(data.datasets)){
    try{render();}catch(renderError){showLoadMessage('Parte dos dados foi recebida, mas a tela não pôde ser renderizada completamente. '+(renderError&&renderError.message?renderError.message:'Revise a estrutura das bases.'),'error');}
   }
+ } finally {
+  loadInProgress=false;
  }
 }
 const refreshButton=document.getElementById('refresh');if(refreshButton)refreshButton.onclick=()=>load(true);
@@ -923,6 +928,5 @@ const refreshButton=document.getElementById('refresh');if(refreshButton)refreshB
 // Recarrega as bases sem dar refresh completo no navegador, preservando a aba e os filtros sempre que possível.
 const AUTO_REFRESH_INTERVAL_MS=4*60*60*1000;
 setInterval(()=>{const weekday=new Date().getDay();if(weekday>=1&&weekday<=5)load(false)},AUTO_REFRESH_INTERVAL_MS);
-document.addEventListener('visibilitychange',()=>{if(!document.hidden){const weekday=new Date().getDay();if(weekday>=1&&weekday<=5)load(false)}});
 load();
 </script></body></html>
