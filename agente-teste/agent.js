@@ -54,8 +54,45 @@ function answerFavorecido(original){
  const total=Math.round(found.reduce((s,r)=>s+parseMoney(r[vk]),0)*100)/100;
  return 'Total pago a '+name+(range?' em '+range.label:'')+': '+money(total)+'\\nRegistros considerados: '+found.length+'\\n\\nCritério: soma dos valores dos registros desse favorecido na base consultada.\\nFonte: '+(d.source_name||d.title)+'\\nData da base: '+(base.source_updated_at||'não informada')+'.';
 }
+function answerTravel(original){
+ const q=norm(original);
+ const asksTravel=/(viaj|viagem|diaria|diarias)/.test(q);
+ if(!asksTravel)return null;
+ const d=findDs(['diarias_pagas','diarias pagas']);
+ const data=rows(d);
+ if(!data.length)return 'Não encontrei registros de diárias pagas na base consultada.';
+ const fk=key(data[0],['favorecido','beneficiario','nome']);
+ const vk=key(data[0],['valor']);
+ if(!fk)return 'A base de diárias foi encontrada, mas não identifiquei o campo de favorecido.';
+ const people=new Map();
+ for(const r of data){
+  const name=String(r[fk]||'').trim();if(!name)continue;
+  const x=people.get(name)||{name,count:0,total:0};
+  x.count++;x.total+=parseMoney(r[vk]);people.set(name,x);
+ }
+ const list=[...people.values()];
+ const limitMatch=q.match(/top\\s+(\\d+)|(\\d+)\\s+(?:maiores|pessoas|nomes)/);
+ const limit=Math.min(50,Math.max(1,Number(limitMatch&&(limitMatch[1]||limitMatch[2])||10)));
+ const meta='\\n\\nBase: '+data.length+' registros de diárias; '+list.length+' favorecidos distintos.\\nFonte: '+(d.source_name||d.title)+'\\nData da base: '+(base.source_updated_at||'não informada')+'.';
+ if(/quantas pessoas|numero de pessoas|nomes de quem|listar nomes|liste os nomes|quem viajou/.test(q)){
+  const sorted=list.slice().sort((a,b)=>a.name.localeCompare(b.name,'pt-BR'));
+  const selected=/top\\s+\\d+|\\d+\\s+(?:maiores|pessoas|nomes)/.test(q)?sorted.slice(0,limit):sorted;
+  return 'Pessoas com registros de diárias pagas ('+selected.length+(selected.length<list.length?' de '+list.length:'')+'):\\n'+selected.map((x,i)=>(i+1)+'. '+x.name+' — '+x.count+' registro(s), '+money(x.total)).join('\\n')+meta;
+ }
+ if(/quantas viagens|numero de viagens|total de viagens/.test(q))return 'Foram encontrados '+data.length+' registros de diárias pagas, associados a '+list.length+' favorecidos distintos.'+meta;
+ if(/mais recebeu|maior valor|maiores valores|maior soma|total recebido|recebeu mais/.test(q)){
+  list.sort((a,b)=>b.total-a.total||a.name.localeCompare(b.name,'pt-BR'));
+  return 'Maiores totais recebidos em diárias (por favorecido):\\n'+list.slice(0,limit).map((x,i)=>(i+1)+'. '+x.name+' — '+money(x.total)+' ('+x.count+' registro(s))').join('\\n')+meta;
+ }
+ if(/mais viajou|mais viagens|viajou mais vezes|maior numero de viagens|mais vezes/.test(q)){
+  list.sort((a,b)=>b.count-a.count||a.name.localeCompare(b.name,'pt-BR'));
+  const max=list[0].count;const leaders=list.filter(x=>x.count===max);
+  return 'Quem mais viajou, considerando a quantidade de registros de diárias pagas: '+leaders.map(x=>x.name+' ('+x.count+' registros; '+money(x.total)+')').join('; ')+'.\\nForam considerados registros de diárias, não destinos ou viagens únicas.'+meta;
+ }
+ return null;
+}
 function answer(original){const q=norm(original);
- if(!base)return 'Aguarde o carregamento da base.';const respostaFavorecido=answerFavorecido(original);if(respostaFavorecido)return respostaFavorecido;
+ if(!base)return 'Aguarde o carregamento da base.';const respostaViagem=answerTravel(original);if(respostaViagem)return respostaViagem;const respostaFavorecido=answerFavorecido(original);if(respostaFavorecido)return respostaFavorecido;
  const {d,rows:rws}=paymentRows(q);
  if((q.includes('ultima')||q.includes('ultimo'))&&q.includes('ob')){if(!d)return 'Não encontrei a base de Ordens Bancárias Pagas. Não vou inventar uma resposta.';const a=rws.map(r=>({r,date:dateValue(r)})).filter(x=>x.date).sort((a,b)=>b.date.localeCompare(a.date));if(!a.length)return 'A base foi encontrada, mas não há data reconhecível para confirmar a última OB.';const r=a[0].r,ob=key(r,['ob','ordem']),val=valueKey(r),fav=key(r,['favorecido']);return `A última OB paga registrada é de ${fmtDate(a[0].date)}.\n${ob?`OB: ${r[ob]}\n`:''}${val?`Valor: ${money(parseMoney(r[val]))}\n`:''}${fav?`Favorecido: ${r[fav]}\n`:''}\nFonte: ${d.source_name||d.title}\nData da base: ${base.source_updated_at||'não informada'}.`;}
  if(q.includes('maior')||q.includes('top ')){if(!d)return 'Não encontrei a base de pagamentos.';let a=rws.map(r=>({r,v:parseMoney(r[valueKey(r)])})).filter(x=>Number.isFinite(x.v)&&x.v!==0);const range=dateFromText(q);if(range)a=a.filter(x=>{const dt=dateValue(x.r);return dt&&dt>=range.start&&dt<range.end});const rankMatch=q.match(/top\s+(\d+)|(\d+)\s+maiores/);const lim=Math.min(10,Math.max(1,Number(rankMatch&&(rankMatch[1]||rankMatch[2])||1)));a.sort((x,y)=>y.v-x.v);if(!a.length)return 'Não há registros que atendam aos filtros informados.';return `Maiores pagamentos${range?' em '+range.label:''}:\n`+a.slice(0,lim).map((x,i)=>{const ob=key(x.r,['ob','ordem']),fav=key(x.r,['favorecido']);return `${i+1}. ${money(x.v)}${ob?` · OB ${x.r[ob]}`:''}${fav?` · ${x.r[fav]}`:''}`}).join('\n')+`\n\nRegistros analisados: ${a.length}\nFonte: ${d.source_name||d.title}\nData da base: ${base.source_updated_at||'não informada'}.`;}
