@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Agente de Consulta — Painel IOC (Teste)</title>
+<style>
+:root{font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;color:#182230;background:#f5f7fa}body{margin:0}.wrap{max-width:900px;margin:auto;padding:24px}.card{background:#fff;border:1px solid #dfe5ec;border-radius:16px;padding:22px;box-shadow:0 8px 28px #18223012}h1{margin:0 0 6px;font-size:24px}p{color:#5b6675}.tag{display:inline-block;padding:5px 9px;border-radius:999px;background:#eef3f8;font-size:12px;margin-bottom:12px}.row{display:flex;gap:10px;margin-top:18px}input{flex:1;padding:14px;border:1px solid #cbd5e1;border-radius:10px;font-size:16px}button{padding:14px 18px;border:0;border-radius:10px;background:#1f4f78;color:white;font-weight:700;cursor:pointer}.answer{margin-top:18px;padding:16px;border-radius:12px;background:#f7f9fb;border-left:4px solid #1f4f78;white-space:pre-wrap}.meta{font-size:12px;color:#697586;margin-top:10px}.examples button{background:#fff;color:#1f4f78;border:1px solid #cbd5e1;margin:4px 4px 0 0;padding:8px 10px}.status{font-size:13px;margin-top:12px}.ok{color:#237a43}.err{color:#a33}
+</style>
+</head>
+<body>
+<div class="wrap"><div class="card">
+<span class="tag">AMBIENTE DE TESTE — NÃO É PRODUÇÃO</span>
+<h1>Agente de Consulta do Painel IOC</h1>
+<p>Protótipo que consulta o <strong>data.json</strong> publicado pelo painel e responde perguntas objetivas sobre os dados disponíveis.</p>
+<div class="row"><input id="q" placeholder="Ex.: qual foi a última OB paga?" autocomplete="off"><button id="ask">Perguntar</button></div>
+<div class="examples"><button data-q="Qual foi a última OB paga?">Última OB paga</button><button data-q="Qual foi o maior pagamento?">Maior pagamento</button><button data-q="Qual é o saldo financeiro?">Saldo financeiro</button><button data-q="Quanto temos de restos a pagar?">Restos a pagar</button><button data-q="Quanto temos em empenhos 2026?">Empenhos 2026</button></div>
+<div id="status" class="status">Carregando a base...</div><div id="answer" class="answer" hidden></div>
+</div></div>
+<script src="agent.js"></script>
+</body></html>
