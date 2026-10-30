@@ -1,11 +1,11 @@
 {
   "environment": "TESTE",
-  "checked_at": "2026-10-30T18:55:20Z",
+  "checked_at": "2026-10-30T18:56:36Z",
   "collector": "monitorar_sistemas.py",
   "scheduler_status": "AGENDADOR_NAO_CONFIGURADO",
   "frequency_target_seconds": 1800,
   "schedule_target": "A cada 30 minutos, de segunda a sexta-feira",
-  "last_run_duration_ms": 20641,
+  "last_run_duration_ms": 21780,
   "disclaimer": "Verificação de endpoints públicos e leitura de comunicados oficiais. Não testa login, transações nem módulos internos autenticados. Ausência de comunicado identificado não prova ausência de manutenção.",
   "systems": [
     {
@@ -15,10 +15,10 @@
       "scope": "Portal público; login, consultas e operações internas não são testados.",
       "status": "ACESSIVEL",
       "http_status": 200,
-      "latency_ms": 928,
+      "latency_ms": 848,
       "final_url": "https://siafi.tesouro.gov.br/",
       "detail": "O endpoint público respondeu; isso não comprova o funcionamento de módulos internos.",
-      "checked_at": "2026-10-30T18:55:21Z",
+      "checked_at": "2026-10-30T18:56:36Z",
       "operational": {
         "status": "CALENDARIO_OFICIAL_ACESSIVEL",
         "source_url": "https://www.gov.br/tesouronacional/pt-br/siafi/consultas-e-servicos/calendario-disponibilidade-siafi",
@@ -36,10 +36,10 @@
       "scope": "Acesso ao portal; módulos autenticados e transações não são testados.",
       "status": "ACESSIVEL",
       "http_status": 200,
-      "latency_ms": 5031,
+      "latency_ms": 5340,
       "final_url": "https://contratos.comprasnet.gov.br/login",
       "detail": "O endpoint público respondeu; isso não comprova o funcionamento de módulos internos.",
-      "checked_at": "2026-10-30T18:55:26Z",
+      "checked_at": "2026-10-30T18:56:42Z",
       "operational": {
         "status": "COMUNICADO_OPERACIONAL_LOCALIZADO",
         "source_url": "https://www.gov.br/compras/pt-br/acesso-a-informacao/comunicados",
@@ -78,10 +78,10 @@
       "scope": "Página pública; login, sessão de disputa e operações internas não são testados.",
       "status": "ACESSIVEL",
       "http_status": 200,
-      "latency_ms": 2064,
+      "latency_ms": 2886,
       "final_url": "https://www.gov.br/compras/pt-br",
       "detail": "O endpoint público respondeu; isso não comprova o funcionamento de módulos internos.",
-      "checked_at": "2026-10-30T18:55:28Z",
+      "checked_at": "2026-10-30T18:56:45Z",
       "operational": {
         "status": "COMUNICADO_OPERACIONAL_LOCALIZADO",
         "source_url": "https://www.gov.br/compras/pt-br/acesso-a-informacao/comunicados",
@@ -132,10 +132,10 @@
       "scope": "Página pública informativa; acesso autenticado ao SICAF não é testado.",
       "status": "ACESSIVEL",
       "http_status": 200,
-      "latency_ms": 1566,
+      "latency_ms": 1727,
       "final_url": "https://www.gov.br/compras/pt-br/sistemas/conheca-o-compras/sicaf-digital",
       "detail": "O endpoint público respondeu; isso não comprova o funcionamento de módulos internos.",
-      "checked_at": "2026-10-30T18:55:29Z",
+      "checked_at": "2026-10-30T18:56:46Z",
       "operational": {
         "status": "COMUNICADO_OPERACIONAL_LOCALIZADO",
         "source_url": "https://www.gov.br/compras/pt-br/acesso-a-informacao/comunicados",
@@ -178,10 +178,10 @@
       "scope": "Portal público; APIs e operações de publicação não são testadas.",
       "status": "ACESSIVEL",
       "http_status": 200,
-      "latency_ms": 2015,
+      "latency_ms": 1961,
       "final_url": "https://www.gov.br/pncp/pt-br",
       "detail": "O endpoint público respondeu; isso não comprova o funcionamento de módulos internos.",
-      "checked_at": "2026-10-30T18:55:31Z",
+      "checked_at": "2026-10-30T18:56:48Z",
       "operational": {
         "status": "COMUNICADO_OPERACIONAL_LOCALIZADO",
         "source_url": "https://www.gov.br/pncp/pt-br/central-de-conteudo/comunicados/comunicados",
@@ -232,10 +232,10 @@
       "scope": "Portal oficial de acesso; módulos autenticados e operações não são testados.",
       "status": "ACESSIVEL",
       "http_status": 200,
-      "latency_ms": 1497,
+      "latency_ms": 1461,
       "final_url": "https://portal.transferegov.sistema.gov.br/",
       "detail": "O endpoint público respondeu; isso não comprova o funcionamento de módulos internos.",
-      "checked_at": "2026-10-30T18:55:33Z",
+      "checked_at": "2026-10-30T18:56:50Z",
       "operational": {
         "status": "SEM_COMUNICADO_IDENTIFICADO",
         "source_url": "https://www.gov.br/transferegov/pt-br/comunicados/comunicados-gerais",
@@ -476,6 +476,64 @@
           "status": "ACESSIVEL",
           "http_status": 200,
           "latency_ms": 1497,
+          "failure_streak": 0
+        }
+      ]
+    },
+    {
+      "checked_at": "2026-10-30T18:56:36Z",
+      "duration_ms": 21780,
+      "systems_total": 6,
+      "accessible": 6,
+      "instability": 0,
+      "not_verified": 0,
+      "systems": [
+        {
+          "id": "siafi",
+          "name": "SIAFI",
+          "status": "ACESSIVEL",
+          "http_status": 200,
+          "latency_ms": 848,
+          "failure_streak": 0
+        },
+        {
+          "id": "contratos",
+          "name": "Contratos.gov.br",
+          "status": "ACESSIVEL",
+          "http_status": 200,
+          "latency_ms": 5340,
+          "failure_streak": 0
+        },
+        {
+          "id": "compras",
+          "name": "Compras.gov.br",
+          "status": "ACESSIVEL",
+          "http_status": 200,
+          "latency_ms": 2886,
+          "failure_streak": 0
+        },
+        {
+          "id": "sicaf",
+          "name": "SICAF",
+          "status": "ACESSIVEL",
+          "http_status": 200,
+          "latency_ms": 1727,
+          "failure_streak": 0
+        },
+        {
+          "id": "pncp",
+          "name": "PNCP",
+          "status": "ACESSIVEL",
+          "http_status": 200,
+          "latency_ms": 1961,
+          "failure_streak": 0
+        },
+        {
+          "id": "transferegov",
+          "name": "Transferegov.br",
+          "status": "ACESSIVEL",
+          "http_status": 200,
+          "latency_ms": 1461,
           "failure_streak": 0
         }
       ]
