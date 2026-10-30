@@ -1,11 +1,11 @@
 {
   "environment": "TESTE",
-  "checked_at": "2026-10-30T18:52:18Z",
+  "checked_at": "2026-10-30T18:54:00Z",
   "collector": "monitorar_sistemas.py",
   "scheduler_status": "AGENDADOR_NAO_CONFIGURADO",
   "frequency_target_seconds": 1800,
   "schedule_target": "A cada 30 minutos, de segunda a sexta-feira",
-  "last_run_duration_ms": 12465,
+  "last_run_duration_ms": 14905,
   "disclaimer": "Verificação de endpoints públicos e leitura de comunicados oficiais. Não testa login, transações nem módulos internos autenticados. Ausência de comunicado identificado não prova ausência de manutenção.",
   "systems": [
     {
@@ -15,10 +15,10 @@
       "scope": "Portal público; login, consultas e operações internas não são testados.",
       "status": "ACESSIVEL",
       "http_status": 200,
-      "latency_ms": 802,
+      "latency_ms": 657,
       "final_url": "https://siafi.tesouro.gov.br/",
       "detail": "O endpoint público respondeu; isso não comprova o funcionamento de módulos internos.",
-      "checked_at": "2026-10-30T18:52:19Z",
+      "checked_at": "2026-10-30T18:54:00Z",
       "operational": {
         "status": "CALENDARIO_OFICIAL_ACESSIVEL",
         "source_url": "https://www.gov.br/tesouronacional/pt-br/siafi/consultas-e-servicos/calendario-disponibilidade-siafi",
@@ -32,14 +32,14 @@
     {
       "id": "contratos",
       "name": "Contratos.gov.br",
-      "url": "https://contratos.gov.br/",
+      "url": "https://contratos.comprasnet.gov.br/login",
       "scope": "Acesso ao portal; módulos autenticados e transações não são testados.",
-      "status": "NAO_VERIFICADO",
-      "http_status": null,
-      "latency_ms": 146,
-      "final_url": "https://contratos.gov.br/",
-      "detail": "URLError: <urlopen error [Errno -2] Name or service not known>",
-      "checked_at": "2026-10-30T18:52:19Z",
+      "status": "ACESSIVEL",
+      "http_status": 200,
+      "latency_ms": 3587,
+      "final_url": "https://contratos.comprasnet.gov.br/login",
+      "detail": "O endpoint público respondeu; isso não comprova o funcionamento de módulos internos.",
+      "checked_at": "2026-10-30T18:54:04Z",
       "operational": {
         "status": "COMUNICADO_OPERACIONAL_LOCALIZADO",
         "source_url": "https://www.gov.br/compras/pt-br/acesso-a-informacao/comunicados",
@@ -68,7 +68,7 @@
           }
         ]
       },
-      "failure_streak": 1,
+      "failure_streak": 0,
       "alert_state": "SEM_ALERTA"
     },
     {
@@ -78,10 +78,10 @@
       "scope": "Página pública; login, sessão de disputa e operações internas não são testados.",
       "status": "ACESSIVEL",
       "http_status": 200,
-      "latency_ms": 1726,
+      "latency_ms": 1469,
       "final_url": "https://www.gov.br/compras/pt-br",
       "detail": "O endpoint público respondeu; isso não comprova o funcionamento de módulos internos.",
-      "checked_at": "2026-10-30T18:52:21Z",
+      "checked_at": "2026-10-30T18:54:05Z",
       "operational": {
         "status": "COMUNICADO_OPERACIONAL_LOCALIZADO",
         "source_url": "https://www.gov.br/compras/pt-br/acesso-a-informacao/comunicados",
@@ -132,10 +132,10 @@
       "scope": "Página pública informativa; acesso autenticado ao SICAF não é testado.",
       "status": "ACESSIVEL",
       "http_status": 200,
-      "latency_ms": 1260,
+      "latency_ms": 1327,
       "final_url": "https://www.gov.br/compras/pt-br/sistemas/conheca-o-compras/sicaf-digital",
       "detail": "O endpoint público respondeu; isso não comprova o funcionamento de módulos internos.",
-      "checked_at": "2026-10-30T18:52:22Z",
+      "checked_at": "2026-10-30T18:54:07Z",
       "operational": {
         "status": "COMUNICADO_OPERACIONAL_LOCALIZADO",
         "source_url": "https://www.gov.br/compras/pt-br/acesso-a-informacao/comunicados",
@@ -178,10 +178,10 @@
       "scope": "Portal público; APIs e operações de publicação não são testadas.",
       "status": "ACESSIVEL",
       "http_status": 200,
-      "latency_ms": 1633,
+      "latency_ms": 1453,
       "final_url": "https://www.gov.br/pncp/pt-br",
       "detail": "O endpoint público respondeu; isso não comprova o funcionamento de módulos internos.",
-      "checked_at": "2026-10-30T18:52:24Z",
+      "checked_at": "2026-10-30T18:54:08Z",
       "operational": {
         "status": "COMUNICADO_OPERACIONAL_LOCALIZADO",
         "source_url": "https://www.gov.br/pncp/pt-br/central-de-conteudo/comunicados/comunicados",
@@ -228,14 +228,14 @@
     {
       "id": "transferegov",
       "name": "Transferegov.br",
-      "url": "https://transferegov.sistema.gov.br/",
-      "scope": "Endpoint público; módulos autenticados e operações não são testados.",
-      "status": "NAO_VERIFICADO",
-      "http_status": null,
-      "latency_ms": 406,
-      "final_url": "https://transferegov.sistema.gov.br/",
-      "detail": "URLError: <urlopen error [Errno -5] No address associated with hostname>",
-      "checked_at": "2026-10-30T18:52:24Z",
+      "url": "https://portal.transferegov.sistema.gov.br/",
+      "scope": "Portal oficial de acesso; módulos autenticados e operações não são testados.",
+      "status": "ACESSIVEL",
+      "http_status": 200,
+      "latency_ms": 729,
+      "final_url": "https://portal.transferegov.sistema.gov.br/",
+      "detail": "O endpoint público respondeu; isso não comprova o funcionamento de módulos internos.",
+      "checked_at": "2026-10-30T18:54:09Z",
       "operational": {
         "status": "SEM_COMUNICADO_IDENTIFICADO",
         "source_url": "https://www.gov.br/transferegov/pt-br/comunicados/comunicados-gerais",
@@ -243,7 +243,7 @@
         "detail": "Fonte oficial consultada; nenhum título correspondente a aviso operacional foi identificado nesta leitura. Isso não prova ausência de manutenção.",
         "notices": []
       },
-      "failure_streak": 1,
+      "failure_streak": 0,
       "alert_state": "SEM_ALERTA"
     }
   ],
@@ -303,6 +303,64 @@
           "http_status": null,
           "latency_ms": 406,
           "failure_streak": 1
+        }
+      ]
+    },
+    {
+      "checked_at": "2026-10-30T18:54:00Z",
+      "duration_ms": 14905,
+      "systems_total": 6,
+      "accessible": 6,
+      "instability": 0,
+      "not_verified": 0,
+      "systems": [
+        {
+          "id": "siafi",
+          "name": "SIAFI",
+          "status": "ACESSIVEL",
+          "http_status": 200,
+          "latency_ms": 657,
+          "failure_streak": 0
+        },
+        {
+          "id": "contratos",
+          "name": "Contratos.gov.br",
+          "status": "ACESSIVEL",
+          "http_status": 200,
+          "latency_ms": 3587,
+          "failure_streak": 0
+        },
+        {
+          "id": "compras",
+          "name": "Compras.gov.br",
+          "status": "ACESSIVEL",
+          "http_status": 200,
+          "latency_ms": 1469,
+          "failure_streak": 0
+        },
+        {
+          "id": "sicaf",
+          "name": "SICAF",
+          "status": "ACESSIVEL",
+          "http_status": 200,
+          "latency_ms": 1327,
+          "failure_streak": 0
+        },
+        {
+          "id": "pncp",
+          "name": "PNCP",
+          "status": "ACESSIVEL",
+          "http_status": 200,
+          "latency_ms": 1453,
+          "failure_streak": 0
+        },
+        {
+          "id": "transferegov",
+          "name": "Transferegov.br",
+          "status": "ACESSIVEL",
+          "http_status": 200,
+          "latency_ms": 729,
+          "failure_streak": 0
         }
       ]
     }
