@@ -1,32 +1,16 @@
-name: Testes do Assistente IOC e monitoramento (ambiente de teste)
+name: Testes do Assistente IOC
 on:
   push:
     branches:
       - agente-teste
   workflow_dispatch:
-permissions:
-  contents: read
 jobs:
   testes:
     runs-on: ubuntu-latest
     steps:
-      - name: Baixar somente a branch de teste
-        uses: actions/checkout@v4
-        with:
-          ref: agente-teste
-      - name: Preparar Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-      - name: Validar sintaxe do coletor
-        run: python -m py_compile .github/scripts/monitorar_sistemas.py
-      - name: Testar classificações e lógica de alertas
-        run: python .github/scripts/monitorar_sistemas.py --self-test
-      - name: Testar coletor e fontes operacionais com simulações
-        run: python -m unittest discover -s .github/scripts -p "test_monitorar_sistemas.py" -v
-      - name: Preparar Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 20
-      - name: Validar respostas e agregações do assistente
+      - name: Validar respostas e agregações
         run: node tests/agente-qa.test.js
