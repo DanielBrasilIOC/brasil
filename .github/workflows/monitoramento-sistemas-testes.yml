@@ -1,0 +1,72 @@
+name: Coleta inicial e testes do monitoramento (TESTE)
+on:
+  push:
+    branches:
+      - agente-teste
+    paths:
+      - ".github/scripts/monitorar_sistemas.py"
+      - ".github/scripts/test_monitorar_sistemas.py"
+      - ".github/workflows/monitoramento-sistemas-testes.yml"
+      - "monitoramento-sistemas.js"
+      - "dashboard-v2.html"
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: monitoramento-sistemas-agente-teste
+  cancel-in-progress: false
+jobs:
+  monitoramento:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Baixar exclusivamente a branch de teste
+        uses: actions/checkout@v4
+        with:
+          ref: agente-teste
+      - name: Preparar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Validar sintaxe do coletor
+        run: python -m py_compile .github/scripts/monitorar_sistemas.py
+      - name: Executar autotestes sem acesso à rede
+        run: python .github/scripts/monitorar_sistemas.py --self-test
+      - name: Executar sete testes unitários
+        run: python -m unittest discover -s .github/scripts -p "test_monitorar_sistemas.py" -v
+      - name: Realizar primeira coleta técnica e operacional real
+        run: python .github/scripts/monitorar_sistemas.py
+      - name: Validar estrutura e persistência local do resultado
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('monitoramento-sistemas.json')
+          d=json.loads(p.read_text(encoding='utf-8'))
+          assert d.get('environment') == 'TESTE'
+          assert len(d.get('systems', [])) == 6
+          assert d.get('checked_at')
+          assert len(d.get('history', [])) >= 1
+          assert all('status' in x and 'operational' in x for x in d['systems'])
+          print('COLETA VALIDADA:', d['checked_at'])
+          print('SISTEMAS:', ', '.join(x['id']+':'+x['status'] for x in d['systems']))
+          print('HISTÓRICO:', len(d['history']), 'execução(ões)')
+          PY
+      - name: Guardar evidência da primeira coleta
+        uses: actions/upload-artifact@v4
+        with:
+          name: monitoramento-sistemas-primeira-coleta
+          path: monitoramento-sistemas.json
+          if-no-files-found: error
+          retention-days: 30
+      - name: Persistir resultado somente na branch de teste
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add monitoramento-sistemas.json
+          if git diff --cached --quiet; then
+            echo "O resultado não apresentou alterações para persistir."
+            exit 0
+          fi
+          git commit -m "Registra primeira coleta de monitoramento no ambiente de teste"
+          git push origin HEAD:agente-teste
