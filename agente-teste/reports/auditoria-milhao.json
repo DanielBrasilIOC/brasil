@@ -1,0 +1,587 @@
+{
+  "started_at": "2026-10-30T00:07:15.956Z",
+  "branch": "8/merge",
+  "commit": "16a7e9cc08ac72ef1f8d4f993ba05ce80c4f1460",
+  "base_date": "2026-10-28",
+  "datasets": [
+    {
+      "id": "financeiro",
+      "title": "Saldo Financeiro",
+      "rows": 17
+    },
+    {
+      "id": "restos",
+      "title": "Restos a Pagar",
+      "rows": 23
+    },
+    {
+      "id": "empenhos",
+      "title": "Empenhos 2026",
+      "rows": 231
+    },
+    {
+      "id": "orcamentario",
+      "title": "Saldo Orçamentário",
+      "rows": 23
+    },
+    {
+      "id": "repasses",
+      "title": "Aguardando Repasse Orçamentário",
+      "rows": 63
+    },
+    {
+      "id": "ordens_bancarias",
+      "title": "Ordens Bancárias Pagas",
+      "rows": 807
+    },
+    {
+      "id": "publicacoes_pagas",
+      "title": "Publicações Pagas",
+      "rows": 86
+    },
+    {
+      "id": "diarias_pagas",
+      "title": "Diárias Pagas",
+      "rows": 188
+    }
+  ],
+  "total_questions": 1000000,
+  "passed": 996000,
+  "failed": 4000,
+  "groups": [
+    {
+      "name": "ranking_viagens",
+      "total": 250000,
+      "passed": 248000,
+      "failed": 2000,
+      "accuracy": 99.2
+    },
+    {
+      "name": "lista_viajantes",
+      "total": 250000,
+      "passed": 248000,
+      "failed": 2000,
+      "accuracy": 99.2
+    },
+    {
+      "name": "total_jeronimo",
+      "total": 250000,
+      "passed": 250000,
+      "failed": 0,
+      "accuracy": 100
+    },
+    {
+      "name": "top10_ordens_bancarias",
+      "total": 250000,
+      "passed": 250000,
+      "failed": 0,
+      "accuracy": 100
+    }
+  ],
+  "failure_samples": [
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: com base na base publicada, Quem lidera em quantidade de registros? por favor? Obrigado.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: com base na base publicada, Quem lidera em quantidade de registros? por favor? Responda de forma objetiva.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: com base na base publicada, Quem lidera em quantidade de registros? com precisão? Obrigado.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: com base na base publicada, Quem lidera em quantidade de registros? com precisão? Responda de forma objetiva.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: com base na base publicada, Quem lidera em quantidade de registros? para conferência? Obrigado.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: com base na base publicada, Quem lidera em quantidade de registros? para conferência? Responda de forma objetiva.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: com base na base publicada, Quem lidera em quantidade de registros? na base publicada? Obrigado.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: com base na base publicada, Quem lidera em quantidade de registros? na base publicada? Responda de forma objetiva.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: com base na base publicada, Quem lidera em quantidade de registros? com a fonte? Obrigado.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: com base na base publicada, Quem lidera em quantidade de registros? com a fonte? Responda de forma objetiva.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: com base na base publicada, Quem lidera em quantidade de registros? sem estimativas? Obrigado.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: com base na base publicada, Quem lidera em quantidade de registros? sem estimativas? Responda de forma objetiva.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: com base na base publicada, Quem lidera em quantidade de registros? considerando todos os registros? Obrigado.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: com base na base publicada, Quem lidera em quantidade de registros? considerando todos os registros? Responda de forma objetiva.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: com base na base publicada, Quem lidera em quantidade de registros? para a diretoria? Obrigado.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: com base na base publicada, Quem lidera em quantidade de registros? para a diretoria? Responda de forma objetiva.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: com base na base publicada, Quem lidera em quantidade de registros? conforme os dados atuais? Obrigado.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: com base na base publicada, Quem lidera em quantidade de registros? conforme os dados atuais? Responda de forma objetiva.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: com base na base publicada, Quem lidera em quantidade de registros? por gentileza? Obrigado.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: com base na base publicada, Quem lidera em quantidade de registros? por gentileza? Responda de forma objetiva.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: no Painel IOC, Quem lidera em quantidade de registros? por favor? Obrigado.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: no Painel IOC, Quem lidera em quantidade de registros? por favor? Responda de forma objetiva.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: no Painel IOC, Quem lidera em quantidade de registros? com precisão? Obrigado.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: no Painel IOC, Quem lidera em quantidade de registros? com precisão? Responda de forma objetiva.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: no Painel IOC, Quem lidera em quantidade de registros? para conferência? Obrigado.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: no Painel IOC, Quem lidera em quantidade de registros? para conferência? Responda de forma objetiva.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: no Painel IOC, Quem lidera em quantidade de registros? na base publicada? Obrigado.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: no Painel IOC, Quem lidera em quantidade de registros? na base publicada? Responda de forma objetiva.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: no Painel IOC, Quem lidera em quantidade de registros? com a fonte? Obrigado.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: no Painel IOC, Quem lidera em quantidade de registros? com a fonte? Responda de forma objetiva.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: no Painel IOC, Quem lidera em quantidade de registros? sem estimativas? Obrigado.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: no Painel IOC, Quem lidera em quantidade de registros? sem estimativas? Responda de forma objetiva.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: no Painel IOC, Quem lidera em quantidade de registros? considerando todos os registros? Obrigado.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: no Painel IOC, Quem lidera em quantidade de registros? considerando todos os registros? Responda de forma objetiva.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: no Painel IOC, Quem lidera em quantidade de registros? para a diretoria? Obrigado.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: no Painel IOC, Quem lidera em quantidade de registros? para a diretoria? Responda de forma objetiva.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: no Painel IOC, Quem lidera em quantidade de registros? conforme os dados atuais? Obrigado.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: no Painel IOC, Quem lidera em quantidade de registros? conforme os dados atuais? Responda de forma objetiva.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: no Painel IOC, Quem lidera em quantidade de registros? por gentileza? Obrigado.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: no Painel IOC, Quem lidera em quantidade de registros? por gentileza? Responda de forma objetiva.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: para uma conferência, Quem lidera em quantidade de registros? por favor? Obrigado.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: para uma conferência, Quem lidera em quantidade de registros? por favor? Responda de forma objetiva.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: para uma conferência, Quem lidera em quantidade de registros? com precisão? Obrigado.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: para uma conferência, Quem lidera em quantidade de registros? com precisão? Responda de forma objetiva.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: para uma conferência, Quem lidera em quantidade de registros? para conferência? Obrigado.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: para uma conferência, Quem lidera em quantidade de registros? para conferência? Responda de forma objetiva.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: para uma conferência, Quem lidera em quantidade de registros? na base publicada? Obrigado.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: para uma conferência, Quem lidera em quantidade de registros? na base publicada? Responda de forma objetiva.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: para uma conferência, Quem lidera em quantidade de registros? com a fonte? Obrigado.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: para uma conferência, Quem lidera em quantidade de registros? com a fonte? Responda de forma objetiva.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: para uma conferência, Quem lidera em quantidade de registros? sem estimativas? Obrigado.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: para uma conferência, Quem lidera em quantidade de registros? sem estimativas? Responda de forma objetiva.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: para uma conferência, Quem lidera em quantidade de registros? considerando todos os registros? Obrigado.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: para uma conferência, Quem lidera em quantidade de registros? considerando todos os registros? Responda de forma objetiva.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: para uma conferência, Quem lidera em quantidade de registros? para a diretoria? Obrigado.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: para uma conferência, Quem lidera em quantidade de registros? para a diretoria? Responda de forma objetiva.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: para uma conferência, Quem lidera em quantidade de registros? conforme os dados atuais? Obrigado.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: para uma conferência, Quem lidera em quantidade de registros? conforme os dados atuais? Responda de forma objetiva.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: para uma conferência, Quem lidera em quantidade de registros? por gentileza? Obrigado.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: para uma conferência, Quem lidera em quantidade de registros? por gentileza? Responda de forma objetiva.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: na consulta atual, Quem lidera em quantidade de registros? por favor? Obrigado.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: na consulta atual, Quem lidera em quantidade de registros? por favor? Responda de forma objetiva.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: na consulta atual, Quem lidera em quantidade de registros? com precisão? Obrigado.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: na consulta atual, Quem lidera em quantidade de registros? com precisão? Responda de forma objetiva.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: na consulta atual, Quem lidera em quantidade de registros? para conferência? Obrigado.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: na consulta atual, Quem lidera em quantidade de registros? para conferência? Responda de forma objetiva.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: na consulta atual, Quem lidera em quantidade de registros? na base publicada? Obrigado.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: na consulta atual, Quem lidera em quantidade de registros? na base publicada? Responda de forma objetiva.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: na consulta atual, Quem lidera em quantidade de registros? com a fonte? Obrigado.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: na consulta atual, Quem lidera em quantidade de registros? com a fonte? Responda de forma objetiva.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: na consulta atual, Quem lidera em quantidade de registros? sem estimativas? Obrigado.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: na consulta atual, Quem lidera em quantidade de registros? sem estimativas? Responda de forma objetiva.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: na consulta atual, Quem lidera em quantidade de registros? considerando todos os registros? Obrigado.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: na consulta atual, Quem lidera em quantidade de registros? considerando todos os registros? Responda de forma objetiva.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: na consulta atual, Quem lidera em quantidade de registros? para a diretoria? Obrigado.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: na consulta atual, Quem lidera em quantidade de registros? para a diretoria? Responda de forma objetiva.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: na consulta atual, Quem lidera em quantidade de registros? conforme os dados atuais? Obrigado.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: na consulta atual, Quem lidera em quantidade de registros? conforme os dados atuais? Responda de forma objetiva.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: na consulta atual, Quem lidera em quantidade de registros? por gentileza? Obrigado.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: na consulta atual, Quem lidera em quantidade de registros? por gentileza? Responda de forma objetiva.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: para um relatório, Quem lidera em quantidade de registros? por favor? Obrigado.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: para um relatório, Quem lidera em quantidade de registros? por favor? Responda de forma objetiva.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: para um relatório, Quem lidera em quantidade de registros? com precisão? Obrigado.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: para um relatório, Quem lidera em quantidade de registros? com precisão? Responda de forma objetiva.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: para um relatório, Quem lidera em quantidade de registros? para conferência? Obrigado.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: para um relatório, Quem lidera em quantidade de registros? para conferência? Responda de forma objetiva.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: para um relatório, Quem lidera em quantidade de registros? na base publicada? Obrigado.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: para um relatório, Quem lidera em quantidade de registros? na base publicada? Responda de forma objetiva.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: para um relatório, Quem lidera em quantidade de registros? com a fonte? Obrigado.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: para um relatório, Quem lidera em quantidade de registros? com a fonte? Responda de forma objetiva.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: para um relatório, Quem lidera em quantidade de registros? sem estimativas? Obrigado.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: para um relatório, Quem lidera em quantidade de registros? sem estimativas? Responda de forma objetiva.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: para um relatório, Quem lidera em quantidade de registros? considerando todos os registros? Obrigado.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: para um relatório, Quem lidera em quantidade de registros? considerando todos os registros? Responda de forma objetiva.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: para um relatório, Quem lidera em quantidade de registros? para a diretoria? Obrigado.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: para um relatório, Quem lidera em quantidade de registros? para a diretoria? Responda de forma objetiva.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: para um relatório, Quem lidera em quantidade de registros? conforme os dados atuais? Obrigado.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: para um relatório, Quem lidera em quantidade de registros? conforme os dados atuais? Responda de forma objetiva.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: para um relatório, Quem lidera em quantidade de registros? por gentileza? Obrigado.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    },
+    {
+      "group": "ranking_viagens",
+      "question": "Preciso saber: para um relatório, Quem lidera em quantidade de registros? por gentileza? Responda de forma objetiva.",
+      "answer": "Não consegui interpretar essa pergunta com segurança.\n\nTente, por exemplo:\n• Qual foi a última OB paga?\n• Quais foram os 5 maiores pagamentos em outubro?\n• Quantas OBs acima de R$ 50 mil foram pagas em outubro?\n• Qual o total de pagamentos em outubro?\n• Qual o saldo financeiro?"
+    }
+  ],
+  "run_url": "https://github.com/DanielBrasilIOC/brasil/actions/runs/40973466475",
+  "finished_at": "2026-10-30T00:26:34.742Z",
+  "accuracy": 99.6,
+  "answers_archive": "respostas-1-milhao.jsonl.gz"
+}
