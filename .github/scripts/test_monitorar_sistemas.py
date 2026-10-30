@@ -78,6 +78,12 @@ class MonitoramentoTests(unittest.TestCase):
         self.assertEqual(state["environment"], "TESTE")
         self.assertEqual(state["scheduler_status"], "AGENDADOR_NAO_CONFIGURADO")
 
+    def test_dashboard_carrega_modulo_de_monitoramento(self):
+        dashboard = SCRIPT.parents[2] / "dashboard-v2.html"
+        content = dashboard.read_text(encoding="utf-8")
+        self.assertIn('<script src="monitoramento-sistemas.js"></script>', content)
+
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
