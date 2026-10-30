@@ -34,6 +34,12 @@ jobs:
         run: python .github/scripts/monitorar_sistemas.py --self-test
       - name: Executar sete testes unitários
         run: python -m unittest discover -s .github/scripts -p "test_monitorar_sistemas.py" -v
+      - name: Preparar Node.js para validar a interface
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Validar sintaxe do módulo visual
+        run: node --check monitoramento-sistemas.js
       - name: Realizar primeira coleta técnica e operacional real
         run: python .github/scripts/monitorar_sistemas.py
       - name: Validar estrutura e persistência local do resultado
