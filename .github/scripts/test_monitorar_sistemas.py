@@ -10,7 +10,7 @@ SPEC.loader.exec_module(monitor)
 
 
 class MonitoramentoTests(unittest.TestCase):
-    # Testes do coletor e da integração com a interface do ambiente de teste.
+    # Testes do coletor e da integração com a interface do ambiente de teste; o agendamento recorrente é validado separadamente.
     def test_classificacao_http(self):
         self.assertEqual(monitor.classify_http(200, None)[0], "ACESSIVEL")
         self.assertEqual(monitor.classify_http(302, None)[0], "ACESSIVEL")
