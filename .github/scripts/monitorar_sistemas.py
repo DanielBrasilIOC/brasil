@@ -25,7 +25,7 @@ USER_AGENT = "IOC-Dashboard-Monitor/2.0 (+public-portal-availability-check)"
 TARGETS = [
     {"id": "siafi", "name": "SIAFI", "url": "https://siafi.tesouro.gov.br/",
      "scope": "Portal público; login, consultas e operações internas não são testados."},
-    {"id": "contratos", "name": "Contratos.gov.br", "url": "https://contratos.gov.br/",
+    {"id": "contratos", "name": "Contratos.gov.br", "url": "https://contratos.comprasnet.gov.br/login",
      "scope": "Acesso ao portal; módulos autenticados e transações não são testados."},
     {"id": "compras", "name": "Compras.gov.br", "url": "https://www.gov.br/compras/pt-br",
      "scope": "Página pública; login, sessão de disputa e operações internas não são testados."},
@@ -33,8 +33,8 @@ TARGETS = [
      "scope": "Página pública informativa; acesso autenticado ao SICAF não é testado."},
     {"id": "pncp", "name": "PNCP", "url": "https://www.gov.br/pncp/pt-br",
      "scope": "Portal público; APIs e operações de publicação não são testadas."},
-    {"id": "transferegov", "name": "Transferegov.br", "url": "https://transferegov.sistema.gov.br/",
-     "scope": "Endpoint público; módulos autenticados e operações não são testados."},
+    {"id": "transferegov", "name": "Transferegov.br", "url": "https://portal.transferegov.sistema.gov.br/",
+     "scope": "Portal oficial de acesso; módulos autenticados e operações não são testados."},
 ]
 
 OPERATIONAL_SOURCES = {
