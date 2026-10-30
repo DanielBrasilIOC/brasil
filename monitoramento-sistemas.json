@@ -1,10 +1,12 @@
 {
   "environment": "TESTE",
   "checked_at": null,
-  "collector": "aguardando configuração do executor externo",
-  "frequency_target_seconds": 60,
-  "schedule_target": "Segunda a sexta-feira",
-  "disclaimer": "Nenhuma coleta foi executada ainda. Não interpretar ausência de dados como disponibilidade ou indisponibilidade.",
+  "collector": "monitorar_sistemas.py",
+  "scheduler_status": "AGENDADOR_NAO_CONFIGURADO",
+  "frequency_target_seconds": 1800,
+  "schedule_target": "A cada 30 minutos, de segunda a sexta-feira",
+  "last_run_duration_ms": null,
+  "disclaimer": "Nenhuma coleta foi executada e gravada ainda. A leitura de endpoints públicos e comunicados oficiais não testa login, transações ou módulos internos autenticados. Ausência de comunicado identificado não prova ausência de manutenção.",
   "systems": [
     {
       "id": "siafi",
@@ -13,7 +15,14 @@
       "status": "PENDENTE",
       "http_status": null,
       "latency_ms": null,
-      "detail": "Aguardando primeira coleta automática."
+      "failure_streak": 0,
+      "alert_state": "SEM_ALERTA",
+      "detail": "Aguardando primeira coleta automática.",
+      "operational": {
+        "status": "PENDENTE",
+        "source_url": "https://www.gov.br/tesouronacional/pt-br/siafi/consultas-e-servicos/calendario-disponibilidade-siafi",
+        "notices": []
+      }
     },
     {
       "id": "contratos",
@@ -22,7 +31,14 @@
       "status": "PENDENTE",
       "http_status": null,
       "latency_ms": null,
-      "detail": "Aguardando primeira coleta automática."
+      "failure_streak": 0,
+      "alert_state": "SEM_ALERTA",
+      "detail": "Aguardando primeira coleta automática.",
+      "operational": {
+        "status": "PENDENTE",
+        "source_url": "https://www.gov.br/compras/pt-br/acesso-a-informacao/comunicados",
+        "notices": []
+      }
     },
     {
       "id": "compras",
@@ -31,7 +47,14 @@
       "status": "PENDENTE",
       "http_status": null,
       "latency_ms": null,
-      "detail": "Aguardando primeira coleta automática."
+      "failure_streak": 0,
+      "alert_state": "SEM_ALERTA",
+      "detail": "Aguardando primeira coleta automática.",
+      "operational": {
+        "status": "PENDENTE",
+        "source_url": "https://www.gov.br/compras/pt-br/acesso-a-informacao/comunicados",
+        "notices": []
+      }
     },
     {
       "id": "sicaf",
@@ -40,7 +63,14 @@
       "status": "PENDENTE",
       "http_status": null,
       "latency_ms": null,
-      "detail": "Aguardando primeira coleta automática."
+      "failure_streak": 0,
+      "alert_state": "SEM_ALERTA",
+      "detail": "Aguardando primeira coleta automática.",
+      "operational": {
+        "status": "PENDENTE",
+        "source_url": "https://www.gov.br/compras/pt-br/acesso-a-informacao/comunicados",
+        "notices": []
+      }
     },
     {
       "id": "pncp",
@@ -49,7 +79,14 @@
       "status": "PENDENTE",
       "http_status": null,
       "latency_ms": null,
-      "detail": "Aguardando primeira coleta automática."
+      "failure_streak": 0,
+      "alert_state": "SEM_ALERTA",
+      "detail": "Aguardando primeira coleta automática.",
+      "operational": {
+        "status": "PENDENTE",
+        "source_url": "https://www.gov.br/pncp/pt-br/central-de-conteudo/comunicados/comunicados",
+        "notices": []
+      }
     },
     {
       "id": "transferegov",
@@ -58,7 +95,16 @@
       "status": "PENDENTE",
       "http_status": null,
       "latency_ms": null,
-      "detail": "Aguardando primeira coleta automática."
+      "failure_streak": 0,
+      "alert_state": "SEM_ALERTA",
+      "detail": "Aguardando primeira coleta automática.",
+      "operational": {
+        "status": "PENDENTE",
+        "source_url": "https://www.gov.br/transferegov/pt-br/comunicados/comunicados-gerais",
+        "notices": []
+      }
     }
-  ]
+  ],
+  "history": [],
+  "alerts": []
 }
