@@ -1,0 +1,52 @@
+name: QA milhão - ambiente de teste
+
+on:
+  push:
+    branches: [agente-teste]
+    paths:
+      - 'agente-teste/**'
+      - '.github/workflows/agente-teste-qa-milhao-now.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: qa-milhao-teste
+  cancel-in-progress: false
+
+jobs:
+  auditoria:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agente-teste
+          fetch-depth: 1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Aplicar correção QA somente no teste
+        run: node agente-teste/patch-agent-for-qa.js
+      - name: Executar 1 milhão de perguntas
+        run: node agente-teste/auditoria-milhao.js
+      - name: Publicar relatório
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: qa-milhao-ambiente-teste
+          path: |
+            agente-teste/reports/auditoria-milhao.json
+            agente-teste/reports/respostas-1-milhao.jsonl.gz
+          if-no-files-found: warn
+          retention-days: 90
+      - name: Persistir resumo no branch de teste
+        if: always()
+        run: |
+          if [ -f agente-teste/reports/auditoria-milhao.json ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add agente-teste/reports/auditoria-milhao.json
+            git commit -m "Registra QA de um milhão de perguntas no teste" || true
+            git push origin HEAD:agente-teste
+          fi
