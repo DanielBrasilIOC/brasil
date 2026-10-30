@@ -64,6 +64,11 @@ class MonitoramentoTests(unittest.TestCase):
         self.assertEqual(result["status"], "COMUNICADO_OPERACIONAL_LOCALIZADO")
         self.assertIn("comunicado-45", result["notices"][0]["url"])
 
+    def test_endpoints_oficiais_dos_sistemas(self):
+        urls = {item["id"]: item["url"] for item in monitor.TARGETS}
+        self.assertEqual(urls["contratos"], "https://contratos.comprasnet.gov.br/login")
+        self.assertEqual(urls["transferegov"], "https://portal.transferegov.sistema.gov.br/")
+
     def test_estado_inicial_tem_seis_sistemas_e_intervalo_30_min(self):
         import json
         state_path = SCRIPT.parents[2] / "monitoramento-sistemas.json"
