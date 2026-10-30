@@ -1,0 +1,64 @@
+{
+  "environment": "TESTE",
+  "checked_at": null,
+  "collector": "aguardando configuração do executor externo",
+  "frequency_target_seconds": 60,
+  "schedule_target": "Segunda a sexta-feira",
+  "disclaimer": "Nenhuma coleta foi executada ainda. Não interpretar ausência de dados como disponibilidade ou indisponibilidade.",
+  "systems": [
+    {
+      "id": "siafi",
+      "name": "SIAFI",
+      "url": "https://siafi.tesouro.gov.br/",
+      "status": "PENDENTE",
+      "http_status": null,
+      "latency_ms": null,
+      "detail": "Aguardando primeira coleta automática."
+    },
+    {
+      "id": "contratos",
+      "name": "Contratos.gov.br",
+      "url": "https://contratos.gov.br/",
+      "status": "PENDENTE",
+      "http_status": null,
+      "latency_ms": null,
+      "detail": "Aguardando primeira coleta automática."
+    },
+    {
+      "id": "compras",
+      "name": "Compras.gov.br",
+      "url": "https://www.gov.br/compras/pt-br",
+      "status": "PENDENTE",
+      "http_status": null,
+      "latency_ms": null,
+      "detail": "Aguardando primeira coleta automática."
+    },
+    {
+      "id": "sicaf",
+      "name": "SICAF",
+      "url": "https://www.gov.br/compras/pt-br/sistemas/conheca-o-compras/sicaf-digital",
+      "status": "PENDENTE",
+      "http_status": null,
+      "latency_ms": null,
+      "detail": "Aguardando primeira coleta automática."
+    },
+    {
+      "id": "pncp",
+      "name": "PNCP",
+      "url": "https://www.gov.br/pncp/pt-br",
+      "status": "PENDENTE",
+      "http_status": null,
+      "latency_ms": null,
+      "detail": "Aguardando primeira coleta automática."
+    },
+    {
+      "id": "transferegov",
+      "name": "Transferegov.br",
+      "url": "https://transferegov.sistema.gov.br/",
+      "status": "PENDENTE",
+      "http_status": null,
+      "latency_ms": null,
+      "detail": "Aguardando primeira coleta automática."
+    }
+  ]
+}
