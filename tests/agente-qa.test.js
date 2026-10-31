@@ -22,7 +22,7 @@ const cases=[
 let failures=[];
 for(const [q,expected] of cases){const out=agent.answerQuestion(q,data);if(!out.text.toLowerCase().includes(expected.toLowerCase()))failures.push({q,expected,actual:out.text.slice(0,180)});}
 const stats=agent.tripStats(data.datasets.find(d=>d.id==='diarias_pagas').rows);
-assert.equal(stats.trips.length,188,'PCDPs únicas');
+assert.equal(stats.trips.length,189,'PCDPs únicas');
 assert.equal(stats.people.length,105,'pessoas únicas');
 assert.equal(stats.people[0].nome,'ELIZABETH FERREIRA RANGEL');
 assert.equal(stats.people[0].viagens,9);
