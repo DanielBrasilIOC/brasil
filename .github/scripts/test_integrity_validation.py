@@ -47,6 +47,14 @@ class IntegrityValidationTests(unittest.TestCase):
         result = validate_dataset("orcamentario", rows, rows, 10, 10)
         self.assertEqual(result["status"], "APROVADO")
 
+    def test_diferenca_apenas_descritiva_gera_alerta_sem_bloquear(self):
+        source = [{"ob": "OB001", "fonte_pagadora": "A", "valor": 100.00, "observacao": "Descrição original"}]
+        prepared = [{"ob": "OB001", "fonte_pagadora": "A", "valor": 100.00, "observacao": "Descrição abreviada"}]
+        result = validate_dataset("ordens_bancarias", source, prepared, 100, 100)
+        self.assertEqual(result["status"], "ALERTA")
+        self.assertFalse(result["errors"])
+        self.assertTrue(result["warnings"])
+
     def test_dataset_ausente_bloqueia(self):
         result = validate_all({}, {})
         self.assertEqual(result["status"], "BLOQUEADO")
