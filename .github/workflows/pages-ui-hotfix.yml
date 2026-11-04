@@ -1,0 +1,54 @@
+name: Publicação visual do dashboard (sem alterar dados)
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "index.html"
+      - "dashboard-v2.html"
+      - ".github/workflows/pages-ui-hotfix.yml"
+      - ".github/scripts/smoke_test_dashboard.mjs"
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages-saorc-hotfix"
+  cancel-in-progress: false
+
+jobs:
+  validate-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Baixar o repositório
+        uses: actions/checkout@v4
+      - name: Configurar Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Instalar navegador de teste
+        run: |
+          npm install --no-save playwright
+          npx playwright install --with-deps chromium
+      - name: Iniciar servidor local
+        run: |
+          python3 -m http.server 8000 --bind 127.0.0.1 >/tmp/dashboard-http.log 2>&1 &
+          for i in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:8000/ >/dev/null; then exit 0; fi
+            sleep 1
+          done
+          cat /tmp/dashboard-http.log
+          exit 1
+      - name: Testar JavaScript, valores financeiros e layout desktop/mobile
+        run: node .github/scripts/smoke_test_dashboard.mjs
+      - name: Configurar GitHub Pages
+        uses: actions/configure-pages@v5
+      - name: Preparar arquivos estáticos sem modificar data.json
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: "."
+      - name: Publicar no GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
