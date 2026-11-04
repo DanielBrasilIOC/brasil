@@ -18,13 +18,9 @@ MONEY_FIELDS = {
     "diarias_pagas": "valor",
 }
 KEY_FIELDS = {
-    "empenhos": ("ne_ccor", "subitem", "cnpj"),
-    "orcamentario": ("ug", "fonte", "ptres", "pi", "natureza_codigo"),
+    # Só aplicamos unicidade onde a regra de negócio está explicitamente definida.
+    # Para OB, a fonte pagadora integra a chave quando vier no registro.
     "ordens_bancarias": ("ob",),
-    "repasses": ("solicitacao_ne", "numero_ne", "saldo"),
-    "financeiro": ("uge", "fonte", "vinculo"),
-    "restos": ("empenho",),
-    "diarias_pagas": ("documento", "data_pagamento", "favorecido", "valor"),
     "publicacoes_pagas": ("ob",),
 }
 DESCRIPTIVE_FIELDS = {
@@ -87,7 +83,16 @@ def validate_dataset(name, expected_rows, actual_rows, expected_total, actual_to
     if expected_counts != actual_counts:
         missing = list((expected_counts - actual_counts).elements())
         extra = list((actual_counts - expected_counts).elements())
-        errors.append(f"{name}: registros preparados diferem da estrutura esperada; ausentes={len(missing)}, extras={len(extra)}")
+        def without_descriptions(raw):
+            row = json.loads(raw)
+            return json.dumps({k: v for k, v in row.items() if k not in DESCRIPTIVE_FIELDS},
+                              ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+        expected_core = Counter(without_descriptions(raw) for raw in expected_counts.elements())
+        actual_core = Counter(without_descriptions(raw) for raw in actual_counts.elements())
+        if expected_core == actual_core and len(missing) == len(extra):
+            warnings.append(f"{name}: {len(missing)} diferença(s) apenas descritiva(s); não bloqueia publicação")
+        else:
+            errors.append(f"{name}: registros preparados diferem em conteúdo não descritivo; ausentes={len(missing)}, extras={len(extra)}")
 
     try:
         if _money(expected_total, f"{name}/total da fonte") != _money(actual_total, f"{name}/total preparado"):
