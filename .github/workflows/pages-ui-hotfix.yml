@@ -15,7 +15,7 @@ permissions:
   id-token: write
 
 concurrency:
-  group: "pages-saorc-hotfix"
+  group: "pages-ui-only-hotfix"
   cancel-in-progress: false
 
 jobs:
