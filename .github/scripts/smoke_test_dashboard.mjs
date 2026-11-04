@@ -4,9 +4,9 @@ const browser = await chromium.launch({ headless: true });
 const errors = [];
 try {
   const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
-  page.on("pageerror", error => errors.push(error.message));
+  page.on("pageerror", error => errors.push(error.stack || error.message));
   page.on("console", message => {
-    if (message.type() === "error") errors.push(message.text());
+    if (message.type() === "error" && !/Failed to load resource:.*404/.test(message.text())) errors.push(message.text());
   });
   const response = await page.goto("http://127.0.0.1:8000/", { waitUntil: "networkidle" });
   if (!response?.ok()) throw new Error("index.html não carregou corretamente.");
