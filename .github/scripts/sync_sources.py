@@ -137,7 +137,7 @@ def main():
     for r in a:
         v=money(r[7] if len(r)>7 else None)
         check(v is not None, f"Saldo inválido em Saldo Orçamentário: {r!r}")
-        orc.append({"ug":r[0],"unidade":"","ptres":r[2] if len(r)>2 else "","fonte":r[5] if len(r)>5 else "","descricao_fonte":r[5] if len(r)>5 else "","natureza_codigo":"","natureza":"","ug_responsavel":r[0],"responsavel":"","pi":r[3] if len(r)>3 else "","programa":"","saldo":abs(v)})
+        orc.append({"ug":r[0],"unidade":r[1] if len(r)>1 else "","ptres":r[2] if len(r)>2 else "","fonte":r[5] if len(r)>5 else "","descricao_fonte":r[6] if len(r)>6 else "","natureza_codigo":"","natureza":"","ug_responsavel":r[0],"responsavel":"","pi":r[3] if len(r)>3 else "","programa":"","saldo":abs(v)})
     to=total(orc,"saldo"); check(1<=len(orc)<=500 and to>=0,f"Validação orçamentária falhou: linhas={len(orc)}, total={to}")
 
     a=table(src["ordens_bancarias"],";",["DIA","OB","VALOR"])
