@@ -4,6 +4,7 @@ import csv, hashlib, json, os, re, tempfile, unicodedata, urllib.parse, urllib.r
 from datetime import datetime, timezone
 from decimal import Decimal, InvalidOperation
 from pathlib import Path
+from integrity_validation import validate_all
 
 ROOT=Path(__file__).resolve().parents[2]
 DATA_PATH=ROOT/"data.json"; REPASSES_PATH=ROOT/"repasses.json"; STATE_PATH=ROOT/"source_state.json"
@@ -284,6 +285,31 @@ def main():
     ds["financeiro"]["source_name"]="Saldo Financeiro"; ds["repasses"]["missing_values"]=mr
     pub=ds.get("publicacoes_pagas",{}); pub_note=f"Publicações Pagas: {len(pubs)} registros da planilha de Ordens Bancárias, filtrados pelo código do favorecido iniciado por EX. Total: R$ {brl(tp)}."; pub_url="https://drive.google.com/file/d/"+SOURCES["ordens_bancarias"]+"/view"; pub_changed=pub.get("rows")!=pubs or pub.get("total")!=tp or pub.get("note")!=pub_note or pub.get("source_url")!=pub_url; pub["rows"]=pubs; pub["total"]=tp; pub["detail_count"]=len(pubs); pub["source_url"]=pub_url; pub["source_name"]="ORDEM BANCARIAS EMITIDAS.csv"; pub["note"]=pub_note
     ds["ordens_bancarias"]["source_name"]="ORDEM BANCARIAS EMITIDAS.csv"
+
+    # Barreira final independente antes de qualquer escrita: compara cada linha
+    # derivada da fonte com o payload preparado, confere totais e chaves de negócio.
+    expected_integrity = {
+        "financeiro": {"rows": fin, "total": tf},
+        "restos": {"rows": rap, "total": trp},
+        "empenhos": {"rows": empenhos, "total": te},
+        "orcamentario": {"rows": orc, "total": to},
+        "repasses": {"rows": rep, "total": tr},
+        "ordens_bancarias": {"rows": ob, "total": tob},
+        "diarias_pagas": {"rows": diarias, "total": td},
+        "publicacoes_pagas": {"rows": pubs, "total": tp},
+    }
+    actual_integrity = {
+        name: {"rows": ds[name].get("rows"), "total": ds[name].get("total")}
+        for name in expected_integrity
+    }
+    integrity = validate_all(expected_integrity, actual_integrity)
+    if integrity["status"] == "BLOQUEADO":
+        raise ValueError("VALIDAÇÃO DE INTEGRIDADE BLOQUEOU A PUBLICAÇÃO: " +
+                         json.dumps(integrity["datasets"], ensure_ascii=False))
+    if integrity["status"] == "ALERTA":
+        print("ALERTAS DESCRITIVOS (não impeditivos): " +
+              json.dumps(integrity["datasets"], ensure_ascii=False))
+
     changed=source_changed or pub_changed or diarias_changed or any(ds[k].get("rows")!=rows or ds[k].get("total")!=amount or ds[k].get("note")!=notes[k] for k,(rows,amount) in updates.items())
     old_rep=json.loads(REPASSES_PATH.read_text(encoding="utf-8")) if REPASSES_PATH.exists() else {}; rep_data={"rows":rep,"total":tr,"missing_values":mr,"note":notes["repasses"]}; changed=changed or old_rep!=rep_data
     if not changed:
