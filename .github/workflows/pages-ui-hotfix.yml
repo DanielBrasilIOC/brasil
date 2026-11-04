@@ -45,6 +45,16 @@ jobs:
         run: node .github/scripts/smoke_test_dashboard.mjs
       - name: Configurar GitHub Pages
         uses: actions/configure-pages@v5
+      - name: Registrar execução responsável pela publicação
+        env:
+          RUN_ID: ${{ github.run_id }}
+          RUN_ATTEMPT: ${{ github.run_attempt }}
+        run: |
+          python - <<'PY'
+          import json, os
+          with open('dashboard-publication.json','w',encoding='utf-8') as f:
+              json.dump({'run_id':int(os.environ['RUN_ID']),'run_attempt':int(os.environ['RUN_ATTEMPT'])},f)
+          PY
       - name: Preparar arquivos estáticos sem modificar data.json
         uses: actions/upload-pages-artifact@v3
         with:
