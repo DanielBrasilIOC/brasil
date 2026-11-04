@@ -155,18 +155,72 @@ def main():
     pubs=[{"data":r["data"],"ob":r["ob"],"cnpj":r["cnpj"],"favorecido":r["favorecido"],"processo":r["processo"],"valor":r["valor"],"observacao":r["observacao"]} for r in ob if norm(r["cnpj"]).startswith("EX") and r["ob"] not in OB_NAO_E_PUBLICACAO]
     tp=total(pubs,"valor")
 
-    a=table(src["repasses"],";",["PROCESSO","STATUS DO EMPENHO","VALOR"]); rep=[]
-    rep_headers=AUDIT[norm("PROCESSO")]["header"]
-    solicitacao_idx=next((i for i,h in enumerate(rep_headers) if norm(h) in {"NUMERODASOLICITACAO","NUMERODASOLICITACOES","SOLICITACAO","SOLICITACAONE"}),None)
-    if solicitacao_idx is None:
-        solicitacao_idx=next((i for i,h in enumerate(rep_headers) if "SOLICITACAO" in norm(h) and "STATUS" not in norm(h)),None)
-    check(solicitacao_idx is not None, f"Coluna Número da Solicitação não encontrada no CSV oficial. Cabeçalhos: {rep_headers!r}")
+    a=table(src["repasses"],";",["STATUS DO EMPENHO","VALOR"]); rep=[]
+    rep_headers=AUDIT[norm("STATUS DO EMPENHO")]["header"]
+    hidx={norm(h):i for i,h in enumerate(rep_headers)}
+    def col(*names):
+        return next((hidx[norm(name)] for name in names if norm(name) in hidx),None)
+    def cell(row, index): return clean(row[index]) if index is not None and len(row)>index else ""
+    status_idx=col("STATUS DO EMPENHO")
+    value_idx=col("VALOR")
+    solicitacao_idx=col("SOLICITAÇÃO PARA NE","NÚMERO DA SOLICITAÇÃO","NÚMERO DAS SOLICITAÇÕES","SOLICITAÇÃO NE","SOLICITAÇÃO")
+    check(status_idx is not None and value_idx is not None and solicitacao_idx is not None,
+          f"Cabeçalho de repasses incompleto. Cabeçalhos: {rep_headers!r}")
+    new_layout=col("PROCESSO") is None
+    old_rep=json.loads(REPASSES_PATH.read_text(encoding="utf-8")) if REPASSES_PATH.exists() else {}
+    old_rows=old_rep.get("rows",[]) if isinstance(old_rep,dict) else []
+    def date_key(value):
+        value=clean(value)
+        for fmt in ("%d/%m/%Y","%d/%m/%y"):
+            try: return datetime.strptime(value,fmt).strftime("%d/%m/%Y")
+            except ValueError: pass
+        return value
+    def previous_key(item):
+        return (norm(item.get("solicitacao_ne") or item.get("numero_solicitacao")),
+                round(float(item.get("saldo") or 0),2), norm(item.get("elemento_despesa")),
+                norm(item.get("elemento")), norm(item.get("sub_grupo_despesa") or item.get("sub_grupo")),
+                date_key(item.get("vigencia")), norm(item.get("situacao_prioridade")))
+    previous={}
+    if new_layout:
+        for item in old_rows: previous.setdefault(previous_key(item),[]).append(item)
+        required=("ELEMENTO DE DESPESA","ELEMENTO","SUB GRUPO DE DESPESA","VIGENCIA",
+                  "STATUS DA SITUAÇÃO","SOLICITAÇÃO PARA NE","Nº DA NE","FORNECEDORES")
+        missing=[name for name in required if col(name) is None]
+        check(not missing, f"Colunas ausentes no novo layout de repasses: {missing!r}")
     for r in a:
-        si=next((i for i,v in enumerate(r) if "AGUARDANDOORCAMENTO" in norm(v) or "AGUARDANDOORAMENTO" in norm(v)),None)
-        if si is None: continue
-        vi=next((i for i in range(len(r)-1,-1,-1) if money(r[i]) is not None),None)
-        check(vi is not None, f"Valor ausente ou inválido em Aguardando Repasse Orçamentário: {r!r}")
-        rep.append({"processo":r[0] if r else "","licitacao":"","fornecedor":r[7] if len(r)>7 else "","sub_grupo":r[3] if len(r)>3 else "","elemento_despesa":r[1] if len(r)>1 else "","elemento":r[2] if len(r)>2 else "","sub_grupo_despesa":r[3] if len(r)>3 else "","vigencia":r[4] if len(r)>4 else "","situacao_prioridade":r[5] if len(r)>5 else "","solicitacao_ne":r[solicitacao_idx] if len(r)>solicitacao_idx else "","numero_solicitacao":r[solicitacao_idx] if len(r)>solicitacao_idx else "","numero_ne":"","status_empenho":r[si],"fornecedores":r[7] if len(r)>7 else "","saldo":money(r[vi])})
+        status=cell(r,status_idx)
+        if "AGUARDANDOORCAMENTO" not in norm(status) and "AGUARDANDOORAMENTO" not in norm(status): continue
+        amount=money(cell(r,value_idx))
+        check(amount is not None, f"Valor ausente ou inválido em Aguardando Repasse Orçamentário: {r!r}")
+        solicitation=cell(r,solicitacao_idx)
+        if new_layout:
+            element_expense=cell(r,col("ELEMENTO DE DESPESA"))
+            element=cell(r,col("ELEMENTO"))
+            subgroup=cell(r,col("SUB GRUPO DE DESPESA"))
+            validity=cell(r,col("VIGENCIA"))
+            situation=cell(r,col("STATUS DA SITUAÇÃO"))
+            key=(norm(solicitation),round(amount,2),norm(element_expense),norm(element),norm(subgroup),date_key(validity),norm(situation))
+            matches=previous.get(key,[])
+            prior=matches.pop(0) if matches else {}
+            if len(matches)>0:
+                processes={clean(x.get("processo")) for x in [prior]+matches}
+                check(len(processes)<=1, f"Correspondência ambígua de processo para a solicitação {solicitation}: {processes!r}")
+            supplier=cell(r,col("FORNECEDORES"))
+            rep.append({"processo":clean(prior.get("processo")),"licitacao":clean(prior.get("licitacao")),
+                "fornecedor":supplier,"sub_grupo":subgroup,"elemento_despesa":element_expense,"elemento":element,
+                "sub_grupo_despesa":subgroup,"vigencia":validity,"situacao_prioridade":situation,
+                "solicitacao_ne":solicitation,"numero_solicitacao":solicitation,"numero_ne":cell(r,col("Nº DA NE")),
+                "status_empenho":status,"fornecedores":supplier,"saldo":amount})
+        else:
+            supplier=cell(r,col("FORNECEDORES","FORNECEDOR"))
+            subgroup=cell(r,col("SUB GRUPO DE DESPESA","SUB GRUPO","SUBGRUPO"))
+            rep.append({"processo":cell(r,col("PROCESSO")),"licitacao":cell(r,col("LICITAÇÃO","LICITACAO")),
+                "fornecedor":supplier,"sub_grupo":subgroup,
+                "elemento_despesa":cell(r,col("ELEMENTO DE DESPESA")),"elemento":cell(r,col("ELEMENTO")),
+                "sub_grupo_despesa":subgroup,"vigencia":cell(r,col("VIGENCIA")),
+                "situacao_prioridade":cell(r,col("STATUS DA SITUAÇÃO","SITUAÇÃO/PRIORIDADE","SITUACAO PRIORIDADE")),
+                "solicitacao_ne":solicitation,"numero_solicitacao":solicitation,"numero_ne":cell(r,col("Nº DA NE","NUMERO DA NE")),
+                "status_empenho":status,"fornecedores":supplier,"saldo":amount})
     tr=total(rep,"saldo"); mr=sum(x["saldo"] is None for x in rep); check(1<=len(rep)<=1000 and mr==0,f"Validação de repasses falhou: linhas={len(rep)}, total={tr}, sem valor={mr}")
 
     fl=[]
@@ -215,7 +269,7 @@ def main():
       "restos":f"Fonte SIAFI: Restos a Pagar. {len(rap)} registros com saldo diferente de zero. Total detalhado: R$ {brl(trp)}.",
       "empenhos":f"Fonte SIAFI: Saldo nos empenhos 2026. {len(empenhos)} registros detalhados. Total: R$ {brl(te)}.",
       "orcamentario":f"Fonte oficial: Saldo Orçamentário.csv. {len(orc)} registros detalhados. Total: R$ {brl(to)}.",
-      "repasses":f"Fonte: Aguardando Repasse Orçamentário.csv. {len(rep)} registros com status AGUARDANDO ORÇAMENTO. Total: R$ {brl(tr)}.",
+      "repasses":"Fonte: SAORC/PLANEJAMENTO IOC. Aguardando Orçamento da COGEAD.",
       "ordens_bancarias":f"Fonte: ORDEM BANCARIAS EMITIDAS.csv. {len(ob)} registros únicos por OB, sem coluna Fonte. Total Valor (R$): R$ {brl(tob)}.",
     }
     diarias_note=f"Diárias Pagas: {len(diarias)} registros da planilha DIARIAS PAGAS.csv. Total: R$ {brl(td)}."
@@ -239,6 +293,17 @@ def main():
     data["source_updated_at"]=stamp[:10]
     data["status"]="drive_csv_sync_"+stamp[:10]
     diarias_ds["source_modified_at"]=stamp
+    rep_ds=ds["repasses"]
+    rep_ds["source_name"]="Aguardando Repasse Orçamentário.csv"
+    rep_ds["source_updated_at"]=stamp[:10]
+    rep_ds["source_row_count"]=len(rep)
+    rep_ds["external_csv_url"]="https://drive.google.com/uc?export=download&id="+SOURCES["repasses"]
+    breakdown={}
+    for row in rep:
+        name=row.get("elemento_despesa") or "Não informado"
+        item=breakdown.setdefault(name,{"name":name,"count":0,"total":0.0})
+        item["count"]+=1; item["total"]+=float(row.get("saldo") or 0)
+    rep_ds["element_breakdown"]=[{**item,"total":round(item["total"],2)} for item in sorted(breakdown.values(),key=lambda x:x["name"])]
     # Só grava após todos os arquivos serem baixados, interpretados e validados.
     # Escrita atômica evita JSON truncado se o processo for interrompido.
     atomic_json_write(DATA_PATH, data)
