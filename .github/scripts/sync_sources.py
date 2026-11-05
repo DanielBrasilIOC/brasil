@@ -131,13 +131,21 @@ def main():
         empenhos.append({"empenho":r[0] if len(r)>0 else "","ne_ccor":r[0] if len(r)>0 else "","subitem":r[3] if len(r)>3 else "","natureza":r[3] if len(r)>3 else "","cnpj":r[1] if len(r)>1 else "","fornecedor":r[2] if len(r)>2 else "","observacao":"","fonte_recursos_detalhada":"","saldo":v})
     te=total(empenhos,"saldo"); check(1<=len(empenhos)<=500 and te>=0,f"Validação de Empenhos 2026 falhou: linhas={len(empenhos)}, total={te}")
 
-    # Saldo Orçamentário atual: 8 colunas, saldo no índice 7.
-    a=table(src["orcamentario"],",",["UG Executora","Fonte Recursos Detalhada","Saldo - Moeda Origem"])
+    # Saldo Orçamentário SERPRO: sete campos (código/descrição para UG,
+    # Fonte e Natureza, seguidos do saldo). O cabeçalho contém células vazias
+    # entre os pares código/descrição; os registros mantêm sete posições.
+    a=table(src["orcamentario"],",",["UG Executora","Fonte Recursos Detalhada","Natureza Despesa","Saldo - Moeda Origem"])
     orc=[]
     for r in a:
-        v=money(r[7] if len(r)>7 else None)
+        check(len(r)>=7, f"Registro incompleto em Saldo Orçamentário (esperadas 7 colunas): {r!r}")
+        v=money(r[6])
         check(v is not None, f"Saldo inválido em Saldo Orçamentário: {r!r}")
-        orc.append({"ug":r[0],"unidade":"","ptres":r[2] if len(r)>2 else "","fonte":r[5] if len(r)>5 else "","descricao_fonte":r[5] if len(r)>5 else "","natureza_codigo":"","natureza":"","ug_responsavel":r[0],"responsavel":"","pi":r[3] if len(r)>3 else "","programa":"","saldo":abs(v)})
+        orc.append({
+            "ug":r[0], "unidade":r[1],
+            "fonte":r[2], "descricao_fonte":r[3],
+            "natureza_codigo":r[4], "natureza":r[5],
+            "saldo":abs(v)
+        })
     to=total(orc,"saldo"); check(1<=len(orc)<=500 and to>=0,f"Validação orçamentária falhou: linhas={len(orc)}, total={to}")
 
     a=table(src["ordens_bancarias"],";",["DIA","OB","VALOR"])
