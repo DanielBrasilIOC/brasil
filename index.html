@@ -46,6 +46,82 @@ frame.addEventListener('load',()=>{try{
   const overviewNav=doc.getElementById('nav');
   if(overviewNav&&!overviewNav.dataset.hideDiariasOnNav){overviewNav.dataset.hideDiariasOnNav='1';overviewNav.addEventListener('click',ev=>{const button=ev.target&&ev.target.closest?ev.target.closest('button[data-x]'):null;if(!button||button.dataset.x==='diarias_pagas')return;const p=doc.getElementById('extraDiariasPanel');if(p)p.classList.add('hide')},true)}
   addExecutiveExtras();
+
+  // Nova composição da Visão Executiva: total consolidado e participação das categorias.
+  const installOrdersExecutiveSummary=()=>{
+    const kpis=doc.getElementById('kpis');
+    if(!kpis) return;
+    const style=doc.createElement('style');
+    style.id='orders-executive-summary-style';
+    style.textContent=`
+      #ordersExecutiveSummary{margin:0 0 16px;display:grid;gap:12px}
+      #ordersExecutiveSummary .ob-total{background:linear-gradient(120deg,#edf5f8,#fff);border:1px solid #d5e4eb;border-radius:16px;padding:20px 22px;box-shadow:0 8px 24px rgba(19,55,78,.045)}
+      #ordersExecutiveSummary .ob-eyebrow{font-size:11px;letter-spacing:1px;font-weight:800;color:#607987;text-transform:uppercase}
+      #ordersExecutiveSummary .ob-total-value{font-size:clamp(25px,3vw,34px);font-weight:850;letter-spacing:-.035em;color:#153b57;margin:7px 0}
+      #ordersExecutiveSummary .ob-total-meta{display:flex;align-items:center;justify-content:space-between;gap:10px;color:#667b89;font-size:12px}
+      #ordersExecutiveSummary .ob-percent{display:inline-flex;align-items:center;border-radius:99px;padding:5px 9px;background:#e7f4ee;color:#28745b;font-size:11px;font-weight:850;white-space:nowrap}
+      #ordersExecutiveSummary .ob-track{height:9px;background:#dfe9ee;border-radius:99px;overflow:hidden;margin-top:12px}
+      #ordersExecutiveSummary .ob-track span{display:block;height:100%;width:100%;background:#398780;border-radius:99px}
+      #ordersExecutiveSummary .ob-section-title{font-size:13px;font-weight:800;color:#153b57;margin:2px 0 0}
+      #ordersExecutiveSummary .ob-category-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+      #ordersExecutiveSummary .ob-category{min-width:0;background:#fff;border:1px solid #e0e8ed;border-radius:15px;padding:16px;box-shadow:0 8px 24px rgba(19,55,78,.045)}
+      #ordersExecutiveSummary .ob-category-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
+      #ordersExecutiveSummary .ob-category-name{font-size:12px;font-weight:800;color:#667b89}
+      #ordersExecutiveSummary .ob-category-value{font-size:clamp(18px,2vw,23px);font-weight:850;letter-spacing:-.025em;color:#153b57;margin:11px 0 10px;overflow-wrap:anywhere}
+      #ordersExecutiveExecutiveSummary .ob-category-track,#ordersExecutiveSummary .ob-category-track{height:7px;background:#e8eef2;border-radius:99px;overflow:hidden}
+      #ordersExecutiveSummary .ob-category-track span{display:block;height:100%;border-radius:99px}
+      #ordersExecutiveSummary .ob-remainder{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 15px;border:1px solid #e0e8ed;border-radius:12px;background:#f8fafb;color:#667b89;font-size:12px}
+      #ordersExecutiveSummary .ob-remainder strong{color:#153b57;font-size:14px}
+      @media(max-width:850px){#ordersExecutiveSummary .ob-category-grid{grid-template-columns:1fr 1fr}}
+      @media(max-width:560px){#ordersExecutiveSummary .ob-category-grid{grid-template-columns:1fr}#ordersExecutiveSummary .ob-total{padding:16px}#ordersExecutiveSummary .ob-category{padding:14px}}
+    `;
+    if(!doc.getElementById(style.id)) doc.head.appendChild(style);
+    const apply=()=>{
+      const cards=Array.from(kpis.children).filter(el=>el.classList&&el.classList.contains('kpi'));
+      if(!cards.length) return;
+      let summary=doc.getElementById('ordersExecutiveSummary');
+      if(!summary){summary=doc.createElement('section');summary.id='ordersExecutiveSummary';kpis.parentNode.insertBefore(summary,kpis);}
+      summary.innerHTML=`
+        <div class="ob-total">
+          <div class="ob-eyebrow">Ordens Bancárias Consolidadas</div>
+          <div class="ob-total-value">R$ 55.521.968,15</div>
+          <div class="ob-total-meta"><span>Total de ordens bancárias pagas</span><span class="ob-percent">100%</span></div>
+          <div class="ob-track" aria-label="100% do total"><span></span></div>
+        </div>
+        <div class="ob-section-title">Composição das ordens bancárias pagas</div>
+        <div class="ob-category-grid">
+          <article class="ob-category">
+            <div class="ob-category-top"><span class="ob-category-name">Bolsistas Pagos</span><span class="ob-percent">4,98%</span></div>
+            <div class="ob-category-value">R$ 2.762.300,00</div>
+            <div class="ob-category-track"><span style="width:4.98%;background:#3985C6"></span></div>
+          </article>
+          <article class="ob-category">
+            <div class="ob-category-top"><span class="ob-category-name">Diárias Pagas</span><span class="ob-percent">0,56%</span></div>
+            <div class="ob-category-value">R$ 312.922,95</div>
+            <div class="ob-category-track"><span style="width:0.56%;background:#D69A38"></span></div>
+          </article>
+          <article class="ob-category">
+            <div class="ob-category-top"><span class="ob-category-name">Publicações Pagas</span><span class="ob-percent">5,20%</span></div>
+            <div class="ob-category-value">R$ 2.889.316,07</div>
+            <div class="ob-category-track"><span style="width:5.20%;background:#398780"></span></div>
+          </article>
+        </div>
+        <div class="ob-remainder"><span>Demais ordens bancárias</span><strong>89,26% · R$ 49.557.429,13</strong></div>
+      `;
+      const removeLabels=['publicações pagas','bolsistas pagos','diárias pagas','ordens bancárias'];
+      cards.forEach(card=>{
+        const label=(card.querySelector('.label')?.textContent||'').trim().toLocaleLowerCase('pt-BR');
+        if(removeLabels.includes(label)) card.remove();
+      });
+    };
+    apply();
+    if(!kpis.dataset.ordersExecutiveObserver){
+      kpis.dataset.ordersExecutiveObserver='1';
+      const observer=new MutationObserver(apply);
+      observer.observe(kpis,{childList:true});
+    }
+  };
+  installOrdersExecutiveSummary();
 }catch(e){console.error('Ajuste do painel não aplicado',e)}});
 </script>
 </body>
