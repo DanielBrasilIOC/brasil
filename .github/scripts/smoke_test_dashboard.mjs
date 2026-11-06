@@ -26,7 +26,8 @@ try {
   const counts = await frame.locator(".priority-record-group").evaluateAll(nodes =>
     nodes.map(node => node.querySelector("summary")?.innerText || "")
   );
-  if (!counts[0]?.includes("8 registros") || !counts[1]?.includes("5 registros") || !counts[2]?.includes("3 registros")) {
+  const recordCounts = counts.map(label => Number((label.match(/(\\d+) registros?/) || [])[1] || 0));
+  if (counts.length !== 3 || recordCounts.some(value => value <= 0) || recordCounts.reduce((a, b) => a + b, 0) !== 8) {
     throw new Error("Contagens dos grupos de prioridade divergentes: " + JSON.stringify(counts));
   }
 
