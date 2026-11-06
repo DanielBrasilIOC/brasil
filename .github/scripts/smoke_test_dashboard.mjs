@@ -26,7 +26,7 @@ try {
   const counts = await frame.locator(".priority-record-group").evaluateAll(nodes =>
     nodes.map(node => node.querySelector("summary")?.innerText || "")
   );
-  const recordCounts = counts.map(label => Number((label.match(/(\\d+) registros?/) || [])[1] || 0));
+  const recordCounts = counts.map(label => Number((label.match(/(\d+) registros?/) || [])[1] || 0));
   if (counts.length !== 3 || recordCounts.some(value => value <= 0) || recordCounts.reduce((a, b) => a + b, 0) !== 8) {
     throw new Error("Contagens dos grupos de prioridade divergentes: " + JSON.stringify(counts));
   }
@@ -34,7 +34,7 @@ try {
   await frame.locator('#nav button[data-x="visao"]').click();
   await frame.locator("#ordersExecutiveSummary").waitFor({ state: "visible", timeout: 20000 });
   const executive = await frame.locator("#ordersExecutiveSummary").evaluate(node => ({
-    text: node.innerText.replace(/\\s+/g, " ").trim(),
+    text: node.innerText.replace(/\s+/g, " ").trim(),
     categories: [...node.querySelectorAll(".ob-category")].map(card => ({
       name: card.querySelector(".ob-category-name")?.textContent.trim(),
       value: card.querySelector(".ob-category-value")?.textContent.trim(),
@@ -42,7 +42,7 @@ try {
     })),
     total: node.querySelector(".ob-total-value")?.textContent.trim(),
     totalPercent: node.querySelector(".ob-total-meta .ob-percent")?.textContent.trim(),
-    remainder: node.querySelector(".ob-remainder")?.innerText.replace(/\\s+/g, " ").trim()
+    remainder: node.querySelector(".ob-remainder")?.innerText.replace(/\s+/g, " ").trim()
   }));
   const expectedCategories = [
     { name: "Bolsistas Pagos", value: "R$ 2.762.300,00", percent: "4,98%" },
