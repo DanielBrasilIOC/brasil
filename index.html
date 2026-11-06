@@ -138,10 +138,40 @@ frame.addEventListener('load',()=>{try{
       summary.dataset.sourceUpdatedAt=String(payload.source_updated_at||'');
       summary.dataset.generatedAt=String(payload.generated_at||'');
     };
-    fetch('./data.json?ts='+Date.now(),{cache:'no-store'})
-      .then(response=>{if(!response.ok)throw new Error('HTTP '+response.status);return response.json()})
-      .then(render)
-      .catch(error=>{console.error('Falha ao atualizar Visão Executiva a partir do data.json',error);renderError()});
+    let lastDataVersion='';
+    let executiveHasRendered=false;
+    let executiveRefreshInFlight=false;
+    const refreshExecutiveSummary=async()=>{
+      if(executiveRefreshInFlight)return;
+      executiveRefreshInFlight=true;
+      try{
+        const response=await fetch('./data.json?ts='+Date.now(),{cache:'no-store'});
+        if(!response.ok)throw new Error('HTTP '+response.status);
+        const payload=await response.json();
+        const version=JSON.stringify({
+          generated_at:payload.generated_at||'',
+          datasets:(payload.datasets||[]).map(item=>({id:item.id,total:item.total,rows:item.rows?.length}))
+        });
+        if(version!==lastDataVersion){
+          render(payload);
+          lastDataVersion=version;
+          executiveHasRendered=true;
+        }
+      }catch(error){
+        console.error('Falha ao atualizar Visão Executiva a partir do data.json',error);
+        if(!executiveHasRendered)renderError();
+      }finally{
+        executiveRefreshInFlight=false;
+      }
+    };
+    refreshExecutiveSummary();
+    // Reconsulta a base publicada periodicamente e ao retornar à aba.
+    // Assim, valores e percentuais acompanham novas publicações sem edição manual.
+    doc.defaultView.setInterval(refreshExecutiveSummary,60000);
+    doc.defaultView.addEventListener('focus',refreshExecutiveSummary);
+    doc.addEventListener('visibilitychange',()=>{
+      if(doc.visibilityState==='visible')refreshExecutiveSummary();
+    });
   };
   installOrdersExecutiveSummary();
 }catch(e){console.error('Ajuste do painel não aplicado',e)}});
