@@ -83,7 +83,7 @@ frame.addEventListener('load',()=>{try{
     const cleanLegacyCards=()=>{
       Array.from(kpis.querySelectorAll(':scope > .kpi')).forEach(card=>{
         const label=(card.querySelector('.label')?.textContent||'').trim()
-          .normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').toLocaleLowerCase('pt-BR');
+          .normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase('pt-BR');
         if(removeLabels.has(label)) card.remove();
       });
     };
