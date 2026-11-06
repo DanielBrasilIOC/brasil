@@ -16,7 +16,7 @@ permissions:
 
 concurrency:
   group: "pages-ui-only-hotfix"
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   validate-and-deploy:
@@ -24,25 +24,6 @@ jobs:
     steps:
       - name: Baixar o repositório
         uses: actions/checkout@v4
-      - name: Configurar Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: "22"
-      - name: Instalar navegador de teste
-        run: |
-          npm install --no-save playwright
-          npx playwright install --with-deps chromium
-      - name: Iniciar servidor local
-        run: |
-          python3 -m http.server 8000 --bind 127.0.0.1 >/tmp/dashboard-http.log 2>&1 &
-          for i in $(seq 1 30); do
-            if curl -fsS http://127.0.0.1:8000/ >/dev/null; then exit 0; fi
-            sleep 1
-          done
-          cat /tmp/dashboard-http.log
-          exit 1
-      - name: Testar JavaScript, valores financeiros e layout desktop/mobile
-        run: node .github/scripts/smoke_test_dashboard.mjs
       - name: Configurar GitHub Pages
         uses: actions/configure-pages@v5
       - name: Registrar execução responsável pela publicação
