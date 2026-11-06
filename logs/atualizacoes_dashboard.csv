@@ -2179,3 +2179,4 @@
 2026-11-06T12:55:00Z;42221301788;push;SEM_ALTERACOES;Diárias Pagas;1pIo7jabcLwEjb6OauH847bb3Ifb-lVHV;NÃO;198;327449.11;0;0;0;NÃO;NÃO;NÃO NECESSÁRIA;"Hash fonte: inalterado; registros: +0 / -0 / alterados=0; valor total: inalterado."
 2026-11-06T12:55:00Z;42221301788;push;SEM_ALTERACOES;RESUMO DA EXECUÇÃO;;NÃO;1384;;0;0;0;NÃO;NÃO;NÃO NECESSÁRIA;Fontes com hash alterado: nenhuma. Contagem alterada: nenhuma. Total alterado: nenhum.
 2026-11-06T12:55:26Z;42221301788;push;FINALIZAÇÃO;RESUMO DA PUBLICAÇÃO;;;;;;;;;NÃO;PUBLICAÇÃO CONFERIDA — SEM ALTERAÇÃO DE DADOS;Resultado final da publicação da execução.
+2026-11-06T12:55:34Z;42221301788;push;FALHA;REGISTRO DE FALHA DO WORKFLOW;;NÃO;;;;;;;NÃO;FALHA REGISTRADA — verificar execução no GitHub Actions;"build=success; deploy=failure; persistência=success; detalhes: https://github.com/DanielBrasilIOC/brasil/actions/runs/42221301788"
