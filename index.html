@@ -77,12 +77,19 @@ frame.addEventListener('load',()=>{try{
       @media(max-width:560px){#ordersExecutiveSummary .ob-category-grid{grid-template-columns:1fr}#ordersExecutiveSummary .ob-total{padding:16px}#ordersExecutiveSummary .ob-category{padding:14px}}
     `;
     if(!doc.getElementById(style.id)) doc.head.appendChild(style);
-    const cards=Array.from(kpis.children).filter(el=>el.classList&&el.classList.contains('kpi'));
-    const removeLabels=['publicações pagas','bolsistas pagos','diárias pagas','ordens bancárias'];
-    cards.forEach(card=>{
-      const label=(card.querySelector('.label')?.textContent||'').trim().toLocaleLowerCase('pt-BR');
-      if(removeLabels.includes(label)) card.remove();
-    });
+    // Os cartões originais são montados de forma assíncrona pelo dashboard-v2.
+    // Removê-los apenas no primeiro instante deixa duplicatas quando a montagem termina.
+    const removeLabels=new Set(['publicacoes pagas','bolsistas pagos','diarias pagas','ordens bancarias']);
+    const cleanLegacyCards=()=>{
+      Array.from(kpis.querySelectorAll(':scope > .kpi')).forEach(card=>{
+        const label=(card.querySelector('.label')?.textContent||'').trim()
+          .normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').toLocaleLowerCase('pt-BR');
+        if(removeLabels.has(label)) card.remove();
+      });
+    };
+    cleanLegacyCards();
+    const legacyCardsObserver=new doc.defaultView.MutationObserver(cleanLegacyCards);
+    legacyCardsObserver.observe(kpis,{childList:true});
     let summary=doc.getElementById('ordersExecutiveSummary');
     if(!summary){summary=doc.createElement('section');summary.id='ordersExecutiveSummary';kpis.parentNode.insertBefore(summary,kpis);}
     const money=value=>'R$ '+new Intl.NumberFormat('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2}).format(value);
