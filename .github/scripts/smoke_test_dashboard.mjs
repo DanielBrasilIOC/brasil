@@ -1,4 +1,5 @@
 import { chromium } from "playwright";
+import { readFile } from "node:fs/promises";
 
 const browser = await chromium.launch({ headless: true });
 const errors = [];
@@ -44,15 +45,49 @@ try {
     totalPercent: node.querySelector(".ob-total-meta .ob-percent")?.textContent.trim(),
     remainder: node.querySelector(".ob-remainder")?.innerText.replace(/\s+/g, " ").trim()
   }));
+  // A Visão Executiva é dinâmica: o teste calcula a expectativa a partir do
+  // mesmo data.json publicado, sem congelar valores de uma atualização anterior.
+  const data = JSON.parse(await readFile(new URL("../../data.json", import.meta.url), "utf8"));
+  const dataset = id => data.datasets.find(item => item.id === id);
+  const orders = dataset("ordens_bancarias");
+  const daily = dataset("diarias_pagas");
+  const publications = dataset("publicacoes_pagas");
+  if (!orders?.rows || !daily || !publications) {
+    throw new Error("data.json não contém os conjuntos necessários à Visão Executiva.");
+  }
+  const cents = value => Math.round((Number(value) || 0) * 100);
+  const formatMoney = value => "R$ " + new Intl.NumberFormat("pt-BR", {
+    minimumFractionDigits: 2, maximumFractionDigits: 2
+  }).format(value / 100);
+  const formatPercent = value => (value / 100).toLocaleString("pt-BR", {
+    minimumFractionDigits: 2, maximumFractionDigits: 2
+  }) + "%";
+  const totalCents = cents(orders.total);
+  const bolsistasCents = orders.rows
+    .filter(row => /bols/i.test(String(row.observacao || "") + " " + String(row.favorecido || "")))
+    .reduce((sum, row) => sum + cents(row.valor), 0);
+  const dailyCents = cents(daily.total);
+  const publicationsCents = cents(publications.total);
+  const categoryCents = [bolsistasCents, dailyCents, publicationsCents];
+  const percentages = categoryCents.map(value => Math.round(value * 10000 / totalCents));
+  const remainderCents = totalCents - categoryCents.reduce((sum, value) => sum + value, 0);
+  const remainderPercent = 10000 - percentages.reduce((sum, value) => sum + value, 0);
   const expectedCategories = [
-    { name: "Bolsistas Pagos", value: "R$ 2.762.300,00", percent: "4,98%" },
-    { name: "Diárias Pagas", value: "R$ 312.922,95", percent: "0,56%" },
-    { name: "Publicações Pagas", value: "R$ 2.889.316,07", percent: "5,20%" }
+    { name: "Bolsistas Pagos", value: formatMoney(bolsistasCents), percent: formatPercent(percentages[0]) },
+    { name: "Diárias Pagas", value: formatMoney(dailyCents), percent: formatPercent(percentages[1]) },
+    { name: "Publicações Pagas", value: formatMoney(publicationsCents), percent: formatPercent(percentages[2]) }
   ];
-  if (executive.total !== "R$ 55.521.968,15" || executive.totalPercent !== "100%" ||
+  const expectedRemainder = formatMoney(remainderCents);
+  if (totalCents <= 0 || remainderCents < 0 ||
+      percentages.reduce((sum, value) => sum + value, 0) + remainderPercent !== 10000 ||
+      executive.total !== formatMoney(totalCents) || executive.totalPercent !== "100,00%" ||
       JSON.stringify(executive.categories) !== JSON.stringify(expectedCategories) ||
-      !executive.remainder.includes("89,26%") || !executive.remainder.includes("R$ 49.557.429,13")) {
-    throw new Error("Nova composição da Visão Executiva divergente: " + JSON.stringify(executive));
+      !executive.remainder.includes(formatPercent(remainderPercent)) ||
+      !executive.remainder.includes(expectedRemainder)) {
+    throw new Error("Nova composição da Visão Executiva divergente: " + JSON.stringify({
+      executive, expectedCategories, expectedTotal: formatMoney(totalCents),
+      expectedRemainder, expectedRemainderPercent: formatPercent(remainderPercent)
+    }));
   }
   const remainingKpis = await frame.locator("#kpis > .kpi .label").allTextContents();
   const forbidden = remainingKpis.filter(label => /^(Publicações Pagas|Bolsistas pagos|Diárias Pagas|Ordens Bancárias)$/i.test(label.trim()));
