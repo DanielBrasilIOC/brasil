@@ -8,7 +8,7 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
 DATA_PATH=ROOT/"data.json"; REPASSES_PATH=ROOT/"repasses.json"; STATE_PATH=ROOT/"source_state.json"
 CACHE_PATH=ROOT/".drive_source_ids.json"; DIARIAS_ID_PATH=ROOT/".diarias_source_id"
-KEYS=("empenhos","orcamentario","ordens_bancarias","repasses","financeiro","restos")
+KEYS=("empenhos","orcamentario","ordens_bancarias","financeiro","restos","diarias")
 AUDIT={}
 
 def sources():
@@ -18,9 +18,6 @@ def sources():
         raise RuntimeError("A descoberta não retornou exatamente seis IDs distintos.")
     return x
 SOURCES=sources()
-if not DIARIAS_ID_PATH.exists(): raise RuntimeError("DIARIAS PAGAS.csv não foi localizada pelo nome na pasta oficial.")
-DIARIAS_ID=DIARIAS_ID_PATH.read_text(encoding="utf-8").strip()
-if not DIARIAS_ID: raise RuntimeError("ID de DIARIAS PAGAS.csv vazio após descoberta por nome.")
 
 def clean(v):
     s=str(v or "").replace("\ufeff","").strip()
@@ -120,7 +117,7 @@ def atomic_json_write(path, payload):
     temp_path.replace(path)
 
 def main():
-    src={k:download(v) for k,v in SOURCES.items()}; src["diarias"]=download(DIARIAS_ID)
+    src={k:download(v) for k,v in SOURCES.items()}
 
     # Empenhos 2026: exportação atual tem 5 campos: NE CCor, CNPJ, favorecido, natureza, saldo.
     a=table(src["empenhos"],"\t",["NE CCor","Saldo - Moeda Origem"])
@@ -163,74 +160,6 @@ def main():
     pubs=[{"data":r["data"],"ob":r["ob"],"cnpj":r["cnpj"],"favorecido":r["favorecido"],"processo":r["processo"],"valor":r["valor"],"observacao":r["observacao"]} for r in ob if norm(r["cnpj"]).startswith("EX") and r["ob"] not in OB_NAO_E_PUBLICACAO]
     tp=total(pubs,"valor")
 
-    a=table(src["repasses"],";",["STATUS DO EMPENHO","VALOR"]); rep=[]
-    rep_headers=AUDIT[norm("STATUS DO EMPENHO")]["header"]
-    hidx={norm(h):i for i,h in enumerate(rep_headers)}
-    def col(*names):
-        return next((hidx[norm(name)] for name in names if norm(name) in hidx),None)
-    def cell(row, index): return clean(row[index]) if index is not None and len(row)>index else ""
-    status_idx=col("STATUS DO EMPENHO")
-    value_idx=col("VALOR")
-    solicitacao_idx=col("SOLICITAÇÃO PARA NE","NÚMERO DA SOLICITAÇÃO","NÚMERO DAS SOLICITAÇÕES","SOLICITAÇÃO NE","SOLICITAÇÃO")
-    check(status_idx is not None and value_idx is not None and solicitacao_idx is not None,
-          f"Cabeçalho de repasses incompleto. Cabeçalhos: {rep_headers!r}")
-    new_layout=col("PROCESSO") is None
-    old_rep=json.loads(REPASSES_PATH.read_text(encoding="utf-8")) if REPASSES_PATH.exists() else {}
-    old_rows=old_rep.get("rows",[]) if isinstance(old_rep,dict) else []
-    def date_key(value):
-        value=clean(value)
-        for fmt in ("%d/%m/%Y","%d/%m/%y"):
-            try: return datetime.strptime(value,fmt).strftime("%d/%m/%Y")
-            except ValueError: pass
-        return value
-    def previous_key(item):
-        return (norm(item.get("solicitacao_ne") or item.get("numero_solicitacao")),
-                round(float(item.get("saldo") or 0),2), norm(item.get("elemento_despesa")),
-                norm(item.get("elemento")), norm(item.get("sub_grupo_despesa") or item.get("sub_grupo")),
-                date_key(item.get("vigencia")), norm(item.get("situacao_prioridade")))
-    previous={}
-    if new_layout:
-        for item in old_rows: previous.setdefault(previous_key(item),[]).append(item)
-        required=("ELEMENTO DE DESPESA","ELEMENTO","SUB GRUPO DE DESPESA","VIGENCIA",
-                  "STATUS DA SITUAÇÃO","SOLICITAÇÃO PARA NE","Nº DA NE","FORNECEDORES")
-        missing=[name for name in required if col(name) is None]
-        check(not missing, f"Colunas ausentes no novo layout de repasses: {missing!r}")
-    for r in a:
-        status=cell(r,status_idx)
-        if "AGUARDANDOORCAMENTO" not in norm(status) and "AGUARDANDOORAMENTO" not in norm(status): continue
-        amount=money(cell(r,value_idx))
-        check(amount is not None, f"Valor ausente ou inválido em Aguardando Repasse Orçamentário: {r!r}")
-        solicitation=cell(r,solicitacao_idx)
-        if new_layout:
-            element_expense=cell(r,col("ELEMENTO DE DESPESA"))
-            element=cell(r,col("ELEMENTO"))
-            subgroup=cell(r,col("SUB GRUPO DE DESPESA"))
-            validity=cell(r,col("VIGENCIA"))
-            situation=cell(r,col("STATUS DA SITUAÇÃO"))
-            key=(norm(solicitation),round(amount,2),norm(element_expense),norm(element),norm(subgroup),date_key(validity),norm(situation))
-            matches=previous.get(key,[])
-            prior=matches.pop(0) if matches else {}
-            if len(matches)>0:
-                processes={clean(x.get("processo")) for x in [prior]+matches}
-                check(len(processes)<=1, f"Correspondência ambígua de processo para a solicitação {solicitation}: {processes!r}")
-            supplier=cell(r,col("FORNECEDORES"))
-            rep.append({"processo":clean(prior.get("processo")),"licitacao":clean(prior.get("licitacao")),
-                "fornecedor":supplier,"sub_grupo":subgroup,"elemento_despesa":element_expense,"elemento":element,
-                "sub_grupo_despesa":subgroup,"vigencia":validity,"situacao_prioridade":situation,
-                "solicitacao_ne":solicitation,"numero_solicitacao":solicitation,"numero_ne":cell(r,col("Nº DA NE")),
-                "status_empenho":status,"fornecedores":supplier,"saldo":amount})
-        else:
-            supplier=cell(r,col("FORNECEDORES","FORNECEDOR"))
-            subgroup=cell(r,col("SUB GRUPO DE DESPESA","SUB GRUPO","SUBGRUPO"))
-            rep.append({"processo":cell(r,col("PROCESSO")),"licitacao":cell(r,col("LICITAÇÃO","LICITACAO")),
-                "fornecedor":supplier,"sub_grupo":subgroup,
-                "elemento_despesa":cell(r,col("ELEMENTO DE DESPESA")),"elemento":cell(r,col("ELEMENTO")),
-                "sub_grupo_despesa":subgroup,"vigencia":cell(r,col("VIGENCIA")),
-                "situacao_prioridade":cell(r,col("STATUS DA SITUAÇÃO","SITUAÇÃO/PRIORIDADE","SITUACAO PRIORIDADE")),
-                "solicitacao_ne":solicitation,"numero_solicitacao":solicitation,"numero_ne":cell(r,col("Nº DA NE","NUMERO DA NE")),
-                "status_empenho":status,"fornecedores":supplier,"saldo":amount})
-    tr=total(rep,"saldo"); mr=sum(x["saldo"] is None for x in rep); check(1<=len(rep)<=1000 and mr==0,f"Validação de repasses falhou: linhas={len(rep)}, total={tr}, sem valor={mr}")
-
     fl=[]
     for line in src["financeiro"].splitlines():
         try: fl.append(next(csv.reader([line],delimiter=",")))
@@ -268,7 +197,7 @@ def main():
     td=total(diarias,"valor")
     check(1<=len(diarias)<=1000 and all(r["favorecido"] for r in diarias),f"Validação de Diárias Pagas falhou: linhas={len(diarias)}, total={td}")
 
-    updates={"financeiro":(fin,tf),"restos":(rap,trp),"empenhos":(empenhos,te),"orcamentario":(orc,to),"repasses":(rep,tr),"ordens_bancarias":(ob,tob)}
+    updates={"financeiro":(fin,tf),"restos":(rap,trp),"empenhos":(empenhos,te),"orcamentario":(orc,to),"ordens_bancarias":(ob,tob)}
     data=json.loads(DATA_PATH.read_text(encoding="utf-8")); data["datasets"]=[d for d in data.get("datasets",[]) if d.get("id")!="documentos_habeis_pendentes"]
     ds={d.get("id"):d for d in data.get("datasets",[])}; check(all(k in ds for k in updates) and "diarias_pagas" in ds,"Dataset esperado ausente em data.json")
     def brl(x): return f"{x:,.2f}".replace(",","X").replace(".",",").replace("X",".")
@@ -293,7 +222,6 @@ def main():
     pub=ds.get("publicacoes_pagas",{}); pub_note=f"Publicações Pagas: {len(pubs)} registros da planilha de Ordens Bancárias, filtrados pelo código do favorecido iniciado por EX. Total: R$ {brl(tp)}."; pub_url="https://drive.google.com/file/d/"+SOURCES["ordens_bancarias"]+"/view"; pub_changed=pub.get("rows")!=pubs or pub.get("total")!=tp or pub.get("note")!=pub_note or pub.get("source_url")!=pub_url; pub["rows"]=pubs; pub["total"]=tp; pub["detail_count"]=len(pubs); pub["source_url"]=pub_url; pub["source_name"]="ORDEM BANCARIAS EMITIDAS.csv"; pub["note"]=pub_note
     ds["ordens_bancarias"]["source_name"]="ORDEM BANCARIAS EMITIDAS.csv"
     changed=source_changed or pub_changed or diarias_changed or any(ds[k].get("rows")!=rows or ds[k].get("total")!=amount or ds[k].get("note")!=notes[k] for k,(rows,amount) in updates.items())
-    old_rep=json.loads(REPASSES_PATH.read_text(encoding="utf-8")) if REPASSES_PATH.exists() else {}; rep_data={"rows":rep,"total":tr,"missing_values":mr,"note":notes["repasses"]}; changed=changed or old_rep!=rep_data
     if not changed:
         print(json.dumps({"status":"SEM_ALTERACOES","changed":False,"generated_at":data.get("generated_at"),"fontes_alteradas":[]},ensure_ascii=False)); return
     stamp=datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00","Z")
@@ -301,21 +229,9 @@ def main():
     data["source_updated_at"]=stamp[:10]
     data["status"]="drive_csv_sync_"+stamp[:10]
     diarias_ds["source_modified_at"]=stamp
-    rep_ds=ds["repasses"]
-    rep_ds["source_name"]="Aguardando Repasse Orçamentário.csv"
-    rep_ds["source_updated_at"]=stamp[:10]
-    rep_ds["source_row_count"]=len(rep)
-    rep_ds["external_csv_url"]="https://drive.google.com/uc?export=download&id="+SOURCES["repasses"]
-    breakdown={}
-    for row in rep:
-        name=row.get("elemento_despesa") or "Não informado"
-        item=breakdown.setdefault(name,{"name":name,"count":0,"total":0.0})
-        item["count"]+=1; item["total"]+=float(row.get("saldo") or 0)
-    rep_ds["element_breakdown"]=[{**item,"total":round(item["total"],2)} for item in sorted(breakdown.values(),key=lambda x:x["name"])]
     # Só grava após todos os arquivos serem baixados, interpretados e validados.
     # Escrita atômica evita JSON truncado se o processo for interrompido.
     atomic_json_write(DATA_PATH, data)
-    atomic_json_write(REPASSES_PATH, rep_data)
     atomic_json_write(STATE_PATH, {"hashes":hashes})
     print(json.dumps({"status":"ATUALIZADO","changed":True,"generated_at":stamp,"fontes_alteradas":[k for k in hashes if hashes[k]!=prev.get("hashes",{}).get(k)],"fontes":{**{k:{"registros":len(v[0]),"total":v[1]} for k,v in updates.items()},"diarias":{"registros":len(diarias),"total":td}}},ensure_ascii=False))
 
