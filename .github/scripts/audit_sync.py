@@ -11,7 +11,7 @@ STATE = ROOT / "source_state.json"
 DATA = ROOT / "data.json"
 LOG = ROOT / "logs" / "atualizacoes_dashboard.csv"
 CACHE_PATH = ROOT / ".drive_source_ids.json"
-SOURCE_KEYS = ("empenhos", "orcamentario", "ordens_bancarias", "repasses", "financeiro", "restos")
+SOURCE_KEYS = ("empenhos", "orcamentario", "ordens_bancarias", "financeiro", "restos", "diarias")
 def resolve_sources():
     if not CACHE_PATH.exists():
         raise RuntimeError("IDs das fontes não foram descobertos nesta execução; auditoria bloqueada.")
@@ -20,11 +20,7 @@ def resolve_sources():
         raise RuntimeError("A descoberta não retornou exatamente seis IDs distintos.")
     return ids
 SOURCES = resolve_sources()
-DIARIAS_ID_PATH = ROOT / ".diarias_source_id"
-if not DIARIAS_ID_PATH.exists(): raise RuntimeError("DIARIAS PAGAS.csv não foi descoberta por nome; auditoria bloqueada.")
-SOURCES["diarias"] = DIARIAS_ID_PATH.read_text(encoding="utf-8").strip()
-if not SOURCES["diarias"]: raise RuntimeError("ID de DIARIAS PAGAS.csv vazio; auditoria bloqueada.")
-LABELS = {"empenhos":"Empenhos","orcamentario":"Orçamentário","ordens_bancarias":"Ordens Bancárias","repasses":"Repasses","financeiro":"Financeiro","restos":"Restos a Pagar","diarias":"Diárias Pagas"}
+LABELS = {"empenhos":"Empenhos","orcamentario":"Orçamentário","ordens_bancarias":"Ordens Bancárias","financeiro":"Financeiro","restos":"Restos a Pagar","diarias":"Diárias Pagas"}
 FIELDS = ["timestamp_utc","run_id","evento","resultado_execucao","fonte","fonte_id","conteudo_alterado","registros","total","registros_adicionados","registros_removidos","registros_alterados","valores_alterados","dashboard_atualizado","publicacao","mensagem"]
 
 def read_json(path, default):
@@ -122,7 +118,6 @@ def main():
     ts=datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00","Z")
     run_id=os.getenv("GITHUB_RUN_ID","manual"); event=os.getenv("GITHUB_EVENT_NAME","manual")
     before_data=read_json(DATA,{})
-    before_repasses=read_json(ROOT / "repasses.json",{})
     before_snapshot=snapshot(before_data)
     before_totals={n:source_details(before_data,n) for n in SOURCES}
     before_hashes=old_hashes()
@@ -142,12 +137,10 @@ def main():
     total_changed=[n for n in SOURCES if str(before_totals[n][1])!=str(after_totals[n][1])]
     count_changed=[n for n in SOURCES if before_totals[n][0]!=after_totals[n][0]]
     # Se o hash bruto mudou, mas o dataset derivado não mudou, a auditoria registra a divergência.
-    repasses_after=read_json(ROOT / "repasses.json",{})
     # Inclui metadados, links e datasets derivados na decisão de publicação.
     # A comparação de linhas/valores sozinha não detecta correções de nota ou origem.
     dataset_content_changed=before_data.get("datasets") != after_data.get("datasets")
-    repasses_content_changed=before_repasses != repasses_after
-    changed=bool(source_changed or structural_changed or value_changed or total_changed or count_changed or dataset_content_changed or repasses_content_changed)
+    changed=bool(source_changed or structural_changed or value_changed or total_changed or count_changed or dataset_content_changed)
     if sync_ok:
         execution=result.get("status","OK")
         message=result.get("mensagem","Sincronização concluída.")
