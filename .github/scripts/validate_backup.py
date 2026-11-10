@@ -16,7 +16,7 @@ EXPECTED_DATASETS = {
     "empenhos", "orcamentario", "ordens_bancarias",
     "repasses", "financeiro", "restos",
 }
-EXPECTED_SOURCES = EXPECTED_DATASETS
+EXPECTED_SOURCES = {"empenhos", "orcamentario", "ordens_bancarias", "financeiro", "restos", "diarias"}
 
 
 def fail(message):
