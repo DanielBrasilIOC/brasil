@@ -45,6 +45,9 @@ jobs:
       - name: Sincronizar fontes e registrar auditoria
         id: sync
         run: python .github/scripts/audit_sync.py
+      - name: Conferir percentuais da composição das Ordens Bancárias
+        if: steps.sync.outputs.sync_ok == 'true'
+        run: python .github/scripts/audit_percentages.py
       - name: Guardar dados validados para persistir após publicação
         if: steps.sync.outputs.changed == 'true'
         uses: actions/upload-artifact@v4
@@ -60,8 +63,10 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: dashboard-audit-log
-          path: logs/atualizacoes_dashboard.csv
-          if-no-files-found: error
+          path: |
+            logs/atualizacoes_dashboard.csv
+            logs/auditoria_percentuais.json
+          if-no-files-found: warn
       - name: Interromper fluxo se a sincronização falhar
         if: steps.sync.outputs.sync_ok != 'true'
         run: |
@@ -129,6 +134,9 @@ jobs:
           mkdir -p logs
           test -f .audit-artifact/atualizacoes_dashboard.csv
           install -D -m 0644 .audit-artifact/atualizacoes_dashboard.csv logs/atualizacoes_dashboard.csv
+          if [ -f .audit-artifact/auditoria_percentuais.json ]; then
+            install -D -m 0644 .audit-artifact/auditoria_percentuais.json logs/auditoria_percentuais.json
+          fi
           if [ "$DATA_CHANGED" = "true" ] && [ "$DEPLOY_RESULT" = "success" ]; then
             test -f .sync-artifact/data.json
             test -f .sync-artifact/repasses.json
