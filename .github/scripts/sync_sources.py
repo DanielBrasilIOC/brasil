@@ -210,7 +210,7 @@ def main():
       "ordens_bancarias":f"Fonte: ORDEM BANCARIAS EMITIDAS.csv. {len(ob)} registros únicos por OB, sem coluna Fonte. Total Valor (R$): R$ {brl(tob)}.",
     }
     diarias_note=f"Diárias Pagas: {len(diarias)} registros da planilha DIARIAS PAGAS.csv. Total: R$ {brl(td)}."
-    diarias_url="https://drive.google.com/file/d/"+DIARIAS_ID+"/view"
+    diarias_url="https://drive.google.com/file/d/"+SOURCES["diarias"]+"/view"
     diarias_ds=ds["diarias_pagas"]
     diarias_changed=(diarias_ds.get("rows")!=diarias or diarias_ds.get("total")!=td or diarias_ds.get("note")!=diarias_note or diarias_ds.get("source_url")!=diarias_url or diarias_ds.get("source_name")!="DIARIAS PAGAS.csv")
     diarias_ds["rows"]=diarias; diarias_ds["total"]=td; diarias_ds["detail_count"]=len(diarias); diarias_ds["source_url"]=diarias_url; diarias_ds["source_name"]="DIARIAS PAGAS.csv"; diarias_ds["note"]=diarias_note
@@ -218,7 +218,7 @@ def main():
     source_changed=hashes!=prev.get("hashes",{})
     for k,(rows,amount) in updates.items():
         ds[k]["rows"]=rows; ds[k]["total"]=amount; ds[k]["detail_count"]=len(rows); ds[k]["source_url"]="https://drive.google.com/file/d/"+SOURCES[k]+"/view"; ds[k]["note"]=notes[k]
-    ds["financeiro"]["source_name"]="Saldo Financeiro"; ds["repasses"]["missing_values"]=mr
+    ds["financeiro"]["source_name"]="Saldo Financeiro"
     pub=ds.get("publicacoes_pagas",{}); pub_note=f"Publicações Pagas: {len(pubs)} registros da planilha de Ordens Bancárias, filtrados pelo código do favorecido iniciado por EX. Total: R$ {brl(tp)}."; pub_url="https://drive.google.com/file/d/"+SOURCES["ordens_bancarias"]+"/view"; pub_changed=pub.get("rows")!=pubs or pub.get("total")!=tp or pub.get("note")!=pub_note or pub.get("source_url")!=pub_url; pub["rows"]=pubs; pub["total"]=tp; pub["detail_count"]=len(pubs); pub["source_url"]=pub_url; pub["source_name"]="ORDEM BANCARIAS EMITIDAS.csv"; pub["note"]=pub_note
     ds["ordens_bancarias"]["source_name"]="ORDEM BANCARIAS EMITIDAS.csv"
     changed=source_changed or pub_changed or diarias_changed or any(ds[k].get("rows")!=rows or ds[k].get("total")!=amount or ds[k].get("note")!=notes[k] for k,(rows,amount) in updates.items())
