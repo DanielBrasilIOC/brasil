@@ -40,6 +40,16 @@ table{width:100%;border-collapse:collapse;font-size:12px}th,td{text-align:left;p
 <div class="scroll"><table><thead><tr><th>Serviço / endereço</th><th>Resultado das tentativas</th><th>HTTP</th><th>Tempo médio</th><th>Verificado em</th></tr></thead><tbody id="rows"><tr><td colspan="5" class="muted">Ainda não há coleta publicada. Esta página está em validação.</td></tr></tbody></table></div>
 </section>
 <section class="panel" style="margin-top:14px">
+<h2 style="font-size:15px;color:var(--navy);margin:0 0 8px">Verificação independente — UptimeRobot</h2>
+<p class="muted">O UptimeRobot fará verificações externas a cada cinco minutos no plano gratuito. Para ativar cada endereço, abra o link correspondente, informe seu e-mail e confirme a ativação na mensagem recebida. Nenhum cartão é solicitado.</p>
+<div class="actions">
+<a class="link" href="https://uptimerobot.com/quick-start?url=https%3A%2F%2Fwww.gov.br%2F" target="_blank" rel="noopener">Ativar monitor — Portal</a>
+<a class="link" href="https://uptimerobot.com/quick-start?url=https%3A%2F%2Facesso.gov.br%2F" target="_blank" rel="noopener">Ativar monitor — Acesso</a>
+<a class="link" href="https://uptimerobot.com/quick-start?url=https%3A%2F%2Fwww.gov.br%2Fpt-br%2Fservicos" target="_blank" rel="noopener">Ativar monitor — Serviços</a>
+</div>
+<p class="muted" id="uptimerobotStatus">Integração de resultados: aguardando ativação dos monitores e configuração de uma chave de API somente leitura no GitHub Actions.</p>
+</section>
+<section class="panel" style="margin-top:14px">
 <h2 style="font-size:15px;color:var(--navy);margin:0 0 8px">Relatos do Downdetector</h2>
 <p class="muted">Os relatos são uma fonte comunitária independente. Não são uma medição técnica oficial nem confirmação de indisponibilidade.</p>
 <p class="muted">Nenhum dado privado ou exclusivo do Downdetector é coletado nesta aba. A consulta permanece externa e manual.</p>
@@ -80,6 +90,8 @@ async function load(){
   const histSuccess=detailed.reduce((n,x)=>n+(x.successful_attempts||0),0);
   const coverage=hist.length;
   $('history').textContent=coverage?(detailed.length?detailed.length+' coletas detalhadas · '+histSuccess+'/'+histAttempts+' tentativas com resposta HTTP válida ('+(histAttempts?Math.round(histSuccess/histAttempts*100)+'%':'sem amostras')+') · '+fmtDate(hist[hist.length-1].generated_at)+' última coleta':coverage+' coletas anteriores sem detalhamento por tentativa. A série detalhada começa na próxima execução do monitor.'): 'Histórico ainda não disponível.';
+  const ur=data.uptimerobot;
+  $('uptimerobotStatus').textContent=ur&&ur.state==='connected'?'UptimeRobot consultado em '+fmtDate(ur.collected_at)+': '+(ur.monitors||[]).length+' monitor(es) retornados pela API. Os estados permanecem identificados por monitor.': 'UptimeRobot ainda não está conectado ao histórico desta página. Ative os monitores nos links acima e configure a chave de API somente leitura como segredo UPTIMEROBOT_API_KEY no GitHub.';
  }catch(e){$('age').textContent='Não foi possível ler o arquivo de monitoramento: '+e.message;$('availability').textContent='—';$('availabilityNote').textContent='Sem dados válidos';}
  finally{$('refresh').disabled=false;$('refresh').textContent='Atualizar leitura';}
 }>
