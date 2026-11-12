@@ -83,6 +83,34 @@ jobs:
             json.dump(payload,f,ensure_ascii=False,indent=2)
           print(json.dumps(payload,ensure_ascii=False,indent=2))
           PY
+      - name: Consultar UptimeRobot (opcional; chave somente leitura)
+        if: ${{ secrets.UPTIMEROBOT_API_KEY != '' }}
+        env:
+          UPTIMEROBOT_API_KEY: ${{ secrets.UPTIMEROBOT_API_KEY }}
+        run: |
+          python - <<'PY'
+          import json, os, urllib.request, urllib.parse
+          from datetime import datetime, timezone
+          payload=urllib.parse.urlencode({"api_key":os.environ["UPTIMEROBOT_API_KEY"],"format":"json","logs":"1","custom_uptime_ratios":"1-7-30"}).encode()
+          req=urllib.request.Request("https://api.uptimerobot.com/v2/getMonitors",data=payload,headers={"Content-Type":"application/x-www-form-urlencoded","User-Agent":"IOC-GOVBR-Monitor/1.0"})
+          with urllib.request.urlopen(req,timeout=20) as response:
+            result=json.load(response)
+          if result.get("stat")!="ok":
+            raise RuntimeError("UptimeRobot API não retornou status OK")
+          monitors=[]
+          for m in result.get("monitors",[]):
+            monitors.append({
+              "id":m.get("id"),"friendly_name":m.get("friendly_name"),"url":m.get("url"),
+              "status_code":m.get("status"),"status_label":{0:"pausado",1:"não_verificado",2:"respondendo",8:"parece_indisponível",9:"indisponível"}.get(m.get("status"),"desconhecido"),
+              "uptime_ratio":m.get("custom_uptime_ratio"),"average_response_time":m.get("average_response_time")
+            })
+          with open("monitoramento-govbr.json",encoding="utf-8") as f:
+            data=json.load(f)
+          data["uptimerobot"]={"state":"connected","collected_at":datetime.now(timezone.utc).isoformat(),"source":"UptimeRobot API v2","monitors":monitors}
+          with open("monitoramento-govbr.json","w",encoding="utf-8") as f:
+            json.dump(data,f,ensure_ascii=False,indent=2)
+          print(json.dumps(data["uptimerobot"],ensure_ascii=False,indent=2))
+          PY
       - name: Registrar resultado
         run: |
           git config user.name "github-actions[bot]"
