@@ -1,5 +1,8 @@
 name: Monitoramento técnico GOV.BR
 on:
+  push:
+    branches:
+      - teste/monitoramento-govbr-20261112
   workflow_dispatch:
   schedule:
     - cron: "*/15 * * * *"
@@ -59,6 +62,46 @@ jobs:
             json.dump(payload,f,ensure_ascii=False,indent=2)
           print(json.dumps(payload,ensure_ascii=False,indent=2))
           PY
+      - name: Validar interface em computador e celular
+        shell: bash
+        run: |
+          python -m pip install --quiet playwright
+          python -m playwright install chromium
+          mkdir -p artifacts
+          python -m http.server 8765 --bind 127.0.0.1 >/tmp/monitoramento-http.log 2>&1 &
+          python - <<'PY'
+          import time
+          from playwright.sync_api import sync_playwright
+          time.sleep(2)
+          cases = [
+              ("computador", {"width": 1440, "height": 1000}),
+              ("celular", {"width": 390, "height": 844}),
+          ]
+          with sync_playwright() as p:
+              browser = p.chromium.launch(headless=True)
+              for label, viewport in cases:
+                  page = browser.new_page(viewport=viewport, device_scale_factor=1)
+                  page.goto("http://127.0.0.1:8765/dashboard-v2.html", wait_until="domcontentloaded")
+                  page.wait_for_selector('#nav button[data-x="monitoramento-govbr"]', timeout=30000)
+                  page.screenshot(path=f"artifacts/dashboard-{label}.png", full_page=True)
+                  page.locator('#nav button[data-x="monitoramento-govbr"]').click()
+                  page.wait_for_url("**/monitoramento-govbr.html", timeout=15000)
+                  page.wait_for_function("document.querySelectorAll('#rows tr').length === 3", timeout=15000)
+                  assert page.locator("h1").inner_text() == "Monitoramento GOV.BR"
+                  assert page.locator("#availability").inner_text() == "100%"
+                  overflow = page.evaluate("document.documentElement.scrollWidth > document.documentElement.clientWidth")
+                  assert not overflow, f"overflow horizontal em {label}"
+                  page.screenshot(path=f"artifacts/monitoramento-{label}.png", full_page=True)
+                  print(f"OK {label}: menu, navegação, 3 verificações, dados carregados e sem overflow horizontal")
+                  page.close()
+              browser.close()
+          PY
+      - name: Disponibilizar capturas para conferência
+        uses: actions/upload-artifact@v4
+        with:
+          name: previa-monitoramento-govbr
+          path: artifacts/*.png
+          retention-days: 7
       - name: Registrar resultado
         run: |
           git config user.name "github-actions[bot]"
