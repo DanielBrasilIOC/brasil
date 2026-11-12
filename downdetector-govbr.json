@@ -1,10 +1,31 @@
 {
   "schema_version": 1,
   "source": "https://downdetector.com.br/fora-do-ar/govbr/",
-  "collected_at": null,
-  "collection_note": "Primeiro registro incorporado a partir de consulta manual em 12/11/2026. O horário exato da captura inicial não foi preservado. Nas próximas coletas, registrar data e hora de Brasília. O pico é o maior valor do gráfico de 24 horas; categorias são indicadores separados.",
+  "collected_at": "2026-11-12T23:26:21.668Z",
+  "collection_note": "Consulta manual da página pública do Downdetector. Data/hora da coleta registrada pelo sistema em UTC e exibida na aba no horário de Brasília. O gráfico representa uma janela móvel das últimas 24 horas; o ponto do tooltip é uma amostra histórica dentro dessa janela. O pico é o maior valor observado no gráfico; as categorias são indicadores separados.",
   "window": "rolling_24_hours",
   "current": {
+    "peak": 808,
+    "login": {
+      "count": 1249,
+      "percent": 49
+    },
+    "app": {
+      "count": 701,
+      "percent": 28
+    },
+    "website": {
+      "count": 520,
+      "percent": 21
+    },
+    "status": "experiencing problems",
+    "chart_point": {
+      "at": "2026-11-12T05:37:00-03:00",
+      "reports": 10,
+      "baseline": 2
+    }
+  },
+  "previous": {
     "peak": 843,
     "login": {
       "count": 1244,
@@ -25,20 +46,52 @@
       "baseline": 2
     }
   },
-  "previous": {
-    "peak": 829,
-    "login": {
-      "count": 1241,
-      "percent": 49
+  "history": [
+    {
+      "collected_at": null,
+      "window": "rolling_24_hours",
+      "peak": 843,
+      "login": {
+        "count": 1244,
+        "percent": 49
+      },
+      "app": {
+        "count": 698,
+        "percent": 28
+      },
+      "website": {
+        "count": 517,
+        "percent": 21
+      },
+      "status": "experiencing problems",
+      "chart_point": {
+        "at": "2026-11-12T05:29:00-03:00",
+        "reports": 11,
+        "baseline": 2
+      }
     },
-    "app": {
-      "count": 698,
-      "percent": 28
-    },
-    "website": {
-      "count": 516,
-      "percent": 21
+    {
+      "collected_at": "2026-11-12T23:26:21.668Z",
+      "window": "rolling_24_hours",
+      "peak": 808,
+      "login": {
+        "count": 1249,
+        "percent": 49
+      },
+      "app": {
+        "count": 701,
+        "percent": 28
+      },
+      "website": {
+        "count": 520,
+        "percent": 21
+      },
+      "status": "experiencing problems",
+      "chart_point": {
+        "at": "2026-11-12T05:37:00-03:00",
+        "reports": 10,
+        "baseline": 2
+      }
     }
-  },
-  "history": []
+  ]
 }
