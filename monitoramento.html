@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Monitoramento de Serviços Públicos | IOC</title>
+<style>
+:root{--navy:#153b57;--teal:#398780;--muted:#667b89;--line:#e0e8ee;--bg:#f4f7fa;--red:#ad4545;--amber:#9a6b1d;--green:#28745b}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:#263c4b;font:14px/1.55 Inter,"Segoe UI",system-ui,sans-serif}
+main{max-width:1200px;margin:auto;padding:28px 18px}.top{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:18px}
+h1{font-size:clamp(23px,3vw,32px);color:var(--navy);margin:4px 0}.ey{font-size:10px;letter-spacing:1.5px;color:var(--teal);font-weight:800;text-transform:uppercase}
+p{color:var(--muted)}.btn{border:1px solid var(--line);background:white;border-radius:10px;padding:10px 14px;color:var(--navy);font-weight:700;text-decoration:none;cursor:pointer}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:13px;margin:20px 0}.card,.panel{background:white;border:1px solid var(--line);border-radius:15px;padding:17px;box-shadow:0 8px 24px #193c5208}
+.card h2{font-size:15px;color:var(--navy);margin:0 0 8px}.state{font-weight:800;font-size:13px}.up{color:var(--green)}.down{color:var(--red)}.unknown{color:var(--amber)}
+.meta{font-size:12px;color:var(--muted);overflow-wrap:anywhere}.panel{margin-top:14px}.panel h2{font-size:15px;color:var(--navy);margin-top:0}
+table{width:100%;border-collapse:collapse;font-size:12px}th,td{text-align:left;padding:10px;border-bottom:1px solid #edf1f4}th{color:var(--muted);font-size:10px;text-transform:uppercase}
+.notice{background:#f8fafb;border:1px solid var(--line);border-radius:10px;padding:12px;color:var(--muted);font-size:12px;margin-top:15px}
+@media(max-width:650px){main{padding:19px 12px}.table-wrap{overflow:auto}table{min-width:620px}.top{align-items:flex-start}}
+</style></head><body><main>
+<div class="top"><div><div class="ey">Painel Financeiro e Orçamentário IOC</div><h1>Monitoramento de Serviços Públicos</h1><p>Verificação independente de acesso HTTP aos serviços selecionados.</p></div><div><a class="btn" href="./">Voltar ao painel</a> <button class="btn" id="refresh">Atualizar</button></div></div>
+<div class="cards" id="cards"><div class="card">Carregando verificações…</div></div>
+<section class="panel"><h2>Histórico da última verificação</h2><div class="table-wrap"><table><thead><tr><th>Serviço</th><th>Endereço</th><th>HTTP</th><th>Resposta</th><th>Observação</th></tr></thead><tbody id="rows"><tr><td colspan="5">Carregando…</td></tr></tbody></table></div></section>
+<div class="notice" id="disclaimer">Os resultados são obtidos de um único ponto de verificação. Respostas 401, 403 ou 429 são inconclusivas e não serão tratadas isoladamente como indisponibilidade. A confirmação exige três verificações consecutivas.</div>
+<p class="meta" id="updated">Última atualização: aguardando dados.</p>
+</main><script>
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+async function load(){const cards=document.getElementById("cards"),rows=document.getElementById("rows");try{const r=await fetch("./monitoramento.json?v="+Date.now(),{cache:"no-store"});if(!r.ok)throw Error("HTTP "+r.status);const d=await r.json();cards.innerHTML=d.services.map(s=>{const state=s.confirmed_status==="up"?"Disponível":s.confirmed_status==="down"?"Indisponível":s.observation==="inconclusive"?"Inconclusivo":"Aguardando confirmação";const cls=s.confirmed_status==="up"?"up":s.confirmed_status==="down"?"down":"unknown";return '<article class="card"><h2>'+esc(s.name)+'</h2><div class="state '+cls+'">'+state+'</div><div class="meta">'+esc(s.url)+'</div><div class="meta">HTTP '+esc(s.http_status??"—")+' · '+esc(s.latency_ms)+' ms · sequência '+esc(s.streak)+'/3</div></article>'}).join("");
+rows.innerHTML=d.services.map(s=>'<tr><td>'+esc(s.name)+'</td><td><a href="'+esc(s.url)+'" target="_blank" rel="noopener">'+esc(s.url)+'</a></td><td>'+esc(s.http_status??"—")+'</td><td>'+esc(s.latency_ms)+' ms</td><td>'+esc(s.error||s.note)+'</td></tr>').join("");
+document.getElementById("updated").textContent="Última execução: "+new Date(d.generated_at).toLocaleString("pt-BR",{timeZone:"America/Sao_Paulo"})+" · Frequência programada: 10 minutos";
+document.getElementById("disclaimer").textContent=d.disclaimer+" A confirmação de estado exige três verificações consecutivas; 401, 403 e 429 são inconclusivos.";
+}catch(e){cards.innerHTML='<article class="card"><div class="state unknown">Dados ainda não publicados</div><div class="meta">'+esc(e.message)+'</div></article>';rows.innerHTML='<tr><td colspan="5">A primeira execução automática ainda não gerou resultados.</td></tr>'}}
+document.getElementById("refresh").onclick=load;load();
+</script></body></html>
