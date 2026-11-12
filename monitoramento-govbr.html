@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Monitoramento GOV.BR | Painel Financeiro e Orçamentário IOC</title>
+<style>
+:root{--navy:#153b57;--teal:#398780;--muted:#667b89;--line:#e0e8ed;--bg:#f4f7fa;--red:#ad4545;--amber:#9a6b1d}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:#263c4b;font:14px/1.5 Inter,"Segoe UI",system-ui,sans-serif}
+main{max-width:1200px;margin:auto;padding:28px clamp(15px,3vw,36px)}
+header{border-bottom:1px solid #dce5eb;padding-bottom:18px;margin-bottom:18px}
+.ey{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--teal);font-weight:800}
+h1{font-size:clamp(24px,3vw,34px);color:var(--navy);margin:7px 0}.sub,.muted{color:var(--muted);font-size:12px}
+.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}button,.link{border:1px solid #d7e2e9;border-radius:9px;padding:9px 13px;background:#fff;color:#26495e;font-weight:700;text-decoration:none;cursor:pointer}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin:16px 0}
+.card,.panel{background:#fff;border:1px solid var(--line);border-radius:15px;padding:17px;box-shadow:0 8px 25px #1b394f0a}
+.label{font-size:11px;color:var(--muted);font-weight:750}.value{font-size:22px;font-weight:850;color:var(--navy);margin:8px 0}
+.pill{display:inline-block;padding:4px 8px;border-radius:99px;font-size:10px;font-weight:800;background:#eef4f7;color:#466477}
+.pill.ok{background:#e7f4ee;color:#28745b}.pill.warn{background:#fff4df;color:var(--amber)}.pill.bad{background:#fdeaea;color:var(--red)}
+table{width:100%;border-collapse:collapse;font-size:12px}th,td{text-align:left;padding:11px 9px;border-bottom:1px solid #edf1f4}th{color:#587080;text-transform:uppercase;font-size:10px}
+.note{background:#edf5f8;border:1px solid #d5e4eb;border-radius:12px;padding:14px 16px;margin:14px 0;color:#36566a;font-size:12px}
+.err{color:var(--red)}.right{float:right}.foot{margin-top:20px;border-top:1px solid var(--line);padding-top:14px;color:#7c8d98;font-size:10px}
+@media(max-width:650px){main{padding:18px 13px}.value{font-size:19px}.scroll{overflow:auto}}
+</style>
+</head>
+<body><main>
+<header>
+<div class="ey">Painel Financeiro e Orçamentário IOC · Ambiente de validação</div>
+<h1>Monitoramento GOV.BR</h1>
+<p class="sub">Acompanhamento técnico de disponibilidade dos endereços públicos do ecossistema GOV.BR.</p>
+<div class="actions"><button id="refresh">Atualizar leitura</button><a class="link" href="https://downdetector.com.br/fora-do-ar/govbr/" target="_blank" rel="noopener">Abrir Downdetector</a><a class="link" href="https://www.gov.br/" target="_blank" rel="noopener">Abrir GOV.BR</a></div>
+</header>
+<div class="note"><strong>Como interpretar:</strong> este monitor verifica resposta HTTP e tempo de conexão de endereços públicos. Ele não autentica usuários, não testa operações internas após o login e não substitui os relatos do Downdetector nem comunicados oficiais. Uma resposta HTTP válida não garante que todos os serviços estejam funcionando.</div>
+<section class="grid" id="summary">
+<div class="card"><div class="label">Endereços verificados</div><div class="value" id="count">—</div><span class="pill">Leitura do monitor</span></div>
+<div class="card"><div class="label">Respostas nas tentativas desta coleta</div><div class="value" id="availability">—</div><span class="muted" id="availabilityNote">Sem classificação geral do GOV.BR</span></div>
+<div class="card"><div class="label">Última coleta</div><div class="value" style="font-size:16px" id="updated">Aguardando dados</div><span class="muted" id="age">A coleta será executada pelo serviço agendado.</span></div>
+</section>
+<section class="panel">
+<h2 style="font-size:15px;color:var(--navy);margin:0 0 10px">Verificações por endereço</h2>
+<div class="scroll"><table><thead><tr><th>Serviço / endereço</th><th>Resultado das tentativas</th><th>HTTP</th><th>Tempo médio</th><th>Verificado em</th></tr></thead><tbody id="rows"><tr><td colspan="5" class="muted">Ainda não há coleta publicada. Esta página está em validação.</td></tr></tbody></table></div>
+</section>
+<section class="panel" style="margin-top:14px">
+<h2 style="font-size:15px;color:var(--navy);margin:0 0 8px">Verificação independente — UptimeRobot</h2>
+<p class="muted">O UptimeRobot fará verificações externas a cada cinco minutos no plano gratuito. Para ativar cada endereço, abra o link correspondente, informe seu e-mail e confirme a ativação na mensagem recebida. Nenhum cartão é solicitado.</p>
+<div class="actions">
+<a class="link" href="https://uptimerobot.com/quick-start?url=https%3A%2F%2Fwww.gov.br%2F" target="_blank" rel="noopener">Ativar monitor — Portal</a>
+<a class="link" href="https://uptimerobot.com/quick-start?url=https%3A%2F%2Facesso.gov.br%2F" target="_blank" rel="noopener">Ativar monitor — Acesso</a>
+<a class="link" href="https://uptimerobot.com/quick-start?url=https%3A%2F%2Fwww.gov.br%2Fpt-br%2Fservicos" target="_blank" rel="noopener">Ativar monitor — Serviços</a>
+</div>
+<p class="muted" id="uptimerobotStatus">Integração de resultados: aguardando ativação dos monitores e configuração de uma chave de API somente leitura no GitHub Actions.</p>
+</section>
+<section class="panel" style="margin-top:14px">
+<h2 style="font-size:15px;color:var(--navy);margin:0 0 8px">Relatos do Downdetector</h2>
+<p class="muted">Os relatos são uma fonte comunitária independente. Não são uma medição técnica oficial nem confirmação de indisponibilidade.</p>
+<p class="muted">Nenhum dado privado ou exclusivo do Downdetector é coletado nesta aba. A consulta permanece externa e manual.</p>
+<a class="link" href="https://downdetector.com.br/fora-do-ar/govbr/" target="_blank" rel="noopener">Consultar página pública do GOV.BR no Downdetector</a>
+</section>
+<section class="panel" style="margin-top:14px">
+<h2 style="font-size:15px;color:var(--navy);margin:0 0 8px">Histórico recente</h2>
+<p class="muted">Histórico de amostras do ponto de medição. A taxa representa respostas HTTP observadas nas tentativas registradas, não disponibilidade garantida para todos os usuários.</p>
+<div id="history" class="muted">Nenhuma coleta disponível.</div>
+</section>
+<div class="foot">Desenvolvimento e Suporte · Daniel Moura Brasil SEGEF-IOC · Fonte técnica: verificações HTTP dos endereços públicos indicados. Relatos de usuários: Downdetector (fonte independente).</div>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+const fmtDate=s=>{if(!s)return '—';const d=new Date(s);return Number.isNaN(d.getTime())?'—':d.toLocaleString('pt-BR',{timeZone:'America/Sao_Paulo'})};
+async function load(){
+ $('refresh').disabled=true;$('refresh').textContent='Atualizando…';
+ try{
+  const r=await fetch('./monitoramento-govbr.json?ts='+Date.now(),{cache:'no-store'});
+  if(!r.ok)throw new Error('HTTP '+r.status);
+  const data=await r.json(),checks=Array.isArray(data.checks)?data.checks:[];
+  $('count').textContent=checks.length;
+  const attempts=checks.reduce((n,x)=>n+(x.attempts_total??1),0);
+  const successes=checks.reduce((n,x)=>n+(x.successful_attempts??(x.ok?1:0)),0);
+  $('availability').textContent=attempts?successes+'/'+attempts:'—';
+  $('availabilityNote').textContent='Respostas HTTP válidas nesta coleta; não é uptime geral';
+  const ageMs=data.generated_at?Date.now()-new Date(data.generated_at).getTime():Infinity;
+  $('updated').textContent=fmtDate(data.generated_at);
+  $('age').textContent=!data.generated_at?'Aguardando coleta':ageMs>30*60*1000?'Dado desatualizado — coleta há mais de 30 min':'Horário de Brasília · ponto único de medição';
+  $('rows').innerHTML=checks.map(x=>{
+    const state=x.state|| (x.ok?'respondendo':'falha_no_ponto_de_medicao');
+    const total=x.attempts_total??1; const passed=x.successful_attempts??(x.ok?1:0); const label=state==='respondendo'?(passed+' de '+total+' responderam'):state==='resposta_intermitente'?'Resposta intermitente':'Falha observada neste ponto';
+    const cls=state==='respondendo'?'ok':state==='resposta_intermitente'?'warn':'bad';
+    return '<tr><td><strong>'+esc(x.name)+'</strong><br><span class="muted">'+esc(x.url)+'</span></td><td><span class="pill '+cls+'">'+label+'</span></td><td>'+(x.http_status??'—')+'</td><td>'+(x.duration_ms==null?'—':x.duration_ms+' ms')+'</td><td>'+fmtDate(x.checked_at)+'</td></tr>';
+  }).join('')||'<tr><td colspan="5">Nenhuma verificação publicada.</td></tr>';
+  const hist=(data.history||[]).slice(-96);
+  const detailed=hist.filter(x=>typeof x.attempts_total==='number'); const histAttempts=detailed.reduce((n,x)=>n+x.attempts_total,0);
+  const histSuccess=detailed.reduce((n,x)=>n+(x.successful_attempts||0),0);
+  const coverage=hist.length; const gaps=hist.slice(1).filter((x,i)=>(new Date(x.generated_at)-new Date(hist[i].generated_at))>20*60*1000);
+  $('history').textContent=coverage?(detailed.length?detailed.length+' coletas detalhadas · '+histSuccess+'/'+histAttempts+' tentativas com resposta HTTP válida ('+(histAttempts?Math.round(histSuccess/histAttempts*100)+'%':'sem amostras')+') · lacunas superiores a 20 min: '+gaps.length+' · '+fmtDate(hist[hist.length-1].generated_at)+' última coleta':coverage+' coletas anteriores sem detalhamento por tentativa. A série detalhada começa na próxima execução do monitor.'): 'Histórico ainda não disponível.';
+  const ur=data.uptimerobot;
+  $('uptimerobotStatus').textContent=ur&&ur.state==='connected'?'Consulta API em '+fmtDate(ur.collected_at)+': '+(ur.monitors||[]).map(m=>(m.friendly_name||m.url)+': '+m.status_label+(m.uptime_ratio?' · uptime 24h/7d/30d: '+m.uptime_ratio:'')).join(' | '): 'UptimeRobot ainda não está conectado ao histórico desta página. Ative os monitores nos links acima e configure a chave de API somente leitura como segredo UPTIMEROBOT_API_KEY no GitHub.';
+ }catch(e){$('age').textContent='Não foi possível ler o arquivo de monitoramento: '+e.message;$('availability').textContent='—';$('availabilityNote').textContent='Sem dados válidos';}
+ finally{$('refresh').disabled=false;$('refresh').textContent='Atualizar leitura';}
+}
+function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+$('refresh').addEventListener('click',load);
+load();
+</script>
+</body>
+</html>

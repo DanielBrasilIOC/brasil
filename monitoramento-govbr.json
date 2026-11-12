@@ -1,0 +1,44 @@
+{
+  "generated_at": "2026-11-12T21:49:39.949955+00:00",
+  "checks": [
+    {
+      "name": "Portal GOV.BR",
+      "url": "https://www.gov.br/",
+      "ok": true,
+      "http_status": 200,
+      "duration_ms": 1452,
+      "checked_at": "2026-11-12T21:49:35.337591+00:00",
+      "error": null
+    },
+    {
+      "name": "Acesso GOV.BR",
+      "url": "https://acesso.gov.br/",
+      "ok": true,
+      "http_status": 200,
+      "duration_ms": 4149,
+      "checked_at": "2026-11-12T21:49:39.486293+00:00",
+      "error": null
+    },
+    {
+      "name": "Catálogo de Serviços GOV.BR",
+      "url": "https://www.gov.br/pt-br/servicos",
+      "ok": true,
+      "http_status": 200,
+      "duration_ms": 464,
+      "checked_at": "2026-11-12T21:49:39.949934+00:00",
+      "error": null
+    }
+  ],
+  "history": [
+    {
+      "generated_at": "2026-11-12T21:48:08.405542+00:00",
+      "ok": 3,
+      "total": 3
+    },
+    {
+      "generated_at": "2026-11-12T21:49:39.949955+00:00",
+      "ok": 3,
+      "total": 3
+    }
+  ]
+}
