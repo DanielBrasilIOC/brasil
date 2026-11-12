@@ -32,22 +32,22 @@ table{width:100%;border-collapse:collapse;font-size:12px}th,td{text-align:left;p
 <div class="note"><strong>Como interpretar:</strong> este monitor verifica resposta HTTP e tempo de conexão de endereços públicos. Ele não autentica usuários, não testa operações internas após o login e não substitui os relatos do Downdetector nem comunicados oficiais. Uma resposta HTTP válida não garante que todos os serviços estejam funcionando.</div>
 <section class="grid" id="summary">
 <div class="card"><div class="label">Endereços verificados</div><div class="value" id="count">—</div><span class="pill">Leitura do monitor</span></div>
-<div class="card"><div class="label">Disponibilidade técnica</div><div class="value" id="availability">—</div><span class="muted">Com base nas verificações concluídas</span></div>
+<div class="card"><div class="label">Respostas nas tentativas desta coleta</div><div class="value" id="availability">—</div><span class="muted" id="availabilityNote">Sem classificação geral do GOV.BR</span></div>
 <div class="card"><div class="label">Última coleta</div><div class="value" style="font-size:16px" id="updated">Aguardando dados</div><span class="muted" id="age">A coleta será executada pelo serviço agendado.</span></div>
 </section>
 <section class="panel">
 <h2 style="font-size:15px;color:var(--navy);margin:0 0 10px">Verificações por endereço</h2>
-<div class="scroll"><table><thead><tr><th>Serviço / endereço</th><th>Resultado</th><th>HTTP</th><th>Tempo</th><th>Verificado em</th></tr></thead><tbody id="rows"><tr><td colspan="5" class="muted">Ainda não há coleta publicada. Esta página está em validação.</td></tr></tbody></table></div>
+<div class="scroll"><table><thead><tr><th>Serviço / endereço</th><th>Resultado das tentativas</th><th>HTTP</th><th>Tempo médio</th><th>Verificado em</th></tr></thead><tbody id="rows"><tr><td colspan="5" class="muted">Ainda não há coleta publicada. Esta página está em validação.</td></tr></tbody></table></div>
 </section>
 <section class="panel" style="margin-top:14px">
 <h2 style="font-size:15px;color:var(--navy);margin:0 0 8px">Relatos do Downdetector</h2>
-<p class="muted">A integração oficial ainda está pendente de confirmação de cobertura, licenciamento e credenciais pela Ookla. Nenhum volume de relatos, percentual ou status é estimado ou inventado nesta versão.</p>
-<p class="muted">A consulta comercial e técnica foi encaminhada à equipe Downdetector. Quando o acesso for autorizado, os indicadores reais serão exibidos aqui, com horário da última atualização e identificação da fonte.</p>
+<p class="muted">Os relatos são uma fonte comunitária independente. Não são uma medição técnica oficial nem confirmação de indisponibilidade.</p>
+<p class="muted">Nenhum dado privado ou exclusivo do Downdetector é coletado nesta aba. A consulta permanece externa e manual.</p>
 <a class="link" href="https://downdetector.com.br/fora-do-ar/govbr/" target="_blank" rel="noopener">Consultar página pública do GOV.BR no Downdetector</a>
 </section>
 <section class="panel" style="margin-top:14px">
 <h2 style="font-size:15px;color:var(--navy);margin:0 0 8px">Histórico recente</h2>
-<p class="muted">O histórico será preenchido pelas execuções do monitor após a ativação do fluxo agendado. Não são exibidos dados simulados.</p>
+<p class="muted">Histórico de amostras do ponto de medição. A taxa representa respostas HTTP observadas nas tentativas registradas, não disponibilidade garantida para todos os usuários.</p>
 <div id="history" class="muted">Nenhuma coleta disponível.</div>
 </section>
 <div class="foot">Desenvolvimento e Suporte · Daniel Moura Brasil SEGEF-IOC · Fonte técnica: verificações HTTP dos endereços públicos indicados. Relatos de usuários: Downdetector (fonte independente).</div>
@@ -62,15 +62,24 @@ async function load(){
   if(!r.ok)throw new Error('HTTP '+r.status);
   const data=await r.json(),checks=Array.isArray(data.checks)?data.checks:[];
   $('count').textContent=checks.length;
-  const ok=checks.filter(x=>x.ok===true).length;
-  $('availability').textContent=checks.length?Math.round(ok/checks.length*100)+'%':'—';
+  const attempts=checks.reduce((n,x)=>n+(x.attempts_total||1),0);
+  const successes=checks.reduce((n,x)=>n+(x.successful_attempts??(x.ok?1:0)),0);
+  $('availability').textContent=attempts?successes+'/'+attempts:'—';
+  $('availabilityNote').textContent='Respostas HTTP válidas nesta coleta; não é uptime geral';
+  const ageMs=data.generated_at?Date.now()-new Date(data.generated_at).getTime():Infinity;
   $('updated').textContent=fmtDate(data.generated_at);
-  $('age').textContent=data.generated_at?'Horário de Brasília · coleta automatizada':'Aguardando coleta';
-  $('rows').innerHTML=checks.map(x=>'<tr><td><strong>'+esc(x.name)+'</strong><br><span class="muted">'+esc(x.url)+'</span></td><td><span class="pill '+(x.ok?'ok':'bad')+'">'+(x.ok?'Resposta recebida':'Falha na verificação')+'</span></td><td>'+(x.http_status??'—')+'</td><td>'+(x.duration_ms==null?'—':x.duration_ms+' ms')+'</td><td>'+fmtDate(x.checked_at)+'</td></tr>').join('')||'<tr><td colspan="5">Nenhuma verificação publicada.</td></tr>';
-  $('history').textContent=(data.history||[]).slice(-8).reverse().map(x=>fmtDate(x.generated_at)+' · '+x.ok+'/'+x.total+' endereços responderam').join(' | ')||'Histórico ainda não disponível.';
- }catch(e){$('age').textContent='Não foi possível ler o arquivo de monitoramento: '+e.message;}
+  $('age').textContent=!data.generated_at?'Aguardando coleta':ageMs>30*60*1000?'Dado desatualizado — coleta há mais de 30 min':'Horário de Brasília · ponto único de medição';
+  $('rows').innerHTML=checks.map(x=>{
+    const state=x.state|| (x.ok?'respondendo':'falha_no_ponto_de_medicao');
+    const label=state==='respondendo'?'3 de 3 responderam':state==='resposta_intermitente'?'Resposta intermitente':'Falha observada neste ponto';
+    const cls=state==='respondendo'?'ok':state==='resposta_intermitente'?'warn':'bad';
+    return '<tr><td><strong>'+esc(x.name)+'</strong><br><span class="muted">'+esc(x.url)+'</span></td><td><span class="pill '+cls+'">'+label+'</span></td><td>'+(x.http_status??'—')+'</td><td>'+(x.duration_ms==null?'—':x.duration_ms+' ms')+'</td><td>'+fmtDate(x.checked_at)+'</td></tr>';
+  }).join('')||'<tr><td colspan="5">Nenhuma verificação publicada.</td></tr>';
+  const hist=(data.history||[]).slice(-96);
+  const histAttempts=hist.reduce((n,x)=>n+(x.attempts_total||0),0);
+  const histSuccess=hist.reduce((n,x)=>n+(x.successful_attempts||0),0);
+  const coverage=hist.length;
+  $('history').textContent=coverage?coverage+' coletas · '+histSuccess+'/'+histAttempts+' tentativas com resposta HTTP válida ('+(histAttempts?Math.round(histSuccess/histAttempts*100)+'%':'sem amostras')+') · '+fmtDate(hist[hist.length-1].generated_at)+' última coleta':'Histórico ainda não disponível.';
+ }catch(e){$('age').textContent='Não foi possível ler o arquivo de monitoramento: '+e.message;$('availability').textContent='—';$('availabilityNote').textContent='Sem dados válidos';}
  finally{$('refresh').disabled=false;$('refresh').textContent='Atualizar leitura';}
-}
-function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
-$('refresh').addEventListener('click',load);load();setInterval(load,60000);
-</script></body></html>
+}>
