@@ -88,13 +88,13 @@ async function load(){
   const hist=(data.history||[]).slice(-96);
   const detailed=hist.filter(x=>typeof x.attempts_total==='number'); const histAttempts=detailed.reduce((n,x)=>n+x.attempts_total,0);
   const histSuccess=detailed.reduce((n,x)=>n+(x.successful_attempts||0),0);
-  const coverage=hist.length;
-  $('history').textContent=coverage?(detailed.length?detailed.length+' coletas detalhadas · '+histSuccess+'/'+histAttempts+' tentativas com resposta HTTP válida ('+(histAttempts?Math.round(histSuccess/histAttempts*100)+'%':'sem amostras')+') · '+fmtDate(hist[hist.length-1].generated_at)+' última coleta':coverage+' coletas anteriores sem detalhamento por tentativa. A série detalhada começa na próxima execução do monitor.'): 'Histórico ainda não disponível.';
+  const coverage=hist.length; const gaps=hist.slice(1).filter((x,i)=>(new Date(x.generated_at)-new Date(hist[i].generated_at))>20*60*1000);
+  $('history').textContent=coverage?(detailed.length?detailed.length+' coletas detalhadas · '+histSuccess+'/'+histAttempts+' tentativas com resposta HTTP válida ('+(histAttempts?Math.round(histSuccess/histAttempts*100)+'%':'sem amostras')+') · lacunas superiores a 20 min: '+gaps.length+' · '+fmtDate(hist[hist.length-1].generated_at)+' última coleta':coverage+' coletas anteriores sem detalhamento por tentativa. A série detalhada começa na próxima execução do monitor.'): 'Histórico ainda não disponível.';
   const ur=data.uptimerobot;
-  $('uptimerobotStatus').textContent=ur&&ur.state==='connected'?'UptimeRobot consultado em '+fmtDate(ur.collected_at)+': '+(ur.monitors||[]).length+' monitor(es) retornados pela API. Os estados permanecem identificados por monitor.': 'UptimeRobot ainda não está conectado ao histórico desta página. Ative os monitores nos links acima e configure a chave de API somente leitura como segredo UPTIMEROBOT_API_KEY no GitHub.';
+  $('uptimerobotStatus').textContent=ur&&ur.state==='connected'?'Consulta API em '+fmtDate(ur.collected_at)+': '+(ur.monitors||[]).map(m=>(m.friendly_name||m.url)+': '+m.status_label+(m.uptime_ratio?' · uptime 24h/7d/30d: '+m.uptime_ratio:'')).join(' | '): 'UptimeRobot ainda não está conectado ao histórico desta página. Ative os monitores nos links acima e configure a chave de API somente leitura como segredo UPTIMEROBOT_API_KEY no GitHub.';
  }catch(e){$('age').textContent='Não foi possível ler o arquivo de monitoramento: '+e.message;$('availability').textContent='—';$('availabilityNote').textContent='Sem dados válidos';}
  finally{$('refresh').disabled=false;$('refresh').textContent='Atualizar leitura';}
-
+}
 function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 $('refresh').addEventListener('click',load);
 load();
