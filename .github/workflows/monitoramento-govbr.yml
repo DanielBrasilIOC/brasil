@@ -14,7 +14,7 @@ jobs:
     steps:
       - name: Baixar repositório
         uses: actions/checkout@v4
-      - name: Verificar endereços públicos
+      - name: Verificar endereços públicos com tentativas repetidas
         shell: bash
         run: |
           python - <<'PY'
@@ -27,24 +27,39 @@ jobs:
           ]
           checks=[]
           for name,url in targets:
-            start=time.monotonic()
-            status=None; ok=False; error=None
-            try:
-              req=urllib.request.Request(url, headers={"User-Agent":"IOC-GOVBR-Availability-Monitor/1.0"})
-              with urllib.request.urlopen(req, timeout=15) as response:
-                status=response.status
+            attempts=[]
+            for attempt in range(1,4):
+              start=time.monotonic()
+              status=None; ok=False; error=None
+              try:
+                req=urllib.request.Request(url, headers={"User-Agent":"IOC-GOVBR-Availability-Monitor/1.1"})
+                with urllib.request.urlopen(req, timeout=15) as response:
+                  status=response.status
+                  ok=200 <= status < 400
+              except urllib.error.HTTPError as e:
+                status=e.code
                 ok=200 <= status < 400
-            except urllib.error.HTTPError as e:
-              status=e.code
-              ok=200 <= status < 400
-              error="HTTP error response"
-            except Exception as e:
-              error=type(e).__name__
+                error="HTTP error response"
+              except Exception as e:
+                error=type(e).__name__
+              attempts.append({
+                "attempt":attempt,"ok":ok,"http_status":status,
+                "duration_ms":round((time.monotonic()-start)*1000),
+                "checked_at":datetime.now(timezone.utc).isoformat(),"error":error
+              })
+              if attempt < 3:
+                time.sleep(3)
+            passed=sum(1 for a in attempts if a["ok"])
+            state=("respondendo" if passed==3 else
+                   "resposta_intermitente" if passed==2 else
+                   "falha_no_ponto_de_medicao")
             checks.append({
-              "name":name,"url":url,"ok":ok,"http_status":status,
-              "duration_ms":round((time.monotonic()-start)*1000),
-              "checked_at":datetime.now(timezone.utc).isoformat(),
-              "error":error
+              "name":name,"url":url,"ok":passed>=2,
+              "state":state,"successful_attempts":passed,
+              "attempts_total":len(attempts),"attempts":attempts,
+              "http_status":next((a["http_status"] for a in reversed(attempts) if a["http_status"] is not None),None),
+              "duration_ms":round(sum(a["duration_ms"] for a in attempts)/len(attempts)),
+              "checked_at":attempts[-1]["checked_at"]
             })
           generated=datetime.now(timezone.utc).isoformat()
           try:
@@ -53,8 +68,17 @@ jobs:
           except Exception:
             previous={}
           history=(previous.get("history") or [])[-95:]
-          history.append({"generated_at":generated,"ok":sum(1 for x in checks if x["ok"]),"total":len(checks)})
-          payload={"generated_at":generated,"checks":checks,"history":history}
+          history.append({
+            "generated_at":generated,
+            "successful_attempts":sum(x["successful_attempts"] for x in checks),
+            "attempts_total":sum(x["attempts_total"] for x in checks),
+            "responding_targets":sum(1 for x in checks if x["state"]=="respondendo"),
+            "intermittent_targets":sum(1 for x in checks if x["state"]=="resposta_intermitente"),
+            "failed_targets":sum(1 for x in checks if x["state"]=="falha_no_ponto_de_medicao"),
+            "checks":checks
+          })
+          payload={"generated_at":generated,"measurement_location":"GitHub Actions hosted runner; single measurement region",
+                   "checks":checks,"history":history}
           with open("monitoramento-govbr.json","w",encoding="utf-8") as f:
             json.dump(payload,f,ensure_ascii=False,indent=2)
           print(json.dumps(payload,ensure_ascii=False,indent=2))
