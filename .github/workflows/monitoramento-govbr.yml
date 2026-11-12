@@ -1,5 +1,8 @@
 name: Monitoramento técnico GOV.BR
 on:
+  push:
+    branches:
+      - teste/monitoramento-govbr-20261112
   workflow_dispatch:
   schedule:
     - cron: "*/15 * * * *"
