@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Monitoramento GOV.BR | Painel Financeiro e Orçamentário IOC</title>
+<style>
+:root{--navy:#153b57;--teal:#398780;--muted:#667b89;--line:#e0e8ed;--bg:#f4f7fa;--red:#ad4545;--amber:#9a6b1d}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:#263c4b;font:14px/1.5 Inter,"Segoe UI",system-ui,sans-serif}
+main{max-width:1200px;margin:auto;padding:28px clamp(15px,3vw,36px)}
+header{border-bottom:1px solid #dce5eb;padding-bottom:18px;margin-bottom:18px}
+.ey{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--teal);font-weight:800}
+h1{font-size:clamp(24px,3vw,34px);color:var(--navy);margin:7px 0}.sub,.muted{color:var(--muted);font-size:12px}
+.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}button,.link{border:1px solid #d7e2e9;border-radius:9px;padding:9px 13px;background:#fff;color:#26495e;font-weight:700;text-decoration:none;cursor:pointer}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin:16px 0}
+.card,.panel{background:#fff;border:1px solid var(--line);border-radius:15px;padding:17px;box-shadow:0 8px 25px #1b394f0a}
+.label{font-size:11px;color:var(--muted);font-weight:750}.value{font-size:22px;font-weight:850;color:var(--navy);margin:8px 0}
+.pill{display:inline-block;padding:4px 8px;border-radius:99px;font-size:10px;font-weight:800;background:#eef4f7;color:#466477}
+.pill.ok{background:#e7f4ee;color:#28745b}.pill.warn{background:#fff4df;color:var(--amber)}.pill.bad{background:#fdeaea;color:var(--red)}
+table{width:100%;border-collapse:collapse;font-size:12px}th,td{text-align:left;padding:11px 9px;border-bottom:1px solid #edf1f4}th{color:#587080;text-transform:uppercase;font-size:10px}
+.note{background:#edf5f8;border:1px solid #d5e4eb;border-radius:12px;padding:14px 16px;margin:14px 0;color:#36566a;font-size:12px}
+.err{color:var(--red)}.right{float:right}.foot{margin-top:20px;border-top:1px solid var(--line);padding-top:14px;color:#7c8d98;font-size:10px}
+@media(max-width:650px){main{padding:18px 13px}.value{font-size:19px}.scroll{overflow:auto}}
+</style>
+</head>
+<body><main>
+<header>
+<div class="ey">Painel Financeiro e Orçamentário IOC · Ambiente de validação</div>
+<h1>Monitoramento GOV.BR</h1>
+<p class="sub">Acompanhamento técnico de disponibilidade dos endereços públicos do ecossistema GOV.BR.</p>
+<div class="actions"><button id="refresh">Atualizar leitura</button><a class="link" href="https://downdetector.com.br/fora-do-ar/govbr/" target="_blank" rel="noopener">Abrir Downdetector</a><a class="link" href="https://www.gov.br/" target="_blank" rel="noopener">Abrir GOV.BR</a></div>
+</header>
+<div class="note"><strong>Como interpretar:</strong> este monitor verifica resposta HTTP e tempo de conexão de endereços públicos. Ele não autentica usuários, não testa operações internas após o login e não substitui os relatos do Downdetector nem comunicados oficiais. Uma resposta HTTP válida não garante que todos os serviços estejam funcionando.</div>
+<section class="grid" id="summary">
+<div class="card"><div class="label">Endereços verificados</div><div class="value" id="count">—</div><span class="pill">Leitura do monitor</span></div>
+<div class="card"><div class="label">Disponibilidade técnica</div><div class="value" id="availability">—</div><span class="muted">Com base nas verificações concluídas</span></div>
+<div class="card"><div class="label">Última coleta</div><div class="value" style="font-size:16px" id="updated">Aguardando dados</div><span class="muted" id="age">A coleta será executada pelo serviço agendado.</span></div>
+</section>
+<section class="panel">
+<h2 style="font-size:15px;color:var(--navy);margin:0 0 10px">Verificações por endereço</h2>
+<div class="scroll"><table><thead><tr><th>Serviço / endereço</th><th>Resultado</th><th>HTTP</th><th>Tempo</th><th>Verificado em</th></tr></thead><tbody id="rows"><tr><td colspan="5" class="muted">Ainda não há coleta publicada. Esta página está em validação.</td></tr></tbody></table></div>
+</section>
+<section class="panel" style="margin-top:14px">
+<h2 style="font-size:15px;color:var(--navy);margin:0 0 8px">Histórico recente</h2>
+<p class="muted">O histórico será preenchido pelas execuções do monitor após a ativação do fluxo agendado. Não são exibidos dados simulados.</p>
+<div id="history" class="muted">Nenhuma coleta disponível.</div>
+</section>
+<div class="foot">Desenvolvimento e Suporte · Daniel Moura Brasil SEGEF-IOC · Fonte técnica: verificações HTTP dos endereços públicos indicados. Relatos de usuários: Downdetector (fonte independente).</div>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+const fmtDate=s=>{if(!s)return '—';const d=new Date(s);return Number.isNaN(d.getTime())?'—':d.toLocaleString('pt-BR',{timeZone:'America/Sao_Paulo'})};
+async function load(){
+ $('refresh').disabled=true;$('refresh').textContent='Atualizando…';
+ try{
+  const r=await fetch('./monitoramento-govbr.json?ts='+Date.now(),{cache:'no-store'});
+  if(!r.ok)throw new Error('HTTP '+r.status);
+  const data=await r.json(),checks=Array.isArray(data.checks)?data.checks:[];
+  $('count').textContent=checks.length;
+  const ok=checks.filter(x=>x.ok===true).length;
+  $('availability').textContent=checks.length?Math.round(ok/checks.length*100)+'%':'—';
+  $('updated').textContent=fmtDate(data.generated_at);
+  $('age').textContent=data.generated_at?'Horário de Brasília · coleta automatizada':'Aguardando coleta';
+  $('rows').innerHTML=checks.map(x=>'<tr><td><strong>'+esc(x.name)+'</strong><br><span class="muted">'+esc(x.url)+'</span></td><td><span class="pill '+(x.ok?'ok':'bad')+'">'+(x.ok?'Resposta recebida':'Falha na verificação')+'</span></td><td>'+(x.http_status??'—')+'</td><td>'+(x.duration_ms==null?'—':x.duration_ms+' ms')+'</td><td>'+fmtDate(x.checked_at)+'</td></tr>').join('')||'<tr><td colspan="5">Nenhuma verificação publicada.</td></tr>';
+  $('history').textContent=(data.history||[]).slice(-8).reverse().map(x=>fmtDate(x.generated_at)+' · '+x.ok+'/'+x.total+' endereços responderam').join(' | ')||'Histórico ainda não disponível.';
+ }catch(e){$('age').textContent='Não foi possível ler o arquivo de monitoramento: '+e.message;}
+ finally{$('refresh').disabled=false;$('refresh').textContent='Atualizar leitura';}
+}
+function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+$('refresh').addEventListener('click',load);load();setInterval(load,60000);
+</script></body></html>
