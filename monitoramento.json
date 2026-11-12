@@ -1,33 +1,57 @@
 {
   "schema_version": 1,
-  "generated_at": null,
+  "generated_at": "2026-11-12T23:40:42.735811+00:00",
   "interval_minutes": 10,
-  "source": "Aguardando primeira execução do GitHub Actions",
-  "disclaimer": "Sem dados verificados ainda. A primeira execução automática publicará os resultados.",
+  "source": "GitHub Actions runner; verificação HTTP pública",
+  "disclaimer": "Resultado de acesso HTTP a partir de um único ponto de verificação; não mede disponibilidade global nem substitui monitoramento oficial.",
   "services": [
     {
       "name": "Portal GOV.BR",
       "url": "https://www.gov.br/",
-      "observation": "unknown",
-      "confirmed_status": "unknown"
+      "checked_at": "2026-11-12T23:40:42.735811+00:00",
+      "http_status": 200,
+      "latency_ms": 849,
+      "observation": "up",
+      "streak": 1,
+      "confirmed_status": "unknown",
+      "error": null,
+      "note": "HTTP 401/403/429 é inconclusivo; não classificar isoladamente como indisponibilidade."
     },
     {
       "name": "Serviços GOV.BR",
       "url": "https://www.gov.br/pt-br/servicos",
-      "observation": "unknown",
-      "confirmed_status": "unknown"
+      "checked_at": "2026-11-12T23:40:42.735811+00:00",
+      "http_status": 200,
+      "latency_ms": 414,
+      "observation": "up",
+      "streak": 1,
+      "confirmed_status": "unknown",
+      "error": null,
+      "note": "HTTP 401/403/429 é inconclusivo; não classificar isoladamente como indisponibilidade."
     },
     {
       "name": "Acesso GOV.BR",
       "url": "https://acesso.gov.br/",
-      "observation": "unknown",
-      "confirmed_status": "unknown"
+      "checked_at": "2026-11-12T23:40:42.735811+00:00",
+      "http_status": 200,
+      "latency_ms": 3489,
+      "observation": "up",
+      "streak": 1,
+      "confirmed_status": "unknown",
+      "error": null,
+      "note": "HTTP 401/403/429 é inconclusivo; não classificar isoladamente como indisponibilidade."
     },
     {
       "name": "SIAFI Tesouro",
       "url": "https://siafi.tesouro.gov.br/",
-      "observation": "unknown",
-      "confirmed_status": "unknown"
+      "checked_at": "2026-11-12T23:40:42.735811+00:00",
+      "http_status": 200,
+      "latency_ms": 650,
+      "observation": "up",
+      "streak": 1,
+      "confirmed_status": "unknown",
+      "error": null,
+      "note": "HTTP 401/403/429 é inconclusivo; não classificar isoladamente como indisponibilidade."
     }
   ]
 }
