@@ -1,0 +1,29 @@
+name: Monitoramento de serviços públicos
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: monitoramento-govbr
+  cancel-in-progress: false
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Verificar serviços
+        run: python scripts/monitoramento.py
+      - name: Publicar histórico
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add monitoramento.json
+          if ! git diff --cached --quiet; then
+            git commit -m "Atualiza verificações de monitoramento"
+            git push
+          fi
