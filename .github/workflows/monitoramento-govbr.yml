@@ -84,14 +84,17 @@ jobs:
           print(json.dumps(payload,ensure_ascii=False,indent=2))
           PY
       - name: Consultar UptimeRobot (opcional; chave somente leitura)
-        if: ${{ secrets.UPTIMEROBOT_API_KEY != '' }}
         env:
           UPTIMEROBOT_API_KEY: ${{ secrets.UPTIMEROBOT_API_KEY }}
         run: |
           python - <<'PY'
           import json, os, urllib.request, urllib.parse
           from datetime import datetime, timezone
-          payload=urllib.parse.urlencode({"api_key":os.environ["UPTIMEROBOT_API_KEY"],"format":"json","logs":"1","custom_uptime_ratios":"1-7-30"}).encode()
+          api_key=os.environ.get("UPTIMEROBOT_API_KEY","")
+          if not api_key:
+            print("UPTIMEROBOT_API_KEY não configurada; integração externa aguardando ativação.")
+            raise SystemExit(0)
+          payload=urllib.parse.urlencode({"api_key":api_key,"format":"json","logs":"1","custom_uptime_ratios":"1-7-30"}).encode()
           req=urllib.request.Request("https://api.uptimerobot.com/v2/getMonitors",data=payload,headers={"Content-Type":"application/x-www-form-urlencoded","User-Agent":"IOC-GOVBR-Monitor/1.0"})
           with urllib.request.urlopen(req,timeout=20) as response:
             result=json.load(response)
