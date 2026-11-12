@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "generated_at": null,
+  "interval_minutes": 10,
+  "source": "Aguardando primeira execução do GitHub Actions",
+  "disclaimer": "Sem dados verificados ainda. A primeira execução automática publicará os resultados.",
+  "services": [
+    {
+      "name": "Portal GOV.BR",
+      "url": "https://www.gov.br/",
+      "observation": "unknown",
+      "confirmed_status": "unknown"
+    },
+    {
+      "name": "Serviços GOV.BR",
+      "url": "https://www.gov.br/pt-br/servicos",
+      "observation": "unknown",
+      "confirmed_status": "unknown"
+    },
+    {
+      "name": "Acesso GOV.BR",
+      "url": "https://acesso.gov.br/",
+      "observation": "unknown",
+      "confirmed_status": "unknown"
+    },
+    {
+      "name": "SIAFI Tesouro",
+      "url": "https://siafi.tesouro.gov.br/",
+      "observation": "unknown",
+      "confirmed_status": "unknown"
+    }
+  ]
+}
