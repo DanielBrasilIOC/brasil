@@ -1,5 +1,8 @@
 name: Monitoramento técnico GOV.BR
 on:
+  push:
+    branches:
+      - teste/monitoramento-govbr-20261112
   workflow_dispatch:
   schedule:
     - cron: "*/15 * * * *"
@@ -23,7 +26,7 @@ jobs:
           targets = [
             ("Portal GOV.BR", "https://www.gov.br/"),
             ("Acesso GOV.BR", "https://acesso.gov.br/"),
-            ("Portal de Serviços", "https://www.servicos.gov.br/"),
+            ("Catálogo de Serviços GOV.BR", "https://www.gov.br/pt-br/servicos"),
           ]
           checks=[]
           for name,url in targets:
