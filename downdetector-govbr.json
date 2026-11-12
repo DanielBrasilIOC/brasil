@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "source": "https://downdetector.com.br/fora-do-ar/govbr/",
+  "collected_at": null,
+  "collection_note": "Primeiro registro incorporado a partir de consulta manual em 12/11/2026. O horário exato da captura inicial não foi preservado. Nas próximas coletas, registrar data e hora de Brasília. O pico é o maior valor do gráfico de 24 horas; categorias são indicadores separados.",
+  "window": "rolling_24_hours",
+  "current": {
+    "peak": 843,
+    "login": {
+      "count": 1244,
+      "percent": 49
+    },
+    "app": {
+      "count": 698,
+      "percent": 28
+    },
+    "website": {
+      "count": 517,
+      "percent": 21
+    },
+    "status": "experiencing problems",
+    "chart_point": {
+      "at": "2026-11-12T05:29:00-03:00",
+      "reports": 11,
+      "baseline": 2
+    }
+  },
+  "previous": {
+    "peak": 829,
+    "login": {
+      "count": 1241,
+      "percent": 49
+    },
+    "app": {
+      "count": 698,
+      "percent": 28
+    },
+    "website": {
+      "count": 516,
+      "percent": 21
+    }
+  },
+  "history": []
+}
