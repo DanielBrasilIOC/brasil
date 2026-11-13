@@ -7,7 +7,7 @@
 <style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#f3f6f9}iframe{display:block;width:100%;height:100%;border:0}</style>
 </head>
 <body>
-<iframe id="dashboard" src="dashboard-v2.html?v=20261113-diarias-auditfix-1" title="Painel Financeiro e Orçamentário IOC"></iframe>
+<iframe id="dashboard" src="dashboard-v2.html?v=20261113-diarias-auditfix-2" title="Painel Financeiro e Orçamentário IOC"></iframe>
 <script>
 const frame=document.getElementById('dashboard');
 frame.addEventListener('load',()=>{try{
@@ -27,25 +27,7 @@ frame.addEventListener('load',()=>{try{
   };
   applyUI();
   // Sem MutationObserver global: applyUI altera o DOM e poderia provocar ciclos de mutação.
-  // Os cartões Publicações Pagas e Diárias Pagas são renderizados pelo dashboard-v2.html.
-  // Este wrapper mantém apenas o painel de detalhes de Diárias Pagas, sem inserir KPIs duplicados.
-  const addExecutiveExtras=()=>{
-    let p=doc.getElementById('extraDiariasPanel');
-    if(!p){
-      p=doc.createElement('section');
-      p.id='extraDiariasPanel';
-      doc.getElementById('details').parentNode.appendChild(p);
-    }
-    p.className='extra-detail-panel hide';
-    p.innerHTML='<div class="head"><div><h3>Diárias Pagas</h3><p class="desc">Registros de Diárias Pagas, com 188 registros identificados na base de origem. Total pago: R$ 311.632,17.</p></div></div><div class="diarias-filters filters" style="margin:14px 0"><label style="display:grid;gap:5px;flex:1;min-width:200px;font-size:12px;font-weight:700;color:#153b57">Favorecido<input id="diariasFilterFavorecido" type="text" placeholder="Pesquisar favorecido"></label><label style="display:grid;gap:5px;min-width:180px;font-size:12px;font-weight:700;color:#153b57">Data de pagamento<input id="diariasFilterData" type="date"></label><button id="diariasClearFilters" class="btn" type="button">Limpar</button></div><div id="diariasCount" class="tiny" style="margin:8px 0"></div><div class="scroll"><table><thead><tr><th>Favorecido</th><th>Data de pagamento</th><th>Classificação Orçamentária</th><th>Valor</th><th>Documento</th><th>Observação</th></tr></thead><tbody id="diariasRows"><tr><td colspan="6">Carregando dados…</td></tr></tbody></table></div>';
-  };
-  let diariasRows=[];const diariasNorm=s=>(s??'').toString().normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase('pt-BR').trim();const diariasEsc=s=>String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');const diariasDate=s=>{const v=String(s??'').trim();if(/^\d{4}-\d{2}-\d{2}/.test(v))return v.slice(0,10);const m=v.match(/^(\d{2})\/(\d{2})\/(\d{4})/);return m?m[3]+'-'+m[2]+'-'+m[1]:''};const renderDiarias=()=>{const body=doc.getElementById('diariasRows'),count=doc.getElementById('diariasCount');if(!body)return;const fav=diariasNorm(doc.getElementById('diariasFilterFavorecido')?.value),date=doc.getElementById('diariasFilterData')?.value||'';const rows=diariasRows.filter(r=>(!fav||diariasNorm(r.favorecido).includes(fav))&&(!date||diariasDate(r.data_pagamento)===date));body.innerHTML=rows.map(r=>'<tr><td>'+diariasEsc(r.favorecido||'—')+'</td><td>'+diariasEsc(r.data_pagamento||'—')+'</td><td>'+diariasEsc(r.classificacao_orcamentaria||'—')+'</td><td class="money">'+diariasEsc((()=>{let v=r.valor??0;if(typeof v==='string'){v=v.replace(/R\$\s*/g,'').replace(/\./g,'').replace(',','.')}return 'R$ '+new Intl.NumberFormat('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2}).format(Number(v)||0)})())+'</td><td>'+diariasEsc(r.documento||'—')+'</td><td title="'+diariasEsc(r.observacao||'')+'">'+diariasEsc(r.observacao||'—')+'</td></tr>').join('')||'<tr><td colspan="6">Nenhum registro encontrado para os filtros informados.</td></tr>';if(count)count.textContent=rows.length+' de '+diariasRows.length+' registros';};const loadDiariasRows=async()=>{try{const response=await fetch('./data.json?ts='+Date.now(),{cache:'no-store'});if(!response.ok)throw new Error('HTTP '+response.status);const payload=await response.json();const d=(payload.datasets||[]).find(x=>x.id==='diarias_pagas');diariasRows=Array.isArray(d?.rows)?d.rows:[];renderDiarias()}catch(e){const body=doc.getElementById('diariasRows');if(body)body.innerHTML='<tr><td colspan="6">Não foi possível carregar a base de Diárias Pagas.</td></tr>'}};const showExtraDiarias=()=>{const o=doc.getElementById('overview'),d=doc.getElementById('details'),p=doc.getElementById('extraDiariasPanel');if(o)o.classList.add('hide');if(d)d.classList.add('hide');if(p){p.classList.remove('hide');loadDiariasRows();const fav=doc.getElementById('diariasFilterFavorecido'),date=doc.getElementById('diariasFilterData'),clear=doc.getElementById('diariasClearFilters');if(fav)fav.oninput=renderDiarias;if(date)date.onchange=renderDiarias;if(clear)clear.onclick=()=>{if(fav)fav.value='';if(date)date.value='';renderDiarias()}}doc.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('active',b.dataset.x==='diarias_pagas'))};window.showExtraDiarias=showExtraDiarias;
-  applyUI();
-  const navEl=doc.getElementById('nav');
-  if(navEl&&!navEl.dataset.diariasOverride){navEl.dataset.diariasOverride='1';navEl.addEventListener('click',ev=>{const button=ev.target&&ev.target.closest?ev.target.closest('button[data-x="diarias_pagas"]'):null;if(!button)return;ev.preventDefault();ev.stopImmediatePropagation();showExtraDiarias();},true)}
-  const overviewNav=doc.getElementById('nav');
-  if(overviewNav&&!overviewNav.dataset.hideDiariasOnNav){overviewNav.dataset.hideDiariasOnNav='1';overviewNav.addEventListener('click',ev=>{const button=ev.target&&ev.target.closest?ev.target.closest('button[data-x]'):null;if(!button||button.dataset.x==='diarias_pagas')return;const p=doc.getElementById('extraDiariasPanel');if(p)p.classList.add('hide')},true)}
-  addExecutiveExtras();
+  // Diárias Pagas é renderizada integralmente pelo dashboard-v2.html.
 
   // Visão Executiva dinâmica: todos os valores vêm do data.json publicado.
   const installOrdersExecutiveSummary=()=>{
