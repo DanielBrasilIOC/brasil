@@ -29,5 +29,20 @@ jobs:
           git add monitoramento.json
           if ! git diff --cached --quiet; then
             git commit -m "Atualiza verificações de monitoramento"
-            git push
+            for attempt in 1 2 3; do
+              if git push origin HEAD:main; then
+                echo "Leitura publicada."
+                exit 0
+              fi
+              echo "Houve atualização simultânea no repositório; sincronizando (tentativa ${attempt}/3)."
+              git fetch origin main
+              if git rebase origin/main; then
+                continue
+              fi
+              git rebase --abort || true
+              echo "Não foi possível sincronizar o histórico sem conflito." >&2
+              exit 1
+            done
+            echo "Falha ao publicar após três tentativas." >&2
+            exit 1
           fi
