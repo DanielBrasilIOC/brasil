@@ -1,57 +1,204 @@
 {
-  "schema_version": 1,
-  "generated_at": "2026-11-12T23:40:42.735811+00:00",
+  "schema_version": 2,
+  "generated_at": "2026-11-13T00:23:57.102831+00:00",
   "interval_minutes": 10,
-  "source": "GitHub Actions runner; verificação HTTP pública",
-  "disclaimer": "Resultado de acesso HTTP a partir de um único ponto de verificação; não mede disponibilidade global nem substitui monitoramento oficial.",
+  "source": "GitHub Actions runner; três tentativas por endereço",
+  "disclaimer": "Resultado de acesso HTTP a partir de um único ponto de verificação. A confirmação exige três respostas consecutivas no mesmo ciclo. Não mede disponibilidade global nem autenticação/funcionalidades internas.",
   "services": [
     {
       "name": "Portal GOV.BR",
       "url": "https://www.gov.br/",
-      "checked_at": "2026-11-12T23:40:42.735811+00:00",
+      "checked_at": "2026-11-13T00:24:05.900307+00:00",
       "http_status": 200,
-      "latency_ms": 849,
+      "latency_ms": 932,
       "observation": "up",
-      "streak": 1,
-      "confirmed_status": "unknown",
+      "streak": 3,
+      "confirmed_status": "up",
+      "successful_attempts": 3,
+      "attempts_total": 3,
+      "attempts": [
+        {
+          "attempt": 1,
+          "checked_at": "2026-11-13T00:23:58.186312+00:00",
+          "http_status": 200,
+          "latency_ms": 1083,
+          "observation": "up",
+          "error": null
+        },
+        {
+          "attempt": 2,
+          "checked_at": "2026-11-13T00:24:02.082551+00:00",
+          "http_status": 200,
+          "latency_ms": 896,
+          "observation": "up",
+          "error": null
+        },
+        {
+          "attempt": 3,
+          "checked_at": "2026-11-13T00:24:05.900307+00:00",
+          "http_status": 200,
+          "latency_ms": 818,
+          "observation": "up",
+          "error": null
+        }
+      ],
       "error": null,
-      "note": "HTTP 401/403/429 é inconclusivo; não classificar isoladamente como indisponibilidade."
+      "note": "Três tentativas no mesmo ciclo. HTTP 401/403/429 é inconclusivo; não classificar isoladamente como indisponibilidade."
     },
     {
       "name": "Serviços GOV.BR",
       "url": "https://www.gov.br/pt-br/servicos",
-      "checked_at": "2026-11-12T23:40:42.735811+00:00",
+      "checked_at": "2026-11-13T00:24:13.154575+00:00",
       "http_status": 200,
-      "latency_ms": 414,
+      "latency_ms": 418,
       "observation": "up",
-      "streak": 1,
-      "confirmed_status": "unknown",
+      "streak": 3,
+      "confirmed_status": "up",
+      "successful_attempts": 3,
+      "attempts_total": 3,
+      "attempts": [
+        {
+          "attempt": 1,
+          "checked_at": "2026-11-13T00:24:06.314397+00:00",
+          "http_status": 200,
+          "latency_ms": 414,
+          "observation": "up",
+          "error": null
+        },
+        {
+          "attempt": 2,
+          "checked_at": "2026-11-13T00:24:09.747967+00:00",
+          "http_status": 200,
+          "latency_ms": 433,
+          "observation": "up",
+          "error": null
+        },
+        {
+          "attempt": 3,
+          "checked_at": "2026-11-13T00:24:13.154575+00:00",
+          "http_status": 200,
+          "latency_ms": 406,
+          "observation": "up",
+          "error": null
+        }
+      ],
       "error": null,
-      "note": "HTTP 401/403/429 é inconclusivo; não classificar isoladamente como indisponibilidade."
+      "note": "Três tentativas no mesmo ciclo. HTTP 401/403/429 é inconclusivo; não classificar isoladamente como indisponibilidade."
     },
     {
       "name": "Acesso GOV.BR",
       "url": "https://acesso.gov.br/",
-      "checked_at": "2026-11-12T23:40:42.735811+00:00",
+      "checked_at": "2026-11-13T00:24:27.619366+00:00",
       "http_status": 200,
-      "latency_ms": 3489,
+      "latency_ms": 2821,
       "observation": "up",
-      "streak": 1,
-      "confirmed_status": "unknown",
+      "streak": 3,
+      "confirmed_status": "up",
+      "successful_attempts": 3,
+      "attempts_total": 3,
+      "attempts": [
+        {
+          "attempt": 1,
+          "checked_at": "2026-11-13T00:24:16.666866+00:00",
+          "http_status": 200,
+          "latency_ms": 3512,
+          "observation": "up",
+          "error": null
+        },
+        {
+          "attempt": 2,
+          "checked_at": "2026-11-13T00:24:22.371067+00:00",
+          "http_status": 200,
+          "latency_ms": 2704,
+          "observation": "up",
+          "error": null
+        },
+        {
+          "attempt": 3,
+          "checked_at": "2026-11-13T00:24:27.619366+00:00",
+          "http_status": 200,
+          "latency_ms": 2248,
+          "observation": "up",
+          "error": null
+        }
+      ],
       "error": null,
-      "note": "HTTP 401/403/429 é inconclusivo; não classificar isoladamente como indisponibilidade."
+      "note": "Três tentativas no mesmo ciclo. HTTP 401/403/429 é inconclusivo; não classificar isoladamente como indisponibilidade."
     },
     {
       "name": "SIAFI Tesouro",
       "url": "https://siafi.tesouro.gov.br/",
-      "checked_at": "2026-11-12T23:40:42.735811+00:00",
+      "checked_at": "2026-11-13T00:24:35.619907+00:00",
       "http_status": 200,
-      "latency_ms": 650,
+      "latency_ms": 667,
       "observation": "up",
-      "streak": 1,
-      "confirmed_status": "unknown",
+      "streak": 3,
+      "confirmed_status": "up",
+      "successful_attempts": 3,
+      "attempts_total": 3,
+      "attempts": [
+        {
+          "attempt": 1,
+          "checked_at": "2026-11-13T00:24:28.297630+00:00",
+          "http_status": 200,
+          "latency_ms": 678,
+          "observation": "up",
+          "error": null
+        },
+        {
+          "attempt": 2,
+          "checked_at": "2026-11-13T00:24:31.960583+00:00",
+          "http_status": 200,
+          "latency_ms": 663,
+          "observation": "up",
+          "error": null
+        },
+        {
+          "attempt": 3,
+          "checked_at": "2026-11-13T00:24:35.619907+00:00",
+          "http_status": 200,
+          "latency_ms": 659,
+          "observation": "up",
+          "error": null
+        }
+      ],
       "error": null,
-      "note": "HTTP 401/403/429 é inconclusivo; não classificar isoladamente como indisponibilidade."
+      "note": "Três tentativas no mesmo ciclo. HTTP 401/403/429 é inconclusivo; não classificar isoladamente como indisponibilidade."
+    }
+  ],
+  "history": [
+    {
+      "generated_at": "2026-11-13T00:23:57.102831+00:00",
+      "services": [
+        {
+          "name": "Portal GOV.BR",
+          "confirmed_status": "up",
+          "http_status": 200,
+          "latency_ms": 932,
+          "observation": "up"
+        },
+        {
+          "name": "Serviços GOV.BR",
+          "confirmed_status": "up",
+          "http_status": 200,
+          "latency_ms": 418,
+          "observation": "up"
+        },
+        {
+          "name": "Acesso GOV.BR",
+          "confirmed_status": "up",
+          "http_status": 200,
+          "latency_ms": 2821,
+          "observation": "up"
+        },
+        {
+          "name": "SIAFI Tesouro",
+          "confirmed_status": "up",
+          "http_status": 200,
+          "latency_ms": 667,
+          "observation": "up"
+        }
+      ]
     }
   ]
 }
