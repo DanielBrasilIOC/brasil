@@ -6,6 +6,7 @@ on:
     paths:
       - "index.html"
       - "dashboard-v2.html"
+      - "repasses.json"
       - ".github/workflows/pages-ui-hotfix.yml"
       - ".github/scripts/smoke_test_dashboard.mjs"
 
