@@ -1,4 +1,5 @@
 name: Monitoramento de serviços públicos
+# Publicação sincronizada com o GitHub Pages após cada coleta bem-sucedida.
 on:
   push:
     paths:
