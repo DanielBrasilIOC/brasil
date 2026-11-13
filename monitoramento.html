@@ -12,9 +12,40 @@ p{color:var(--muted)}.btn{border:1px solid var(--line);background:white;border-r
 table{width:100%;border-collapse:collapse;font-size:12px}th,td{text-align:left;padding:10px;border-bottom:1px solid #edf1f4}th{color:var(--muted);font-size:10px;text-transform:uppercase}
 .notice{background:#f8fafb;border:1px solid var(--line);border-radius:10px;padding:12px;color:var(--muted);font-size:12px;margin-top:15px}
 @media(max-width:650px){main{padding:19px 12px}.table-wrap{overflow:auto}table{min-width:620px}.top{align-items:flex-start}}
+
+/* Relatos públicos do Downdetector — separados da medição HTTP */
+.community-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:12px 0}
+.community-kpi{border:1px solid var(--line);border-radius:12px;padding:13px;background:#fbfdfe;min-width:0}
+.community-kpi.primary{background:#edf5f8;border-color:#cbdfe8}
+.community-kpi .label{font-size:11px;color:var(--muted);font-weight:750}
+.community-kpi .value{font-size:clamp(19px,2.8vw,26px);font-weight:850;color:var(--navy);margin:6px 0}
+.community-kpi .meta{font-size:11px}
+.community-meta{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.community-meta span{font-size:11px;padding:5px 8px;border:1px solid var(--line);border-radius:8px;background:#f2f6f8;color:#466477}
+.community-chart-wrap{overflow-x:auto;overscroll-behavior-x:contain;border:1px solid var(--line);border-radius:11px;background:#fbfdfe;padding:10px}
+.community-chart{display:block;min-width:620px;width:100%;height:auto}
+.community-note{font-size:12px;color:var(--muted);line-height:1.6;margin:10px 0 0}
+@media(max-width:650px){.community-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.community-kpi{padding:10px}.community-kpi .value{font-size:19px}}
+
 </style></head><body><main>
 <div class="top"><div><div class="ey">Painel Financeiro e Orçamentário IOC</div><h1>Monitoramento de Serviços Públicos</h1><p>Verificação independente de acesso HTTP aos serviços selecionados.</p></div><div><a class="btn" href="./">Voltar ao painel</a> <button class="btn" id="refresh">Atualizar</button></div></div>
 <div class="cards" id="cards"><div class="card">Carregando verificações…</div></div>
+
+<section class="panel" id="communityPanel">
+  <h2>Relatos de usuários — Downdetector (últimas 24 horas)</h2>
+  <p class="meta">Fonte comunitária independente. Estes relatos não são testes técnicos nem confirmação oficial de indisponibilidade.</p>
+  <div class="community-grid">
+    <article class="community-kpi primary"><div class="label">Pico de relatos no gráfico</div><div class="value" id="ddPeak">—</div><div class="meta" id="ddDelta">Comparação indisponível</div></article>
+    <article class="community-kpi"><div class="label">Login</div><div class="value" id="ddLogin">—</div><div class="meta" id="ddLoginPct">—</div></article>
+    <article class="community-kpi"><div class="label">App</div><div class="value" id="ddApp">—</div><div class="meta" id="ddAppPct">—</div></article>
+    <article class="community-kpi"><div class="label">Website</div><div class="value" id="ddWebsite">—</div><div class="meta" id="ddWebsitePct">—</div></article>
+  </div>
+  <div class="community-meta"><span id="ddCollected">Coleta: aguardando registro</span><span id="ddStatus">Status: —</span><span>Janela: móvel de 24 horas</span></div>
+  <div class="community-chart-wrap" id="ddChartWrap"><div class="meta">Carregando pontos capturados do gráfico…</div></div>
+  <p class="community-note" id="ddMethod">Os dados comunitários serão exibidos com a data e a hora da captura. A coleta do Downdetector não é apresentada como automática enquanto não houver integração estável e autorizada.</p>
+  <p class="meta"><a href="https://downdetector.com.br/fora-do-ar/govbr/" target="_blank" rel="noopener">Consultar a página pública do Downdetector</a></p>
+</section>
+
 <section class="panel"><h2>Histórico da última verificação</h2><div class="table-wrap"><table><thead><tr><th>Serviço</th><th>Endereço</th><th>HTTP</th><th>Resposta</th><th>Observação</th></tr></thead><tbody id="rows"><tr><td colspan="5">Carregando…</td></tr></tbody></table></div></section>
 <div class="notice" id="disclaimer">Os resultados são obtidos de um único ponto de verificação. Respostas 401, 403 ou 429 são inconclusivas e não serão tratadas isoladamente como indisponibilidade. A confirmação exige três verificações consecutivas.</div>
 <p class="meta" id="updated">Última atualização: aguardando dados.</p>
@@ -25,5 +56,49 @@ rows.innerHTML=d.services.map(s=>'<tr><td>'+esc(s.name)+'</td><td><a href="'+esc
 document.getElementById("updated").textContent="Última execução: "+new Date(d.generated_at).toLocaleString("pt-BR",{timeZone:"America/Sao_Paulo"})+" · Frequência programada: 10 minutos";
 document.getElementById("disclaimer").textContent=d.disclaimer+" A confirmação de estado exige três verificações consecutivas; 401, 403 e 429 são inconclusivos.";
 }catch(e){cards.innerHTML='<article class="card"><div class="state unknown">Dados ainda não publicados</div><div class="meta">'+esc(e.message)+'</div></article>';rows.innerHTML='<tr><td colspan="5">A primeira execução automática ainda não gerou resultados.</td></tr>'}}
+
+async function loadCommunity(){
+ const wrap=document.getElementById("ddChartWrap");
+ try{
+  const r=await fetch("./downdetector-govbr.json?v="+Date.now(),{cache:"no-store"});
+  if(!r.ok)throw new Error("HTTP "+r.status);
+  const d=await r.json(),cur=d.current||{},prev=d.previous||{};
+  const n=v=>Number(v).toLocaleString("pt-BR");
+  document.getElementById("ddPeak").textContent=cur.peak==null?"—":n(cur.peak);
+  if(cur.peak!=null&&prev.peak!=null){
+   const delta=Number(cur.peak)-Number(prev.peak);
+   const pct=Number(prev.peak)?(delta/Number(prev.peak)*100):0;
+   document.getElementById("ddDelta").textContent=(delta>0?"+":"")+n(delta)+" relatos ("+(pct>0?"+":"")+pct.toLocaleString("pt-BR",{maximumFractionDigits:1})+"%) desde a captura anterior";
+  }else document.getElementById("ddDelta").textContent="Sem captura anterior para comparação";
+  for(const key of ["login","app","website"]){
+   const label=key[0].toUpperCase()+key.slice(1),v=cur[key]||{};
+   document.getElementById("dd"+label).textContent=v.count==null?"—":n(v.count);
+   document.getElementById("dd"+label+"Pct").textContent=v.percent==null?"Percentual não informado":v.percent+"% dos relatos classificados";
+  }
+  const collected=d.collected_at?new Date(d.collected_at):null;
+  document.getElementById("ddCollected").textContent="Captura: "+(collected?collected.toLocaleString("pt-BR",{timeZone:"America/Sao_Paulo"})+" (Brasília)":"horário não registrado");
+  document.getElementById("ddStatus").textContent="Status informado: "+(cur.status==="experiencing problems"?"Relatos indicam problemas":cur.status||"não informado");
+  const hist=(d.history||[]).filter(x=>x.chart_point&&x.chart_point.at).slice(-24);
+  if(hist.length){
+   const vals=hist.map(x=>Number(x.chart_point.reports)||0),max=Math.max(1,...vals),width=Math.max(620,70+Math.max(1,hist.length-1)*150),height=190;
+   const x=i=>45+i*(width-90)/Math.max(1,hist.length-1),y=v=>145-(v/max)*105;
+   const points=hist.map((item,i)=>({x:x(i),y:y(Number(item.chart_point.reports)||0),item}));
+   const line=points.map(p=>p.x+","+p.y).join(" ");
+   const circles=points.map(p=>{
+    const cp=p.item.chart_point,dt=new Date(cp.at),stamp=dt.toLocaleString("pt-BR",{timeZone:"America/Sao_Paulo",day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"});
+    const title=stamp+" · "+n(cp.reports)+" relatos · referência habitual: "+(cp.baseline??"—");
+    return '<g><circle cx="'+p.x+'" cy="'+p.y+'" r="7" fill="#398780" stroke="#fff" stroke-width="3"><title>'+esc(title)+'</title></circle><text x="'+p.x+'" y="169" text-anchor="middle" fill="#667b89" font-size="10">'+esc(stamp)+'</text><text x="'+p.x+'" y="'+(p.y-13)+'" text-anchor="middle" fill="#153b57" font-size="11" font-weight="700">'+n(cp.reports)+'</text></g>';
+   }).join("");
+   wrap.innerHTML='<svg class="community-chart" viewBox="0 0 '+width+' '+height+'" role="img" aria-label="Pontos capturados do gráfico do Downdetector. Passe o cursor sobre cada ponto para ver data, hora e relatos."><line x1="30" y1="145" x2="'+(width-20)+'" y2="145" stroke="#dfe8ed"/><polyline points="'+line+'" fill="none" stroke="#398780" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>'+circles+'</svg>';
+  }else wrap.innerHTML='<div class="meta">Ainda não há pontos históricos capturados para o gráfico.</div>';
+  const age=collected?Date.now()-collected.getTime():Infinity;
+  document.getElementById("ddMethod").textContent=(d.collection_note||"Captura manual da página pública do Downdetector.")+(age>30*60*1000?" A captura tem mais de 30 minutos; consulte a fonte para confirmar os valores atuais.":"");
+ }catch(e){
+  wrap.innerHTML='<div class="meta">Não foi possível carregar os dados comunitários: '+esc(e.message)+'</div>';
+  document.getElementById("ddMethod").textContent="Dados do Downdetector indisponíveis nesta leitura. A medição HTTP continua separada.";
+ }
+}
+
 document.getElementById("refresh").onclick=load;load();
+loadCommunity();
 </script></body></html>
