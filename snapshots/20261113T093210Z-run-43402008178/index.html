@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Painel Financeiro e Orçamentário IOC</title>
+<style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#f3f6f9}iframe{display:block;width:100%;height:100%;border:0}</style>
+</head>
+<body>
+<iframe id="dashboard" src="dashboard-v2.html?v=20261113-ordens-cronologicas" title="Painel Financeiro e Orçamentário IOC"></iframe>
+<script>
+const frame=document.getElementById('dashboard');
+frame.addEventListener('load',()=>{try{
+  const doc=frame.contentDocument;if(!doc||!doc.body)return;const director=doc.querySelector('.leadership-director');if(director)director.querySelectorAll('span:not(.leadership-eyebrow)').forEach(el=>el.remove());
+  const title='Painel Financeiro e Orçamentário IOC';
+  const brand=doc.querySelector('.brand h1');if(brand&&brand.textContent!==title)brand.textContent=title;
+  const heading=doc.getElementById('title');if(heading&&heading.textContent.replace(/\s+/g,' ').trim()!==title)heading.textContent=title;
+  if(doc.title!==title)doc.title=title;
+  const style=doc.createElement('style');style.textContent=`th.neccor-hidden,td.neccor-hidden{display:none!important}.executive-extra-kpis{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:14px}.executive-extra-kpis .kpi{min-height:132px;padding:20px;background:linear-gradient(145deg,#fff,#f9fcfd);border:1px solid #e0e8ed;border-radius:16px;box-shadow:0 8px 24px rgba(19,55,78,.055)}.executive-extra-kpis .label{font-size:12px;font-weight:750;color:#687d8b}.executive-extra-kpis .value{font-size:clamp(20px,2vw,28px);font-weight:820;color:#173b53;margin:9px 0 6px}.executive-extra-kpis .hint{color:#6a7f8d;font-size:12px}.extra-detail-panel{margin-top:14px;padding:20px;background:#fff;border:1px solid #e0e8ed;border-radius:16px;box-shadow:0 8px 24px rgba(19,55,78,.055)}.extra-detail-panel h3{margin:0;color:#153b57;font-size:15px}.extra-detail-panel p{color:#667b89;font-size:12px;line-height:1.55}@media(max-width:700px){.executive-extra-kpis{grid-template-columns:1fr}.executive-extra-kpis .kpi{min-height:105px;padding:14px}.extra-detail-panel{padding:14px}}`;doc.head.appendChild(style);
+  const visibilityStyle=doc.createElement('style');visibilityStyle.id='priority-values-visibility-fix';visibilityStyle.textContent='.priority-meter .priority-value,.priority-record-group .priority-summary-total{display:block!important;visibility:visible!important;opacity:1!important;color:inherit!important}.priority-record-group .priority-summary-total{font-size:clamp(15px,1.8vw,19px)!important;font-weight:900!important;white-space:nowrap!important}.priority-meter .priority-value{font-variant-numeric:tabular-nums!important;min-height:1.4em}';doc.head.appendChild(visibilityStyle);
+  const norm=s=>(s||'').replace(/\\s+/g,' ').trim().toUpperCase();
+  const applyUI=()=>{
+    const details=doc.querySelector('#details[data-dataset="empenhos"]');
+    if(details){details.querySelectorAll('table').forEach(table=>{Array.from(table.querySelectorAll('thead th')).forEach((th,i)=>{if(norm(th.textContent).includes('NE CCOR')||norm(th.textContent).includes('NECCOR')){th.classList.add('neccor-hidden');table.querySelectorAll('tbody tr').forEach(tr=>{if(tr.children[i])tr.children[i].classList.add('neccor-hidden')})}})});}
+    const repasses=doc.querySelector('#details[data-dataset="repasses"]');
+    if(repasses){repasses.querySelectorAll('th').forEach(th=>{if(/nº?\s*ne|numero\s*ne|número\s*ne|número da solicitação|numero da solicitacao/i.test(th.textContent)&&th.textContent!=='Número da Solicitação')th.textContent='Número da Solicitação'});repasses.querySelectorAll('input').forEach(inp=>{if(/numero\s*ne|número\s*ne|numero da solicitacao|número da solicitação/i.test((inp.id||'')+' '+(inp.placeholder||'')+' '+(inp.getAttribute('aria-label')||''))){if(inp.placeholder!=='Pesquisar Número da Solicitação')inp.placeholder='Pesquisar Número da Solicitação';inp.setAttribute('aria-label','Número da Solicitação')}});}
+  };
+  applyUI();
+  // Sem MutationObserver global: applyUI altera o DOM e poderia provocar ciclos de mutação.
+  // Os cartões Publicações Pagas e Diárias Pagas são renderizados pelo dashboard-v2.html.
+  // Este wrapper mantém apenas o painel de detalhes de Diárias Pagas, sem inserir KPIs duplicados.
+  const addExecutiveExtras=()=>{
+    let p=doc.getElementById('extraDiariasPanel');
+    if(!p){
+      p=doc.createElement('section');
+      p.id='extraDiariasPanel';
+      doc.getElementById('details').parentNode.appendChild(p);
+    }
+    p.className='extra-detail-panel hide';
+    p.innerHTML='<div class="head"><div><h3>Diárias Pagas</h3><p class="desc">Registros de Diárias Pagas, com 188 registros identificados na base de origem. Total pago: R$ 311.632,17.</p></div></div><div class="diarias-filters filters" style="margin:14px 0"><label style="display:grid;gap:5px;flex:1;min-width:200px;font-size:12px;font-weight:700;color:#153b57">Favorecido<input id="diariasFilterFavorecido" type="text" placeholder="Pesquisar favorecido"></label><label style="display:grid;gap:5px;min-width:180px;font-size:12px;font-weight:700;color:#153b57">Data de pagamento<input id="diariasFilterData" type="date"></label><button id="diariasClearFilters" class="btn" type="button">Limpar</button></div><div id="diariasCount" class="tiny" style="margin:8px 0"></div><div class="scroll"><table><thead><tr><th>Favorecido</th><th>Data de pagamento</th><th>Classificação Orçamentária</th><th>Valor</th><th>Documento</th><th>Observação</th></tr></thead><tbody id="diariasRows"><tr><td colspan="6">Carregando dados…</td></tr></tbody></table></div>';
+  };
+  let diariasRows=[];const diariasNorm=s=>(s??'').toString().normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase('pt-BR').trim();const diariasEsc=s=>String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');const diariasDate=s=>{const v=String(s??'').trim();if(/^\d{4}-\d{2}-\d{2}/.test(v))return v.slice(0,10);const m=v.match(/^(\d{2})\/(\d{2})\/(\d{4})/);return m?m[3]+'-'+m[2]+'-'+m[1]:''};const renderDiarias=()=>{const body=doc.getElementById('diariasRows'),count=doc.getElementById('diariasCount');if(!body)return;const fav=diariasNorm(doc.getElementById('diariasFilterFavorecido')?.value),date=doc.getElementById('diariasFilterData')?.value||'';const rows=diariasRows.filter(r=>(!fav||diariasNorm(r.favorecido).includes(fav))&&(!date||diariasDate(r.data_pagamento)===date));body.innerHTML=rows.map(r=>'<tr><td>'+diariasEsc(r.favorecido||'—')+'</td><td>'+diariasEsc(r.data_pagamento||'—')+'</td><td>'+diariasEsc(r.classificacao_orcamentaria||'—')+'</td><td class="money">'+diariasEsc((()=>{let v=r.valor??0;if(typeof v==='string'){v=v.replace(/R\$\s*/g,'').replace(/\./g,'').replace(',','.')}return 'R$ '+new Intl.NumberFormat('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2}).format(Number(v)||0)})())+'</td><td>'+diariasEsc(r.documento||'—')+'</td><td title="'+diariasEsc(r.observacao||'')+'">'+diariasEsc(r.observacao||'—')+'</td></tr>').join('')||'<tr><td colspan="6">Nenhum registro encontrado para os filtros informados.</td></tr>';if(count)count.textContent=rows.length+' de '+diariasRows.length+' registros';};const loadDiariasRows=async()=>{try{const response=await fetch('./data.json?ts='+Date.now(),{cache:'no-store'});if(!response.ok)throw new Error('HTTP '+response.status);const payload=await response.json();const d=(payload.datasets||[]).find(x=>x.id==='diarias_pagas');diariasRows=Array.isArray(d?.rows)?d.rows:[];renderDiarias()}catch(e){const body=doc.getElementById('diariasRows');if(body)body.innerHTML='<tr><td colspan="6">Não foi possível carregar a base de Diárias Pagas.</td></tr>'}};const showExtraDiarias=()=>{const o=doc.getElementById('overview'),d=doc.getElementById('details'),p=doc.getElementById('extraDiariasPanel');if(o)o.classList.add('hide');if(d)d.classList.add('hide');if(p){p.classList.remove('hide');loadDiariasRows();const fav=doc.getElementById('diariasFilterFavorecido'),date=doc.getElementById('diariasFilterData'),clear=doc.getElementById('diariasClearFilters');if(fav)fav.oninput=renderDiarias;if(date)date.onchange=renderDiarias;if(clear)clear.onclick=()=>{if(fav)fav.value='';if(date)date.value='';renderDiarias()}}doc.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('active',b.dataset.x==='diarias_pagas'))};window.showExtraDiarias=showExtraDiarias;
+  applyUI();
+  const navEl=doc.getElementById('nav');
+  if(navEl&&!navEl.dataset.diariasOverride){navEl.dataset.diariasOverride='1';navEl.addEventListener('click',ev=>{const button=ev.target&&ev.target.closest?ev.target.closest('button[data-x="diarias_pagas"]'):null;if(!button)return;ev.preventDefault();ev.stopImmediatePropagation();showExtraDiarias();},true)}
+  const overviewNav=doc.getElementById('nav');
+  if(overviewNav&&!overviewNav.dataset.hideDiariasOnNav){overviewNav.dataset.hideDiariasOnNav='1';overviewNav.addEventListener('click',ev=>{const button=ev.target&&ev.target.closest?ev.target.closest('button[data-x]'):null;if(!button||button.dataset.x==='diarias_pagas')return;const p=doc.getElementById('extraDiariasPanel');if(p)p.classList.add('hide')},true)}
+  addExecutiveExtras();
+
+  // Visão Executiva dinâmica: todos os valores vêm do data.json publicado.
+  const installOrdersExecutiveSummary=()=>{
+    const kpis=doc.getElementById('kpis');
+    if(!kpis) return;
+    const style=doc.createElement('style');
+    style.id='orders-executive-summary-style';
+    style.textContent=`
+      #ordersExecutiveSummary{margin:0 0 16px;display:grid;gap:12px}
+      #ordersExecutiveSummary .ob-total{background:linear-gradient(120deg,#edf5f8,#fff);border:1px solid #d5e4eb;border-radius:16px;padding:20px 22px;box-shadow:0 8px 24px rgba(19,55,78,.045)}
+      #ordersExecutiveSummary .ob-eyebrow{font-size:11px;letter-spacing:1px;font-weight:800;color:#607987;text-transform:uppercase}
+      #ordersExecutiveSummary .ob-total-value{font-size:clamp(25px,3vw,34px);font-weight:850;letter-spacing:-.035em;color:#153b57;margin:7px 0}
+      #ordersExecutiveSummary .ob-total-meta{display:flex;align-items:center;justify-content:space-between;gap:10px;color:#667b89;font-size:12px}
+      #ordersExecutiveSummary .ob-percent{display:inline-flex;align-items:center;border-radius:99px;padding:5px 9px;background:#e7f4ee;color:#28745b;font-size:11px;font-weight:850;white-space:nowrap}
+      #ordersExecutiveSummary .ob-track{height:9px;background:#dfe9ee;border-radius:99px;overflow:hidden;margin-top:12px}
+      #ordersExecutiveSummary .ob-track span{display:block;height:100%;width:100%;background:#398780;border-radius:99px}
+      #ordersExecutiveSummary .ob-section-title{font-size:13px;font-weight:800;color:#153b57;margin:2px 0 0}
+      #ordersExecutiveSummary .ob-category-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+      #ordersExecutiveSummary .ob-category{min-width:0;background:#fff;border:1px solid #e0e8ed;border-radius:15px;padding:16px;box-shadow:0 8px 24px rgba(19,55,78,.045)}
+      #ordersExecutiveSummary .ob-category-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
+      #ordersExecutiveSummary .ob-category-name{font-size:12px;font-weight:800;color:#667b89}
+      #ordersExecutiveSummary .ob-category-value{font-size:clamp(18px,2vw,23px);font-weight:850;letter-spacing:-.025em;color:#153b57;margin:11px 0 10px;overflow-wrap:anywhere}
+      #ordersExecutiveSummary .ob-category-track{height:7px;background:#e8eef2;border-radius:99px;overflow:hidden}
+      #ordersExecutiveSummary .ob-category-track span{display:block;height:100%;border-radius:99px}
+      #ordersExecutiveSummary .ob-remainder{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 15px;border:1px solid #e0e8ed;border-radius:12px;background:#f8fafb;color:#667b89;font-size:12px}
+      #ordersExecutiveSummary .ob-remainder strong{color:#153b57;font-size:14px;text-align:right}
+      #ordersExecutiveSummary .ob-error{padding:14px;border:1px solid #ead9c5;border-radius:12px;background:#fffaf3;color:#77521d;font-size:12px}
+      @media(max-width:850px){#ordersExecutiveSummary .ob-category-grid{grid-template-columns:1fr 1fr}}
+      @media(max-width:560px){#ordersExecutiveSummary .ob-category-grid{grid-template-columns:1fr}#ordersExecutiveSummary .ob-total{padding:16px}#ordersExecutiveSummary .ob-category{padding:14px}}
+    `;
+    if(!doc.getElementById(style.id)) doc.head.appendChild(style);
+    // Os cartões originais são montados de forma assíncrona pelo dashboard-v2.
+    // Removê-los apenas no primeiro instante deixa duplicatas quando a montagem termina.
+    const removeLabels=new Set(['publicacoes pagas','bolsistas pagos','diarias pagas','ordens bancarias']);
+    const cleanLegacyCards=()=>{
+      Array.from(kpis.querySelectorAll(':scope > .kpi')).forEach(card=>{
+        const label=(card.querySelector('.label')?.textContent||'').trim()
+          .normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase('pt-BR');
+        if(removeLabels.has(label)) card.remove();
+      });
+    };
+    cleanLegacyCards();
+    const legacyCardsObserver=new doc.defaultView.MutationObserver(cleanLegacyCards);
+    legacyCardsObserver.observe(kpis,{childList:true});
+    let summary=doc.getElementById('ordersExecutiveSummary');
+    if(!summary){summary=doc.createElement('section');summary.id='ordersExecutiveSummary';kpis.parentNode.insertBefore(summary,kpis);}
+    const money=value=>'R$ '+new Intl.NumberFormat('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2}).format(value);
+    const cents=value=>Math.round((Number(value)||0)*100);
+    const pctLabel=hundredths=>(hundredths/100).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2})+'%';
+    const renderError=()=>{summary.innerHTML='<div class="ob-error">Não foi possível carregar os indicadores da Visão Executiva. Os valores não foram substituídos por números antigos.</div>'};
+    const render=payload=>{
+      const datasets=Array.isArray(payload?.datasets)?payload.datasets:[];
+      const get=id=>datasets.find(d=>d.id===id);
+      const ordens=get('ordens_bancarias'),diarias=get('diarias_pagas'),publicacoes=get('publicacoes_pagas');
+      if(!ordens||!Array.isArray(ordens.rows)||!diarias||!publicacoes){renderError();return;}
+      const total=cents(ordens.total);
+      if(total<=0){renderError();return;}
+      const bolsistasRows=ordens.rows.filter(row=>/bols/i.test(String(row.observacao||'')+' '+String(row.favorecido||'')));
+      const bolsistas=bolsistasRows.reduce((sum,row)=>sum+cents(row.valor),0);
+      const diariasValue=cents(diarias.total);
+      const publicacoesValue=cents(publicacoes.total);
+      const remainder=total-bolsistas-diariasValue-publicacoesValue;
+      if(remainder<0){renderError();return;}
+      const parts=[bolsistas,diariasValue,publicacoesValue];
+      const partPcts=parts.map(value=>Math.round(value*10000/total));
+      const remainderPct=10000-partPcts.reduce((sum,value)=>sum+value,0);
+      const totalValue=total/100;
+      const categories=[
+        {name:'Bolsistas Pagos',value:bolsistas,pct:partPcts[0],color:'#3985C6'},
+        {name:'Diárias Pagas',value:diariasValue,pct:partPcts[1],color:'#D69A38'},
+        {name:'Publicações Pagas',value:publicacoesValue,pct:partPcts[2],color:'#398780'}
+      ];
+      summary.innerHTML=`
+        <div class="ob-total">
+          <div class="ob-eyebrow">Ordens Bancárias Consolidadas</div>
+          <div class="ob-total-value">${money(totalValue)}</div>
+          <div class="ob-total-meta"><span>Total de ordens bancárias pagas</span><span class="ob-percent">100,00%</span></div>
+          <div class="ob-track" aria-label="100% do total"><span></span></div>
+        </div>
+        <div class="ob-section-title">Composição das ordens bancárias pagas</div>
+        <div class="ob-category-grid">${categories.map(item=>`
+          <article class="ob-category">
+            <div class="ob-category-top"><span class="ob-category-name">${item.name}</span><span class="ob-percent">${pctLabel(item.pct)}</span></div>
+            <div class="ob-category-value">${money(item.value/100)}</div>
+            <div class="ob-category-track"><span style="width:${(item.pct/100).toFixed(2)}%;background:${item.color}"></span></div>
+          </article>`).join('')}
+        </div>
+        <div class="ob-remainder"><span>Demais ordens bancárias</span><strong>${pctLabel(remainderPct)} · ${money(remainder/100)}</strong></div>
+      `;
+      summary.dataset.sourceUpdatedAt=String(payload.source_updated_at||'');
+      summary.dataset.generatedAt=String(payload.generated_at||'');
+    };
+    let lastDataVersion='';
+    let executiveHasRendered=false;
+    let executiveRefreshInFlight=false;
+    const refreshExecutiveSummary=async()=>{
+      if(executiveRefreshInFlight)return;
+      executiveRefreshInFlight=true;
+      try{
+        const response=await fetch('./data.json?ts='+Date.now(),{cache:'no-store'});
+        if(!response.ok)throw new Error('HTTP '+response.status);
+        const payload=await response.json();
+        const version=JSON.stringify({
+          generated_at:payload.generated_at||'',
+          datasets:(payload.datasets||[]).map(item=>({id:item.id,total:item.total,rows:item.rows?.length}))
+        });
+        if(version!==lastDataVersion){
+          render(payload);
+          lastDataVersion=version;
+          executiveHasRendered=true;
+        }
+      }catch(error){
+        console.error('Falha ao atualizar Visão Executiva a partir do data.json',error);
+        if(!executiveHasRendered)renderError();
+      }finally{
+        executiveRefreshInFlight=false;
+      }
+    };
+    refreshExecutiveSummary();
+    // Reconsulta a base publicada periodicamente e ao retornar à aba.
+    // Assim, valores e percentuais acompanham novas publicações sem edição manual.
+    doc.defaultView.setInterval(refreshExecutiveSummary,60000);
+    doc.defaultView.addEventListener('focus',refreshExecutiveSummary);
+    doc.addEventListener('visibilitychange',()=>{
+      if(doc.visibilityState==='visible')refreshExecutiveSummary();
+    });
+  };
+  installOrdersExecutiveSummary();
+}catch(e){console.error('Ajuste do painel não aplicado',e)}});
+</script>
+</body>
+</html>
