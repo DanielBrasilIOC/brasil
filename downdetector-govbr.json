@@ -1,0 +1,97 @@
+{
+  "schema_version": 1,
+  "source": "https://downdetector.com.br/fora-do-ar/govbr/",
+  "collected_at": "2026-11-13T00:22:06Z",
+  "collection_note": "Captura manual da página pública do Downdetector após carregamento da página. Coleta registrada em UTC e exibida em Brasília. A janela é móvel de 24 horas; o pico do gráfico e as categorias são indicadores distintos. Os pontos históricos abaixo são somente os pontos capturados, não uma série horária completa. A leitura periódica automática ainda não está habilitada.",
+  "window": "rolling_24_hours",
+  "current": {
+    "peak": 808,
+    "login": {
+      "count": 1269,
+      "percent": 49
+    },
+    "app": {
+      "count": 713,
+      "percent": 28
+    },
+    "website": {
+      "count": 529,
+      "percent": 21
+    },
+    "status": "experiencing problems",
+    "chart_point": {
+      "at": "2026-11-12T05:37:00-03:00",
+      "reports": 10,
+      "baseline": 2
+    }
+  },
+  "previous": {
+    "peak": 843,
+    "login": {
+      "count": 1244,
+      "percent": 49
+    },
+    "app": {
+      "count": 698,
+      "percent": 28
+    },
+    "website": {
+      "count": 517,
+      "percent": 21
+    },
+    "status": "experiencing problems",
+    "chart_point": {
+      "at": "2026-11-12T05:29:00-03:00",
+      "reports": 11,
+      "baseline": 2
+    }
+  },
+  "history": [
+    {
+      "collected_at": "2026-11-12T23:26:21.668Z",
+      "window": "rolling_24_hours",
+      "peak": 843,
+      "login": {
+        "count": 1244,
+        "percent": 49
+      },
+      "app": {
+        "count": 698,
+        "percent": 28
+      },
+      "website": {
+        "count": 517,
+        "percent": 21
+      },
+      "status": "experiencing problems",
+      "chart_point": {
+        "at": "2026-11-12T05:29:00-03:00",
+        "reports": 11,
+        "baseline": 2
+      }
+    },
+    {
+      "collected_at": "2026-11-13T00:22:06Z",
+      "window": "rolling_24_hours",
+      "peak": 808,
+      "login": {
+        "count": 1269,
+        "percent": 49
+      },
+      "app": {
+        "count": 713,
+        "percent": 28
+      },
+      "website": {
+        "count": 529,
+        "percent": 21
+      },
+      "status": "experiencing problems",
+      "chart_point": {
+        "at": "2026-11-12T05:37:00-03:00",
+        "reports": 10,
+        "baseline": 2
+      }
+    }
+  ]
+}
