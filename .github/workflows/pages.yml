@@ -12,6 +12,10 @@ on:
       - "logs/atualizacoes_dashboard.csv"
   schedule:
     - cron: "0 3,7,11,15,19,23 * * *"
+  workflow_run:
+    workflows: ["Monitoramento de serviços públicos"]
+    types: [completed]
+    branches: ["main"]
   workflow_dispatch:
 
 permissions:
@@ -24,7 +28,31 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  # Quando o coletor técnico termina, publica somente os arquivos estáticos
+  # já versionados, sem executar novamente a sincronização financeira do Drive.
+  publish-monitoring:
+    if: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Baixar a versão atual da branch principal
+        uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Configurar GitHub Pages
+        uses: actions/configure-pages@v5
+      - name: Preparar arquivos estáticos
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: "."
+      - name: Publicar arquivos estáticos atualizados
+        id: deployment
+        uses: actions/deploy-pages@v4
+
   build:
+    if: ${{ github.event_name != 'workflow_run' }}
     outputs:
       data_changed: ${{ steps.sync.outputs.changed }}
       sync_ok: ${{ steps.sync.outputs.sync_ok }}
@@ -92,7 +120,7 @@ jobs:
           path: "."
 
   deploy:
-    if: needs.build.outputs.sync_ok == 'true' && (needs.build.outputs.data_changed == 'true' || github.event_name != 'schedule')
+    if: github.event_name != 'workflow_run' && needs.build.outputs.sync_ok == 'true' && (needs.build.outputs.data_changed == 'true' || github.event_name != 'schedule')
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
