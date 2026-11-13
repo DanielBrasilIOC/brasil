@@ -972,23 +972,6 @@ const refreshButton=document.getElementById('refresh');if(refreshButton)refreshB
 const AUTO_REFRESH_INTERVAL_MS=4*60*60*1000;
 setInterval(()=>{const weekday=new Date().getDay();if(weekday>=1&&weekday<=5)load(false)},AUTO_REFRESH_INTERVAL_MS);
 load();
-function renderBankOrderFolders(d){
-const box=document.getElementById("expenseFolders");if(!box)return;
-const rows=d.rows||[];
-const norm=v=>String(v??"").toLocaleLowerCase("pt-BR").normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]/g,"");
-const q=norm(document.getElementById("obSearchAll")?.value||"");
-const from=document.getElementById("obDateStart")?.value||"",to=document.getElementById("obDateEnd")?.value||"";
-const iso=v=>{const x=String(v??"").trim(),p=x.split("/");if(p.length===3&&p[0].length===2)return p[2]+"-"+p[1]+"-"+p[0];return /^\d{4}-\d{2}-\d{2}/.test(x)?x.slice(0,10):""};
-const unique=new Map();rows.forEach(r=>{const k=String(r.ob??"").trim();if(k&&!unique.has(k))unique.set(k,r)});
-const all=[...unique.values()];
-const records=all.filter(r=>{const text=norm([r.favorecido,r.cnpj,r.ob,r.processo].join(" ")),dt=iso(r.data_pagamento||r.data);return(!q||text.includes(q))&&(!from||dt>=from)&&(!to||dt<=to)}).sort((a,b)=>iso(b.data_pagamento||b.data).localeCompare(iso(a.data_pagamento||a.data))||String(b.ob??"").localeCompare(String(a.ob??""),"pt-BR",{numeric:true}));
-const total=records.reduce((n,r)=>n+N(r.valor),0);
-const months=new Map();records.forEach(r=>{const dt=iso(r.data_pagamento||r.data);if(dt){const m=dt.slice(0,7);months.set(m,(months.get(m)||0)+N(r.valor))}});
-const monthText=[...months.entries()].sort((a,b)=>b[0].localeCompare(a[0])).map(([m,v])=>{const d=new Date(m+"-01T00:00:00Z"),label=new Intl.DateTimeFormat("pt-BR",{month:"long",year:"numeric",timeZone:"UTC"}).format(d);return '<span class="ob-month-item">'+E(label)+'<strong>'+F(v)+'</strong></span>'}).join("");
-document.getElementById("count").textContent=I(records.length)+" OBs no resultado • "+I(all.length)+" na base";
-box.className="panel";
-box.innerHTML='<div class="head"><div><h3>Ordens Bancárias Pagas</h3><p class="desc">Registros únicos por OB, em ordem cronológica decrescente.</p></div><span class="badge ok">'+I(records.length)+' OB no resultado</span></div><div class="ob-summary"><article class="ob-summary-card"><div class="label">Total pago no período</div><div class="value">'+F(total)+'</div><div class="hint">Soma das OBs filtradas</div></article><article class="ob-summary-card"><div class="label">Quantidade de OBs no período</div><div class="value">'+I(records.length)+'</div><div class="hint">Ordens bancárias únicas</div></article></div><div class="ob-month-breakdown"><h4>Total pago por mês — conforme filtros</h4><div class="ob-month-list">'+(monthText||'<span class="tiny">Nenhum pagamento no período.</span>')+'</div></div><div class="scroll"><table><thead><tr><th>Data de pagamento</th><th>Ordem bancária</th><th>CNPJ favorecido</th><th>Favorecido</th><th>Processo</th><th>Valor pago</th></tr></thead><tbody>'+(records.map(r=>'<tr><td>'+E(r.data_pagamento||r.data||"—")+'</td><td>'+E(r.ob||"—")+'</td><td>'+E(r.cnpj||"—")+'</td><td>'+E(r.favorecido||"—")+'</td><td>'+E(r.processo||"—")+'</td><td class="money">'+F(r.valor)+'</td></tr>').join("")||'<tr><td colspan="6">Nenhuma OB encontrada.</td></tr>')+'</tbody></table></div>';
-}
 document.addEventListener("input",ev=>{if(["obSearchAll","obDateStart","obDateEnd"].includes(ev.target?.id)&&active==="ordens_bancarias")drawTable()});
 document.addEventListener("click",ev=>{if(ev.target?.id==="obClearFilters"){["obSearchAll","obDateStart","obDateEnd"].forEach(id=>{const el=document.getElementById(id);if(el)el.value=""});drawTable()}if(ev.target?.id==="obExportPdf"){document.body.classList.add("ob-print-mode");const done=()=>{document.body.classList.remove("ob-print-mode");window.removeEventListener("afterprint",done)};window.addEventListener("afterprint",done);window.print();setTimeout(done,1800)}});
 </script></body></html>
