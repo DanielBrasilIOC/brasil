@@ -759,30 +759,40 @@ box.innerHTML='<div class="head"><div><h3>Aguardando Repasse Orçamentário</h3>
 }
 function sourcesForOB(rows,ob){const key=String(ob??'').trim();if(!key)return [];return [...new Set((rows||[]).filter(r=>String(r.ob??'').trim()===key).map(r=>String(r.fonte??'').trim()).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'pt-BR',{numeric:true}))}
 function renderBankOrderFolders(d){
-const box=document.getElementById('expenseFolders');if(!box)return;
-const rows=d.rows||[];
-const filterField=document.getElementById('obFilterField');
-const query=L(document.getElementById('obFilterValue')?.value||'');
-const key=filterField?.value||'favorecido';
-const matches=r=>{if(!query)return true;if(key==='favorecido')return L(r.favorecido).includes(query);if(key==='data_pagamento')return L(r.data_pagamento||r.data).includes(query);if(key==='valor')return L(F(r.valor)).includes(query)||L(String(r.valor??'')).includes(query);return true;};
-const paymentDateValue=value=>{
- const raw=String(value??'').trim();
- const br=raw.split('/');
- if(br.length===3&&br[0].length===2&&br[1].length===2&&br[2].length===4)return Date.UTC(Number(br[2]),Number(br[1])-1,Number(br[0]));
- const iso=raw.slice(0,10).split('-');
- if(iso.length===3&&iso[0].length===4)return Date.UTC(Number(iso[0]),Number(iso[1])-1,Number(iso[2]));
- const parsed=Date.parse(raw);
- return Number.isFinite(parsed)?parsed:0;
-};
-const unique=new Map();
-rows.forEach(r=>{const ob=String(r.ob??'').trim();if(ob&&!unique.has(ob))unique.set(ob,r);});
-const records=[...unique.values()].filter(matches).sort((a,b)=>{
- const dateDiff=paymentDateValue(b.data_pagamento||b.data)-paymentDateValue(a.data_pagamento||a.data);
- return dateDiff||String(b.ob??'').localeCompare(String(a.ob??''),'pt-BR',{numeric:true});
-});
-const total=[...unique.values()].reduce((sum,r)=>sum+N(r.valor),0);
-box.className='panel';
-box.innerHTML='<div class="head"><div><h3>Ordens Bancárias Pagas</h3><p class="desc">Base sincronizada com o Siafi, com apresentação única por ordem bancária e sem segmentação por fonte pagadora.</p></div><span class="badge ok">'+I(unique.size)+' OB únicas</span></div><div class="repasses-total"><div><div class="label">Total das Ordens Bancárias</div><div class="value">'+F(total)+'</div></div><div><div class="label">Ordens Bancárias únicas</div><div class="value">'+I(unique.size)+'</div></div></div><div class="scroll"><table><thead><tr><th>Data de pagamento</th><th>Ordem bancária</th><th>CNPJ favorecido</th><th>Favorecido</th><th>Processo</th><th>Valor pago</th></tr></thead><tbody>'+(records.map(r=>'<tr><td>'+E(r.data_pagamento||r.data||'—')+'</td><td>'+E(r.ob||'—')+'</td><td>'+E(r.cnpj||'—')+'</td><td title="'+E(r.favorecido||'')+'">'+E(r.favorecido||'—')+'</td><td>'+E(r.processo||'—')+'</td><td class="money">'+F(r.valor)+'</td></tr>').join('')||'<tr><td colspan="6">Nenhuma ordem bancária encontrada.</td></tr>')+'</tbody></table></div>';
+ const box=document.getElementById('expenseFolders');if(!box)return;
+ const rows=Array.isArray(d.rows)?d.rows:[];
+ const parseDate=value=>{
+  const raw=String(value??'').trim();
+  let m=raw.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+  if(m)return new Date(Number(m[3]),Number(m[2])-1,Number(m[1]));
+  m=raw.match(/^(\d{4})-(\d{2})-(\d{2})/);
+  if(m)return new Date(Number(m[1]),Number(m[2])-1,Number(m[3]));
+  const dt=new Date(raw);return Number.isNaN(dt.getTime())?null:dt;
+ };
+ const dateInputValue=value=>{const dt=parseDate(value);return dt?dt.getFullYear()+'-'+String(dt.getMonth()+1).padStart(2,'0')+'-'+String(dt.getDate()).padStart(2,'0'):''};
+ const unique=new Map();
+ rows.forEach(r=>{const ob=String(r.ob??'').trim();if(ob&&!unique.has(ob))unique.set(ob,r)});
+ const all=[...unique.values()].sort((a,b)=>{
+  const da=parseDate(a.data_pagamento||a.data),db=parseDate(b.data_pagamento||b.data);
+  return (db?db.getTime():0)-(da?da.getTime():0)||String(b.ob??'').localeCompare(String(a.ob??''),'pt-BR',{numeric:true});
+ });
+ const q=String(document.getElementById('obSearchAll')?.value||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase('pt-BR').trim();
+ const from=document.getElementById('obDateStart')?.value||'',to=document.getElementById('obDateEnd')?.value||'';
+ const records=all.filter(r=>{
+  const hay=[r.favorecido,r.cnpj,r.ob,r.processo].join(' ').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase('pt-BR');
+  if(q&&!hay.includes(q))return false;
+  const day=dateInputValue(r.data_pagamento||r.data);
+  if(from&&(!day||day<from))return false;
+  if(to&&(!day||day>to))return false;
+  return true;
+ });
+ const total=records.reduce((sum,r)=>sum+N(r.valor),0);
+ const monthly=new Map();
+ records.forEach(r=>{const dt=parseDate(r.data_pagamento||r.data);if(!dt)return;const key=dt.getFullYear()+'-'+String(dt.getMonth()+1).padStart(2,'0');monthly.set(key,(monthly.get(key)||0)+N(r.valor))});
+ const monthText=[...monthly.entries()].sort((a,b)=>b[0].localeCompare(a[0])).map(([key,value])=>{const [year,month]=key.split('-');return '<span><b>'+new Intl.DateTimeFormat('pt-BR',{month:'long',year:'numeric'}).format(new Date(Number(year),Number(month)-1,1))+':</b> '+F(value)+'</span>'}).join(' · ');
+ box.className='panel';
+ box.innerHTML='<div class="head"><div><h3>Ordens Bancárias Pagas</h3><p class="desc">Base sincronizada com o SIAFI, com apresentação única por ordem bancária e sem segmentação por fonte pagadora.</p></div><span class="badge ok">'+I(records.length)+' OB no resultado</span></div><div class="ob-summary"><article class="ob-summary-card"><div class="label">Total pago no período</div><div class="value">'+F(total)+'</div><div class="hint">Soma das OBs filtradas</div></article><article class="ob-summary-card"><div class="label">Quantidade de OBs no período</div><div class="value">'+I(records.length)+'</div><div class="hint">Ordens bancárias únicas</div></article></div><div class="ob-month-breakdown"><h4>Total pago por mês — conforme filtros</h4><div class="ob-month-list">'+(monthText||'<span class="tiny">Nenhum pagamento no período.</span>')+'</div></div><div class="scroll"><table><thead><tr><th>Data de pagamento</th><th>Ordem bancária</th><th>CNPJ favorecido</th><th>Favorecido</th><th>Processo</th><th>Valor pago</th></tr></thead><tbody>'+(records.map(r=>'<tr><td>'+E(r.data_pagamento||r.data||'—')+'</td><td>'+E(r.ob||'—')+'</td><td>'+E(r.cnpj||'—')+'</td><td title="'+E(r.favorecido||'')+'">'+E(r.favorecido||'—')+'</td><td>'+E(r.processo||'—')+'</td><td class="money">'+F(r.valor)+'</td></tr>').join('')||'<tr><td colspan="6">Nenhuma ordem bancária encontrada para os filtros informados.</td></tr>')+'</tbody></table></div>';
+ const count=document.getElementById('count');if(count)count.textContent=I(records.length)+' OBs no resultado • '+I(all.length)+' na base';
 }
 function renderPublicationFolders(d){
  const box=document.getElementById('expenseFolders');if(!box)return;
@@ -821,9 +831,11 @@ function detail(id){
  if(empenhoInput)empenhoInput.oninput=drawTable;const clearEmpenhos=document.getElementById('clearEmpenhosFilters');if(clearEmpenhos)clearEmpenhos.onclick=()=>{if(empenhoInput)empenhoInput.value='';drawTable()};
  if(search)search.oninput=drawTable;
  if(fieldSelect)fieldSelect.onchange=drawTable;
- if(obFilterValue)obFilterValue.oninput=drawTable;if(obFilterField)obFilterField.onchange=drawTable;['filterProcesso','filterNumeroNe','filterFornecedor'].forEach(fid=>{const el=document.getElementById(fid);if(el)el.oninput=drawTable});
+ ['obSearchAll','obDateStart','obDateEnd'].forEach(fid=>{const el=document.getElementById(fid);if(el)el.oninput=drawTable});
+ const obFilters=document.getElementById('obFilters');if(obFilters)obFilters.style.display=id==='ordens_bancarias'?'grid':'none';
+ const detailFilters=document.querySelector('#details .detail-filters');if(detailFilters&&id==='ordens_bancarias')detailFilters.style.display='none';
  const clearDetail=document.getElementById('clearDetail');
- if(clearDetail)clearDetail.onclick=()=>{if(search)search.value='';if(fieldSelect)fieldSelect.value='';const obFilterValue=document.getElementById('obFilterValue');if(obFilterValue)obFilterValue.value='';const obFilterField=document.getElementById('obFilterField');if(obFilterField)obFilterField.value='favorecido';['filterProcesso','filterNumeroNe','filterFornecedor'].forEach(fid=>{const el=document.getElementById(fid);if(el)el.value=''});drawTable()};
+ if(clearDetail)clearDetail.onclick=()=>{if(search)search.value='';if(fieldSelect)fieldSelect.value='';['obSearchAll','obDateStart','obDateEnd','filterProcesso','filterNumeroNe','filterFornecedor'].forEach(fid=>{const el=document.getElementById(fid);if(el)el.value=''});drawTable()};
  drawTable();
 }
 function drawTable(){
