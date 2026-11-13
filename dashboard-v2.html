@@ -887,6 +887,9 @@ async function load(manual=false){
    if(d.id==='ordens_bancarias'){
     const seen=new Set();
     d.rows=d.rows.filter(row=>{const ob=String(row.ob??'').trim();if(!ob||seen.has(ob))return false;seen.add(ob);return true;}).map(row=>{const clean={...row};delete clean.fonte;delete clean.descricao_fonte;return clean;});
+    // Ordem cronológica decrescente: pagamentos mais recentes no topo.
+    const obDateKey=value=>{const raw=String(value??'').trim();const m=raw.match(/^(\\d{2})\\/(\\d{2})\\/(\\d{4})$/);if(m)return Number(m[3])*10000+Number(m[2])*100+Number(m[1]);const iso=raw.match(/^(\\d{4})-(\\d{2})-(\\d{2})/);if(iso)return Number(iso[1])*10000+Number(iso[2])*100+Number(iso[3]);const t=Date.parse(raw);return Number.isFinite(t)?t:0;};
+    d.rows.sort((a,b)=>obDateKey(b.data_pagamento||b.data)-obDateKey(a.data_pagamento||a.data)||String(b.ob??'').localeCompare(String(a.ob??''),'pt-BR',{numeric:true}));
     d.total=Number(d.rows.reduce((sum,row)=>sum+N(row.valor),0).toFixed(2));
     d.detail_count=d.rows.length;
     d.unique_ob_count=d.rows.length;
