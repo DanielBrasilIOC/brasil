@@ -947,10 +947,10 @@ load();
 function renderBankOrderFolders(d){
 const box=document.getElementById("expenseFolders");if(!box)return;
 const rows=d.rows||[];
-const norm=v=>String(v??"").toLocaleLowerCase("pt-BR").normalize("NFD").replace(/[\\u0300-\\u036f]/g,"").replace(/[^a-z0-9]/g,"");
+const norm=v=>String(v??"").toLocaleLowerCase("pt-BR").normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]/g,"");
 const q=norm(document.getElementById("obSearchAll")?.value||"");
 const from=document.getElementById("obDateStart")?.value||"",to=document.getElementById("obDateEnd")?.value||"";
-const iso=v=>{const x=String(v??"").trim(),p=x.split("/");if(p.length===3&&p[0].length===2)return p[2]+"-"+p[1]+"-"+p[0];return /^\\d{4}-\\d{2}-\\d{2}/.test(x)?x.slice(0,10):""};
+const iso=v=>{const x=String(v??"").trim(),p=x.split("/");if(p.length===3&&p[0].length===2)return p[2]+"-"+p[1]+"-"+p[0];return /^\d{4}-\d{2}-\d{2}/.test(x)?x.slice(0,10):""};
 const unique=new Map();rows.forEach(r=>{const k=String(r.ob??"").trim();if(k&&!unique.has(k))unique.set(k,r)});
 const all=[...unique.values()];
 const records=all.filter(r=>{const text=norm([r.favorecido,r.cnpj,r.ob,r.processo].join(" ")),dt=iso(r.data_pagamento||r.data);return(!q||text.includes(q))&&(!from||dt>=from)&&(!to||dt<=to)}).sort((a,b)=>iso(b.data_pagamento||b.data).localeCompare(iso(a.data_pagamento||a.data))||String(b.ob??"").localeCompare(String(a.ob??""),"pt-BR",{numeric:true}));
