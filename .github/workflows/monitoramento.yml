@@ -1,5 +1,9 @@
 name: Monitoramento de serviços públicos
 on:
+  push:
+    paths:
+      - "scripts/monitoramento.py"
+      - ".github/workflows/monitoramento.yml"
   schedule:
     - cron: "*/10 * * * *"
   workflow_dispatch:
