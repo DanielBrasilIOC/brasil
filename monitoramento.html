@@ -46,16 +46,12 @@ table{width:100%;border-collapse:collapse;font-size:12px}th,td{text-align:left;p
   <p class="meta"><a href="https://downdetector.com.br/fora-do-ar/govbr/" target="_blank" rel="noopener">Consultar a página pública do Downdetector</a></p>
 </section>
 
-<section class="panel"><h2>Histórico da última verificação</h2><div class="table-wrap"><table><thead><tr><th>Serviço</th><th>Endereço</th><th>HTTP</th><th>Resposta</th><th>Observação</th></tr></thead><tbody id="rows"><tr><td colspan="5">Carregando…</td></tr></tbody></table></div></section>
-<div class="notice" id="disclaimer">Os resultados são obtidos de um único ponto de verificação. Respostas 401, 403 ou 429 são inconclusivas e não serão tratadas isoladamente como indisponibilidade. A confirmação exige três verificações consecutivas.</div>
-<p class="meta" id="updated">Última atualização: aguardando dados.</p>
+<section class="panel"><h2>Histórico da última verificação</h2><div class="table-wrap"><table><thead><tr><th>Serviço</th><th>Endereço</th><th>HTTP</th><th>Resposta</th></tr></thead><tbody id="rows"><tr><td colspan="4">Carregando…</td></tr></tbody></table></div></section>
 </main><script>
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 async function load(){const cards=document.getElementById("cards"),rows=document.getElementById("rows");try{const r=await fetch("./monitoramento.json?v="+Date.now(),{cache:"no-store"});if(!r.ok)throw Error("HTTP "+r.status);const d=await r.json();cards.innerHTML=d.services.map(s=>{const state=s.confirmed_status==="up"?"Disponível":s.confirmed_status==="down"?"Indisponível":s.observation==="inconclusive"?"Inconclusivo":"Aguardando confirmação";const cls=s.confirmed_status==="up"?"up":s.confirmed_status==="down"?"down":"unknown";return '<article class="card"><h2>'+esc(s.name)+'</h2><div class="state '+cls+'">'+state+'</div><div class="meta">'+esc(s.url)+'</div><div class="meta">HTTP '+esc(s.http_status??"—")+' · '+esc(s.latency_ms)+' ms · sequência '+esc(s.streak)+'/3</div></article>'}).join("");
-rows.innerHTML=d.services.map(s=>'<tr><td>'+esc(s.name)+'</td><td><a href="'+esc(s.url)+'" target="_blank" rel="noopener">'+esc(s.url)+'</a></td><td>'+esc(s.http_status??"—")+'</td><td>'+esc(s.latency_ms)+' ms</td><td>'+esc(s.error||s.note)+'</td></tr>').join("");
-document.getElementById("updated").textContent="Última execução: "+new Date(d.generated_at).toLocaleString("pt-BR",{timeZone:"America/Sao_Paulo"})+" · Frequência programada: 10 minutos";
-document.getElementById("disclaimer").textContent=d.disclaimer+" A confirmação de estado exige três verificações consecutivas; 401, 403 e 429 são inconclusivos.";
-}catch(e){cards.innerHTML='<article class="card"><div class="state unknown">Dados ainda não publicados</div><div class="meta">'+esc(e.message)+'</div></article>';rows.innerHTML='<tr><td colspan="5">A primeira execução automática ainda não gerou resultados.</td></tr>'}}
+rows.innerHTML=d.services.map(s=>'<tr><td>'+esc(s.name)+'</td><td><a href="'+esc(s.url)+'" target="_blank" rel="noopener">'+esc(s.url)+'</a></td><td>'+esc(s.http_status??"—")+'</td><td>'+esc(s.latency_ms)+' ms</td></tr>').join("");
+}catch(e){cards.innerHTML='<article class="card"><div class="state unknown">Dados ainda não publicados</div><div class="meta">'+esc(e.message)+'</div></article>';rows.innerHTML='<tr><td colspan="4">A primeira execução automática ainda não gerou resultados.</td></tr>'}}
 
 async function loadCommunity(){
  const wrap=document.getElementById("ddChartWrap");
