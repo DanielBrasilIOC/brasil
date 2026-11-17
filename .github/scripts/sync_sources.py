@@ -105,6 +105,24 @@ def total(rows,key): return round(sum(float(r.get(key) or 0) for r in rows),2)
 def check(ok,msg):
     if not ok: raise ValueError(msg)
 
+def parse_empenhos(text):
+    """Interpreta o leiaute SERPRO de seis colunas, incluindo processo e saldo."""
+    a=table(text,"\t",["NE CCor","Saldo - Moeda Origem"])
+    empenhos=[]
+    for r in a:
+        check(len(r)>=6, f"Registro incompleto em Empenhos 2026 (esperadas 6 colunas): {r!r}")
+        v=money(r[5])
+        check(v is not None, f"Saldo inválido em Empenhos 2026: {r!r}")
+        empenhos.append({
+            "empenho":r[0], "ne_ccor":r[0], "subitem":r[4], "natureza":r[4],
+            "cnpj":r[2], "fornecedor":r[3], "observacao":"",
+            "fonte_recursos_detalhada":"", "saldo":v, "processo":r[1]
+        })
+    te=total(empenhos,"saldo")
+    check(1<=len(empenhos)<=1000 and te>=0,
+          f"Validação de Empenhos 2026 falhou: linhas={len(empenhos)}, total={te}")
+    return empenhos,te
+
 def atomic_json_write(path, payload):
     """Escreve JSON temporário e só troca o destino após gravação completa."""
     path = Path(path)
@@ -119,14 +137,9 @@ def atomic_json_write(path, payload):
 def main():
     src={k:download(v) for k,v in SOURCES.items()}
 
-    # Empenhos 2026: exportação atual tem 5 campos: NE CCor, CNPJ, favorecido, natureza, saldo.
-    a=table(src["empenhos"],"\t",["NE CCor","Saldo - Moeda Origem"])
-    empenhos=[]
-    for r in a:
-        v=money(r[4] if len(r)>4 else None)
-        check(v is not None, f"Saldo inválido em Empenhos 2026: {r!r}")
-        empenhos.append({"empenho":r[0] if len(r)>0 else "","ne_ccor":r[0] if len(r)>0 else "","subitem":r[3] if len(r)>3 else "","natureza":r[3] if len(r)>3 else "","cnpj":r[1] if len(r)>1 else "","fornecedor":r[2] if len(r)>2 else "","observacao":"","fonte_recursos_detalhada":"","saldo":v})
-    te=total(empenhos,"saldo"); check(1<=len(empenhos)<=500 and te>=0,f"Validação de Empenhos 2026 falhou: linhas={len(empenhos)}, total={te}")
+    # Empenhos 2026: leiaute SERPRO com NE, processo, CNPJ, favorecido,
+    # natureza de despesa detalhada e saldo (seis colunas).
+    empenhos,te=parse_empenhos(src["empenhos"])
 
     # Saldo Orçamentário SERPRO: sete campos (código/descrição para UG,
     # Fonte e Natureza, seguidos do saldo). O cabeçalho contém células vazias
