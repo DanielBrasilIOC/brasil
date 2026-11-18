@@ -15,7 +15,7 @@ def sources():
     if not CACHE_PATH.exists(): raise RuntimeError("IDs das fontes nÃ£o foram descobertos nesta execuÃ§Ã£o.")
     x=json.loads(CACHE_PATH.read_text(encoding="utf-8"))
     if not isinstance(x,dict) or set(x)!=set(KEYS) or len(set(x.values()))!=7:
-        raise RuntimeError("A descoberta nÃ£o retornou exatamente seis IDs distintos.")
+        raise RuntimeError("A descoberta não retornou exatamente sete IDs distintos.")
     return x
 SOURCES=sources()
 
