@@ -106,29 +106,43 @@ def check(ok,msg):
     if not ok: raise ValueError(msg)
 
 def parse_empenhos(text):
-    """Interpreta o leiaute SERPRO de Empenhos por nome de coluna (cinco ou mais colunas)."""
+    """Interpreta o leiaute SERPRO de Empenhos 2026, preservando PI e PTRES."""
     a=table(text,"\t",["NE CCor","Saldo - Moeda Origem"])
     header=AUDIT[norm("NE CCor")]["header"]
     def col(label):
         target=norm(label)
         return next((i for i,h in enumerate(header) if norm(h)==target),None)
+    def col_any(*labels):
+        for label in labels:
+            i=col(label)
+            if i is not None: return i
+        return None
     ne_i=col("NE CCor")
     cnpj_i=col("NE CCor - Favorecido")
     natureza_i=col("Natureza Despesa Detalhada")
-    saldo_i=col("Saldo - Moeda Origem (Conta Contábil)")
-    check(all(i is not None for i in (ne_i,cnpj_i,natureza_i,saldo_i)),
-          f"Cabeçalho incompleto em Empenhos 2026: {header!r}")
+    pi_i=col_any("PI","Programa Interno")
+    pi_nome_i=col_any("PI Nome","Nome PI","Descrição PI","Descricao PI","Programa Interno Nome")
+    ptres_i=col("PTRES")
+    saldo_i=col_any("Saldo - Moeda Origem (Conta Contábil)","Saldo - Moeda Origem")
+    check(all(i is not None for i in (ne_i,cnpj_i,natureza_i,saldo_i,pi_i,ptres_i)),
+          f"Cabeçalho incompleto em Empenhos 2026 (esperados PI e PTRES): {header!r}")
     fornecedor_i=cnpj_i+1
-    required=max(ne_i,cnpj_i,fornecedor_i,natureza_i,saldo_i)
+    required=max(ne_i,cnpj_i,fornecedor_i,natureza_i,pi_i,ptres_i,saldo_i,
+                 pi_nome_i if pi_nome_i is not None else 0)
     empenhos=[]
     for r in a:
         check(len(r)>required, f"Registro incompleto em Empenhos 2026: {r!r}")
         v=money(r[saldo_i])
         check(v is not None, f"Saldo inválido em Empenhos 2026: {r!r}")
+        nd=re.sub(r"\D","",clean(r[natureza_i]))
+        natureza=nd[:6] if len(nd)==8 else clean(r[natureza_i])
+        subitem=nd[6:8] if len(nd)==8 else ""
         empenhos.append({
             "empenho":r[ne_i], "ne_ccor":r[ne_i],
-            "subitem":r[natureza_i], "natureza":r[natureza_i],
-            "cnpj":r[cnpj_i], "fornecedor":r[fornecedor_i], "observacao":"",
+            "subitem":subitem, "natureza":natureza,
+            "cnpj":r[cnpj_i], "fornecedor":r[fornecedor_i],
+            "pi":r[pi_i], "pi_nome":r[pi_nome_i] if pi_nome_i is not None else "",
+            "ptres":r[ptres_i], "observacao":"",
             "fonte_recursos_detalhada":"", "saldo":v
         })
     te=total(empenhos,"saldo")
