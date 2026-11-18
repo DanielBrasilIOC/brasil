@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Sincroniza as seis fontes CSV do Drive, valida registros e valores e atualiza data.json."""
+"""Sincroniza as sete fontes CSV do Drive, valida registros e valores e atualiza data.json."""
 import csv, hashlib, json, os, re, tempfile, unicodedata, urllib.parse, urllib.request
 from datetime import datetime, timezone
 from decimal import Decimal, InvalidOperation
@@ -8,13 +8,13 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
 DATA_PATH=ROOT/"data.json"; REPASSES_PATH=ROOT/"repasses.json"; STATE_PATH=ROOT/"source_state.json"
 CACHE_PATH=ROOT/".drive_source_ids.json"; DIARIAS_ID_PATH=ROOT/".diarias_source_id"
-KEYS=("empenhos","orcamentario","ordens_bancarias","financeiro","restos","diarias")
+KEYS=("empenhos","orcamentario","ordens_bancarias","financeiro","restos","diarias","apropriacao_pendente")
 AUDIT={}
 
 def sources():
     if not CACHE_PATH.exists(): raise RuntimeError("IDs das fontes nÃ£o foram descobertos nesta execuÃ§Ã£o.")
     x=json.loads(CACHE_PATH.read_text(encoding="utf-8"))
-    if not isinstance(x,dict) or set(x)!=set(KEYS) or len(set(x.values()))!=6:
+    if not isinstance(x,dict) or set(x)!=set(KEYS) or len(set(x.values()))!=7:
         raise RuntimeError("A descoberta nÃ£o retornou exatamente seis IDs distintos.")
     return x
 SOURCES=sources()
@@ -124,6 +124,63 @@ def parse_empenhos(text):
     return empenhos,te
 
 
+
+def parse_apropriacao_pendente(text):
+    """Consolida por Documento Hábil: NFs e fontes são discriminadas, sem somar valores repetidos."""
+    data_rows=table(text,",",["Documento Hábil","Nota Fiscal","Fonte Recursos Det.","Valor Bruto"])
+    header=AUDIT[norm("Documento Hábil")]["header"]
+    def idx(label):
+        return next((i for i,h in enumerate(header) if norm(h)==norm(label)),None)
+    doc_i=idx("Documento Hábil"); cnpj_i=idx("Fornecedor"); nf_i=idx("Nota Fiscal")
+    source_i=idx("Fonte Recursos Det."); situation_i=idx("Situação da Despesa")
+    amount_i=idx("Valor Bruto"); obs_i=idx("DH - Observação")
+    required=[doc_i,cnpj_i,nf_i,source_i,situation_i,amount_i,obs_i]
+    check(all(i is not None for i in required),"Cabeçalho incompleto em Apropriação Pendente de Pagamento.")
+    check(max(cnpj_i+1,source_i+1,situation_i+1)<len(header),
+          "Colunas descritivas ausentes em Apropriação Pendente de Pagamento.")
+    groups={}
+    for row in data_rows:
+        check(len(row)>max(cnpj_i+1,source_i+1,situation_i+1,amount_i,obs_i),
+              f"Registro incompleto em Apropriação Pendente de Pagamento: {row!r}")
+        doc=clean(row[doc_i]); nf=clean(row[nf_i]); amount=money(row[amount_i])
+        check(bool(doc and nf and clean(row[source_i]) and amount is not None),
+              f"Documento, Nota Fiscal, fonte ou valor inválido em Apropriação Pendente: {row!r}")
+        group=groups.setdefault(doc,{"amounts":set(),"nfs":set(),"sources":set(),
+                                     "situations":set(),"cnpjs":set(),"suppliers":set(),
+                                     "observations":set(),"source_rows":0})
+        group["amounts"].add(round(amount,2)); group["nfs"].add(nf)
+        group["cnpjs"].add(clean(row[cnpj_i])); group["suppliers"].add(clean(row[cnpj_i+1]))
+        source=clean(row[source_i]); source_desc=clean(row[source_i+1])
+        group["sources"].add(source + (" — "+source_desc if source_desc else ""))
+        situation=clean(row[situation_i]); situation_desc=clean(row[situation_i+1])
+        group["situations"].add(situation + (" — "+situation_desc if situation_desc else ""))
+        if clean(row[obs_i]): group["observations"].add(clean(row[obs_i]))
+        group["source_rows"]+=1
+    result=[]
+    for doc,group in groups.items():
+        check(len(group["amounts"])==1,
+              "Valores divergentes para o mesmo Documento Hábil "+doc+
+              "; atualização bloqueada para evitar soma ou escolha arbitrária.")
+        value=next(iter(group["amounts"]))
+        result.append({
+            "documento_habil":doc,
+            "cnpj":" / ".join(sorted(x for x in group["cnpjs"] if x)),
+            "fornecedor":" / ".join(sorted(x for x in group["suppliers"] if x)),
+            "notas_fiscais_pendentes":", ".join(sorted(group["nfs"])),
+            "quantidade_notas":len(group["nfs"]),
+            "fontes_recursos":" | ".join(sorted(group["sources"])),
+            "situacao_despesa":" | ".join(sorted(group["situations"])),
+            "valor":value,
+            "quantidade_linhas_origem":group["source_rows"],
+            "observacao":" | ".join(sorted(group["observations"]))
+        })
+    result.sort(key=lambda r:r["documento_habil"])
+    check(1<=len(result)<=5000,f"Quantidade inválida de Documentos Hábeis pendentes: {len(result)}")
+    check(len({r["documento_habil"] for r in result})==len(result),
+          "Documento Hábil repetido após consolidação; atualização bloqueada.")
+    return result,total(result,"valor")
+
+
 def atomic_json_write(path, payload):
     """Escreve JSON temporÃ¡rio e sÃ³ troca o destino apÃ³s gravaÃ§Ã£o completa."""
     path = Path(path)
@@ -211,7 +268,8 @@ def main():
     td=total(diarias,"valor")
     check(1<=len(diarias)<=1000 and all(r["favorecido"] for r in diarias),f"ValidaÃ§Ã£o de DiÃ¡rias Pagas falhou: linhas={len(diarias)}, total={td}")
 
-    updates={"financeiro":(fin,tf),"restos":(rap,trp),"empenhos":(empenhos,te),"orcamentario":(orc,to),"ordens_bancarias":(ob,tob)}
+    apropriacao,ta=parse_apropriacao_pendente(src["apropriacao_pendente"])
+    updates={"financeiro":(fin,tf),"restos":(rap,trp),"empenhos":(empenhos,te),"orcamentario":(orc,to),"ordens_bancarias":(ob,tob),"apropriacao_pendente":(apropriacao,ta)}
     data=json.loads(DATA_PATH.read_text(encoding="utf-8")); data["datasets"]=[d for d in data.get("datasets",[]) if d.get("id")!="documentos_habeis_pendentes"]
     ds={d.get("id"):d for d in data.get("datasets",[])}; check(all(k in ds for k in updates) and "diarias_pagas" in ds,"Dataset esperado ausente em data.json")
     def brl(x): return f"{x:,.2f}".replace(",","X").replace(".",",").replace("X",".")
@@ -222,6 +280,7 @@ def main():
       "orcamentario":f"Fonte oficial: Saldo Orçamentário.csv. {len(orc)} registros detalhados. Total: R$ {brl(to)}.",
       "repasses":"Fonte: SAORC/PLANEJAMENTO IOC. Aguardando Orçamento da COGEAD.",
       "ordens_bancarias":f"Fonte: ORDEM BANCARIAS EMITIDAS.csv. {len(ob)} registros únicos por OB, sem coluna Fonte. Total Valor (R$): R$ {brl(tob)}.",
+       "apropriacao_pendente":f"Fonte: Apropriação Pendente de Pagamento.csv. {len(apropriacao)} documentos hábeis consolidados em {sum(r['quantidade_linhas_origem'] for r in apropriacao)} linhas de origem. Notas fiscais e fontes são discriminadas; valores repetidos por documento hábil são contabilizados uma única vez. Total: R$ {brl(ta)}.",
     }
     diarias_note=f"Diárias Pagas: {len(diarias)} registros da planilha DIARIAS PAGAS.csv. Total: R$ {brl(td)}."
     diarias_url="https://drive.google.com/file/d/"+SOURCES["diarias"]+"/view"
@@ -235,6 +294,7 @@ def main():
     ds["financeiro"]["source_name"]="Saldo Financeiro"
     pub=ds.get("publicacoes_pagas",{}); pub_note=f"PublicaÃ§Ãµes Pagas: {len(pubs)} registros da planilha de Ordens BancÃ¡rias, filtrados pelo cÃ³digo do favorecido iniciado por EX. Total: R$ {brl(tp)}."; pub_url="https://drive.google.com/file/d/"+SOURCES["ordens_bancarias"]+"/view"; pub_changed=pub.get("rows")!=pubs or pub.get("total")!=tp or pub.get("note")!=pub_note or pub.get("source_url")!=pub_url; pub["rows"]=pubs; pub["total"]=tp; pub["detail_count"]=len(pubs); pub["source_url"]=pub_url; pub["source_name"]="ORDEM BANCARIAS EMITIDAS.csv"; pub["note"]=pub_note
     ds["ordens_bancarias"]["source_name"]="ORDEM BANCARIAS EMITIDAS.csv"
+    ds["apropriacao_pendente"]["source_name"]="Apropriação Pendente de Pagamento.csv"
     changed=source_changed or pub_changed or diarias_changed or any(ds[k].get("rows")!=rows or ds[k].get("total")!=amount or ds[k].get("note")!=notes[k] for k,(rows,amount) in updates.items())
     if not changed:
         print(json.dumps({"status":"SEM_ALTERACOES","changed":False,"generated_at":data.get("generated_at"),"fontes_alteradas":[]},ensure_ascii=False)); return
