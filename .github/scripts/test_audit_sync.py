@@ -36,6 +36,35 @@ class CsvDecodeTests(unittest.TestCase):
         with self.assertRaises(UnicodeDecodeError):
             sync.decode_csv_bytes(b"\xff\xfe\x00")
 
+
+class AppropriacaoPendenteTests(unittest.TestCase):
+    SAMPLE = (
+        "Apropriação Pendente de Pagamento\n\n"
+        "Filtro do relatório:\n"
+        "filtro demonstrativo\n\n"
+        '"Documento Hábil","Fornecedor",,"Nota Fiscal","Fonte Recursos Det.",,"Situação da Despesa",,"Valor Bruto","DH - Observação"\n'
+        '"DH1","111","Fornecedor A","NF001","1001000000","Fonte A","DSP101","Despesa A","R$ 10,00","Obs"\n'
+        '"DH1","111","Fornecedor A","NF002","1002000000","Fonte B","DSP101","Despesa A","R$ 10,00","Obs"\n'
+        '"DH2","222","Fornecedor B","NF003","1001000000","Fonte A","DSP001","Despesa B","R$ 20,00","Obs 2"\n'
+    )
+
+    def test_consolida_nfs_e_fontes_sem_somar_documento_repetido(self):
+        rows, total = sync.parse_apropriacao_pendente(self.SAMPLE)
+        self.assertEqual(len(rows), 2)
+        first = next(r for r in rows if r["documento_habil"] == "DH1")
+        self.assertEqual(first["notas_fiscais_pendentes"], "NF001, NF002")
+        self.assertEqual(first["quantidade_notas"], 2)
+        self.assertIn("1001000000", first["fontes_recursos"])
+        self.assertIn("1002000000", first["fontes_recursos"])
+        self.assertEqual(first["valor"], 10.0)
+        self.assertEqual(total, 30.0)
+
+    def test_valores_diferentes_no_mesmo_documento_bloqueiam(self):
+        conflict = self.SAMPLE.replace('"R$ 10,00","Obs"\n', '"R$ 11,00","Obs"\n', 1)
+        with self.assertRaises(ValueError):
+            sync.parse_apropriacao_pendente(conflict)
+
+
 class RowDiffTests(unittest.TestCase):
     def test_inclusao_de_registro(self):
         before = {"orcamentario": ["a", "b"]}
