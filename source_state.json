@@ -1,11 +1,1 @@
-{
-  "hashes": {
-    "apropriacao_pendente": "0c0f862a2b8c2c3e126b6b2fe41e14695a5636248b247b4661aa69e8b2636069",
-    "diarias": "e66e934c754e599af97d8cac94503d9b7aceb74ae6d33af30d01c2e2edfe7248",
-    "ordens_bancarias": "45a0199c7c938d75e0d1cde25b9cd19b27afa6da96c460d56ed4832fa99acc2a",
-    "restos": "c1cb8b17db2d36d71d50f88a4159602af3463ed60d6d2084d5d8223d412b6413",
-    "financeiro": "e1266eeabbe30e5f9892a49793ebdb90245ec560a6a3f91847d78631d42ca3cf",
-    "empenhos": "reprocessar-com-novo-leiaute-PI-PTRES",
-    "orcamentario": "ba75ffc323fa6664b82c28127fc02ea33e1f641cfcb3cd39dbb1dc060a02876a"
-  }
-}
+{"hashes":{"apropriacao_pendente":"0c0f862a2b8c2c3e126b6b2fe41e14695a5636248b247b4661aa69e8b2636069","diarias":"e66e934c754e599af97d8cac94503d9b7aceb74ae6d33af30d01c2e2edfe7248","ordens_bancarias":"45a0199c7c938d75e0d1cde25b9cd19b27afa6da96c460d56ed4832fa99acc2a","restos":"c1cb8b17db2d36d71d50f88a4159602af3463ed60d6d2084d5d8223d412b6413","financeiro":"e1266eeabbe30e5f9892a49793ebdb90245ec560a6a3f91847d78631d42ca3cf","empenhos":"334dcd44302a6dcac337904bcae4ab690cbfc9ed55d4b5c8dc87d4c3cf649d87","orcamentario":"ba75ffc323fa6664b82c28127fc02ea33e1f641cfcb3cd39dbb1dc060a02876a"}}
