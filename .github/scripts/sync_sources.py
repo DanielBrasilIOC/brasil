@@ -216,14 +216,14 @@ def main():
     ds={d.get("id"):d for d in data.get("datasets",[])}; check(all(k in ds for k in updates) and "diarias_pagas" in ds,"Dataset esperado ausente em data.json")
     def brl(x): return f"{x:,.2f}".replace(",","X").replace(".",",").replace("X",".")
     notes={
-      "financeiro":f"ExtraÃ§Ã£o do SIAFI. Cada linha mantÃ©m sua prÃ³pria VinculaÃ§Ã£o Pagamento. {len(fin)} registros. Total detalhado: R$ {brl(tf)}.",
+      "financeiro":f"Extração do SIAFI. Cada linha mantém sua própria Vinculação Pagamento. {len(fin)} registros. Total detalhado: R$ {brl(tf)}.",
       "restos":f"Fonte SIAFI: Restos a Pagar. {len(rap)} registros com saldo diferente de zero. Total detalhado: R$ {brl(trp)}.",
       "empenhos":f"Fonte SIAFI: Saldo nos empenhos 2026. {len(empenhos)} registros detalhados. Total: R$ {brl(te)}.",
-      "orcamentario":f"Fonte oficial: Saldo OrÃ§amentÃ¡rio.csv. {len(orc)} registros detalhados. Total: R$ {brl(to)}.",
-      "repasses":"Fonte: SAORC/PLANEJAMENTO IOC. Aguardando OrÃ§amento da COGEAD.",
-      "ordens_bancarias":f"Fonte: ORDEM BANCARIAS EMITIDAS.csv. {len(ob)} registros Ãºnicos por OB, sem coluna Fonte. Total Valor (R$): R$ {brl(tob)}.",
+      "orcamentario":f"Fonte oficial: Saldo Orçamentário.csv. {len(orc)} registros detalhados. Total: R$ {brl(to)}.",
+      "repasses":"Fonte: SAORC/PLANEJAMENTO IOC. Aguardando Orçamento da COGEAD.",
+      "ordens_bancarias":f"Fonte: ORDEM BANCARIAS EMITIDAS.csv. {len(ob)} registros únicos por OB, sem coluna Fonte. Total Valor (R$): R$ {brl(tob)}.",
     }
-    diarias_note=f"DiÃ¡rias Pagas: {len(diarias)} registros da planilha DIARIAS PAGAS.csv. Total: R$ {brl(td)}."
+    diarias_note=f"Diárias Pagas: {len(diarias)} registros da planilha DIARIAS PAGAS.csv. Total: R$ {brl(td)}."
     diarias_url="https://drive.google.com/file/d/"+SOURCES["diarias"]+"/view"
     diarias_ds=ds["diarias_pagas"]
     diarias_changed=(diarias_ds.get("rows")!=diarias or diarias_ds.get("total")!=td or diarias_ds.get("note")!=diarias_note or diarias_ds.get("source_url")!=diarias_url or diarias_ds.get("source_name")!="DIARIAS PAGAS.csv")
