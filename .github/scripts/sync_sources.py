@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Sincroniza as sete fontes CSV do Drive, valida registros e valores e atualiza data.json."""
+"""Sincroniza as sete fontes CSV do Drive, valida registros e valores e atualiza data.json, inclusive PI/PTRES."""
 import csv, hashlib, json, os, re, tempfile, unicodedata, urllib.parse, urllib.request
 from datetime import datetime, timezone
 from decimal import Decimal, InvalidOperation
