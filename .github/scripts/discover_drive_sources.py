@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Localiza as seis fontes oficiais do painel pelo nome dentro da pasta do Drive.
+"""Localiza as sete fontes oficiais do painel pelo nome dentro da pasta do Drive.
 
 O ID do arquivo pode mudar quando um CSV é apagado e reenviado. Por isso, a
 regra de produção é: pasta oficial + nome exato normalizado. IDs antigos nunca
@@ -18,7 +18,7 @@ ROOT = Path(__file__).resolve().parents[2]
 CACHE = ROOT / ".drive_source_ids.json"
 FOLDER_DEFAULT = "1Ae3_31uGRNvfvnN5euhiNHbk_mdkVg0L"
 
-# Somente as seis fontes SERPRO são automáticas. Aguardando Repasse
+# Somente as sete fontes SERPRO são automáticas. Aguardando Repasse
 # Orçamentário é uma fonte manual e fica deliberadamente fora desta lista.
 EXPECTED_NAMES = {
     "empenhos": ("Saldo nos empenhos 2026.csv",),
@@ -27,6 +27,7 @@ EXPECTED_NAMES = {
     "financeiro": ("Saldo Financeiro.csv",),
     "restos": ("Restos a Pagar.csv",),
     "diarias": ("DIARIAS PAGAS.csv",),
+    "apropriacao_pendente": ("Apropriação Pendente de Pagamento.csv",),
 }
 
 
@@ -37,7 +38,7 @@ def normalize(value):
 
 def validate_ids(ids):
     if not isinstance(ids, dict) or set(ids) != set(EXPECTED_NAMES):
-        raise ValueError("Não foram resolvidas exatamente as seis fontes esperadas")
+        raise ValueError("Não foram resolvidas exatamente as sete fontes esperadas")
     if not all(isinstance(v, str) and v.strip() for v in ids.values()):
         raise ValueError("Foi encontrado ID vazio ou inválido")
     if len(set(ids.values())) != len(EXPECTED_NAMES):
@@ -170,12 +171,12 @@ def discover_source_ids():
 def main():
     ids = discover_source_ids()
     summary = os.environ.get("GITHUB_STEP_SUMMARY")
-    message = "Seis fontes localizadas pelo nome dentro da pasta oficial do Drive; os IDs foram resolvidos nesta execução."
+    message = "Sete fontes localizadas pelo nome dentro da pasta oficial do Drive; os IDs foram resolvidos nesta execução."
     if summary:
         with open(summary, "a", encoding="utf-8") as out:
             out.write("## Fontes oficiais do Drive\n\n")
             out.write("- **Status:** FONTES_LOCALIZADAS_POR_NOME\n")
-            out.write(f"- **Fontes:** {len(ids)}/6\n")
+            out.write(f"- **Fontes:** {len(ids)}/7\n")
             out.write(f"- **Pasta:** `{os.environ.get('GOOGLE_DRIVE_FOLDER_ID', FOLDER_DEFAULT)}`\n")
             out.write(f"- {message}\n")
     print(json.dumps({"status": "FONTES_LOCALIZADAS_POR_NOME", "fontes": len(ids), "mensagem": message, "ids": ids}, ensure_ascii=False))
