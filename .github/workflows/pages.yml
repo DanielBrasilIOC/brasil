@@ -64,7 +64,7 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Localizar os seis CSVs oficiais pelo nome na pasta pública do Drive
+      - name: Localizar os sete CSVs oficiais pelo nome na pasta pública do Drive
         env:
           GOOGLE_DRIVE_FOLDER_ID: "1Ae3_31uGRNvfvnN5euhiNHbk_mdkVg0L"
         run: python .github/scripts/discover_drive_sources.py
