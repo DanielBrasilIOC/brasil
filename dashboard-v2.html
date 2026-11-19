@@ -1407,10 +1407,10 @@ async function load(manual=false){
   },45000);
  });
  window.addEventListener('message',function(event){
-  if(event.source!==frame.contentWindow)return;
   const result=event.data;
   if(!result||typeof result!=='object'||typeof result.sucesso!=='boolean')return;
-  if(result.nonce&&result.nonce!==pendingNonce)return;
+  // Apps Script HtmlService pode responder por um frame interno; o nonce identifica esta submissão.
+  if(!pendingNonce||result.nonce!==pendingNonce)return;
   if(responseTimer)clearTimeout(responseTimer);
   button.disabled=false;
   button.textContent='Enviar mensagem';
