@@ -1402,18 +1402,30 @@ async function load(manual=false){
   if(responseTimer)clearTimeout(responseTimer);
   responseTimer=setTimeout(function(){
    button.disabled=false;
-   button.textContent='Tentar novamente';
-   showFeedbackStatus('Não recebemos a confirmação do serviço. Sua mensagem pode não ter sido enviada; tente novamente.','error');
+   button.textContent='Reenviar após verificar';
+   showFeedbackStatus('O serviço não confirmou o retorno ao painel. A mensagem pode ter sido enviada. Verifique seu e-mail antes de reenviar para evitar duplicidade.','error');
   },45000);
  });
  window.addEventListener('message',function(event){
-  const result=event.data;
+  let result=event.data;
+
+  // Algumas camadas de iframe podem transportar a resposta como texto JSON.
+  if(typeof result==='string'){
+   try{result=JSON.parse(result)}catch(ignore){return}
+  }
+  if(result&&typeof result==='object'&&typeof result.data==='string'){
+   try{result=JSON.parse(result.data)}catch(ignore){}
+  }
+
   if(!result||typeof result!=='object'||typeof result.sucesso!=='boolean')return;
-  // Apps Script HtmlService pode responder por um frame interno; o nonce identifica esta submissão.
+  // O nonce vincula a confirmação à submissão atual.
   if(!pendingNonce||result.nonce!==pendingNonce)return;
+
   if(responseTimer)clearTimeout(responseTimer);
+  responseTimer=null;
   button.disabled=false;
   button.textContent='Enviar mensagem';
+
   if(result.sucesso){
    showFeedbackStatus(result.mensagem||'Mensagem enviada com sucesso!','success');
    form.reset();
