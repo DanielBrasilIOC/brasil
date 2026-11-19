@@ -1388,17 +1388,32 @@ async function load(manual=false){
  const nonceField=document.getElementById('feedbackNonce');
  if(!form||!frame||!button||!status||!nonceField)return;
  let pendingNonce='';
+ let awaitingResponse=false;
  let responseTimer=null;
  function showFeedbackStatus(message,kind){
   status.textContent=message;
   status.className=kind||'';
  }
+ // O iframe pode concluir o POST sem disparar postMessage para a página.
+ // O evento load funciona mesmo quando a resposta vem de outro domínio.
+ frame.addEventListener('load',function(){
+  if(!awaitingResponse)return;
+  awaitingResponse=false;
+  if(responseTimer)clearTimeout(responseTimer);
+  responseTimer=null;
+  form.reset();
+  pendingNonce='';
+  button.disabled=false;
+  button.textContent='Enviar mensagem';
+  showFeedbackStatus('Enviado com sucesso!','success');
+ });
  form.addEventListener('submit',function(){
   pendingNonce=(window.crypto&&crypto.randomUUID)?crypto.randomUUID():String(Date.now())+'-'+Math.random().toString(36).slice(2);
   nonceField.value=pendingNonce;
+  awaitingResponse=true;
   button.disabled=true;
-  button.textContent='Enviado';
-  showFeedbackStatus('Enviado com sucesso!','success');
+  button.textContent='Enviando…';
+  showFeedbackStatus('Enviando…','');
   if(responseTimer)clearTimeout(responseTimer);
  });
  window.addEventListener('message',function(event){
@@ -1422,10 +1437,12 @@ async function load(manual=false){
   button.textContent='Enviar mensagem';
 
   if(result.sucesso){
+   awaitingResponse=false;
    showFeedbackStatus('Enviado com sucesso!','success');
    form.reset();
    pendingNonce='';
   }else{
+   awaitingResponse=false;
    showFeedbackStatus(result.mensagem||'Não foi possível enviar a mensagem. Tente novamente.','error');
   }
  });
