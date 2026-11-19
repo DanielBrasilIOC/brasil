@@ -6,6 +6,7 @@ on:
     paths:
       - "index.html"
       - "dashboard-v2.html"
+      - "preview-executivo.html"
       - "repasses.json"
       - "data.json"
       - ".github/workflows/pages-ui-hotfix.yml"
