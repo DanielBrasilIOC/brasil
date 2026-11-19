@@ -799,6 +799,31 @@ table{min-width:max-content}
 @media(prefers-reduced-motion:reduce){
  *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
 }
+
+/* Menu lateral: permitir que os nomes longos ocupem mais de uma linha */
+@media(min-width:761px){
+  .shell{grid-template-columns:minmax(220px,250px) minmax(0,1fr)!important}
+  aside{min-width:0}
+  .nav{min-width:0;width:100%}
+  .nav button{
+    display:block!important;
+    width:100%;
+    min-width:0;
+    height:auto!important;
+    min-height:42px;
+    white-space:normal!important;
+    overflow:visible!important;
+    text-overflow:clip!important;
+    overflow-wrap:break-word!important;
+    word-break:normal!important;
+    line-height:1.4!important;
+    text-align:left;
+  }
+}
+@media(min-width:761px) and (max-width:1000px){
+  .shell{grid-template-columns:minmax(220px,230px) minmax(0,1fr)!important}
+}
+
 </style><style id="prestacao-filter-refinement">#details[data-dataset="prestacao_servicos"] .prestacao-filters{display:grid!important;grid-template-columns:minmax(220px,1fr);gap:9px;max-width:480px;width:100%;padding:0 20px}#details[data-dataset="prestacao_servicos"] .prestacao-filter-label{display:grid;gap:5px;font-size:12px;font-weight:700;color:var(--n)}#details[data-dataset="prestacao_servicos"] .prestacao-filter-label input,#details[data-dataset="prestacao_servicos"] .prestacao-filter-label select{width:100%;min-width:0;min-height:42px}#details[data-dataset="prestacao_servicos"] #clearDetail{display:none!important}@media(max-width:700px){#details[data-dataset="prestacao_servicos"] .prestacao-filters{padding-left:15px;padding-right:15px}}
 /* Saldo financeiro: código e descrição da vinculação de pagamento */
 #details[data-dataset="financeiro"] td.vinculo-cell{white-space:normal;text-align:center;vertical-align:middle}
