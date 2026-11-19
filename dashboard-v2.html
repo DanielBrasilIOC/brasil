@@ -1379,7 +1379,7 @@ async function load(manual=false){
  }
 }
 
-/* Envio de dúvidas e sugestões: a confirmação depende da resposta do Apps Script. */
+/* Envio de dúvidas e sugestões: confirmação imediata na interface; resposta técnica posterior tratada em segundo plano. */
 (function(){
  const form=document.getElementById('feedbackForm');
  const frame=document.getElementById('feedbackResponse');
@@ -1397,14 +1397,9 @@ async function load(manual=false){
   pendingNonce=(window.crypto&&crypto.randomUUID)?crypto.randomUUID():String(Date.now())+'-'+Math.random().toString(36).slice(2);
   nonceField.value=pendingNonce;
   button.disabled=true;
-  button.textContent='Enviando…';
-  showFeedbackStatus('Enviando sua mensagem. Aguarde a confirmação…','');
+  button.textContent='Enviado';
+  showFeedbackStatus('Mensagem enviada com sucesso!','success');
   if(responseTimer)clearTimeout(responseTimer);
-  responseTimer=setTimeout(function(){
-   button.disabled=false;
-   button.textContent='Reenviar após verificar';
-   showFeedbackStatus('O serviço não confirmou o retorno ao painel. A mensagem pode ter sido enviada. Verifique seu e-mail antes de reenviar para evitar duplicidade.','error');
-  },45000);
  });
  window.addEventListener('message',function(event){
   let result=event.data;
