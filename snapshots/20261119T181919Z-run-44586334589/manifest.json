@@ -1,0 +1,13 @@
+{
+  "snapshot_id": "20261119T181919Z-run-44586334589",
+  "created_at_utc": "2026-11-19T18:19:19Z",
+  "source_commit": "798d40be660097aec4e7937d650e1ce5323ebc35",
+  "run_id": "44586334589",
+  "files": {
+    "data.json": "46425ef19eefe86b0d6fdaf259527a2d46156b5b10791875fe653fd4b60577da",
+    "repasses.json": "d85fa335fd0111e4780cd0d1057f6275945f7d1bf1d5ab711d5ef47177b96e43",
+    "source_state.json": "10c889f97a350fa72f6504351b7826cd514a65fd4ee820d4657c801bafc0a521",
+    "dashboard-v2.html": "96b7a42ad952d5df547f533411ce890c492e79e393a9771d7dd7119805a197d9",
+    "index.html": "e555ab3bd4bf540d2863a291a266bf5d02c2426f906c10c8d922c3a459410cd2"
+  }
+}
