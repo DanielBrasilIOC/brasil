@@ -12,6 +12,7 @@ REQUIRED_FILES = (
     "dashboard-v2.html",
     "index.html",
 )
+OPTIONAL_UI_ASSETS = ("appropriation-source-cards.js",)
 EXPECTED_DATASETS = {
     "empenhos", "orcamentario", "ordens_bancarias",
     "repasses", "financeiro", "restos",
@@ -36,6 +37,15 @@ def validate(root, verify_manifest=False):
         path = root / name
         if not path.is_file() or path.stat().st_size == 0:
             fail(f"arquivo ausente ou vazio: {name}")
+
+    html_source = (root / "dashboard-v2.html").read_text(encoding="utf-8")
+    required_files = list(REQUIRED_FILES)
+    for asset in OPTIONAL_UI_ASSETS:
+        if asset in html_source:
+            required_files.append(asset)
+            asset_path = root / asset
+            if not asset_path.is_file() or asset_path.stat().st_size == 0:
+                fail(f"arquivo de interface referenciado ausente ou vazio: {asset}")
 
     data = load_json(root / "data.json")
     repasses = load_json(root / "repasses.json")
@@ -84,7 +94,7 @@ def validate(root, verify_manifest=False):
             fail("manifest.json ausente")
         manifest = load_json(manifest_path)
         expected = manifest.get("files", {}) if isinstance(manifest, dict) else {}
-        for name in REQUIRED_FILES:
+        for name in required_files:
             expected_hash = expected.get(name)
             actual_hash = hashlib.sha256((root / name).read_bytes()).hexdigest()
             if not expected_hash or actual_hash != expected_hash:
@@ -94,7 +104,7 @@ def validate(root, verify_manifest=False):
 
     print(json.dumps({
         "status": "VALIDO",
-        "arquivos": list(REQUIRED_FILES),
+        "arquivos": required_files,
         "datasets": {name: {"registros": len(datasets[name]["rows"]),
                              "total": datasets[name]["total"]}
                      for name in sorted(EXPECTED_DATASETS)},
