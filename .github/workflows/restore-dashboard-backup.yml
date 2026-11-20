@@ -49,6 +49,11 @@ jobs:
           for file in data.json repasses.json source_state.json dashboard-v2.html index.html; do
             cp "backup-source/$SNAPSHOT_PATH/$file" "$file"
           done
+          if [ -f "backup-source/$SNAPSHOT_PATH/appropriation-source-cards.js" ]; then
+            cp "backup-source/$SNAPSHOT_PATH/appropriation-source-cards.js" appropriation-source-cards.js
+          else
+            rm -f appropriation-source-cards.js
+          fi
           rm -rf backup-source
           python .github/scripts/validate_backup.py .
 
@@ -59,7 +64,7 @@ jobs:
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data.json repasses.json source_state.json dashboard-v2.html index.html
+          git add data.json repasses.json source_state.json dashboard-v2.html index.html appropriation-source-cards.js
           if git diff --cached --quiet; then
             echo "Os arquivos atuais já correspondem ao snapshot; a publicação será revalidada."
           else
