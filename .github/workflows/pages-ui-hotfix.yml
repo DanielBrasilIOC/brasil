@@ -6,6 +6,7 @@ on:
     paths:
       - "index.html"
       - "dashboard-v2.html"
+      - "appropriation-source-cards.js"
       - "preview-executivo.html"
       - "repasses.json"
       - "data.json"
@@ -27,6 +28,26 @@ jobs:
     steps:
       - name: Baixar o repositório
         uses: actions/checkout@v4
+      - name: Preparar Node.js para o teste de interface
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Instalar Playwright e Chromium
+        run: |
+          npm install --no-save playwright
+          npx playwright install --with-deps chromium
+      - name: Validar interface em desktop e celular
+        run: |
+          set -euo pipefail
+          python3 -m http.server 8000 --bind 127.0.0.1 > "$RUNNER_TEMP/dashboard-http.log" 2>&1 &
+          SERVER_PID=$!
+          trap 'kill "$SERVER_PID" 2>/dev/null || true' EXIT
+          for attempt in $(seq 1 20); do
+            if curl --silent --fail http://127.0.0.1:8000/ >/dev/null; then break; fi
+            sleep 1
+          done
+          curl --silent --fail http://127.0.0.1:8000/ >/dev/null || { cat "$RUNNER_TEMP/dashboard-http.log"; exit 1; }
+          node .github/scripts/smoke_test_dashboard.mjs
       - name: Configurar GitHub Pages
         uses: actions/configure-pages@v5
       - name: Registrar execução responsável pela publicação
