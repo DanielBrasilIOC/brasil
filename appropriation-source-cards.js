@@ -4,7 +4,7 @@
     const dataset=(data&&Array.isArray(data.datasets)?data.datasets:[]).find(item=>item.id==='apropriacao_pendente');
     const target=document.getElementById('detailKpis');
     if(!dataset||!target)return;
-    const rows=Array.isArray(dataset.rows)?dataset.rows:[];
+    const rows=(Array.isArray(dataset.rows)?dataset.rows:[]).filter(row=>!/^DOB/i.test(String(row.situacao_despesa??'').trim()));
     const sources=new Map();
     const shared=[];
     let grand=0;
@@ -38,7 +38,7 @@
     const sharedCard=shared.length
       ? '<article class="kpi ap-source-card ap-source-shared"><div class="label">Documentos com múltiplas fontes</div><div class="value">'+F(shared.reduce((sum,item)=>sum+item.amount,0))+'</div><div class="ap-source-meta">'+I(shared.length)+' documento(s) sem rateio individual informado na extração. Valores contabilizados uma única vez. '+E(shared.map(item=>item.document).filter(Boolean).join(' • '))+'</div></article>'
       : '';
-    const count=dataset.detail_count??rows.length;
+    const count=rows.length;
     target.innerHTML=totalCard+'<article class="kpi"><div class="label">Documentos hábeis</div><div class="value">'+I(count)+'</div><div class="ap-source-meta">Registros consolidados por Documento Hábil.</div></article>'+sourceCards+sharedCard;
   }
   if(!document.getElementById('apSourceCardsStyle')){
