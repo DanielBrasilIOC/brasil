@@ -93,6 +93,45 @@ try {
   const forbidden = remainingKpis.filter(label => /^(Publicações Pagas|Bolsistas pagos|Diárias Pagas|Ordens Bancárias)$/i.test(label.trim()));
   if (forbidden.length) throw new Error("Cartões antigos duplicados na Visão Executiva: " + JSON.stringify(forbidden));
 
+  await frame.locator('#nav button[data-x="apropriacao_pendente"]').click();
+  await frame.locator("#detailKpis .ap-source-total").waitFor({ state: "visible", timeout: 20000 });
+  const appropriation = await frame.locator("#detailKpis").evaluate(node => {
+    const dataset = data.datasets.find(item => item.id === "apropriacao_pendente");
+    const sources = new Set((dataset?.rows || []).flatMap(row =>
+      String(row.fontes_recursos ?? "").split("|").map(value => value.trim()).filter(Boolean)
+    ));
+    const cards = [...node.querySelectorAll(".ap-source-card:not(.ap-source-total):not(.ap-source-shared)")];
+    const parseMoney = value => Number(String(value || "").replace(/[^\d,.-]/g, "").replace(/\./g, "").replace(",", ".")) || 0;
+    const sourceTotal = cards.reduce((sum, card) => sum + parseMoney(card.querySelector(".value")?.textContent), 0);
+    const sharedCard = node.querySelector(".ap-source-shared .value");
+    const sharedTotal = parseMoney(sharedCard?.textContent);
+    const totalText = node.querySelector(".ap-source-total .value")?.textContent;
+    return {
+      sourceCount: sources.size,
+      cardCount: cards.length,
+      total: parseMoney(totalText),
+      sourceTotal,
+      sharedTotal,
+      sharedCard: Boolean(sharedCard),
+      totalRows: dataset?.rows?.length || 0
+    };
+  });
+  if (appropriation.sourceCount !== appropriation.cardCount || appropriation.totalRows <= 0 ||
+      Math.abs(appropriation.total - appropriation.sourceTotal - appropriation.sharedTotal) >= 0.01 ||
+      !appropriation.sharedCard) {
+    throw new Error("Cartões dinâmicos de apropriação não conferem: " + JSON.stringify(appropriation));
+  }
+  await page.setViewportSize({ width: 390, height: 900 });
+  const appropriationLayout = await frame.locator("#detailKpis").evaluate(node => ({
+    clientWidth: document.documentElement.clientWidth,
+    scrollWidth: document.documentElement.scrollWidth,
+    cardCount: node.querySelectorAll(".ap-source-card").length
+  }));
+  if (appropriationLayout.scrollWidth > appropriationLayout.clientWidth + 2 || appropriationLayout.cardCount < 2) {
+    throw new Error("Cards de apropriação não estão responsivos: " + JSON.stringify(appropriationLayout));
+  }
+  await frame.locator('#nav button[data-x="visao"]').click();
+
   for (const width of [1440, 390]) {
     await page.setViewportSize({ width, height: 900 });
     await page.waitForTimeout(150);
