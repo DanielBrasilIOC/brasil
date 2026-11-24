@@ -1129,19 +1129,26 @@ function renderPrestacaoServicos(d){
  const rows=Array.isArray(d.rows)?d.rows:[];
  const parseDate=value=>{const raw=String(value??'').trim();let m=raw.match(/^(\d{4})-(\d{2})-(\d{2})$/);if(m)return new Date(Number(m[1]),Number(m[2])-1,Number(m[3]));m=raw.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);if(m)return new Date(Number(m[3]),Number(m[2])-1,Number(m[1]));return null};
  const dateInput=value=>{const dt=parseDate(value);return dt?dt.getFullYear()+'-'+String(dt.getMonth()+1).padStart(2,'0')+'-'+String(dt.getDate()).padStart(2,'0'):''};
+ const todayInBrasilia=()=>{const parts=new Intl.DateTimeFormat('en-CA',{timeZone:'America/Sao_Paulo',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date());const p=Object.fromEntries(parts.map(x=>[x.type,x.value]));return {key:p.year+'-'+p.month+'-'+p.day,utc:Date.UTC(Number(p.year),Number(p.month)-1,Number(p.day))}};
+ const daysToExpire=r=>{const end=parseDate(r.vigencia_fim);if(!end)return null;const today=todayInBrasilia();const endUtc=Date.UTC(end.getFullYear(),end.getMonth(),end.getDate());return Math.round((endUtc-today.utc)/86400000)};
+ const statusForDays=days=>days===null?'DATA NÃO INFORMADA':days<0?'VENCIDO':days<=15?'VENCE EM ATÉ 15 DIAS':days<=30?'VENCE EM ATÉ 30 DIAS':days<=60?'VENCE EM ATÉ 60 DIAS':days<=90?'VENCE EM ATÉ 90 DIAS':'VIGENTE';
  const normalize=value=>String(value??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase('pt-BR').trim();
  const search=normalize(document.getElementById('prestacaoSearchAll')?.value||'');
  const status=document.getElementById('prestacaoStatus')?.value||'';
- const records=rows.filter(r=>{const hay=normalize([r.numero_instrumento,r.fornecedor].join(' '));if(search&&!hay.includes(search))return false;if(status&&r.situacao_vigencia!==status)return false;return true;}).sort((a,b)=>(dateInput(a.vigencia_fim)||'9999-99-99').localeCompare(dateInput(b.vigencia_fim)||'9999-99-99')||String(a.numero_instrumento).localeCompare(String(b.numero_instrumento),'pt-BR',{numeric:true}));
+ const records=rows.filter(r=>{const hay=normalize([r.numero_instrumento,r.fornecedor].join(' '));if(search&&!hay.includes(search))return false;if(status&&statusForDays(daysToExpire(r))!==status)return false;return true;}).sort((a,b)=>(dateInput(a.vigencia_fim)||'9999-99-99').localeCompare(dateInput(b.vigencia_fim)||'9999-99-99')||String(a.numero_instrumento).localeCompare(String(b.numero_instrumento),'pt-BR',{numeric:true}));
  const total=records.reduce((s,r)=>s+N(r.valor_global),0),suppliers=new Set(records.map(r=>String(r.fornecedor||'').trim()).filter(Boolean)).size;
- const statuses=[...new Set(rows.map(r=>r.situacao_vigencia).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'pt-BR'));
+ const statuses=[...new Set(rows.map(r=>statusForDays(daysToExpire(r))))].sort((a,b)=>a.localeCompare(b,'pt-BR'));
  const statusSelect=document.getElementById('prestacaoStatus');
  if(statusSelect){const old=statusSelect.value;statusSelect.innerHTML='<option value="">Todas as situações</option>'+statuses.map(x=>'<option value="'+E(x)+'">'+E(x)+'</option>').join('');statusSelect.value=statuses.includes(old)?old:status;}
  const summary='<div class="prestacao-summary"><article class="prestacao-summary-card"><div class="label">Valor global dos instrumentos filtrados</div><div class="value">'+F(total)+'</div><div class="hint">Soma dos valores globais</div></article><article class="prestacao-summary-card"><div class="label">Instrumentos no resultado</div><div class="value">'+I(records.length)+'</div><div class="hint">De '+I(rows.length)+' instrumentos na base</div></article><article class="prestacao-summary-card"><div class="label">Fornecedores no resultado</div><div class="value">'+I(suppliers)+'</div><div class="hint">Fornecedores distintos</div></article></div>';
  const columns=cols.prestacao_servicos;
- const table='<div class="scroll prestacao-table"><table><thead><tr>'+columns.map(x=>'<th>'+E(x[1])+'</th>').join('')+'</tr></thead><tbody>'+(records.map(r=>'<tr>'+columns.map(x=>{const v=r[x[0]];return ['valor_global','valor_parcela'].includes(x[0])?'<td class="money">'+F(v)+'</td>':'<td title="'+E(v)+'">'+(E(v)||'—')+'</td>'}).join('')+'</tr>').join('')||'<tr><td colspan="'+columns.length+'">Nenhum instrumento encontrado para os filtros informados.</td></tr>')+'</tbody></table></div>';
+ const table='<div class="scroll prestacao-table"><table><thead><tr>'+columns.map(x=>'<th>'+E(x[1])+'</th>').join('')+'</tr></thead><tbody>'+(records.map(r=>'<tr>'+columns.map(x=>{const v=x[0]==='dias_para_vencer'?daysToExpire(r):x[0]==='situacao_vigencia'?statusForDays(daysToExpire(r)):r[x[0]];return ['valor_global','valor_parcela'].includes(x[0])?'<td class="money">'+F(v)+'</td>':'<td title="'+E(v)+'">'+(v===null||v===undefined||v===''?'—':E(v))+'</td>'}).join('')+'</tr>').join('')||'<tr><td colspan="'+columns.length+'">Nenhum instrumento encontrado para os filtros informados.</td></tr>')+'</tbody></table></div>';
  box.className='panel';box.innerHTML='<div class="head"><div><h3>Prestação de Serviços</h3><p class="desc">'+I(records.length)+' instrumentos no resultado</p></div></div>'+summary+table;
  const count=document.getElementById('count');if(count)count.textContent=I(records.length)+' de '+I(rows.length)+' instrumentos';
+ box._prestacaoData=d;
+ const currentDay=todayInBrasilia().key;
+ if(box._prestacaoDayKey!==currentDay)box._prestacaoDayKey=currentDay;
+ if(!box._prestacaoDayTimer)box._prestacaoDayTimer=setInterval(()=>{const nextDay=todayInBrasilia().key;if(nextDay!==box._prestacaoDayKey){box._prestacaoDayKey=nextDay;if(document.getElementById('details')?.dataset?.dataset==='prestacao_servicos')renderPrestacaoServicos(box._prestacaoData);}},60000);
 }
 
 function renderBankOrderFolders(d){
