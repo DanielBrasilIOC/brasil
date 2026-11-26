@@ -65,6 +65,24 @@ class AppropriacaoPendenteTests(unittest.TestCase):
             sync.parse_apropriacao_pendente(conflict)
 
 
+
+class EmpenhosLayoutTests(unittest.TestCase):
+    def test_novo_leiaute_com_processo_fonte_e_descricao(self):
+        sample = ("Saldo nos empenhos 2026\n\n"
+                  '"NE CCor - Núm. Processo"\t"PTRES"\t"UG Responsável"\t"Fonte Recursos"\t"PI"\t"Natureza Despesa"\t"NE CCor"\t"NE CCor - Descrição"\t"Saldo - Moeda Origem (Conta Contábil)"\n'
+                  '"25030.000691/2022-39"\t"250316"\t"254427"\t"001"\t"A1IOC"\t"339039"\t"254463252012026NE000016"\t"DESPESA COM CONTRATO"\t"R$ 843,48"\n'
+                  '"25030.000002/2026-10"\t"234040"\t"254432"\t"002"\t"A1BIO"\t"339030"\t"254463252012026NE000035"\t"AQUISIÇÃO DE MATERIAL"\t"R$ 13.608,01"\n')
+        rows, amount = sync.parse_empenhos(sample)
+        self.assertEqual(len(rows), 2)
+        self.assertEqual(amount, 14451.49)
+        self.assertEqual(rows[0]["processo"], "25030.000691/2022-39")
+        self.assertEqual(rows[0]["ptres"], "250316")
+        self.assertEqual(rows[0]["pi"], "A1IOC")
+        self.assertEqual(rows[0]["fonte_recursos"], "001")
+        self.assertEqual(rows[0]["descricao"], "DESPESA COM CONTRATO")
+        self.assertEqual(rows[0]["cnpj"], "")
+        self.assertEqual(rows[0]["fornecedor"], "")
+
 class RowDiffTests(unittest.TestCase):
     def test_inclusao_de_registro(self):
         before = {"orcamentario": ["a", "b"]}
