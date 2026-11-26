@@ -11,7 +11,7 @@ on:
       - "dashboard-publication.json"
       - "logs/atualizacoes_dashboard.csv"
   schedule:
-    - cron: "0 3,7,11,15,19,23 * * *"
+    - cron: "0 7 * * 1-5"
   workflow_run:
     workflows: ["Monitoramento de serviços públicos"]
     types: [completed]
@@ -64,10 +64,22 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Localizar os sete CSVs oficiais pelo nome na pasta pública do Drive
+      - name: Aguardar e localizar os sete CSVs oficiais (a partir das 04:00 Brasília)
+        timeout-minutes: 360
         env:
           GOOGLE_DRIVE_FOLDER_ID: "1Ae3_31uGRNvfvnN5euhiNHbk_mdkVg0L"
-        run: python .github/scripts/discover_drive_sources.py
+        run: |
+          set -euo pipefail
+          for attempt in $(seq 1 24); do
+            echo "Tentativa $attempt/24 — $(date -u)"
+            if python .github/scripts/discover_drive_sources.py; then
+              echo "Todas as sete fontes foram localizadas e validadas."
+              exit 0
+            fi
+            if [ "$attempt" -lt 24 ]; then sleep 900; fi
+          done
+          echo "Fontes incompletas após seis horas; sincronização bloqueada, última versão preservada." >&2
+          exit 1
       - name: Testar detecção de inclusão e exclusão
         run: python .github/scripts/test_audit_sync.py
       - name: Sincronizar fontes e registrar auditoria
@@ -107,11 +119,12 @@ jobs:
         env:
           RUN_ID: ${{ github.run_id }}
           RUN_ATTEMPT: ${{ github.run_attempt }}
+          DATA_CHANGED: ${{ steps.sync.outputs.changed }}
         run: |
           python - <<'PY'
           import json, os
           with open('dashboard-publication.json','w',encoding='utf-8') as f:
-              json.dump({'run_id':int(os.environ['RUN_ID']),'run_attempt':int(os.environ['RUN_ATTEMPT'])},f)
+              json.dump({'run_id':int(os.environ['RUN_ID']),'run_attempt':int(os.environ['RUN_ATTEMPT']),'completed_at':__import__('datetime').datetime.now(__import__('datetime').timezone.utc).isoformat(),'no_changes':os.environ.get('DATA_CHANGED','false')=='false','message':'Nenhum registro atualizado, pois não houve movimentação.' if os.environ.get('DATA_CHANGED','false')=='false' else ''},f)
           PY
       - name: Preparar arquivos estáticos do painel
         if: steps.sync.outputs.sync_ok == 'true'
@@ -120,7 +133,7 @@ jobs:
           path: "."
 
   deploy:
-    if: github.event_name != 'workflow_run' && needs.build.outputs.sync_ok == 'true' && (needs.build.outputs.data_changed == 'true' || github.event_name != 'schedule')
+    if: github.event_name != 'workflow_run' && needs.build.outputs.sync_ok == 'true'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
