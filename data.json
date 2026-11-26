@@ -1,7 +1,7 @@
 {
   "source_updated_at": "2026-11-26",
-  "generated_at": "2026-11-26T20:18:19.064Z",
-  "status": "drive_csv_sync_2026-11-26",
+  "generated_at": "2026-11-26T20:34:00Z",
+  "status": "empenhos_serpro_layout_corrigido_2026-11-26",
   "datasets": [
     {
       "id": "financeiro",
@@ -339,10 +339,9 @@
       "source_url": "https://drive.google.com/file/d/1pDEGc2LAz0fe7c4GH5fh-kzgeW0iuQHh/view",
       "rows": [
         {
-          "empenho": "254463252012026NE000016",
           "ne_ccor": "254463252012026NE000016",
           "cnpj": "34174896000147",
-          "fornecedor": "INSTITUTO DE PROFESSORES PUBLICOS E PARTICULARES",
+          "favorecido": "INSTITUTO DE PROFESSORES PUBLICOS E PARTICULARES",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "39",
@@ -352,10 +351,9 @@
           "saldo": 843.48
         },
         {
-          "empenho": "254463252012026NE000035",
           "ne_ccor": "254463252012026NE000035",
           "cnpj": "16599555000131",
-          "fornecedor": "ARC FONTOURA INDUSTRIA COMERCIO E REPRESENTACOES LTDA",
+          "favorecido": "ARC FONTOURA INDUSTRIA COMERCIO E REPRESENTACOES LTDA",
           "fonte_recursos": "1002000000",
           "fonte_recursos_descricao": "ATIVIDADES-FIM DA SEGURIDADE SOCIAL",
           "elemento_despesa": "30",
@@ -365,10 +363,9 @@
           "saldo": 13608.01
         },
         {
-          "empenho": "254463252012026NE000036",
           "ne_ccor": "254463252012026NE000036",
           "cnpj": "67423152000178",
-          "fornecedor": "IBG INDUSTRIA BRASILEIRA DE GASES LTDA",
+          "favorecido": "IBG INDUSTRIA BRASILEIRA DE GASES LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -378,10 +375,9 @@
           "saldo": 4540
         },
         {
-          "empenho": "254463252012026NE000038",
           "ne_ccor": "254463252012026NE000038",
           "cnpj": "254463",
-          "fornecedor": "INSTITUTO OSWALDO CRUZ",
+          "favorecido": "INSTITUTO OSWALDO CRUZ",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "14",
@@ -391,10 +387,9 @@
           "saldo": 153.81
         },
         {
-          "empenho": "254463252012026NE000041",
           "ne_ccor": "254463252012026NE000041",
           "cnpj": "45748387000105",
-          "fornecedor": "JAMILLE SANTOS OLIVEIRA 03415166511",
+          "favorecido": "JAMILLE SANTOS OLIVEIRA 03415166511",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -404,10 +399,9 @@
           "saldo": 3468
         },
         {
-          "empenho": "254463252012026NE000056",
           "ne_ccor": "254463252012026NE000056",
           "cnpj": "05857218000180",
-          "fornecedor": "LOBOV CIENTIFICA, IMPORTACAO, EXPORTACAO, COMERCIO DE",
+          "favorecido": "LOBOV CIENTIFICA, IMPORTACAO, EXPORTACAO, COMERCIO DE",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -417,10 +411,9 @@
           "saldo": 625
         },
         {
-          "empenho": "254463252012026NE000070",
           "ne_ccor": "254463252012026NE000070",
           "cnpj": "04919019000197",
-          "fornecedor": "ALFAPLAST COMERCIO DE PRODUTOS PARA LABORATORIOS LTDA",
+          "favorecido": "ALFAPLAST COMERCIO DE PRODUTOS PARA LABORATORIOS LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -430,10 +423,9 @@
           "saldo": 3850
         },
         {
-          "empenho": "254463252012026NE000076",
           "ne_ccor": "254463252012026NE000076",
           "cnpj": "00567892000107",
-          "fornecedor": "VISOMES COMERCIAL METROLOGICA LTDA",
+          "favorecido": "VISOMES COMERCIAL METROLOGICA LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "39",
@@ -443,10 +435,9 @@
           "saldo": 260.63
         },
         {
-          "empenho": "254463252012026NE000077",
           "ne_ccor": "254463252012026NE000077",
           "cnpj": "34174896000147",
-          "fornecedor": "INSTITUTO DE PROFESSORES PUBLICOS E PARTICULARES",
+          "favorecido": "INSTITUTO DE PROFESSORES PUBLICOS E PARTICULARES",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "39",
@@ -456,10 +447,9 @@
           "saldo": 450000
         },
         {
-          "empenho": "254463252012026NE000078",
           "ne_ccor": "254463252012026NE000078",
           "cnpj": "08247960000162",
-          "fornecedor": "REAL JG FACILITIES S/A",
+          "favorecido": "REAL JG FACILITIES S/A",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "34",
@@ -469,10 +459,9 @@
           "saldo": 6008.53
         },
         {
-          "empenho": "254463252012026NE000080",
           "ne_ccor": "254463252012026NE000080",
           "cnpj": "07832586000108",
-          "fornecedor": "DF TURISMO E EVENTOS LTDA",
+          "favorecido": "DF TURISMO E EVENTOS LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "33",
@@ -482,10 +471,9 @@
           "saldo": 2560.7
         },
         {
-          "empenho": "254463252012026NE000083",
           "ne_ccor": "254463252012026NE000083",
           "cnpj": "115406",
-          "fornecedor": "EMPRESA BRASIL DE COMUNICACAO S.A",
+          "favorecido": "EMPRESA BRASIL DE COMUNICACAO S.A",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "92",
@@ -495,10 +483,9 @@
           "saldo": 0.98
         },
         {
-          "empenho": "254463252012026NE000084",
           "ne_ccor": "254463252012026NE000084",
           "cnpj": "254463",
-          "fornecedor": "INSTITUTO OSWALDO CRUZ",
+          "favorecido": "INSTITUTO OSWALDO CRUZ",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "36",
@@ -508,10 +495,9 @@
           "saldo": 1405
         },
         {
-          "empenho": "254463252012026NE000105",
           "ne_ccor": "254463252012026NE000105",
           "cnpj": "07795609000143",
-          "fornecedor": "BIOSAFE - BIOSSEGURANCA DO BRASIL LTDA",
+          "favorecido": "BIOSAFE - BIOSSEGURANCA DO BRASIL LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "39",
@@ -521,10 +507,9 @@
           "saldo": 17744.48
         },
         {
-          "empenho": "254463252012026NE000119",
           "ne_ccor": "254463252012026NE000119",
           "cnpj": "63067904000588",
-          "fornecedor": "LIFE TECHNOLOGIES BRASIL COMERCIO E INDUSTRIA DE PRODU",
+          "favorecido": "LIFE TECHNOLOGIES BRASIL COMERCIO E INDUSTRIA DE PRODU",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -534,10 +519,9 @@
           "saldo": 3326.95
         },
         {
-          "empenho": "254463252012026NE000119",
           "ne_ccor": "254463252012026NE000119",
           "cnpj": "63067904000588",
-          "fornecedor": "LIFE TECHNOLOGIES BRASIL COMERCIO E INDUSTRIA DE PRODU",
+          "favorecido": "LIFE TECHNOLOGIES BRASIL COMERCIO E INDUSTRIA DE PRODU",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -547,10 +531,9 @@
           "saldo": 463.91
         },
         {
-          "empenho": "254463252012026NE000122",
           "ne_ccor": "254463252012026NE000122",
           "cnpj": "63067904000588",
-          "fornecedor": "LIFE TECHNOLOGIES BRASIL COMERCIO E INDUSTRIA DE PRODU",
+          "favorecido": "LIFE TECHNOLOGIES BRASIL COMERCIO E INDUSTRIA DE PRODU",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -560,10 +543,9 @@
           "saldo": 22367.01
         },
         {
-          "empenho": "254463252012026NE000162",
           "ne_ccor": "254463252012026NE000162",
           "cnpj": "31856735000145",
-          "fornecedor": "SEMINTER SERVICOS DE MANUTENCAO E COMERCIO LTDA",
+          "favorecido": "SEMINTER SERVICOS DE MANUTENCAO E COMERCIO LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "39",
@@ -573,10 +555,9 @@
           "saldo": 0.56
         },
         {
-          "empenho": "254463252012026NE000163",
           "ne_ccor": "254463252012026NE000163",
           "cnpj": "23999118000170",
-          "fornecedor": "HS INVESTIMENTOS E PARTICIPACOES EM LOGISTICA LTDA",
+          "favorecido": "HS INVESTIMENTOS E PARTICIPACOES EM LOGISTICA LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "39",
@@ -586,10 +567,9 @@
           "saldo": 944.62
         },
         {
-          "empenho": "254463252012026NE000165",
           "ne_ccor": "254463252012026NE000165",
           "cnpj": "510001",
-          "fornecedor": "COORD.GERAL DE ORCAMENTO, FINANCAS E CONTAB.",
+          "favorecido": "COORD.GERAL DE ORCAMENTO, FINANCAS E CONTAB.",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "39",
@@ -599,10 +579,9 @@
           "saldo": 4.01
         },
         {
-          "empenho": "254463252012026NE000167",
           "ne_ccor": "254463252012026NE000167",
           "cnpj": "02385669000174",
-          "fornecedor": "FIOTEC - FUNDACAO PARA O DESENVOLVIMENTO CIENTIFICO E T",
+          "favorecido": "FIOTEC - FUNDACAO PARA O DESENVOLVIMENTO CIENTIFICO E T",
           "fonte_recursos": "1002A003WI",
           "fonte_recursos_descricao": "TED 101/2024 - 972268",
           "elemento_despesa": "39",
@@ -612,10 +591,9 @@
           "saldo": 2039577.43
         },
         {
-          "empenho": "254463252012026NE000168",
           "ne_ccor": "254463252012026NE000168",
           "cnpj": "00567892000107",
-          "fornecedor": "VISOMES COMERCIAL METROLOGICA LTDA",
+          "favorecido": "VISOMES COMERCIAL METROLOGICA LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "39",
@@ -625,10 +603,9 @@
           "saldo": 6753.69
         },
         {
-          "empenho": "254463252012026NE000169",
           "ne_ccor": "254463252012026NE000169",
           "cnpj": "27498289000177",
-          "fornecedor": "LMC MEDICAO E CONTROLE LTDA",
+          "favorecido": "LMC MEDICAO E CONTROLE LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "39",
@@ -638,10 +615,9 @@
           "saldo": 6158.17
         },
         {
-          "empenho": "254463252012026NE000170",
           "ne_ccor": "254463252012026NE000170",
           "cnpj": "13086399000117",
-          "fornecedor": "CERTIFIQUE SOLUCOES LTDA",
+          "favorecido": "CERTIFIQUE SOLUCOES LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "39",
@@ -651,10 +627,9 @@
           "saldo": 350
         },
         {
-          "empenho": "254463252012026NE000197",
           "ne_ccor": "254463252012026NE000197",
           "cnpj": "07377489000164",
-          "fornecedor": "FOX BRASIL COMERCIO DE MATERIAL HOSPITALAR LTDA",
+          "favorecido": "FOX BRASIL COMERCIO DE MATERIAL HOSPITALAR LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -664,10 +639,9 @@
           "saldo": 26040
         },
         {
-          "empenho": "254463252012026NE000236",
           "ne_ccor": "254463252012026NE000236",
           "cnpj": "45404628000190",
-          "fornecedor": "FALCAO DE ITAGUAI COMERCIO LTDA",
+          "favorecido": "FALCAO DE ITAGUAI COMERCIO LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -677,10 +651,9 @@
           "saldo": 31875
         },
         {
-          "empenho": "254463252012026NE000237",
           "ne_ccor": "254463252012026NE000237",
           "cnpj": "45404628000190",
-          "fornecedor": "FALCAO DE ITAGUAI COMERCIO LTDA",
+          "favorecido": "FALCAO DE ITAGUAI COMERCIO LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -690,10 +663,9 @@
           "saldo": 31875
         },
         {
-          "empenho": "254463252012026NE000246",
           "ne_ccor": "254463252012026NE000246",
           "cnpj": "02385669000174",
-          "fornecedor": "FIOTEC - FUNDACAO PARA O DESENVOLVIMENTO CIENTIFICO E T",
+          "favorecido": "FIOTEC - FUNDACAO PARA O DESENVOLVIMENTO CIENTIFICO E T",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "39",
@@ -703,10 +675,9 @@
           "saldo": 10011.6
         },
         {
-          "empenho": "254463252012026NE000265",
           "ne_ccor": "254463252012026NE000265",
           "cnpj": "62629840000175",
-          "fornecedor": "LABTEMP SOLUCOES CIENTIFICAS E TEMPERATURA LTDA",
+          "favorecido": "LABTEMP SOLUCOES CIENTIFICAS E TEMPERATURA LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -716,10 +687,9 @@
           "saldo": 420
         },
         {
-          "empenho": "254463252012026NE000266",
           "ne_ccor": "254463252012026NE000266",
           "cnpj": "08973746000193",
-          "fornecedor": "MDE SERVICOS E EVENTOS LTDA",
+          "favorecido": "MDE SERVICOS E EVENTOS LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "39",
@@ -729,10 +699,9 @@
           "saldo": 2723
         },
         {
-          "empenho": "254463252012026NE000269",
           "ne_ccor": "254463252012026NE000269",
           "cnpj": "00331788000623",
-          "fornecedor": "AIR LIQUIDE BRASIL LTDA",
+          "favorecido": "AIR LIQUIDE BRASIL LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -742,10 +711,9 @@
           "saldo": 440
         },
         {
-          "empenho": "254463252012026NE000271",
           "ne_ccor": "254463252012026NE000271",
           "cnpj": "59717553000617",
-          "fornecedor": "GRUPO MULTILASER S.A.",
+          "favorecido": "GRUPO MULTILASER S.A.",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "52",
@@ -755,10 +723,9 @@
           "saldo": 66150.6
         },
         {
-          "empenho": "254463252012026NE000274",
           "ne_ccor": "254463252012026NE000274",
           "cnpj": "115406",
-          "fornecedor": "EMPRESA BRASIL DE COMUNICACAO S.A",
+          "favorecido": "EMPRESA BRASIL DE COMUNICACAO S.A",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "39",
@@ -768,10 +735,9 @@
           "saldo": 2628.01
         },
         {
-          "empenho": "254463252012026NE000285",
           "ne_ccor": "254463252012026NE000285",
           "cnpj": "02385669000174",
-          "fornecedor": "FIOTEC - FUNDACAO PARA O DESENVOLVIMENTO CIENTIFICO E T",
+          "favorecido": "FIOTEC - FUNDACAO PARA O DESENVOLVIMENTO CIENTIFICO E T",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "39",
@@ -781,10 +747,9 @@
           "saldo": 10010
         },
         {
-          "empenho": "254463252012026NE000310",
           "ne_ccor": "254463252012026NE000310",
           "cnpj": "28911309000152",
-          "fornecedor": "ASCLE BRASIL LTDA",
+          "favorecido": "ASCLE BRASIL LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -794,10 +759,9 @@
           "saldo": 78223.8
         },
         {
-          "empenho": "254463252012026NE000311",
           "ne_ccor": "254463252012026NE000311",
           "cnpj": "34174896000147",
-          "fornecedor": "INSTITUTO DE PROFESSORES PUBLICOS E PARTICULARES",
+          "favorecido": "INSTITUTO DE PROFESSORES PUBLICOS E PARTICULARES",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "34",
@@ -807,10 +771,9 @@
           "saldo": 53053.52
         },
         {
-          "empenho": "254463252012026NE000312",
           "ne_ccor": "254463252012026NE000312",
           "cnpj": "00000000000191",
-          "fornecedor": "BANCO DO BRASIL SA",
+          "favorecido": "BANCO DO BRASIL SA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "18",
@@ -820,10 +783,9 @@
           "saldo": 2100
         },
         {
-          "empenho": "254463252012026NE000317",
           "ne_ccor": "254463252012026NE000317",
           "cnpj": "254463",
-          "fornecedor": "INSTITUTO OSWALDO CRUZ",
+          "favorecido": "INSTITUTO OSWALDO CRUZ",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "14",
@@ -833,10 +795,9 @@
           "saldo": 132.88
         },
         {
-          "empenho": "254463252012026NE000321",
           "ne_ccor": "254463252012026NE000321",
           "cnpj": "40434458000173",
-          "fornecedor": "PROMOTIONAL TRAVEL VIAGENS E TURISMO LTDA",
+          "favorecido": "PROMOTIONAL TRAVEL VIAGENS E TURISMO LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "33",
@@ -846,10 +807,9 @@
           "saldo": 3246.61
         },
         {
-          "empenho": "254463252012026NE000325",
           "ne_ccor": "254463252012026NE000325",
           "cnpj": "40179871000139",
-          "fornecedor": "S.T.T.R. INDUSTRIA E COMERCIO LTDA",
+          "favorecido": "S.T.T.R. INDUSTRIA E COMERCIO LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "39",
@@ -859,10 +819,9 @@
           "saldo": 51.78
         },
         {
-          "empenho": "254463252012026NE000327",
           "ne_ccor": "254463252012026NE000327",
           "cnpj": "31856735000145",
-          "fornecedor": "SEMINTER SERVICOS DE MANUTENCAO E COMERCIO LTDA",
+          "favorecido": "SEMINTER SERVICOS DE MANUTENCAO E COMERCIO LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "39",
@@ -872,10 +831,9 @@
           "saldo": 40.34
         },
         {
-          "empenho": "254463252012026NE000338",
           "ne_ccor": "254463252012026NE000338",
           "cnpj": "21896826000150",
-          "fornecedor": "S.A. DE JESUS COMERCIO DE MATERIAIS DE CONSTRUCAO",
+          "favorecido": "S.A. DE JESUS COMERCIO DE MATERIAIS DE CONSTRUCAO",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -885,10 +843,9 @@
           "saldo": 20160
         },
         {
-          "empenho": "254463252012026NE000340",
           "ne_ccor": "254463252012026NE000340",
           "cnpj": "53568001000101",
-          "fornecedor": "EVEN COMERCIAL LTDA",
+          "favorecido": "EVEN COMERCIAL LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -898,10 +855,9 @@
           "saldo": 2190
         },
         {
-          "empenho": "254463252012026NE000352",
           "ne_ccor": "254463252012026NE000352",
           "cnpj": "02385669000174",
-          "fornecedor": "FIOTEC - FUNDACAO PARA O DESENVOLVIMENTO CIENTIFICO E T",
+          "favorecido": "FIOTEC - FUNDACAO PARA O DESENVOLVIMENTO CIENTIFICO E T",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "39",
@@ -911,10 +867,9 @@
           "saldo": 360000
         },
         {
-          "empenho": "254463252012026NE000361",
           "ne_ccor": "254463252012026NE000361",
           "cnpj": "254463",
-          "fornecedor": "INSTITUTO OSWALDO CRUZ",
+          "favorecido": "INSTITUTO OSWALDO CRUZ",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "36",
@@ -924,10 +879,9 @@
           "saldo": 3970
         },
         {
-          "empenho": "254463252012026NE000362",
           "ne_ccor": "254463252012026NE000362",
           "cnpj": "72316094000113",
-          "fornecedor": "RICARDO MATARAZZO CARGAS LTDA",
+          "favorecido": "RICARDO MATARAZZO CARGAS LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "39",
@@ -937,10 +891,9 @@
           "saldo": 19.84
         },
         {
-          "empenho": "254463252012026NE000363",
           "ne_ccor": "254463252012026NE000363",
           "cnpj": "05361556000127",
-          "fornecedor": "VEGA TECNOLOGIA EM SEGURANCA LTDA",
+          "favorecido": "VEGA TECNOLOGIA EM SEGURANCA LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "39",
@@ -950,10 +903,9 @@
           "saldo": 260.5
         },
         {
-          "empenho": "254463252012026NE000365",
           "ne_ccor": "254463252012026NE000365",
           "cnpj": "13086399000117",
-          "fornecedor": "CERTIFIQUE SOLUCOES LTDA",
+          "favorecido": "CERTIFIQUE SOLUCOES LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "39",
@@ -963,10 +915,9 @@
           "saldo": 283.64
         },
         {
-          "empenho": "254463252012026NE000370",
           "ne_ccor": "254463252012026NE000370",
           "cnpj": "19034550000150",
-          "fornecedor": "ADLER COMERCIAL E IMPORTADORA LTDA",
+          "favorecido": "ADLER COMERCIAL E IMPORTADORA LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -976,10 +927,9 @@
           "saldo": 30600
         },
         {
-          "empenho": "254463252012026NE000400",
           "ne_ccor": "254463252012026NE000400",
           "cnpj": "02385669000174",
-          "fornecedor": "FIOTEC - FUNDACAO PARA O DESENVOLVIMENTO CIENTIFICO E T",
+          "favorecido": "FIOTEC - FUNDACAO PARA O DESENVOLVIMENTO CIENTIFICO E T",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "39",
@@ -989,10 +939,9 @@
           "saldo": 698.19
         },
         {
-          "empenho": "254463252012026NE000404",
           "ne_ccor": "254463252012026NE000404",
           "cnpj": "07944100000115",
-          "fornecedor": "PROC9 INDUSTRIA QUIMICA LTDA",
+          "favorecido": "PROC9 INDUSTRIA QUIMICA LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -1002,10 +951,9 @@
           "saldo": 279
         },
         {
-          "empenho": "254463252012026NE000405",
           "ne_ccor": "254463252012026NE000405",
           "cnpj": "07944100000115",
-          "fornecedor": "PROC9 INDUSTRIA QUIMICA LTDA",
+          "favorecido": "PROC9 INDUSTRIA QUIMICA LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -1015,10 +963,9 @@
           "saldo": 29
         },
         {
-          "empenho": "254463252012026NE000406",
           "ne_ccor": "254463252012026NE000406",
           "cnpj": "07944100000115",
-          "fornecedor": "PROC9 INDUSTRIA QUIMICA LTDA",
+          "favorecido": "PROC9 INDUSTRIA QUIMICA LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -1028,10 +975,9 @@
           "saldo": 119
         },
         {
-          "empenho": "254463252012026NE000407",
           "ne_ccor": "254463252012026NE000407",
           "cnpj": "07944100000115",
-          "fornecedor": "PROC9 INDUSTRIA QUIMICA LTDA",
+          "favorecido": "PROC9 INDUSTRIA QUIMICA LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -1041,10 +987,9 @@
           "saldo": 76
         },
         {
-          "empenho": "254463252012026NE000409",
           "ne_ccor": "254463252012026NE000409",
           "cnpj": "32037358000185",
-          "fornecedor": "32.037.358 LUCIANE MENDONCA DE OLIVEIRA",
+          "favorecido": "32.037.358 LUCIANE MENDONCA DE OLIVEIRA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -1054,10 +999,9 @@
           "saldo": 932.8
         },
         {
-          "empenho": "254463252012026NE000410",
           "ne_ccor": "254463252012026NE000410",
           "cnpj": "67831795000150",
-          "fornecedor": "67.831.795 PAULO CESAR MARQUES LOURES",
+          "favorecido": "67.831.795 PAULO CESAR MARQUES LOURES",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -1067,10 +1011,9 @@
           "saldo": 1146.6
         },
         {
-          "empenho": "254463252012026NE000415",
           "ne_ccor": "254463252012026NE000415",
           "cnpj": "00767378000115",
-          "fornecedor": "LEXMARK INTERNATIONAL DO BRASIL LTDA",
+          "favorecido": "LEXMARK INTERNATIONAL DO BRASIL LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "40",
@@ -1080,10 +1023,9 @@
           "saldo": 15187.87
         },
         {
-          "empenho": "254463252012026NE000416",
           "ne_ccor": "254463252012026NE000416",
           "cnpj": "08247960000162",
-          "fornecedor": "REAL JG FACILITIES S/A",
+          "favorecido": "REAL JG FACILITIES S/A",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "39",
@@ -1093,10 +1035,9 @@
           "saldo": 891.24
         },
         {
-          "empenho": "254463252012026NE000417",
           "ne_ccor": "254463252012026NE000417",
           "cnpj": "34174896000147",
-          "fornecedor": "INSTITUTO DE PROFESSORES PUBLICOS E PARTICULARES",
+          "favorecido": "INSTITUTO DE PROFESSORES PUBLICOS E PARTICULARES",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "39",
@@ -1106,10 +1047,9 @@
           "saldo": 62.92
         },
         {
-          "empenho": "254463252012026NE000421",
           "ne_ccor": "254463252012026NE000421",
           "cnpj": "27498289000177",
-          "fornecedor": "LMC MEDICAO E CONTROLE LTDA",
+          "favorecido": "LMC MEDICAO E CONTROLE LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "39",
@@ -1119,10 +1059,9 @@
           "saldo": 19.3
         },
         {
-          "empenho": "254463252012026NE000422",
           "ne_ccor": "254463252012026NE000422",
           "cnpj": "59717553000617",
-          "fornecedor": "GRUPO MULTILASER S.A.",
+          "favorecido": "GRUPO MULTILASER S.A.",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "52",
@@ -1132,10 +1071,9 @@
           "saldo": 21147.7
         },
         {
-          "empenho": "254463252012026NE000430",
           "ne_ccor": "254463252012026NE000430",
           "cnpj": "02385669000174",
-          "fornecedor": "FIOTEC - FUNDACAO PARA O DESENVOLVIMENTO CIENTIFICO E T",
+          "favorecido": "FIOTEC - FUNDACAO PARA O DESENVOLVIMENTO CIENTIFICO E T",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "39",
@@ -1145,10 +1083,9 @@
           "saldo": 4500000
         },
         {
-          "empenho": "254463252012026NE000431",
           "ne_ccor": "254463252012026NE000431",
           "cnpj": "00767378000115",
-          "fornecedor": "LEXMARK INTERNATIONAL DO BRASIL LTDA",
+          "favorecido": "LEXMARK INTERNATIONAL DO BRASIL LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "40",
@@ -1158,10 +1095,9 @@
           "saldo": 10000
         },
         {
-          "empenho": "254463252012026NE000432",
           "ne_ccor": "254463252012026NE000432",
           "cnpj": "35820448000721",
-          "fornecedor": "WHITE MARTINS GASES INDUSTRIAIS LTDA",
+          "favorecido": "WHITE MARTINS GASES INDUSTRIAIS LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -1171,10 +1107,9 @@
           "saldo": 120750
         },
         {
-          "empenho": "254463252012026NE000433",
           "ne_ccor": "254463252012026NE000433",
           "cnpj": "48763480000179",
-          "fornecedor": "48.763.480 FLAVIO CORREIA DE LIMA",
+          "favorecido": "48.763.480 FLAVIO CORREIA DE LIMA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -1184,10 +1119,9 @@
           "saldo": 23200
         },
         {
-          "empenho": "254463252012026NE000437",
           "ne_ccor": "254463252012026NE000437",
           "cnpj": "05857218000180",
-          "fornecedor": "LOBOV CIENTIFICA, IMPORTACAO, EXPORTACAO, COMERCIO DE",
+          "favorecido": "LOBOV CIENTIFICA, IMPORTACAO, EXPORTACAO, COMERCIO DE",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -1197,10 +1131,9 @@
           "saldo": 3089
         },
         {
-          "empenho": "254463252012026NE000439",
           "ne_ccor": "254463252012026NE000439",
           "cnpj": "07944100000115",
-          "fornecedor": "PROC9 INDUSTRIA QUIMICA LTDA",
+          "favorecido": "PROC9 INDUSTRIA QUIMICA LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -1210,10 +1143,9 @@
           "saldo": 972
         },
         {
-          "empenho": "254463252012026NE000441",
           "ne_ccor": "254463252012026NE000441",
           "cnpj": "49607336000106",
-          "fornecedor": "FUNDACAO DE DESENVOLVIMENTO DA UNICAMP FUNCAMP",
+          "favorecido": "FUNDACAO DE DESENVOLVIMENTO DA UNICAMP FUNCAMP",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "39",
@@ -1223,10 +1155,9 @@
           "saldo": 3638
         },
         {
-          "empenho": "254463252012026NE000443",
           "ne_ccor": "254463252012026NE000443",
           "cnpj": "49607336000106",
-          "fornecedor": "FUNDACAO DE DESENVOLVIMENTO DA UNICAMP FUNCAMP",
+          "favorecido": "FUNDACAO DE DESENVOLVIMENTO DA UNICAMP FUNCAMP",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "39",
@@ -1236,10 +1167,9 @@
           "saldo": 5457
         },
         {
-          "empenho": "254463252012026NE000446",
           "ne_ccor": "254463252012026NE000446",
           "cnpj": "60619202003406",
-          "fornecedor": "MESSER GASES LTDA.",
+          "favorecido": "MESSER GASES LTDA.",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -1249,10 +1179,9 @@
           "saldo": 7676.1
         },
         {
-          "empenho": "254463252012026NE000448",
           "ne_ccor": "254463252012026NE000448",
           "cnpj": "12098152000158",
-          "fornecedor": "TPS BRASIL COMERCIO E SERVICOS DE PRODUTOS ANALITICOS L",
+          "favorecido": "TPS BRASIL COMERCIO E SERVICOS DE PRODUTOS ANALITICOS L",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -1262,10 +1191,9 @@
           "saldo": 49497
         },
         {
-          "empenho": "254463252012026NE000449",
           "ne_ccor": "254463252012026NE000449",
           "cnpj": "67774679000147",
-          "fornecedor": "NOVA ANALITICA IMPORTACAO E EXPORTACAO LTDA",
+          "favorecido": "NOVA ANALITICA IMPORTACAO E EXPORTACAO LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -1275,10 +1203,9 @@
           "saldo": 66423.66
         },
         {
-          "empenho": "254463252012026NE000450",
           "ne_ccor": "254463252012026NE000450",
           "cnpj": "30820280000145",
-          "fornecedor": "TT MATERIAL DE CONSTRUCAO LTDA",
+          "favorecido": "TT MATERIAL DE CONSTRUCAO LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -1288,10 +1215,9 @@
           "saldo": 104.75
         },
         {
-          "empenho": "254463252012026NE000451",
           "ne_ccor": "254463252012026NE000451",
           "cnpj": "30820280000145",
-          "fornecedor": "TT MATERIAL DE CONSTRUCAO LTDA",
+          "favorecido": "TT MATERIAL DE CONSTRUCAO LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -1301,10 +1227,9 @@
           "saldo": 104.75
         },
         {
-          "empenho": "254463252012026NE000452",
           "ne_ccor": "254463252012026NE000452",
           "cnpj": "30820280000145",
-          "fornecedor": "TT MATERIAL DE CONSTRUCAO LTDA",
+          "favorecido": "TT MATERIAL DE CONSTRUCAO LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -1314,10 +1239,9 @@
           "saldo": 125.7
         },
         {
-          "empenho": "254463252012026NE000453",
           "ne_ccor": "254463252012026NE000453",
           "cnpj": "30820280000145",
-          "fornecedor": "TT MATERIAL DE CONSTRUCAO LTDA",
+          "favorecido": "TT MATERIAL DE CONSTRUCAO LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -1327,10 +1251,9 @@
           "saldo": 251.4
         },
         {
-          "empenho": "254463252012026NE000454",
           "ne_ccor": "254463252012026NE000454",
           "cnpj": "30820280000145",
-          "fornecedor": "TT MATERIAL DE CONSTRUCAO LTDA",
+          "favorecido": "TT MATERIAL DE CONSTRUCAO LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -1340,10 +1263,9 @@
           "saldo": 670.4
         },
         {
-          "empenho": "254463252012026NE000455",
           "ne_ccor": "254463252012026NE000455",
           "cnpj": "30820280000145",
-          "fornecedor": "TT MATERIAL DE CONSTRUCAO LTDA",
+          "favorecido": "TT MATERIAL DE CONSTRUCAO LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -1353,10 +1275,9 @@
           "saldo": 104.75
         },
         {
-          "empenho": "254463252012026NE000456",
           "ne_ccor": "254463252012026NE000456",
           "cnpj": "30820280000145",
-          "fornecedor": "TT MATERIAL DE CONSTRUCAO LTDA",
+          "favorecido": "TT MATERIAL DE CONSTRUCAO LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -1366,10 +1287,9 @@
           "saldo": 209.5
         },
         {
-          "empenho": "254463252012026NE000457",
           "ne_ccor": "254463252012026NE000457",
           "cnpj": "30820280000145",
-          "fornecedor": "TT MATERIAL DE CONSTRUCAO LTDA",
+          "favorecido": "TT MATERIAL DE CONSTRUCAO LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -1379,10 +1299,9 @@
           "saldo": 188.55
         },
         {
-          "empenho": "254463252012026NE000497",
           "ne_ccor": "254463252012026NE000497",
           "cnpj": "45812327000104",
-          "fornecedor": "SOLABOR PRODUTOS PARA LABORATORIOS LTDA",
+          "favorecido": "SOLABOR PRODUTOS PARA LABORATORIOS LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -1392,10 +1311,9 @@
           "saldo": 75
         },
         {
-          "empenho": "254463252012026NE000500",
           "ne_ccor": "254463252012026NE000500",
           "cnpj": "07944100000115",
-          "fornecedor": "PROC9 INDUSTRIA QUIMICA LTDA",
+          "favorecido": "PROC9 INDUSTRIA QUIMICA LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -1405,10 +1323,9 @@
           "saldo": 238
         },
         {
-          "empenho": "254463252012026NE000509",
           "ne_ccor": "254463252012026NE000509",
           "cnpj": "80243769000170",
-          "fornecedor": "AMBARLAB PRODUTOS LABORATORIAIS LTDA",
+          "favorecido": "AMBARLAB PRODUTOS LABORATORIAIS LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -1418,10 +1335,9 @@
           "saldo": 48.3
         },
         {
-          "empenho": "254463252012026NE000510",
           "ne_ccor": "254463252012026NE000510",
           "cnpj": "13545241000168",
-          "fornecedor": "SINTESE BIOTECNOLOGIA LTDA.",
+          "favorecido": "SINTESE BIOTECNOLOGIA LTDA.",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -1431,10 +1347,9 @@
           "saldo": 275.4
         },
         {
-          "empenho": "254463252012026NE000511",
           "ne_ccor": "254463252012026NE000511",
           "cnpj": "13545241000168",
-          "fornecedor": "SINTESE BIOTECNOLOGIA LTDA.",
+          "favorecido": "SINTESE BIOTECNOLOGIA LTDA.",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -1444,10 +1359,9 @@
           "saldo": 152
         },
         {
-          "empenho": "254463252012026NE000512",
           "ne_ccor": "254463252012026NE000512",
           "cnpj": "13545241000168",
-          "fornecedor": "SINTESE BIOTECNOLOGIA LTDA.",
+          "favorecido": "SINTESE BIOTECNOLOGIA LTDA.",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -1457,10 +1371,9 @@
           "saldo": 183.6
         },
         {
-          "empenho": "254463252012026NE000513",
           "ne_ccor": "254463252012026NE000513",
           "cnpj": "13545241000168",
-          "fornecedor": "SINTESE BIOTECNOLOGIA LTDA.",
+          "favorecido": "SINTESE BIOTECNOLOGIA LTDA.",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -1470,10 +1383,9 @@
           "saldo": 76
         },
         {
-          "empenho": "254463252012026NE000517",
           "ne_ccor": "254463252012026NE000517",
           "cnpj": "80243769000170",
-          "fornecedor": "AMBARLAB PRODUTOS LABORATORIAIS LTDA",
+          "favorecido": "AMBARLAB PRODUTOS LABORATORIAIS LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -1483,10 +1395,9 @@
           "saldo": 950
         },
         {
-          "empenho": "254463252012026NE000519",
           "ne_ccor": "254463252012026NE000519",
           "cnpj": "80243769000170",
-          "fornecedor": "AMBARLAB PRODUTOS LABORATORIAIS LTDA",
+          "favorecido": "AMBARLAB PRODUTOS LABORATORIAIS LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -1496,10 +1407,9 @@
           "saldo": 950
         },
         {
-          "empenho": "254463252012026NE000521",
           "ne_ccor": "254463252012026NE000521",
           "cnpj": "80243769000170",
-          "fornecedor": "AMBARLAB PRODUTOS LABORATORIAIS LTDA",
+          "favorecido": "AMBARLAB PRODUTOS LABORATORIAIS LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -1509,10 +1419,9 @@
           "saldo": 15.15
         },
         {
-          "empenho": "254463252012026NE000523",
           "ne_ccor": "254463252012026NE000523",
           "cnpj": "80243769000170",
-          "fornecedor": "AMBARLAB PRODUTOS LABORATORIAIS LTDA",
+          "favorecido": "AMBARLAB PRODUTOS LABORATORIAIS LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -1522,10 +1431,9 @@
           "saldo": 72.45
         },
         {
-          "empenho": "254463252012026NE000525",
           "ne_ccor": "254463252012026NE000525",
           "cnpj": "80243769000170",
-          "fornecedor": "AMBARLAB PRODUTOS LABORATORIAIS LTDA",
+          "favorecido": "AMBARLAB PRODUTOS LABORATORIAIS LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -1535,10 +1443,9 @@
           "saldo": 121.2
         },
         {
-          "empenho": "254463252012026NE000526",
           "ne_ccor": "254463252012026NE000526",
           "cnpj": "80243769000170",
-          "fornecedor": "AMBARLAB PRODUTOS LABORATORIAIS LTDA",
+          "favorecido": "AMBARLAB PRODUTOS LABORATORIAIS LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -1548,10 +1455,9 @@
           "saldo": 303
         },
         {
-          "empenho": "254463252012026NE000528",
           "ne_ccor": "254463252012026NE000528",
           "cnpj": "80243769000170",
-          "fornecedor": "AMBARLAB PRODUTOS LABORATORIAIS LTDA",
+          "favorecido": "AMBARLAB PRODUTOS LABORATORIAIS LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -1561,10 +1467,9 @@
           "saldo": 151.5
         },
         {
-          "empenho": "254463252012026NE000559",
           "ne_ccor": "254463252012026NE000559",
           "cnpj": "21317051000111",
-          "fornecedor": "PENSABIO INSTRUMENTOS DE BIOTECNOLOGIA LTDA",
+          "favorecido": "PENSABIO INSTRUMENTOS DE BIOTECNOLOGIA LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -1574,10 +1479,9 @@
           "saldo": 6326.06
         },
         {
-          "empenho": "254463252012026NE000560",
           "ne_ccor": "254463252012026NE000560",
           "cnpj": "21070300000117",
-          "fornecedor": "UNITED IMPORTACAO E EXPORTACAO LTDA",
+          "favorecido": "UNITED IMPORTACAO E EXPORTACAO LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -1587,10 +1491,9 @@
           "saldo": 7000
         },
         {
-          "empenho": "254463252012026NE000560",
           "ne_ccor": "254463252012026NE000560",
           "cnpj": "21070300000117",
-          "fornecedor": "UNITED IMPORTACAO E EXPORTACAO LTDA",
+          "favorecido": "UNITED IMPORTACAO E EXPORTACAO LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -1600,10 +1503,9 @@
           "saldo": 565
         },
         {
-          "empenho": "254463252012026NE000565",
           "ne_ccor": "254463252012026NE000565",
           "cnpj": "07692391000100",
-          "fornecedor": "SHAPER DO BRASIL COMERCIO E SERVICOS LTDA",
+          "favorecido": "SHAPER DO BRASIL COMERCIO E SERVICOS LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -1613,10 +1515,9 @@
           "saldo": 1175.5
         },
         {
-          "empenho": "254463252012026NE000580",
           "ne_ccor": "254463252012026NE000580",
           "cnpj": "52096144000197",
-          "fornecedor": "SAGLYK PRODUTOS MEDICOS E HOSPITALARES LTDA",
+          "favorecido": "SAGLYK PRODUTOS MEDICOS E HOSPITALARES LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -1626,10 +1527,9 @@
           "saldo": 360
         },
         {
-          "empenho": "254463252012026NE000584",
           "ne_ccor": "254463252012026NE000584",
           "cnpj": "11084999000110",
-          "fornecedor": "JEOL BRASIL INSTRUMENTOS CIENTIFICOS LTDA.",
+          "favorecido": "JEOL BRASIL INSTRUMENTOS CIENTIFICOS LTDA.",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "39",
@@ -1639,10 +1539,9 @@
           "saldo": 0.86
         },
         {
-          "empenho": "254463252012026NE000592",
           "ne_ccor": "254463252012026NE000592",
           "cnpj": "16599555000131",
-          "fornecedor": "ARC FONTOURA INDUSTRIA COMERCIO E REPRESENTACOES LTDA",
+          "favorecido": "ARC FONTOURA INDUSTRIA COMERCIO E REPRESENTACOES LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -1652,10 +1551,9 @@
           "saldo": 179.16
         },
         {
-          "empenho": "254463252012026NE000595",
           "ne_ccor": "254463252012026NE000595",
           "cnpj": "02944432000186",
-          "fornecedor": "BIOHNANO CIENTIFICA E HOSPITALAR LTDA",
+          "favorecido": "BIOHNANO CIENTIFICA E HOSPITALAR LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -1665,10 +1563,9 @@
           "saldo": 1276
         },
         {
-          "empenho": "254463252012026NE000596",
           "ne_ccor": "254463252012026NE000596",
           "cnpj": "02944432000186",
-          "fornecedor": "BIOHNANO CIENTIFICA E HOSPITALAR LTDA",
+          "favorecido": "BIOHNANO CIENTIFICA E HOSPITALAR LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -1678,10 +1575,9 @@
           "saldo": 1276
         },
         {
-          "empenho": "254463252012026NE000597",
           "ne_ccor": "254463252012026NE000597",
           "cnpj": "02944432000186",
-          "fornecedor": "BIOHNANO CIENTIFICA E HOSPITALAR LTDA",
+          "favorecido": "BIOHNANO CIENTIFICA E HOSPITALAR LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -1691,10 +1587,9 @@
           "saldo": 1276
         },
         {
-          "empenho": "254463252012026NE000598",
           "ne_ccor": "254463252012026NE000598",
           "cnpj": "02944432000186",
-          "fornecedor": "BIOHNANO CIENTIFICA E HOSPITALAR LTDA",
+          "favorecido": "BIOHNANO CIENTIFICA E HOSPITALAR LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -1704,10 +1599,9 @@
           "saldo": 310
         },
         {
-          "empenho": "254463252012026NE000600",
           "ne_ccor": "254463252012026NE000600",
           "cnpj": "02944432000186",
-          "fornecedor": "BIOHNANO CIENTIFICA E HOSPITALAR LTDA",
+          "favorecido": "BIOHNANO CIENTIFICA E HOSPITALAR LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -1717,10 +1611,9 @@
           "saldo": 1276
         },
         {
-          "empenho": "254463252012026NE000605",
           "ne_ccor": "254463252012026NE000605",
           "cnpj": "02385669000174",
-          "fornecedor": "FIOTEC - FUNDACAO PARA O DESENVOLVIMENTO CIENTIFICO E T",
+          "favorecido": "FIOTEC - FUNDACAO PARA O DESENVOLVIMENTO CIENTIFICO E T",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "39",
@@ -1730,10 +1623,9 @@
           "saldo": 50000
         },
         {
-          "empenho": "254463252012026NE000610",
           "ne_ccor": "254463252012026NE000610",
           "cnpj": "61737277000196",
-          "fornecedor": "61.737.277 KAYQUE GUIMARAES PEREIRA SIQUEIRA",
+          "favorecido": "61.737.277 KAYQUE GUIMARAES PEREIRA SIQUEIRA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -1743,10 +1635,9 @@
           "saldo": 2145
         },
         {
-          "empenho": "254463252012026NE000613",
           "ne_ccor": "254463252012026NE000613",
           "cnpj": "51053659000147",
-          "fornecedor": "ROSA CAFE IMPORTS LTDA",
+          "favorecido": "ROSA CAFE IMPORTS LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -1756,10 +1647,9 @@
           "saldo": 7
         },
         {
-          "empenho": "254463252012026NE000620",
           "ne_ccor": "254463252012026NE000620",
           "cnpj": "51053659000147",
-          "fornecedor": "ROSA CAFE IMPORTS LTDA",
+          "favorecido": "ROSA CAFE IMPORTS LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -1769,10 +1659,9 @@
           "saldo": 600
         },
         {
-          "empenho": "254463252012026NE000621",
           "ne_ccor": "254463252012026NE000621",
           "cnpj": "66714368000120",
-          "fornecedor": "66.714.368 THAIS MAIA NADER",
+          "favorecido": "66.714.368 THAIS MAIA NADER",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -1782,10 +1671,9 @@
           "saldo": 102
         },
         {
-          "empenho": "254463252012026NE000623",
           "ne_ccor": "254463252012026NE000623",
           "cnpj": "59363807000131",
-          "fornecedor": "59.363.807 ANA PAULA NUNES DE CARVALHO",
+          "favorecido": "59.363.807 ANA PAULA NUNES DE CARVALHO",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -1795,10 +1683,9 @@
           "saldo": 11300
         },
         {
-          "empenho": "254463252012026NE000626",
           "ne_ccor": "254463252012026NE000626",
           "cnpj": "18087315000183",
-          "fornecedor": "AAVA LOCACOES E TRANSPORTES LTDA",
+          "favorecido": "AAVA LOCACOES E TRANSPORTES LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "33",
@@ -1808,10 +1695,9 @@
           "saldo": 83890
         },
         {
-          "empenho": "254463252012026NE000627",
           "ne_ccor": "254463252012026NE000627",
           "cnpj": "42247983000105",
-          "fornecedor": "FH SOLUCOES E LIMPEZA LTDA",
+          "favorecido": "FH SOLUCOES E LIMPEZA LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -1821,10 +1707,9 @@
           "saldo": 1636.6
         },
         {
-          "empenho": "254463252012026NE000642",
           "ne_ccor": "254463252012026NE000642",
           "cnpj": "11084999000110",
-          "fornecedor": "JEOL BRASIL INSTRUMENTOS CIENTIFICOS LTDA.",
+          "favorecido": "JEOL BRASIL INSTRUMENTOS CIENTIFICOS LTDA.",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "39",
@@ -1834,10 +1719,9 @@
           "saldo": 1.49
         },
         {
-          "empenho": "254463252012026NE000651",
           "ne_ccor": "254463252012026NE000651",
           "cnpj": "15011572000143",
-          "fornecedor": "MOBILHE MOVEIS CORPORATIVOS LTDA",
+          "favorecido": "MOBILHE MOVEIS CORPORATIVOS LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "52",
@@ -1847,10 +1731,9 @@
           "saldo": 110500
         },
         {
-          "empenho": "254463252012026NE000652",
           "ne_ccor": "254463252012026NE000652",
           "cnpj": "67423152000178",
-          "fornecedor": "IBG INDUSTRIA BRASILEIRA DE GASES LTDA",
+          "favorecido": "IBG INDUSTRIA BRASILEIRA DE GASES LTDA",
           "fonte_recursos": "1049A00062",
           "fonte_recursos_descricao": "RECEITAS FARMANGUINHOS FIOCRUZ",
           "elemento_despesa": "30",
@@ -1860,10 +1743,9 @@
           "saldo": 560
         },
         {
-          "empenho": "254463252012026NE000653",
           "ne_ccor": "254463252012026NE000653",
           "cnpj": "06153182000117",
-          "fornecedor": "LILIANE ALARCAO DIAS CORREA RAMANZINI",
+          "favorecido": "LILIANE ALARCAO DIAS CORREA RAMANZINI",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -1873,10 +1755,9 @@
           "saldo": 27250
         },
         {
-          "empenho": "254463252012026NE000654",
           "ne_ccor": "254463252012026NE000654",
           "cnpj": "67774679000147",
-          "fornecedor": "NOVA ANALITICA IMPORTACAO E EXPORTACAO LTDA",
+          "favorecido": "NOVA ANALITICA IMPORTACAO E EXPORTACAO LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -1886,10 +1767,9 @@
           "saldo": 16021.33
         },
         {
-          "empenho": "254463252012026NE000655",
           "ne_ccor": "254463252012026NE000655",
           "cnpj": "43854777000126",
-          "fornecedor": "BUNZL EQUIPAMENTOS PARA PROTECAO INDIVIDUAL L",
+          "favorecido": "BUNZL EQUIPAMENTOS PARA PROTECAO INDIVIDUAL L",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -1899,10 +1779,9 @@
           "saldo": 42925
         },
         {
-          "empenho": "254463252012026NE000655",
           "ne_ccor": "254463252012026NE000655",
           "cnpj": "43854777000126",
-          "fornecedor": "BUNZL EQUIPAMENTOS PARA PROTECAO INDIVIDUAL L",
+          "favorecido": "BUNZL EQUIPAMENTOS PARA PROTECAO INDIVIDUAL L",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -1912,10 +1791,9 @@
           "saldo": 11700
         },
         {
-          "empenho": "254463252012026NE000657",
           "ne_ccor": "254463252012026NE000657",
           "cnpj": "80243769000170",
-          "fornecedor": "AMBARLAB PRODUTOS LABORATORIAIS LTDA",
+          "favorecido": "AMBARLAB PRODUTOS LABORATORIAIS LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -1925,10 +1803,9 @@
           "saldo": 2340
         },
         {
-          "empenho": "254463252012026NE000662",
           "ne_ccor": "254463252012026NE000662",
           "cnpj": "55487029000131",
-          "fornecedor": "CYTIVA DO BRASIL COMERCIO E SERVICOS PARA BIOTECNOLOGIA",
+          "favorecido": "CYTIVA DO BRASIL COMERCIO E SERVICOS PARA BIOTECNOLOGIA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -1938,10 +1815,9 @@
           "saldo": 49182.11
         },
         {
-          "empenho": "254463252012026NE000667",
           "ne_ccor": "254463252012026NE000667",
           "cnpj": "01334250000392",
-          "fornecedor": "QIAGEN BIOTECNOLOGIA BRASIL LTDA.",
+          "favorecido": "QIAGEN BIOTECNOLOGIA BRASIL LTDA.",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -1951,10 +1827,9 @@
           "saldo": 59561
         },
         {
-          "empenho": "254463252012026NE000668",
           "ne_ccor": "254463252012026NE000668",
           "cnpj": "02472396000286",
-          "fornecedor": "GRAFICA E EDITORA ALIANCA LTDA",
+          "favorecido": "GRAFICA E EDITORA ALIANCA LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "39",
@@ -1964,10 +1839,9 @@
           "saldo": 270
         },
         {
-          "empenho": "254463252012026NE000669",
           "ne_ccor": "254463252012026NE000669",
           "cnpj": "39685763000159",
-          "fornecedor": "PERFIL SOLUCOES EMPRESARIAIS LTDA",
+          "favorecido": "PERFIL SOLUCOES EMPRESARIAIS LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "39",
@@ -1977,10 +1851,9 @@
           "saldo": 880
         },
         {
-          "empenho": "254463252012026NE000670",
           "ne_ccor": "254463252012026NE000670",
           "cnpj": "03290250000606",
-          "fornecedor": "AGILENT TECHNOLOGIES BRASIL LTDA",
+          "favorecido": "AGILENT TECHNOLOGIES BRASIL LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -1990,10 +1863,9 @@
           "saldo": 1420.86
         },
         {
-          "empenho": "254463252012026NE000671",
           "ne_ccor": "254463252012026NE000671",
           "cnpj": "39685763000159",
-          "fornecedor": "PERFIL SOLUCOES EMPRESARIAIS LTDA",
+          "favorecido": "PERFIL SOLUCOES EMPRESARIAIS LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "39",
@@ -2003,10 +1875,9 @@
           "saldo": 790
         },
         {
-          "empenho": "254463252012026NE000672",
           "ne_ccor": "254463252012026NE000672",
           "cnpj": "49442894000169",
-          "fornecedor": "FIBO COMPANY SOFTWARE LTDA",
+          "favorecido": "FIBO COMPANY SOFTWARE LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -2016,10 +1887,9 @@
           "saldo": 24
         },
         {
-          "empenho": "254463252012026NE000673",
           "ne_ccor": "254463252012026NE000673",
           "cnpj": "49442894000169",
-          "fornecedor": "FIBO COMPANY SOFTWARE LTDA",
+          "favorecido": "FIBO COMPANY SOFTWARE LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -2029,10 +1899,9 @@
           "saldo": 60
         },
         {
-          "empenho": "254463252012026NE000674",
           "ne_ccor": "254463252012026NE000674",
           "cnpj": "49442894000169",
-          "fornecedor": "FIBO COMPANY SOFTWARE LTDA",
+          "favorecido": "FIBO COMPANY SOFTWARE LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -2042,10 +1911,9 @@
           "saldo": 30
         },
         {
-          "empenho": "254463252012026NE000675",
           "ne_ccor": "254463252012026NE000675",
           "cnpj": "49442894000169",
-          "fornecedor": "FIBO COMPANY SOFTWARE LTDA",
+          "favorecido": "FIBO COMPANY SOFTWARE LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -2055,10 +1923,9 @@
           "saldo": 18
         },
         {
-          "empenho": "254463252012026NE000676",
           "ne_ccor": "254463252012026NE000676",
           "cnpj": "49442894000169",
-          "fornecedor": "FIBO COMPANY SOFTWARE LTDA",
+          "favorecido": "FIBO COMPANY SOFTWARE LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -2068,10 +1935,9 @@
           "saldo": 24
         },
         {
-          "empenho": "254463252012026NE000677",
           "ne_ccor": "254463252012026NE000677",
           "cnpj": "49442894000169",
-          "fornecedor": "FIBO COMPANY SOFTWARE LTDA",
+          "favorecido": "FIBO COMPANY SOFTWARE LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -2081,10 +1947,9 @@
           "saldo": 24
         },
         {
-          "empenho": "254463252012026NE000682",
           "ne_ccor": "254463252012026NE000682",
           "cnpj": "80243769000170",
-          "fornecedor": "AMBARLAB PRODUTOS LABORATORIAIS LTDA",
+          "favorecido": "AMBARLAB PRODUTOS LABORATORIAIS LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -2094,10 +1959,9 @@
           "saldo": 34.8
         },
         {
-          "empenho": "254463252012026NE000683",
           "ne_ccor": "254463252012026NE000683",
           "cnpj": "80243769000170",
-          "fornecedor": "AMBARLAB PRODUTOS LABORATORIAIS LTDA",
+          "favorecido": "AMBARLAB PRODUTOS LABORATORIAIS LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -2107,10 +1971,9 @@
           "saldo": 21.6
         },
         {
-          "empenho": "254463252012026NE000684",
           "ne_ccor": "254463252012026NE000684",
           "cnpj": "80243769000170",
-          "fornecedor": "AMBARLAB PRODUTOS LABORATORIAIS LTDA",
+          "favorecido": "AMBARLAB PRODUTOS LABORATORIAIS LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -2120,10 +1983,9 @@
           "saldo": 88.8
         },
         {
-          "empenho": "254463252012026NE000685",
           "ne_ccor": "254463252012026NE000685",
           "cnpj": "80243769000170",
-          "fornecedor": "AMBARLAB PRODUTOS LABORATORIAIS LTDA",
+          "favorecido": "AMBARLAB PRODUTOS LABORATORIAIS LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -2133,10 +1995,9 @@
           "saldo": 21.6
         },
         {
-          "empenho": "254463252012026NE000687",
           "ne_ccor": "254463252012026NE000687",
           "cnpj": "56083432000168",
-          "fornecedor": "56.083.432 ANDRE LUIZ SILVA DA COSTA",
+          "favorecido": "56.083.432 ANDRE LUIZ SILVA DA COSTA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -2146,10 +2007,9 @@
           "saldo": 108.88
         },
         {
-          "empenho": "254463252012026NE000690",
           "ne_ccor": "254463252012026NE000690",
           "cnpj": "05857218000180",
-          "fornecedor": "LOBOV CIENTIFICA, IMPORTACAO, EXPORTACAO, COMERCIO DE",
+          "favorecido": "LOBOV CIENTIFICA, IMPORTACAO, EXPORTACAO, COMERCIO DE",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -2159,10 +2019,9 @@
           "saldo": 21
         },
         {
-          "empenho": "254463252012026NE000691",
           "ne_ccor": "254463252012026NE000691",
           "cnpj": "05857218000180",
-          "fornecedor": "LOBOV CIENTIFICA, IMPORTACAO, EXPORTACAO, COMERCIO DE",
+          "favorecido": "LOBOV CIENTIFICA, IMPORTACAO, EXPORTACAO, COMERCIO DE",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -2172,10 +2031,9 @@
           "saldo": 42
         },
         {
-          "empenho": "254463252012026NE000695",
           "ne_ccor": "254463252012026NE000695",
           "cnpj": "09686716000169",
-          "fornecedor": "PROCELA PARTICIPACOES LTDA",
+          "favorecido": "PROCELA PARTICIPACOES LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -2185,10 +2043,9 @@
           "saldo": 43.8
         },
         {
-          "empenho": "254463252012026NE000696",
           "ne_ccor": "254463252012026NE000696",
           "cnpj": "09686716000169",
-          "fornecedor": "PROCELA PARTICIPACOES LTDA",
+          "favorecido": "PROCELA PARTICIPACOES LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -2198,10 +2055,9 @@
           "saldo": 219
         },
         {
-          "empenho": "254463252012026NE000697",
           "ne_ccor": "254463252012026NE000697",
           "cnpj": "09686716000169",
-          "fornecedor": "PROCELA PARTICIPACOES LTDA",
+          "favorecido": "PROCELA PARTICIPACOES LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -2211,10 +2067,9 @@
           "saldo": 65.7
         },
         {
-          "empenho": "254463252012026NE000704",
           "ne_ccor": "254463252012026NE000704",
           "cnpj": "54992059000132",
-          "fornecedor": "TECSCIENCE EQUIPAMENTOS CIENTIFICOS LTDA",
+          "favorecido": "TECSCIENCE EQUIPAMENTOS CIENTIFICOS LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "39",
@@ -2224,10 +2079,9 @@
           "saldo": 18421.7
         },
         {
-          "empenho": "254463252012026NE000706",
           "ne_ccor": "254463252012026NE000706",
           "cnpj": "30820280000145",
-          "fornecedor": "TT MATERIAL DE CONSTRUCAO LTDA",
+          "favorecido": "TT MATERIAL DE CONSTRUCAO LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -2237,10 +2091,9 @@
           "saldo": 104.75
         },
         {
-          "empenho": "254463252012026NE000707",
           "ne_ccor": "254463252012026NE000707",
           "cnpj": "56183058000172",
-          "fornecedor": "SURGIDENT PRODUTOS ODONTO MEDICOS LTDA",
+          "favorecido": "SURGIDENT PRODUTOS ODONTO MEDICOS LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -2250,10 +2103,9 @@
           "saldo": 13.5
         },
         {
-          "empenho": "254463252012026NE000708",
           "ne_ccor": "254463252012026NE000708",
           "cnpj": "56183058000172",
-          "fornecedor": "SURGIDENT PRODUTOS ODONTO MEDICOS LTDA",
+          "favorecido": "SURGIDENT PRODUTOS ODONTO MEDICOS LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -2263,10 +2115,9 @@
           "saldo": 72.5
         },
         {
-          "empenho": "254463252012026NE000709",
           "ne_ccor": "254463252012026NE000709",
           "cnpj": "56183058000172",
-          "fornecedor": "SURGIDENT PRODUTOS ODONTO MEDICOS LTDA",
+          "favorecido": "SURGIDENT PRODUTOS ODONTO MEDICOS LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -2276,10 +2127,9 @@
           "saldo": 35
         },
         {
-          "empenho": "254463252012026NE000715",
           "ne_ccor": "254463252012026NE000715",
           "cnpj": "04198254000117",
-          "fornecedor": "MCR SISTEMAS E CONSULTORIA LTDA",
+          "favorecido": "MCR SISTEMAS E CONSULTORIA LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "40",
@@ -2289,10 +2139,9 @@
           "saldo": 4646.67
         },
         {
-          "empenho": "254463252012026NE000716",
           "ne_ccor": "254463252012026NE000716",
           "cnpj": "54992059000132",
-          "fornecedor": "TECSCIENCE EQUIPAMENTOS CIENTIFICOS LTDA",
+          "favorecido": "TECSCIENCE EQUIPAMENTOS CIENTIFICOS LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -2302,10 +2151,9 @@
           "saldo": 879.76
         },
         {
-          "empenho": "254463252012026NE000717",
           "ne_ccor": "254463252012026NE000717",
           "cnpj": "57619978000153",
-          "fornecedor": "2L DISTRIBUIDORA DE PRODUTOS LTDA",
+          "favorecido": "2L DISTRIBUIDORA DE PRODUTOS LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -2315,10 +2163,9 @@
           "saldo": 2130
         },
         {
-          "empenho": "254463252012026NE000718",
           "ne_ccor": "254463252012026NE000718",
           "cnpj": "42432251000195",
-          "fornecedor": "SM PLUS COMERCIO E SERVICOS LTDA",
+          "favorecido": "SM PLUS COMERCIO E SERVICOS LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -2328,10 +2175,9 @@
           "saldo": 1700
         },
         {
-          "empenho": "254463252012026NE000719",
           "ne_ccor": "254463252012026NE000719",
           "cnpj": "57619978000153",
-          "fornecedor": "2L DISTRIBUIDORA DE PRODUTOS LTDA",
+          "favorecido": "2L DISTRIBUIDORA DE PRODUTOS LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -2341,10 +2187,9 @@
           "saldo": 7114.3
         },
         {
-          "empenho": "254463252012026NE000720",
           "ne_ccor": "254463252012026NE000720",
           "cnpj": "62984938000140",
-          "fornecedor": "PRONUS COMERCIO DE MATERIAIS DE LIMPEZA E DESCARTAVEIS",
+          "favorecido": "PRONUS COMERCIO DE MATERIAIS DE LIMPEZA E DESCARTAVEIS",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -2354,10 +2199,9 @@
           "saldo": 1662
         },
         {
-          "empenho": "254463252012026NE000721",
           "ne_ccor": "254463252012026NE000721",
           "cnpj": "31522159000108",
-          "fornecedor": "OMEGA TRES COMERCIO DE EQUIPAMENTOS PARA LABORATORIOS L",
+          "favorecido": "OMEGA TRES COMERCIO DE EQUIPAMENTOS PARA LABORATORIOS L",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -2367,10 +2211,9 @@
           "saldo": 15799
         },
         {
-          "empenho": "254463252012026NE000722",
           "ne_ccor": "254463252012026NE000722",
           "cnpj": "04424094000187",
-          "fornecedor": "ALLCOMNET TECNOLOGIA E SISTEMAS LTDA",
+          "favorecido": "ALLCOMNET TECNOLOGIA E SISTEMAS LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "40",
@@ -2380,10 +2223,9 @@
           "saldo": 62153.51
         },
         {
-          "empenho": "254463252012026NE000723",
           "ne_ccor": "254463252012026NE000723",
           "cnpj": "67687675000121",
-          "fornecedor": "67.687.675 LUCAS TRAMONTANO DE MACEDO",
+          "favorecido": "67.687.675 LUCAS TRAMONTANO DE MACEDO",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "39",
@@ -2393,10 +2235,9 @@
           "saldo": 6403.89
         },
         {
-          "empenho": "254463252012026NE000724",
           "ne_ccor": "254463252012026NE000724",
           "cnpj": "67687675000121",
-          "fornecedor": "67.687.675 LUCAS TRAMONTANO DE MACEDO",
+          "favorecido": "67.687.675 LUCAS TRAMONTANO DE MACEDO",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "39",
@@ -2406,10 +2247,9 @@
           "saldo": 16596.11
         },
         {
-          "empenho": "254463252012026NE000725",
           "ne_ccor": "254463252012026NE000725",
           "cnpj": "00331788000623",
-          "fornecedor": "AIR LIQUIDE BRASIL LTDA",
+          "favorecido": "AIR LIQUIDE BRASIL LTDA",
           "fonte_recursos": "1049A00062",
           "fonte_recursos_descricao": "RECEITAS FARMANGUINHOS FIOCRUZ",
           "elemento_despesa": "30",
@@ -2419,10 +2259,9 @@
           "saldo": 12562
         },
         {
-          "empenho": "254463252012026NE000729",
           "ne_ccor": "254463252012026NE000729",
           "cnpj": "08247960000162",
-          "fornecedor": "REAL JG FACILITIES S/A",
+          "favorecido": "REAL JG FACILITIES S/A",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "34",
@@ -2432,10 +2271,9 @@
           "saldo": 5197.62
         },
         {
-          "empenho": "254463252012026NE000731",
           "ne_ccor": "254463252012026NE000731",
           "cnpj": "49506242000140",
-          "fornecedor": "HALOGENN PRODUTOS CIENTIFICOS LTDA",
+          "favorecido": "HALOGENN PRODUTOS CIENTIFICOS LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -2445,10 +2283,9 @@
           "saldo": 156
         },
         {
-          "empenho": "254463252012026NE000732",
           "ne_ccor": "254463252012026NE000732",
           "cnpj": "49506242000140",
-          "fornecedor": "HALOGENN PRODUTOS CIENTIFICOS LTDA",
+          "favorecido": "HALOGENN PRODUTOS CIENTIFICOS LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -2458,10 +2295,9 @@
           "saldo": 48
         },
         {
-          "empenho": "254463252012026NE000733",
           "ne_ccor": "254463252012026NE000733",
           "cnpj": "49506242000140",
-          "fornecedor": "HALOGENN PRODUTOS CIENTIFICOS LTDA",
+          "favorecido": "HALOGENN PRODUTOS CIENTIFICOS LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -2471,10 +2307,9 @@
           "saldo": 32
         },
         {
-          "empenho": "254463252012026NE000734",
           "ne_ccor": "254463252012026NE000734",
           "cnpj": "04919019000197",
-          "fornecedor": "ALFAPLAST COMERCIO DE PRODUTOS PARA LABORATORIOS LTDA",
+          "favorecido": "ALFAPLAST COMERCIO DE PRODUTOS PARA LABORATORIOS LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -2484,10 +2319,9 @@
           "saldo": 116
         },
         {
-          "empenho": "254463252012026NE000735",
           "ne_ccor": "254463252012026NE000735",
           "cnpj": "04919019000197",
-          "fornecedor": "ALFAPLAST COMERCIO DE PRODUTOS PARA LABORATORIOS LTDA",
+          "favorecido": "ALFAPLAST COMERCIO DE PRODUTOS PARA LABORATORIOS LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -2497,10 +2331,9 @@
           "saldo": 116
         },
         {
-          "empenho": "254463252012026NE000736",
           "ne_ccor": "254463252012026NE000736",
           "cnpj": "63067904000154",
-          "fornecedor": "LIFE TECHNOLOGIES BRASIL COMERCIO E INDUSTRIA",
+          "favorecido": "LIFE TECHNOLOGIES BRASIL COMERCIO E INDUSTRIA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "39",
@@ -2510,10 +2343,9 @@
           "saldo": 1360
         },
         {
-          "empenho": "254463252012026NE000737",
           "ne_ccor": "254463252012026NE000737",
           "cnpj": "08973746000193",
-          "fornecedor": "MDE SERVICOS E EVENTOS LTDA",
+          "favorecido": "MDE SERVICOS E EVENTOS LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "39",
@@ -2523,10 +2355,9 @@
           "saldo": 10026
         },
         {
-          "empenho": "254463252012026NE000738",
           "ne_ccor": "254463252012026NE000738",
           "cnpj": "56083432000168",
-          "fornecedor": "56.083.432 ANDRE LUIZ SILVA DA COSTA",
+          "favorecido": "56.083.432 ANDRE LUIZ SILVA DA COSTA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -2536,10 +2367,9 @@
           "saldo": 108.88
         },
         {
-          "empenho": "254463252012026NE000739",
           "ne_ccor": "254463252012026NE000739",
           "cnpj": "35820448000721",
-          "fornecedor": "WHITE MARTINS GASES INDUSTRIAIS LTDA",
+          "favorecido": "WHITE MARTINS GASES INDUSTRIAIS LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -2549,10 +2379,9 @@
           "saldo": 80500
         },
         {
-          "empenho": "254463252012026NE000740",
           "ne_ccor": "254463252012026NE000740",
           "cnpj": "56340616000166",
-          "fornecedor": "OGCP COMERCIAL LTDA",
+          "favorecido": "OGCP COMERCIAL LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -2562,10 +2391,9 @@
           "saldo": 64200
         },
         {
-          "empenho": "254463252012026NE000741",
           "ne_ccor": "254463252012026NE000741",
           "cnpj": "09608095000103",
-          "fornecedor": "MEDMACH SOLUCOES HOSPITALARES LTDA",
+          "favorecido": "MEDMACH SOLUCOES HOSPITALARES LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -2575,10 +2403,9 @@
           "saldo": 57750
         },
         {
-          "empenho": "254463252012026NE000742",
           "ne_ccor": "254463252012026NE000742",
           "cnpj": "08845041000190",
-          "fornecedor": "BRAZDI IMPORTACAO, EXPORTACAO, COMERCIO E SERVICOS DE P",
+          "favorecido": "BRAZDI IMPORTACAO, EXPORTACAO, COMERCIO E SERVICOS DE P",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -2588,10 +2415,9 @@
           "saldo": 92198.8
         },
         {
-          "empenho": "254463252012026NE000743",
           "ne_ccor": "254463252012026NE000743",
           "cnpj": "08845041000190",
-          "fornecedor": "BRAZDI IMPORTACAO, EXPORTACAO, COMERCIO E SERVICOS DE P",
+          "favorecido": "BRAZDI IMPORTACAO, EXPORTACAO, COMERCIO E SERVICOS DE P",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -2601,10 +2427,9 @@
           "saldo": 42000
         },
         {
-          "empenho": "254463252012026NE000744",
           "ne_ccor": "254463252012026NE000744",
           "cnpj": "04880181000149",
-          "fornecedor": "AWKALAB PRODUTOS PARA LABORATORIO LTDA",
+          "favorecido": "AWKALAB PRODUTOS PARA LABORATORIO LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -2614,10 +2439,9 @@
           "saldo": 23249.5
         },
         {
-          "empenho": "254463252012026NE000745",
           "ne_ccor": "254463252012026NE000745",
           "cnpj": "54552376000138",
-          "fornecedor": "MAGNA MED DISTRIBUIDORA E IMPORTADORA DE CORRELATOS LTD",
+          "favorecido": "MAGNA MED DISTRIBUIDORA E IMPORTADORA DE CORRELATOS LTD",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -2627,10 +2451,9 @@
           "saldo": 319200
         },
         {
-          "empenho": "254463252012026NE000748",
           "ne_ccor": "254463252012026NE000748",
           "cnpj": "60619202003406",
-          "fornecedor": "MESSER GASES LTDA.",
+          "favorecido": "MESSER GASES LTDA.",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -2640,10 +2463,9 @@
           "saldo": 81000
         },
         {
-          "empenho": "254463252012026NE000749",
           "ne_ccor": "254463252012026NE000749",
           "cnpj": "08973746000193",
-          "fornecedor": "MDE SERVICOS E EVENTOS LTDA",
+          "favorecido": "MDE SERVICOS E EVENTOS LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "39",
@@ -2653,10 +2475,9 @@
           "saldo": 50738.2
         },
         {
-          "empenho": "254463252012026NE000750",
           "ne_ccor": "254463252012026NE000750",
           "cnpj": "08973746000193",
-          "fornecedor": "MDE SERVICOS E EVENTOS LTDA",
+          "favorecido": "MDE SERVICOS E EVENTOS LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "39",
@@ -2666,10 +2487,9 @@
           "saldo": 9751.2
         },
         {
-          "empenho": "254463252012026NE000752",
           "ne_ccor": "254463252012026NE000752",
           "cnpj": "08845041000190",
-          "fornecedor": "BRAZDI IMPORTACAO, EXPORTACAO, COMERCIO E SERVICOS DE P",
+          "favorecido": "BRAZDI IMPORTACAO, EXPORTACAO, COMERCIO E SERVICOS DE P",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -2679,10 +2499,9 @@
           "saldo": 80073
         },
         {
-          "empenho": "254463252012026NE000753",
           "ne_ccor": "254463252012026NE000753",
           "cnpj": "08845041000190",
-          "fornecedor": "BRAZDI IMPORTACAO, EXPORTACAO, COMERCIO E SERVICOS DE P",
+          "favorecido": "BRAZDI IMPORTACAO, EXPORTACAO, COMERCIO E SERVICOS DE P",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -2692,10 +2511,9 @@
           "saldo": 9856
         },
         {
-          "empenho": "254463252012026NE000754",
           "ne_ccor": "254463252012026NE000754",
           "cnpj": "08845041000190",
-          "fornecedor": "BRAZDI IMPORTACAO, EXPORTACAO, COMERCIO E SERVICOS DE P",
+          "favorecido": "BRAZDI IMPORTACAO, EXPORTACAO, COMERCIO E SERVICOS DE P",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "30",
@@ -2705,10 +2523,9 @@
           "saldo": 5376
         },
         {
-          "empenho": "254463252012026NE000756",
           "ne_ccor": "254463252012026NE000756",
           "cnpj": "08973746000193",
-          "fornecedor": "MDE SERVICOS E EVENTOS LTDA",
+          "favorecido": "MDE SERVICOS E EVENTOS LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "39",
@@ -2718,10 +2535,9 @@
           "saldo": 902.34
         },
         {
-          "empenho": "254463252012026NE000757",
           "ne_ccor": "254463252012026NE000757",
           "cnpj": "08973746000193",
-          "fornecedor": "MDE SERVICOS E EVENTOS LTDA",
+          "favorecido": "MDE SERVICOS E EVENTOS LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "39",
@@ -2731,10 +2547,9 @@
           "saldo": 434.46
         },
         {
-          "empenho": "254463252012026NE000758",
           "ne_ccor": "254463252012026NE000758",
           "cnpj": "07797967000195",
-          "fornecedor": "NP TECNOLOGIA E GESTAO DE DADOS LTDA",
+          "favorecido": "NP TECNOLOGIA E GESTAO DE DADOS LTDA",
           "fonte_recursos": "1001000000",
           "fonte_recursos_descricao": "REC.LIVRES SEG.SOCIAL",
           "elemento_despesa": "39",
@@ -2744,7 +2559,7 @@
           "saldo": 999.98
         }
       ],
-      "note": "Fonte SIAFI: Saldo nos empenhos 2026. 185 registros detalhados. Total: R$ 9.738.819,69."
+      "note": "Importado diretamente da planilha SERPRO. 185 linhas de detalhe; total conferido com a linha Total da origem. Subitem excluído da visualização."
     },
     {
       "id": "orcamentario",
