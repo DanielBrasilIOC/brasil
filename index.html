@@ -7,7 +7,7 @@
 <style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#f3f6f9}iframe{display:block;width:100%;height:100%;border:0}</style>
 </head>
 <body>
-<iframe id="dashboard" src="dashboard-v2.html?v=20261124-hide-dob-alert" title="Painel Financeiro e Orçamentário IOC"></iframe>
+<iframe id="dashboard" src="dashboard-v2.html?v=20261126-empenhos-csv-columns" title="Painel Financeiro e Orçamentário IOC"></iframe>
 <script>
 const frame=document.getElementById('dashboard');
 frame.addEventListener('load',()=>{try{
@@ -20,8 +20,7 @@ frame.addEventListener('load',()=>{try{
   const visibilityStyle=doc.createElement('style');visibilityStyle.id='priority-values-visibility-fix';visibilityStyle.textContent='.priority-meter .priority-value,.priority-record-group .priority-summary-total{display:block!important;visibility:visible!important;opacity:1!important;color:inherit!important}.priority-record-group .priority-summary-total{font-size:clamp(15px,1.8vw,19px)!important;font-weight:900!important;white-space:nowrap!important}.priority-meter .priority-value{font-variant-numeric:tabular-nums!important;min-height:1.4em}';doc.head.appendChild(visibilityStyle);
   const norm=s=>(s||'').replace(/\\s+/g,' ').trim().toUpperCase();
   const applyUI=()=>{
-    const details=doc.querySelector('#details[data-dataset="empenhos"]');
-    if(details){details.querySelectorAll('table').forEach(table=>{Array.from(table.querySelectorAll('thead th')).forEach((th,i)=>{if(norm(th.textContent).includes('NE CCOR')||norm(th.textContent).includes('NECCOR')){th.classList.add('neccor-hidden');table.querySelectorAll('tbody tr').forEach(tr=>{if(tr.children[i])tr.children[i].classList.add('neccor-hidden')})}})});}
+
     const repasses=doc.querySelector('#details[data-dataset="repasses"]');
     if(repasses){repasses.querySelectorAll('th').forEach(th=>{if(/nº?\s*ne|numero\s*ne|número\s*ne|número da solicitação|numero da solicitacao/i.test(th.textContent)&&th.textContent!=='Número da Solicitação')th.textContent='Número da Solicitação'});repasses.querySelectorAll('input').forEach(inp=>{if(/numero\s*ne|número\s*ne|numero da solicitacao|número da solicitação/i.test((inp.id||'')+' '+(inp.placeholder||'')+' '+(inp.getAttribute('aria-label')||''))){if(inp.placeholder!=='Pesquisar Número da Solicitação')inp.placeholder='Pesquisar Número da Solicitação';inp.setAttribute('aria-label','Número da Solicitação')}});}
   };
