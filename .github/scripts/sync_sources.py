@@ -106,7 +106,7 @@ def check(ok,msg):
     if not ok: raise ValueError(msg)
 
 def parse_empenhos(text):
-    """Interpreta o leiaute SERPRO de Empenhos 2026, preservando PI e PTRES."""
+    """Interpreta os leiautes SERPRO antigo e novo de Empenhos 2026."""
     a=table(text,"\t",["NE CCor","Saldo - Moeda Origem"])
     header=AUDIT[norm("NE CCor")]["header"]
     def col(label):
@@ -117,18 +117,21 @@ def parse_empenhos(text):
             i=col(label)
             if i is not None: return i
         return None
+    processo_i=col_any("NE CCor - Núm. Processo","Processo")
+    ug_i=col_any("UG Responsável","UG Responsavel")
+    fonte_i=col_any("Fonte Recursos","Fonte de Recursos")
     ne_i=col("NE CCor")
-    cnpj_i=col("NE CCor - Favorecido")
-    natureza_i=col("Natureza Despesa Detalhada")
     pi_i=col_any("PI","Programa Interno")
-    pi_nome_i=col_any("PI Nome","Nome PI","Descrição PI","Descricao PI","Programa Interno Nome")
     ptres_i=col("PTRES")
     saldo_i=col_any("Saldo - Moeda Origem (Conta Contábil)","Saldo - Moeda Origem")
-    check(all(i is not None for i in (ne_i,cnpj_i,natureza_i,saldo_i,pi_i,ptres_i)),
-          f"Cabeçalho incompleto em Empenhos 2026 (esperados PI e PTRES): {header!r}")
-    fornecedor_i=cnpj_i+1
-    required=max(ne_i,cnpj_i,fornecedor_i,natureza_i,pi_i,ptres_i,saldo_i,
-                 pi_nome_i if pi_nome_i is not None else 0)
+    natureza_i=col_any("Natureza Despesa","Natureza Despesa Detalhada")
+    descricao_i=col_any("NE CCor - Descrição","NE CCor - Descricao")
+    cnpj_i=col("NE CCor - Favorecido")
+    fornecedor_i=(cnpj_i+1) if cnpj_i is not None else None
+    pi_nome_i=col_any("PI Nome","Nome PI","Descrição PI","Descricao PI","Programa Interno Nome")
+    check(all(i is not None for i in (ne_i,natureza_i,saldo_i,pi_i,ptres_i)),
+          f"Cabeçalho incompleto em Empenhos 2026 (esperados NE, natureza, saldo, PI e PTRES): {header!r}")
+    required=max(i for i in (ne_i,natureza_i,saldo_i,pi_i,ptres_i,processo_i,ug_i,fonte_i,descricao_i,cnpj_i,fornecedor_i,pi_nome_i) if i is not None)
     empenhos=[]
     for r in a:
         check(len(r)>required, f"Registro incompleto em Empenhos 2026: {r!r}")
@@ -139,17 +142,21 @@ def parse_empenhos(text):
         subitem=nd[6:8] if len(nd)==8 else ""
         empenhos.append({
             "empenho":r[ne_i], "ne_ccor":r[ne_i],
+            "processo":r[processo_i] if processo_i is not None else "",
+            "ug_responsavel":r[ug_i] if ug_i is not None else "",
+            "fonte_recursos":r[fonte_i] if fonte_i is not None else "",
+            "descricao":r[descricao_i] if descricao_i is not None else "",
             "subitem":subitem, "natureza":natureza,
-            "cnpj":r[cnpj_i], "fornecedor":r[fornecedor_i],
+            "cnpj":r[cnpj_i] if cnpj_i is not None else "",
+            "fornecedor":r[fornecedor_i] if fornecedor_i is not None else "",
             "pi":r[pi_i], "pi_nome":r[pi_nome_i] if pi_nome_i is not None else "",
             "ptres":r[ptres_i], "observacao":"",
-            "fonte_recursos_detalhada":"", "saldo":v
+            "fonte_recursos_detalhada":r[fonte_i] if fonte_i is not None else "", "saldo":v
         })
     te=total(empenhos,"saldo")
     check(1<=len(empenhos)<=1000 and te>=0,
           f"Validação de Empenhos 2026 falhou: linhas={len(empenhos)}, total={te}")
     return empenhos,te
-
 
 
 def parse_apropriacao_pendente(text):
