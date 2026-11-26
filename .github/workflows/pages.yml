@@ -64,24 +64,27 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Aguardar e localizar os sete CSVs oficiais (a partir das 04:00 Brasília)
+      - name: Localizar fontes (espera somente na rotina agendada)
         timeout-minutes: 360
         env:
-          GOOGLE_DRIVE_FOLDER_ID: "1Ae3_31uGRNvfvnN5euhiNHbk_mdkVg0L"
+          GOOGLE_DRIVE_FOLDER_ID: "1Ae3_31uGRNvfvnN5EuhiNHbk_mdkVg0L"
         run: |
           set -euo pipefail
-          for attempt in $(seq 1 22); do
-            echo "Tentativa $attempt/22 — $(date -u)"
-            if python .github/scripts/discover_drive_sources.py; then
-              echo "Todas as sete fontes foram localizadas e validadas."
-              exit 0
-            fi
-            if [ "$attempt" -lt 22 ]; then sleep 900; fi
-          done
-          echo "Fontes incompletas após aproximadamente cinco horas e quinze minutos; sincronização bloqueada, última versão preservada." >&2
-          exit 1
+          if [ "$GITHUB_EVENT_NAME" = "schedule" ]; then
+            for attempt in $(seq 1 22); do
+              echo "Tentativa $attempt/22 — $(date -u)"
+              if python .github/scripts/discover_drive_sources.py; then exit 0; fi
+              if [ "$attempt" -lt 22 ]; then sleep 900; fi
+            done
+            echo "Fontes incompletas após 5h15; sincronização bloqueada." >&2
+            exit 1
+          else
+            python .github/scripts/discover_drive_sources.py
+          fi
       - name: Testar detecção de inclusão e exclusão
         run: python .github/scripts/test_audit_sync.py
+      - name: Testar descoberta e validação das sete fontes
+        run: python .github/scripts/test_discover_drive_sources.py
       - name: Sincronizar fontes e registrar auditoria
         id: sync
         run: python .github/scripts/audit_sync.py
@@ -119,12 +122,13 @@ jobs:
         env:
           RUN_ID: ${{ github.run_id }}
           RUN_ATTEMPT: ${{ github.run_attempt }}
+          EVENT_NAME: ${{ github.event_name }}
           DATA_CHANGED: ${{ steps.sync.outputs.changed }}
         run: |
           python - <<'PY'
           import json, os
           with open('dashboard-publication.json','w',encoding='utf-8') as f:
-              json.dump({'run_id':int(os.environ['RUN_ID']),'run_attempt':int(os.environ['RUN_ATTEMPT']),'completed_at':__import__('datetime').datetime.now(__import__('datetime').timezone.utc).isoformat(),'no_changes':os.environ.get('DATA_CHANGED','false')=='false','message':'Nenhum registro atualizado, pois não houve movimentação.' if os.environ.get('DATA_CHANGED','false')=='false' else ''},f)
+              json.dump({'run_id':int(os.environ['RUN_ID']),'run_attempt':int(os.environ['RUN_ATTEMPT']),'no_changes':os.environ.get('EVENT_NAME','')=='schedule' and os.environ.get('DATA_CHANGED','false')=='false'},f)
           PY
       - name: Preparar arquivos estáticos do painel
         if: steps.sync.outputs.sync_ok == 'true'
