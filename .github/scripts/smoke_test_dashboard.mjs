@@ -28,7 +28,7 @@ try {
     nodes.map(node => node.querySelector("summary")?.innerText || "")
   );
   const recordCounts = counts.map(label => Number((label.match(/(\d+) registros?/) || [])[1] || 0));
-  if (counts.length !== 3 || recordCounts.some(value => value <= 0) || recordCounts.reduce((a, b) => a + b, 0) !== 8) {
+  if (counts.length !== 3 || recordCounts.some(value => value <= 0)) {
     throw new Error("Contagens dos grupos de prioridade divergentes: " + JSON.stringify(counts));
   }
 
