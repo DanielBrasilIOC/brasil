@@ -67,7 +67,7 @@ jobs:
       - name: Localizar fontes (espera somente na rotina agendada)
         timeout-minutes: 360
         env:
-          GOOGLE_DRIVE_FOLDER_ID: "1Ae3_31uGRNvfvnN5EuhiNHbk_mdkVg0L"
+          GOOGLE_DRIVE_FOLDER_ID: "1Ae3_31uGRNvfvnN5euhiNHbk_mdkVg0L"
         run: |
           set -euo pipefail
           if [ "$GITHUB_EVENT_NAME" = "schedule" ]; then
