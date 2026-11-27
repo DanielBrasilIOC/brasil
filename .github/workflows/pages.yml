@@ -107,11 +107,20 @@ jobs:
         env:
           RUN_ID: ${{ github.run_id }}
           RUN_ATTEMPT: ${{ github.run_attempt }}
+          DATA_CHANGED: ${{ steps.sync.outputs.changed }}
         run: |
           python - <<'PY'
           import json, os
+          from datetime import datetime, timezone
+          record={
+              'run_id':int(os.environ['RUN_ID']),
+              'run_attempt':int(os.environ['RUN_ATTEMPT']),
+              'verified_at':datetime.now(timezone.utc).isoformat(timespec='seconds').replace('+00:00','Z'),
+              'data_changed':os.environ.get('DATA_CHANGED','false').lower()=='true'
+          }
           with open('dashboard-publication.json','w',encoding='utf-8') as f:
-              json.dump({'run_id':int(os.environ['RUN_ID']),'run_attempt':int(os.environ['RUN_ATTEMPT'])},f)
+              json.dump(record,f,ensure_ascii=False,indent=2)
+              f.write('\n')
           PY
       - name: Preparar arquivos estáticos do painel
         if: steps.sync.outputs.sync_ok == 'true'
@@ -120,7 +129,7 @@ jobs:
           path: "."
 
   deploy:
-    if: github.event_name != 'workflow_run' && needs.build.outputs.sync_ok == 'true' && (needs.build.outputs.data_changed == 'true' || github.event_name != 'schedule')
+    if: github.event_name != 'workflow_run' && needs.build.outputs.sync_ok == 'true'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
