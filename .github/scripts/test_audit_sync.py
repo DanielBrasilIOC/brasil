@@ -83,6 +83,21 @@ class EmpenhosLayoutTests(unittest.TestCase):
         self.assertEqual(rows[0]["cnpj"], "")
         self.assertEqual(rows[0]["fornecedor"], "")
 
+class EmpenhosLayoutAtualTests(unittest.TestCase):
+    def test_leiaute_compacto_serpro_sem_colunas_ausentes(self):
+        sample = r'"NE CCor"\t"NE CCor - Favorecido"\t\t"Fonte Recursos Detalhada"\t\t"Elemento Despesa"\t\t"Subitem"\t"PI"\t\t"Saldo - R$ (Conta Contábil)"' + '\n' + r'"254463252012026NE000016"\t"34174896000147"\t"FORNECEDOR TESTE"\t"1001000000"\t"REC.LIVRES"\t"39"\t"SERVIÇOS PJ"\t"APOIO ADMINISTRATIVO"\t"A1IOC"\t"INST OSWALDO CRUZ"\t"R$ 843,48"' + '\n'
+        rows, amount = sync.parse_empenhos(sample)
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(amount, 843.48)
+        self.assertEqual(rows[0]["ne_ccor"], "254463252012026NE000016")
+        self.assertEqual(rows[0]["cnpj"], "34174896000147")
+        self.assertEqual(rows[0]["favorecido"], "FORNECEDOR TESTE")
+        self.assertEqual(rows[0]["elemento_despesa"], "39")
+        self.assertEqual(rows[0]["pi"], "A1IOC")
+        self.assertNotIn("processo", rows[0])
+        self.assertNotIn("ptres", rows[0])
+        self.assertNotIn("subitem", rows[0])
+
 class RowDiffTests(unittest.TestCase):
     def test_inclusao_de_registro(self):
         before = {"orcamentario": ["a", "b"]}

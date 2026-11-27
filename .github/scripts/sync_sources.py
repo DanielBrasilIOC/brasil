@@ -106,8 +106,14 @@ def check(ok,msg):
     if not ok: raise ValueError(msg)
 
 def parse_empenhos(text):
-    """Interpreta os leiautes SERPRO antigo e novo de Empenhos 2026."""
-    a=table(text,"\t",["NE CCor","Saldo - Moeda Origem"])
+    """Interpreta os leiautes SERPRO de Empenhos 2026, inclusive o leiaute compacto atual."""
+    normalized_text=text.replace("\\t", "\t")
+    try:
+        a=table(normalized_text,"\t",["NE CCor","Saldo - R$ (Conta Contábil)"])
+        current=True
+    except ValueError:
+        a=table(normalized_text,"\t",["NE CCor","Saldo - Moeda Origem"])
+        current=False
     header=AUDIT[norm("NE CCor")]["header"]
     def col(label):
         target=norm(label)
@@ -117,45 +123,39 @@ def parse_empenhos(text):
             i=col(label)
             if i is not None: return i
         return None
-    processo_i=col_any("NE CCor - Núm. Processo","Processo")
-    ug_i=col_any("UG Responsável","UG Responsavel")
-    fonte_i=col_any("Fonte Recursos","Fonte de Recursos")
     ne_i=col("NE CCor")
+    cnpj_i=col_any("NE CCor - Favorecido","CNPJ")
+    fornecedor_i=(cnpj_i+1) if cnpj_i is not None and cnpj_i+1<len(header) else None
     pi_i=col_any("PI","Programa Interno")
+    saldo_i=col_any("Saldo - R$ (Conta Contábil)","Saldo - Moeda Origem (Conta Contábil)","Saldo - Moeda Origem")
+    processo_i=col_any("NE CCor - Núm. Processo","Processo")
     ptres_i=col("PTRES")
-    saldo_i=col_any("Saldo - Moeda Origem (Conta Contábil)","Saldo - Moeda Origem")
-    natureza_i=col_any("Natureza Despesa","Natureza Despesa Detalhada")
-    descricao_i=col_any("NE CCor - Descrição","NE CCor - Descricao")
-    cnpj_i=col("NE CCor - Favorecido")
-    fornecedor_i=(cnpj_i+1) if cnpj_i is not None else None
-    pi_nome_i=col_any("PI Nome","Nome PI","Descrição PI","Descricao PI","Programa Interno Nome")
-    check(all(i is not None for i in (ne_i,natureza_i,saldo_i,pi_i,ptres_i)),
-          f"Cabeçalho incompleto em Empenhos 2026 (esperados NE, natureza, saldo, PI e PTRES): {header!r}")
-    required=max(i for i in (ne_i,natureza_i,saldo_i,pi_i,ptres_i,processo_i,ug_i,fonte_i,descricao_i,cnpj_i,fornecedor_i,pi_nome_i) if i is not None)
+    if current:
+        fonte_i=col("Fonte Recursos Detalhada")
+        fonte_desc_i=fonte_i+1 if fonte_i is not None and fonte_i+1<len(header) else None
+        elemento_i=col("Elemento Despesa")
+        elemento_desc_i=elemento_i+1 if elemento_i is not None and elemento_i+1<len(header) else None
+        unidade_i=pi_i+1 if pi_i is not None and pi_i+1<len(header) else None
+        required=(ne_i,cnpj_i,fornecedor_i,fonte_i,fonte_desc_i,elemento_i,elemento_desc_i,pi_i,unidade_i,saldo_i)
+    else:
+        fonte_i=col_any("Fonte Recursos","Fonte de Recursos","Fonte Recursos Detalhada")
+        fonte_desc_i=fonte_i+1 if fonte_i is not None and fonte_i+1<len(header) else None
+        natureza_i=col_any("Natureza Despesa","Natureza Despesa Detalhada","Elemento Despesa")
+        natureza_desc_i=natureza_i+1 if natureza_i is not None and natureza_i+1<len(header) else None
+        unidade_i=col_any("PI Nome","Nome PI","Descrição PI","Descricao PI","Programa Interno Nome")
+        elemento_i=natureza_i; elemento_desc_i=natureza_desc_i
+        required=(ne_i,pi_i,saldo_i,natureza_i)
+    check(all(i is not None for i in required), f"Cabeçalho incompleto em Empenhos 2026: {header!r}")
+    required_i=max(i for i in (*required,processo_i) if i is not None)
     empenhos=[]
     for r in a:
-        check(len(r)>required, f"Registro incompleto em Empenhos 2026: {r!r}")
-        v=money(r[saldo_i])
-        check(v is not None, f"Saldo inválido em Empenhos 2026: {r!r}")
-        nd=re.sub(r"\D","",clean(r[natureza_i]))
-        natureza=nd[:6] if len(nd)==8 else clean(r[natureza_i])
-        subitem=nd[6:8] if len(nd)==8 else ""
-        empenhos.append({
-            "empenho":r[ne_i], "ne_ccor":r[ne_i],
-            "processo":r[processo_i] if processo_i is not None else "",
-            "ug_responsavel":r[ug_i] if ug_i is not None else "",
-            "fonte_recursos":r[fonte_i] if fonte_i is not None else "",
-            "descricao":r[descricao_i] if descricao_i is not None else "",
-            "subitem":subitem, "natureza":natureza,
-            "cnpj":r[cnpj_i] if cnpj_i is not None else "",
-            "fornecedor":r[fornecedor_i] if fornecedor_i is not None else "",
-            "pi":r[pi_i], "pi_nome":r[pi_nome_i] if pi_nome_i is not None else "",
-            "ptres":r[ptres_i], "observacao":"",
-            "fonte_recursos_detalhada":r[fonte_i] if fonte_i is not None else "", "saldo":v
-        })
-    te=total(empenhos,"saldo")
-    check(1<=len(empenhos)<=1000 and te>=0,
-          f"Validação de Empenhos 2026 falhou: linhas={len(empenhos)}, total={te}")
+        check(len(r)>required_i, f"Registro incompleto em Empenhos 2026: {r!r}")
+        v=money(r[saldo_i]); check(v is not None, f"Saldo inválido em Empenhos 2026: {r!r}")
+        item={"ne_ccor":r[ne_i],"cnpj":r[cnpj_i] if cnpj_i is not None else "","favorecido":r[fornecedor_i] if fornecedor_i is not None else "","fonte_recursos":r[fonte_i] if fonte_i is not None else "","fonte_recursos_descricao":r[fonte_desc_i] if fonte_desc_i is not None else "","elemento_despesa":r[elemento_i] if elemento_i is not None else "","elemento_despesa_descricao":r[elemento_desc_i] if elemento_desc_i is not None else "","pi":r[pi_i] if pi_i is not None else "","unidade":r[unidade_i] if unidade_i is not None else "","saldo":v}
+        if not current:
+            item.update({"processo":r[processo_i] if processo_i is not None else "","ptres":r[ptres_i] if ptres_i is not None else "","descricao":r[col_any("NE CCor - Descrição","NE CCor - Descricao")] if col_any("NE CCor - Descrição","NE CCor - Descricao") is not None else "","fornecedor":r[fornecedor_i] if fornecedor_i is not None else ""})
+        empenhos.append(item)
+    te=total(empenhos,"saldo"); check(1<=len(empenhos)<=1000 and te>=0, f"Validação de Empenhos 2026 falhou: linhas={len(empenhos)}, total={te}")
     return empenhos,te
 
 
