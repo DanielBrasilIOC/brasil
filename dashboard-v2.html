@@ -1059,9 +1059,9 @@ function nav(){
   {title:'Painel',ids:['visao']},
   {title:'Orçamento',ids:['orcamentario','empenhos','repasses']},
   {title:'Financeiro',ids:['financeiro','ordens_bancarias','diarias_pagas','publicacoes_pagas','bolsistas_pagos','apropriacao_pendente']},
-  {title:'Compromissos',ids:['restos','prestacao_servicos']}
+  {title:'Compromissos',ids:['restos']}
  ];
- const known=new Set(groups.flatMap(g=>g.ids));
+ const known=new Set([...groups.flatMap(g=>g.ids),'prestacao_servicos']);
  const button=(id,title)=>'<button data-x="'+E(id)+'" class="'+(active===id?'active':'')+'">'+E(title)+'</button>';
  document.getElementById('nav').innerHTML=groups.map(g=>{
   const items=g.ids.map(id=>id==='visao'?{id,title:'Visão executiva'}:data.datasets.find(d=>d.id===id)).filter(Boolean);
