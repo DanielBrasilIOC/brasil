@@ -1316,6 +1316,9 @@ async function load(manual=false){
   const payload=await response.json();
   if(!Array.isArray(payload.datasets))throw new Error('A estrutura publicada não contém a lista de bases esperada.');
   data=payload;
+  // A seção Prestação de Serviços foi retirada do painel; mantém-se a base manual no repositório, sem carregá-la na interface.
+  data.datasets=data.datasets.filter(dataset=>dataset.id!=='prestacao_servicos');
+  if(active==='prestacao_servicos')active='visao';
   for(const d of data.datasets){
    d._declared_total=Number(d.total);
    if(!Array.isArray(d.rows))d.rows=[];
